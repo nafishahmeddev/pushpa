@@ -114,7 +114,7 @@ export default function CartDetailsPage() {
     <React.Fragment>
       <dialog
         open={orderDialog.open}
-        className=" open:bg-black/40 backdrop-blur-sm h-dvh w-dvw fixed top-0 left-0 z-10 overflow-auto"
+        className=" open:bg-black/40  h-dvh w-dvw fixed top-0 left-0 z-10 overflow-auto"
       >
         <div className="bg-white w-[350px] m-auto shadow-sm my-2">
           <div className="flex">

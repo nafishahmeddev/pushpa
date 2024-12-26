@@ -11,8 +11,9 @@ export default function ProductsPage() {
   const refresh = () => ProductsApi.all().then(setCategories);
 
   const [productForm, setProductForm] = useState<{
-    product: IProduct | undefined;
-  }>({ product: undefined });
+    open : boolean,
+    product?: IProduct,
+  }>({ open: false });
 
   const handleOnDelete = (product: IProduct) => {
     if (confirm("Are you sure?")) {
@@ -24,12 +25,12 @@ export default function ProductsPage() {
     refresh();
   }, []);
   return (
-    <div className="h-full grid grid-cols-[auto_1fr]">
+    <div className="h-full grid grid-cols-[1fr]">
       <ProductForm
         {...productForm}
-        onReset={() => setProductForm({ product: undefined })}
+        onReset={() => setProductForm({ open: false, product: undefined })}
         onSave={async () => {
-          setProductForm({ product: undefined });
+          setProductForm({ open: false, product: undefined});
           refresh();
         }}
       />
@@ -54,7 +55,7 @@ export default function ProductsPage() {
                 <td className="px-4">
                   <div className="flex flex-nowrap gap-2">
                     <button
-                      onClick={() => setProductForm({ product: product })}
+                      onClick={() => setProductForm({ product: product, open: true })}
                       className="hover:opacity-70 text-white bg-green-700  p-0.5"
                     >
                       <Icon icon="lucide:edit" height={16} width={16} />

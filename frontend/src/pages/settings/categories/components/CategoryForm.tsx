@@ -55,15 +55,13 @@ export default function CategoryForm({
         name: category.name,
       });
     } else {
-      formik.setValues({
-        name: "",
-      });
+      formik.resetForm();
     }
   }, [category]);
   return (
     <dialog
       open={open}
-      className="fixed top-0 left-0 flex items-center justify-center w-full h-full bg-black/25 backdrop-blur-sm z-20 open:visible collapse transition group transition-all"
+      className="fixed top-0 left-0 flex items-center justify-center w-full h-full bg-black/25  z-20 open:visible collapse transition group transition-all"
     >
       <form
         className="w-[330px] p-6 bg-white rounded-2xl group-open:scale-100 group-open:opacity-100 scale-50 opacity-0 transition-all flex-1 max-w-[450px]"

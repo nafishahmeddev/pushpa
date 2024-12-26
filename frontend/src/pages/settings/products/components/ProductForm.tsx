@@ -4,9 +4,11 @@ import { ICategory, IProduct } from "@app/types/product";
 import { AxiosError } from "axios";
 import { useFormik } from "formik";
 import { useEffect, useState } from "react";
+import toast from "react-hot-toast";
 
 type ProductFormProps = {
-  product: IProduct | undefined;
+  open: boolean;
+  product?: IProduct;
   onReset: () => void;
   onSave: (values: { name: string }) => Promise<void>;
 };
@@ -18,6 +20,7 @@ type ValueType = {
   price: number;
 };
 export default function ProductForm({
+  open = false,
   product,
   onReset,
   onSave,
@@ -38,6 +41,12 @@ export default function ProductForm({
     const promise = product
       ? ProductsApi.update(product.id, values)
       : ProductsApi.create(values);
+
+    toast.promise(promise, {
+      success: "Successfully saved",
+      loading: "please wait...",
+      error: "Error while saving category.",
+    });
     return promise
       .then(() => {
         formik.resetForm();
@@ -65,82 +74,90 @@ export default function ProductForm({
     CategoriesApi.all().then(setCategories);
   }, []);
   return (
-    <form className="w-[330px] p-4 h-full" onSubmit={formik.handleSubmit}>
-      <fieldset disabled={formik.isSubmitting}>
-        <div className="flex flex-col gap-4">
-          <div className="input flex flex-col gap-2">
-            <label className=" ">Name</label>
-            <input
-              required
-              type="text"
-              className="bg-white py-2 px-2"
-              {...formik.getFieldProps("name")}
-            />
-          </div>
-
-          <div className="input flex flex-col gap-2">
-            <label className=" ">Category</label>
-            <select
-              className="bg-white py-2 px-2"
-              required
-              {...formik.getFieldProps("categoryId")}
-            >
-              <option value="" />
-              {categories.map((category) => (
-                <option value={category.id}>{category.name}</option>
-              ))}
-            </select>
-          </div>
-
-          <div className="flex gap-2">
-            <div className="input flex flex-col gap-2 flex-1">
-              <label className=" ">SGST</label>
+    <dialog
+      open={open}
+      className="fixed top-0 left-0 flex items-center justify-center w-full h-full bg-black/25  z-20 open:visible collapse group transition-all"
+    >
+      <form
+        className="p-6 bg-white rounded-2xl group-open:scale-100 group-open:opacity-100 scale-50 opacity-0 transition-all flex-1 max-w-[450px]"
+        onSubmit={formik.handleSubmit}
+      >
+        <h3 className="text-xl">{product ? "Update" : "Create"} Category</h3>
+        <fieldset disabled={formik.isSubmitting} className="block w-full">
+          <div className="flex flex-col gap-4 w-full py-4">
+            <div className="input flex flex-col gap-2">
+              <label className="text-sm text-gray-700">Name</label>
               <input
-                type="number"
                 required
-                className="bg-white py-2 px-2 min-w-0 w-full"
-                {...formik.getFieldProps("sgst")}
+                type="text"
+                className="bg-gray-100 rounded-2xl py-3 px-4 focus:outline-2 min-w-0 w-full"
+                {...formik.getFieldProps("name")}
               />
             </div>
 
-            <div className="input flex flex-col gap-2 flex-1">
-              <label className=" ">CGST</label>
+            <div className="input flex flex-col gap-2">
+              <label className="text-sm text-gray-700">Category</label>
+              <select
+                className="bg-gray-100 rounded-2xl py-3 px-4 focus:outline-2 min-w-0 w-full"
+                required
+                {...formik.getFieldProps("categoryId")}
+              >
+                <option value="" />
+                {categories.map((category) => (
+                  <option value={category.id}>{category.name}</option>
+                ))}
+              </select>
+            </div>
+
+            <div className="flex gap-2">
+              <div className="input flex flex-col gap-2 flex-1">
+                <label className="text-sm text-gray-700">SGST</label>
+                <input
+                  type="number"
+                  required
+                  className="bg-gray-100 rounded-2xl py-3 px-4 focus:outline-2 min-w-0 w-full"
+                  {...formik.getFieldProps("sgst")}
+                />
+              </div>
+
+              <div className="input flex flex-col gap-2 flex-1">
+                <label className="text-sm text-gray-700">CGST</label>
+                <input
+                  type="number"
+                  required
+                  className="bg-gray-100 rounded-2xl py-3 px-4 focus:outline-2 min-w-0 w-full"
+                  {...formik.getFieldProps("cgst")}
+                />
+              </div>
+            </div>
+
+            <div className="input flex flex-col gap-2">
+              <label className="text-sm text-gray-700">Price</label>
               <input
                 type="number"
                 required
-                className="bg-white py-2 px-2 min-w-0 w-full"
-                {...formik.getFieldProps("cgst")}
+                className="bg-gray-100 rounded-2xl py-3 px-4 focus:outline-2"
+                {...formik.getFieldProps("price")}
               />
             </div>
           </div>
-
-          <div className="input flex flex-col gap-2">
-            <label className=" ">Price</label>
-            <input
-              type="number"
-              required
-              className="bg-white py-2 px-2"
-              {...formik.getFieldProps("price")}
-            />
-          </div>
-
-          <div className="flex gap-2">
+          <div className="flex gap-2 justify-end">
             <button
-              className="px-2 py-2 bg-emerald-800 text-white flex-1"
-              type="submit"
-            >
-              {product ? "Update" : "Create"}
-            </button>
-            <button
-              className="px-2 py-2 bg-rose-800 text-white flex-1"
+              className="px-5 py-2 bg-gray-300  hover:opacity-60 rounded-2xl"
               onClick={onReset}
               type="button"
             >
               Cancel
             </button>
+            <button
+              className="px-5 py-2 bg-emerald-600 text-white  hover:opacity-60 rounded-2xl"
+              type="submit"
+            >
+              {product ? "Update" : "Create"}
+            </button>
           </div>
-        </div>
-      </fieldset>
-    </form>
+        </fieldset>
+      </form>
+    </dialog>
   );
 }
