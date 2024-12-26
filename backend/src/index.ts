@@ -38,6 +38,7 @@ async function main() {
   app.use("/api/v1/products", ProductsRouter);
   app.use("/api/v1/orders", OrdersRoute);
   app.use(express.static(path.resolve(process.env.FRONTEND_PATH || "")))
+  app.use("*", express.static(path.resolve(path.join(process.env.FRONTEND_PATH || "", "index.html"))))
   app.listen(port, () => {
     consola.info("[HTTP]", `Listening to ${port}`);
   });
