@@ -19,6 +19,7 @@ import CartsRouter from "@app/routes/carts";
 import CategoriesRouter from "@app/routes/categories";
 import ProductsRouter from "@app/routes/products";
 import OrdersRoute from "@app/routes/orders";
+import path from 'path';
 
 const app: Application = express();
 const port = process.env.PORT || 3000;
@@ -36,6 +37,7 @@ async function main() {
   app.use("/api/v1/categories", CategoriesRouter);
   app.use("/api/v1/products", ProductsRouter);
   app.use("/api/v1/orders", OrdersRoute);
+  app.use(express.static(path.resolve(process.env.FRONTEND_PATH || "")))
   app.listen(port, () => {
     consola.info("[HTTP]", `Listening to ${port}`);
   });
