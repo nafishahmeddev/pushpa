@@ -1,4 +1,12 @@
-import express, { Request, Response, Express, Application } from "express";
+//alias support
+import 'module-alias/register'
+import moduleAlias from 'module-alias'
+
+moduleAlias.addAliases({
+  '@app': __dirname
+})
+
+import express, { Application } from "express";
 import dotenv from "dotenv";
 dotenv.config();
 import consola from "consola";
