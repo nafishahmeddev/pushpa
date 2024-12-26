@@ -217,6 +217,8 @@ CartsRouter.get("/:cartId/place", async (req: IRequest, res: IResponse) => {
             sgst: 0
         });
 
+        await order.save();
+
         const cartItems = cart.items ?? [];
 
         await Promise.all(cartItems.map(async (item) => {
