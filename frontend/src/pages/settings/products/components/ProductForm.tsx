@@ -82,7 +82,7 @@ export default function ProductForm({
         className="p-6 bg-white rounded-2xl group-open:scale-100 group-open:opacity-100 scale-50 opacity-0 transition-all flex-1 max-w-[450px]"
         onSubmit={formik.handleSubmit}
       >
-        <h3 className="text-xl">{product ? "Update" : "Create"} Category</h3>
+        <h3 className="text-xl">{product ? "Update" : "Create"} Product</h3>
         <fieldset disabled={formik.isSubmitting} className="block w-full">
           <div className="flex flex-col gap-4 w-full py-4">
             <div className="input flex flex-col gap-2">

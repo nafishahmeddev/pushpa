@@ -37,7 +37,7 @@ export default function CategoriesPage() {
       <div className="py-4 flex gap-4 items-center">
         <h2 className="text-2xl">Categories</h2>
         <button className="border px-2 py-1 rounded-xl bg-gray-50" onClick={()=>setCategoryForm({open: true, category:undefined})}>
-          + New Category
+          + New
         </button>
       </div>
 
@@ -56,7 +56,6 @@ export default function CategoriesPage() {
                 <td className="px-3 py-3 ">{index + 1}</td>
 
                 <td className="text-nowrap px-3 py-3 w-full">
-                  {" "}
                   {category.name}
                 </td>
                 <td className="px-4  w-0">

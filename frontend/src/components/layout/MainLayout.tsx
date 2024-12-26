@@ -19,11 +19,11 @@ const mainmenu = [
     route: "/orders",
   },
 
-  {
-    label: "Kitchen",
-    icon: "solar:chef-hat-minimalistic-outline",
-    route: "/orders",
-  },
+  // {
+  //   label: "Kitchen",
+  //   icon: "solar:chef-hat-minimalistic-outline",
+  //   route: "/orders",
+  // },
 ];
 
 const backendMenu = [

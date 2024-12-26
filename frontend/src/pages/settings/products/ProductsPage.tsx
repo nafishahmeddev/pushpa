@@ -11,8 +11,8 @@ export default function ProductsPage() {
   const refresh = () => ProductsApi.all().then(setCategories);
 
   const [productForm, setProductForm] = useState<{
-    open : boolean,
-    product?: IProduct,
+    open: boolean;
+    product?: IProduct;
   }>({ open: false });
 
   const handleOnDelete = (product: IProduct) => {
@@ -25,64 +25,69 @@ export default function ProductsPage() {
     refresh();
   }, []);
   return (
-    <div className="h-full grid grid-cols-[1fr]">
+    <div className="h-full bg-white p-4 grid grid-rows-[auto-1fr] gap-5">
       <ProductForm
         {...productForm}
         onReset={() => setProductForm({ open: false, product: undefined })}
         onSave={async () => {
-          setProductForm({ open: false, product: undefined});
+          setProductForm({ open: false, product: undefined });
           refresh();
         }}
       />
 
-      <ScrollView className="h-full bg-white">
-        <table className="w-full ">
+      <div className="py-4 flex gap-4 items-center">
+        <h2 className="text-2xl">Products</h2>
+        <button
+          className="border px-2 py-1 rounded-xl bg-gray-50"
+          onClick={() => setProductForm({ open: true, product: undefined })}
+        >
+          + New
+        </button>
+      </div>
+
+      <ScrollView className="h-full bg-white border rounded-2xl">
+        <table className="w-full">
           <thead>
-            <tr className="sticky top-0 left-0 bg-gray-100">
-              <td className="px-2 py-2 w-0">#</td>
-              <td className="px-2 py-2 w-0"></td>
-              <td className="px-2 py-2">Name</td>
-              <td className="px-2 py-2">Category</td>
-              <td className="px-2 py-2 w-0">CGST%</td>
-              <td className="px-2 py-2 w-0">SGST%</td>
-              <td className="px-2 py-2 w-0 text-end">Pice</td>
+            <tr className="sticky top-0 left-0 bg-gray-100 z-10">
+              <td className="px-3 py-3  w-0">#</td>
+              <td className="px-3 py-3 ">Name</td>
+              <td className="px-3 py-3">Category</td>
+              <td className="px-3 py-3 w-0">CGST%</td>
+              <td className="px-3 py-3 w-0">SGST%</td>
+              <td className="px-3 py-3 w-0 text-end">Pice</td>
+              <td className="px-3 py-3 w-0"></td>
             </tr>
           </thead>
           <tbody>
             {products.map((product, index: number) => (
               <tr key={`product-${product.id}`}>
-                <td className="px-2 py-2 text-gray-700">{index + 1}</td>
-                <td className="px-4">
-                  <div className="flex flex-nowrap gap-2">
+                <td className="px-3 py-3">{index + 1}</td>
+
+                <td className="text-nowrap px-3 py-3 w-full">{product.name}</td>
+                <td className="text-nowrap px-3 py-3">
+                  {product.category?.name}
+                </td>
+                <td className="px-4  w-0">{product.cgst}%</td>
+                <td className="px-4  w-0">{product.sgst}%</td>
+                <td className="px-4  w-0">{Formatter.money(product.price)}</td>
+                <td className="px-4  w-0 sticky right-0 bg-white">
+                  <div className="flex flex-nowrap gap-2 text-gray-600">
                     <button
-                      onClick={() => setProductForm({ product: product, open: true })}
-                      className="hover:opacity-70 text-white bg-green-700  p-0.5"
+                      onClick={() =>
+                        setProductForm({ product: product, open: true })
+                      }
+                      className="hover:opacity-70"
                     >
-                      <Icon icon="lucide:edit" height={16} width={16} />
+                      <Icon icon="mynaui:edit" height={20} width={20} />
                     </button>
 
                     <button
                       onClick={() => handleOnDelete(product)}
-                      className="hover:opacity-70 text-white bg-red-700  p-0.5"
+                      className="hover:opacity-70 text-red-700"
                     >
-                      <Icon
-                        icon="material-symbols:delete-sharp"
-                        height={16}
-                        width={16}
-                      />
+                      <Icon icon="proicons:delete" height={20} width={20} />
                     </button>
                   </div>
-                </td>
-                <td className="text-nowrap py-2 px-2"> {product.name}</td>
-                <td className="text-nowrap py-2 px-2"> {product.category?.name}</td>
-                <td className="text-nowrap py-2 px-2 font-mono text-rose-600">
-                  {product.cgst}%
-                </td>
-                <td className="text-nowrap py-2 px-2 font-mono text-rose-600">
-                  {product.sgst}%
-                </td>
-                <td className="text-nowrap py-2 px-2 text-end font-mono">
-                  {Formatter.money(product.price)}
                 </td>
               </tr>
             ))}
