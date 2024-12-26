@@ -116,8 +116,8 @@ export default function CartDetailsPage() {
         open={orderDialog.open}
         className=" open:bg-black/40  h-dvh w-dvw fixed top-0 left-0 z-10 overflow-auto"
       >
-        <div className="bg-white w-[350px] m-auto shadow-sm my-2">
-          <div className="flex">
+        <div className=" w-[350px] m-auto shadow-sm my-2">
+          <div className="flex mb-4 gap-4">
             <button
               className="flex-1 py-2 bg-rose-800 text-white hover:opacity-50"
               onClick={() => {
@@ -136,7 +136,7 @@ export default function CartDetailsPage() {
               Print
             </button>
           </div>
-          <div id="order_details">
+          <div id="order_details" className="bg-white">
             {orderDialog.order && <OrderReceipt order={orderDialog.order} />}
           </div>
         </div>

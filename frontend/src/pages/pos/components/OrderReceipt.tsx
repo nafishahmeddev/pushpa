@@ -48,14 +48,24 @@ export function OrderReceipt({ order }: OrderReceiptProps) {
           </tbody>
         </table>
         <div className="border-t border-dashed border-black my-3"></div>
-        <table className=" w-full text-xs">
+        <table className=" w-full text-xs font-bold">
           <tr>
-            <td className="w-1/2">
-              <strong>Tax: {Formatter.money(order.cgst + order.sgst)}</strong>
+            <td>Subtotal(excl. Tax):</td>
+            <td className="text-end">
+              {Formatter.money((order.amount -( order.cgst + order.sgst)))}
             </td>
-            <td className="w-1/2 text-end">
-              <strong>Total: {Formatter.money(order.amount)}</strong>
+          </tr>
+
+          <tr>
+            <td>Tax:</td>
+            <td className="text-end">
+              {Formatter.money(order.cgst + order.sgst)}
             </td>
+          </tr>
+
+          <tr>
+            <td>Total:</td>
+            <td className="text-end">{Formatter.money(order.amount)}</td>
           </tr>
         </table>
       </div>

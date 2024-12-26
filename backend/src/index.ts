@@ -7,9 +7,10 @@ import MainMiddleware from "@app/middleware/main";
 import LocaleMiddleware from "@app/middleware/locale";
 import { sequelize } from "@app/db/conn";
 import cors from "cors";
-import CartsRouter from "./routes/carts";
-import CategoriesRouter from "./routes/categories";
-import ProductsRouter from "./routes/products";
+import CartsRouter from "@app/routes/carts";
+import CategoriesRouter from "@app/routes/categories";
+import ProductsRouter from "@app/routes/products";
+import OrdersRoute from "@app/routes/orders";
 
 const app: Application = express();
 const port = process.env.PORT || 3000;
@@ -26,6 +27,7 @@ async function main() {
   app.use("/api/v1/carts", CartsRouter);
   app.use("/api/v1/categories", CategoriesRouter);
   app.use("/api/v1/products", ProductsRouter);
+  app.use("/api/v1/orders", OrdersRoute);
   app.listen(port, () => {
     consola.info("[HTTP]", `Listening to ${port}`);
   });
