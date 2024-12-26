@@ -33,9 +33,9 @@ export default function ProductsPage() {
     }
   }, [paginate, query]);
   return (
-    <div className="h-full bg-white p-4 grid grid-rows-[auto-1fr] gap-5">
+    <div className="h-full bg-white p-4 grid grid-rows-[60px_1fr] gap-5">
       <div className="py-4 flex gap-4 items-center">
-        <h2 className="text-2xl">Products</h2>
+        <h2 className="text-2xl">Orders</h2>
       </div>
 
       <ScrollView className="h-full bg-white border rounded-2xl">
@@ -67,7 +67,7 @@ export default function ProductsPage() {
                 </td>
                 <td className="px-4 py-2 w-0 sticky right-0 bg-white">
                   <div className="flex flex-nowrap gap-2 text-gray-600">
-                  <button className="hover:opacity-70 ">
+                    <button className="hover:opacity-70 ">
                       <Icon icon="mingcute:print-line" height={20} width={20} />
                     </button>
 

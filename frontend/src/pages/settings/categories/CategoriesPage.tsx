@@ -24,7 +24,7 @@ export default function CategoriesPage() {
     refresh();
   }, []);
   return (
-    <div className="h-full bg-white p-4 grid grid-rows-[auto-1fr] gap-5">
+    <div className="h-full bg-white p-4 grid grid-rows-[60px_1fr] gap-5">
       <CategoryForm
         {...categoryForm}
         onReset={() => setCategoryForm({ category: undefined, open: false })}
@@ -36,7 +36,10 @@ export default function CategoriesPage() {
 
       <div className="py-4 flex gap-4 items-center">
         <h2 className="text-2xl">Categories</h2>
-        <button className="border px-2 py-1 rounded-xl bg-gray-50" onClick={()=>setCategoryForm({open: true, category:undefined})}>
+        <button
+          className="border px-2 py-1 rounded-xl bg-gray-50"
+          onClick={() => setCategoryForm({ open: true, category: undefined })}
+        >
           + New
         </button>
       </div>

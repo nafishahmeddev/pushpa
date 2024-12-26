@@ -25,7 +25,7 @@ export default function ProductsPage() {
     refresh();
   }, []);
   return (
-    <div className="h-full bg-white p-4 grid grid-rows-[auto-1fr] gap-5">
+    <div className="h-full bg-white p-4 grid grid-rows-[60px_1fr] gap-5">
       <ProductForm
         {...productForm}
         onReset={() => setProductForm({ open: false, product: undefined })}
@@ -35,7 +35,7 @@ export default function ProductsPage() {
         }}
       />
 
-      <div className="py-4 flex gap-4 items-center">
+      <div className="py-4 flex gap-4 items-center h-full">
         <h2 className="text-2xl">Products</h2>
         <button
           className="border px-2 py-1 rounded-xl bg-gray-50"
