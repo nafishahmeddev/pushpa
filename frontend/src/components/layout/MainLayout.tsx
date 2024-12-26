@@ -46,16 +46,16 @@ export function SideMenuList({ items }: SideMenuListProps) {
     <div className="flex-1 items-end">
       <ul className="py-2 flex flex-col gap-1">
         {items.map((item, index) => (
-          <li key={`item-${index}`}>
+          <li key={`item-${index}`} className="px-2">
             <NavLink
               to={item.route}
               className={({ isActive }) =>
-                `flex py-3 px-3 items-center justify-start gap-2 cursor-pointer transition-all hover:bg-green-800/15 text-emerald-950 ${
+                `flex py-2 px-3 items-center justify-start gap-2 cursor-pointer transition-all hover:bg-green-800/15 text-emerald-950 rounded-full ${
                   isActive ? "text-green-800 bg-green-600/10" : ""
                 }`
               }
             >
-              <Icon icon={item.icon} height={24} width={24} />
+              <Icon icon={item.icon} height={20} width={20} />
               <span>{item.label}</span>
             </NavLink>
           </li>
@@ -67,7 +67,7 @@ export function SideMenuList({ items }: SideMenuListProps) {
 
 export default function MainLayout() {
   return (
-    <div className="h-dvh grid grid-cols-[minmax(250px,50px)_1fr] grid-rows-1 bg-gray-100">
+    <div className="h-dvh grid grid-cols-[250px_1fr] grid-rows-1 bg-gray-100">
       <div className="bg-white border-e h-full grid grid-rows-[60px_1fr_60px]">
         <div className="logo italic flex h-full items-center font-bold text-lg text-emerald-800 px-2 py-3">
           PUSHPA DHABA
@@ -78,8 +78,26 @@ export default function MainLayout() {
           <SideMenuList items={backendMenu} />
         </ScrollView>
       </div>
-      <div className="h-full">
-        <Outlet />
+      <div className="h-full grid grid-rows-[60px_1fr]">
+        <div className="h-full bg-white border-b flex justify-between p-4 py-3 ">
+          <div className=" bg-gray-200 rounded-full items-center flex px-3">
+            <span className="text-gray-400">
+              <Icon icon="tabler:search" height={20} width={20} />
+            </span>
+            <input className="bg-transparent outline-none px-2 h-full w-60" placeholder="Search" />
+          </div>
+
+          <button className=" bg-gray-200 rounded-full items-center flex p-1 gap-2 pe-2" onClick={console.log}>
+            <img src="https://i.pravatar.cc/60" className="h-full aspect-square rounded-full"/>
+            <span className="text-sm">Admin</span>
+            <span className="text-gray-400">
+              <Icon icon="formkit:down" height={20} width={20} />
+            </span>
+          </button>
+        </div>
+        <div className="h-full overflow-auto">
+          <Outlet />
+        </div>
       </div>
     </div>
   );

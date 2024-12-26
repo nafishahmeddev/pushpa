@@ -11,7 +11,8 @@ export default function CategoriesPage() {
 
   const [categoryForm, setCategoryForm] = useState<{
     category: ICategory | undefined;
-  }>({ category: undefined });
+    open: boolean;
+  }>({ category: undefined, open: false });
 
   const handleOnDelete = (category: ICategory) => {
     if (confirm("Are you sure?")) {
@@ -23,51 +24,60 @@ export default function CategoriesPage() {
     refresh();
   }, []);
   return (
-    <div className="h-full grid grid-cols-[auto_1fr]">
+    <div className="h-full bg-white p-4 grid grid-rows-[auto-1fr] gap-5">
       <CategoryForm
         {...categoryForm}
-        onReset={() => setCategoryForm({ category: undefined })}
+        onReset={() => setCategoryForm({ category: undefined, open: false })}
         onSave={async () => {
-          setCategoryForm({ category: undefined });
+          setCategoryForm({ category: undefined, open: false });
           refresh();
         }}
       />
 
-      <ScrollView className="h-full bg-white">
+      <div className="py-4 flex gap-4 items-center">
+        <h2 className="text-2xl">Categories</h2>
+        <button className="border px-2 py-1 rounded-xl bg-gray-50" onClick={()=>setCategoryForm({open: true, category:undefined})}>
+          + New Category
+        </button>
+      </div>
+
+      <ScrollView className="h-full bg-white border rounded-2xl">
         <table className="w-full">
           <thead>
             <tr className="sticky top-0 left-0 bg-gray-100">
-              <td className="px-2 py-2 w-0">#</td>
-              <td className="px-2 py-2 w-0"></td>
-              <td className="px-2 py-2">Name</td>
+              <td className="px-3 py-3 w-0">#</td>
+              <td className="px-3 py-3">Name</td>
+              <td className="px-3 py-3 w-0"></td>
             </tr>
           </thead>
           <tbody>
             {categories.map((category, index: number) => (
               <tr key={`category-${category.id}`}>
-                <td className="px-2 py-2 text-gray-700">{index + 1}</td>
-                <td className="px-4">
-                  <div className="flex flex-nowrap gap-2">
+                <td className="px-3 py-3 ">{index + 1}</td>
+
+                <td className="text-nowrap px-3 py-3 w-full">
+                  {" "}
+                  {category.name}
+                </td>
+                <td className="px-4  w-0">
+                  <div className="flex flex-nowrap gap-2 text-gray-600">
                     <button
-                      onClick={() => setCategoryForm({ category: category })}
-                      className="hover:opacity-70 text-white bg-green-700  p-0.5"
+                      onClick={() =>
+                        setCategoryForm({ category: category, open: true })
+                      }
+                      className="hover:opacity-70"
                     >
-                      <Icon icon="lucide:edit" height={16} width={16} />
+                      <Icon icon="mynaui:edit" height={20} width={20} />
                     </button>
 
                     <button
                       onClick={() => handleOnDelete(category)}
-                      className="hover:opacity-70 text-white bg-red-700  p-0.5"
+                      className="hover:opacity-70 text-red-700"
                     >
-                      <Icon
-                        icon="material-symbols:delete-sharp"
-                        height={16}
-                        width={16}
-                      />
+                      <Icon icon="proicons:delete" height={20} width={20} />
                     </button>
                   </div>
                 </td>
-                <td className="text-nowrap py-2"> {category.name}</td>
               </tr>
             ))}
           </tbody>

@@ -46,14 +46,14 @@ export default function PosPage() {
     }
   }, [location.pathname, navigate]);
   return (
-    <div className="h-full grid grid-rows-[40px_1fr] m-auto p-4 gap-4">
+    <div className="h-full grid grid-rows-[35px_1fr] m-auto p-4 gap-4">
       <div className="flex flex-row h-full gap-2 ">
         {carts.map((cart, index) => (
           <NavLink
             key={`cart-item-${cart.id}`}
             to={"/pos/" + cart.id}
             className={({ isActive }) =>
-              `rounded-xl py-3 flex  items-center justify-between flex-nowrap text-nowrap px-3 gap-2  hover:opacity-50  border transition-all cursor-pointer
+              `rounded-full py-3 flex  items-center justify-between flex-nowrap text-nowrap px-3 gap-2  hover:opacity-50  border transition-all cursor-pointer
               text-sm  
             ${isActive ? "bg-emerald-200 border-transparent" : "bg-white"}`
             }

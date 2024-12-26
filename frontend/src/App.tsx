@@ -9,11 +9,11 @@ const SplashPage = lazy(() => import("@app/pages/SplashPage"));
 const PosPage = lazy(() => import("@app/pages/pos/PosPage"));
 const CartDetailsPage = lazy(() => import("@app/pages/pos/CartDetailsPage"));
 const CategoriesPage = lazy(
-  () => import("@app/pages/menu/categories/CategoriesPage")
+  () => import("@app/pages/settings/categories/CategoriesPage")
 );
-const MenuPage = lazy(() => import("@app/pages/menu/MenuPage"));
+const SettingsPage = lazy(() => import("@app/pages/settings/SettingsPage"));
 const ProductsPage = lazy(
-  () => import("@app/pages/menu/products/ProductsPage")
+  () => import("@app/pages/settings/products/ProductsPage")
 );
 const DashboardPage = lazy(() => import("@app/pages/dashboard/DashboardPage"));
 const OrdersPage = lazy(() => import("@app/pages/orders/OrdersPage"));
@@ -30,7 +30,7 @@ function App() {
             <Route path="pos" Component={PosPage}>
               <Route path=":cartId" Component={CartDetailsPage} />
             </Route>
-            <Route path="menu" Component={MenuPage}>
+            <Route path="settings" Component={SettingsPage}>
               <Route path="categories" Component={CategoriesPage} />
               <Route path="products" Component={ProductsPage} />
             </Route>
