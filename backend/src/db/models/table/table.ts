@@ -1,0 +1,66 @@
+import {
+    Association,
+    DataTypes,
+    Model,
+    InferAttributes,
+    InferCreationAttributes,
+    CreationOptional,
+    NonAttribute,
+    ForeignKey,
+    UUIDV4,
+} from "sequelize";
+import { sequelize } from "@app/db/conn";
+import { Restaurant } from "../restaurant";
+import { TableItem } from "./table-item";
+
+type TableStatus = "Occupied" | "Available" | "Reserved" | "Blocked";
+
+class Table extends Model<
+    InferAttributes<Table, { omit: "restaurant" }>,
+    InferCreationAttributes<Table, { omit: "restaurant" }>
+> {
+    declare id: CreationOptional<string>;
+    declare name: string;
+    declare status: TableStatus;
+    declare restaurantId: ForeignKey<Restaurant["id"]>;
+
+    declare createdAt: CreationOptional<Date>;
+    declare updatedAt: CreationOptional<Date>;
+
+    declare restaurant?: NonAttribute<Restaurant>;
+    declare items?: NonAttribute<TableItem[]>;
+
+    declare static associations: {
+        restaurant: Association<Table, Restaurant>;
+        items: Association<Table, TableItem>
+    };
+}
+
+Table.init(
+    {
+        id: {
+            type: DataTypes.UUID,
+            primaryKey: true,
+            autoIncrement: false,
+            allowNull: false,
+            defaultValue: UUIDV4,
+        },
+        name: {
+            type: DataTypes.STRING,
+            allowNull: false,
+        },
+        status: {
+            type: DataTypes.ENUM,
+            values: ["Occupied", "Available", "Reserved", "Blocked"],
+
+        },
+        createdAt: DataTypes.DATE,
+        updatedAt: DataTypes.DATE,
+    },
+    {
+        sequelize: sequelize,
+        tableName: "Tables",
+    }
+);
+
+export { Table };
