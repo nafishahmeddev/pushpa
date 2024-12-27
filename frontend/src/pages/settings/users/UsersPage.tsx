@@ -51,7 +51,7 @@ export default function UsersPage() {
     }
   }, [query]);
   return (
-    <div className="h-full bg-white p-4 grid grid-rows-[60px_1fr] gap-5">
+    <div className="h-full bg-white p-4 grid grid-rows-[60px_1fr_35px] gap-5">
       <UsersFormDialog
         {...userForm}
         onReset={() => setUserForm({ open: false, user: undefined })}
@@ -91,7 +91,9 @@ export default function UsersPage() {
                 <td className="text-nowrap px-3 py-3 w-full">{user.name}</td>
                 <td className="text-nowrap px-3 py-3 w-full">{user.email}</td>
                 <td className="text-nowrap px-3 py-3 w-full">{user.phone}</td>
-                <td className="text-nowrap px-3 py-3 w-full">{user.designation}</td>
+                <td className="text-nowrap px-3 py-3 w-full">
+                  {user.designation}
+                </td>
 
                 <td className="px-4  w-0 sticky right-0 bg-white">
                   <div className="flex flex-nowrap gap-2 text-gray-600">
@@ -115,6 +117,39 @@ export default function UsersPage() {
           </tbody>
         </table>
       </ScrollView>
+
+      <div className="flex items-center gap-2 h-[35px]">
+        <button
+          className={`border rounded-xl bg-white px-3 aspect-square h-full  flex items-center justify-center`}
+          onClick={() => setQuery({ ...query, page: query.page - 1 })}
+          disabled={query.page <= 1}
+        >
+          <Icon icon="formkit:left" />
+        </button>
+
+        {Array.from({ length: result.pages }).map((_, index) => (
+          <button
+            key={`pagination-${index}`}
+            className={`border rounded-xl bg-white px-3 aspect-square  h-full  flex items-center justify-center 
+                    ${
+                      index + 1 == query.page
+                        ? "bg-green-800/10 text-green-800"
+                        : ""
+                    }`}
+            onClick={() => setQuery({ ...query, page: index + 1 })}
+            disabled={index + 1 == query.page}
+          >
+            {index + 1}
+          </button>
+        ))}
+        <button
+          className={`border rounded-xl bg-white px-3 aspect-square h-full flex items-center justify-center`}
+          onClick={() => setQuery({ ...query, page: query.page + 1 })}
+          disabled={query.page >= result.pages}
+        >
+          <Icon icon="formkit:right" />
+        </button>
+      </div>
     </div>
   );
 }
