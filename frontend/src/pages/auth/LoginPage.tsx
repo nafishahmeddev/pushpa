@@ -1,5 +1,7 @@
 import AuthApi from "@app/services/auth";
+import { AxiosError } from "axios";
 import { useFormik } from "formik";
+import toast from "react-hot-toast";
 
 export default function LoginPage() {
   const formik = useFormik({
@@ -7,7 +9,17 @@ export default function LoginPage() {
       email: "",
       pass: "",
     },
-    onSubmit: AuthApi.login,
+    onSubmit: (values) => {
+      const promise = AuthApi.login(values);
+      toast.promise(promise, {
+        loading: "please wait",
+        success: "successful",
+        error: (e: AxiosError) =>
+          (e.response?.data as { message: string })?.message ??
+          "something went wrong! ",
+      });
+      return promise;
+    },
   });
   return (
     <div className="flex items-center justify-center p-4 bg-gray-200 h-screen">
