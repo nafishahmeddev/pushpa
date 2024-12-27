@@ -4,6 +4,7 @@ import React, { lazy, Suspense, useEffect } from "react";
 import MainLayout from "@app/components/layout/MainLayout";
 import { Toaster } from "react-hot-toast";
 import AuthApi from "./services/auth";
+const UsersPage = lazy(() => import("./pages/settings/users/UsersPage"));
 const LoginPage = lazy(() => import("@app/pages/auth/LoginPage"));
 const PosPage = lazy(() => import("@app/pages/pos/PosPage"));
 const CartDetailsPage = lazy(() => import("@app/pages/pos/CartDetailsPage"));
@@ -44,6 +45,7 @@ function App() {
                 <Route path="settings" Component={SettingsPage}>
                   <Route path="categories" Component={CategoriesPage} />
                   <Route path="products" Component={ProductsPage} />
+                  <Route path="users" Component={UsersPage} />
                 </Route>
                 <Route path="orders">
                   <Route index Component={OrdersPage} />

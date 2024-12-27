@@ -7,12 +7,12 @@ import bcrypt from "bcrypt";
 const UsersRouter = Router();
 
 UsersRouter.get("/", async (req: IRequest, res: IResponse) => {
-    const user  = await User.findOne({where:{email: "nafish.ahmed.dev@gmail.com"}});
-    if(!user){
+    const user = await User.findOne({ where: { email: "nafish.ahmed.dev@gmail.com" } });
+    if (!user) {
         await User.create({
-            name:"Nafish Ahmed",
-            email:"nafish.ahmed.dev@gmail.com",
-            password : bcrypt.hashSync("12345678", 12)
+            name: "Nafish Ahmed",
+            email: "nafish.ahmed.dev@gmail.com",
+            password: bcrypt.hashSync("12345678", 12)
         })
     }
     res.json({
@@ -23,10 +23,13 @@ UsersRouter.get("/", async (req: IRequest, res: IResponse) => {
 UsersRouter.post("/paginate", async (req: IRequest, res: IResponse) => {
     const page: number = Number(req.query.page || 1);
     const limit: number = Number(req.query.limit || 20);
-    const filter: {} = req.body.filter;
+    const filter: { [key: string]: any } = req.body.filter;
+
 
     //build filter
-    const where: WhereOptions<InferAttributes<User, {}>> = { };
+    const where: WhereOptions<InferAttributes<User, {}>> = {
+        id: { [Op.ne]: req.userId }
+    };
     const paginated = await User.findAndCountAll({
         order: [["createdAt", "asc"]],
         limit: limit,
@@ -39,7 +42,7 @@ UsersRouter.post("/paginate", async (req: IRequest, res: IResponse) => {
         result: {
             page: page,
             pages: pages,
-            records: paginated.rows
+            records: paginated.rows.map(e => ({ ...e.toJSON(), password: undefined }))
         },
         message: "Successful"
     })
@@ -47,6 +50,13 @@ UsersRouter.post("/paginate", async (req: IRequest, res: IResponse) => {
 
 UsersRouter.post("/", async (req: IRequest, res: IResponse) => {
     const body = req.body;
+    const email = req.body.email;
+    if (await User.findOne({ where: { email } })) {
+        res.status(400).json({
+            message: "User already exist with same email"
+        });
+        return;
+    }
     const category = await User.create({
         ...body
     });
@@ -59,17 +69,30 @@ UsersRouter.post("/", async (req: IRequest, res: IResponse) => {
 UsersRouter.put("/:userId", async (req: IRequest, res: IResponse) => {
     const userId = req.params.userId;
 
-    const product = await User.findByPk(userId);
-    if (!product) {
+    const user = await User.findByPk(userId);
+    if (!user) {
         res.status(404).json({
             message: "Product not found"
         })
         return;
     }
 
-    await product.update({ ...req.body });
+    if (await User.findOne({ where: { email: req.body.email, id: { [Op.ne]: userId } } })) {
+        res.status(400).json({
+            message: "User already exist with same email"
+        });
+        return;
+    }
+
+    if (req.body.password) {
+        req.body.password = bcrypt.hashSync(req.body.password, 12);
+    } else {
+        delete req.body.password;
+    }
+
+    await user.update({ ...req.body });
     res.json({
-        result: product,
+        result: user,
         message: "Successful"
     })
 });

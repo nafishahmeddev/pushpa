@@ -25,6 +25,12 @@ export default function MenuPage() {
             label:"Products",
             icon:"bytesize:book",
             route: "/settings/products"
+          },
+
+          {
+            label:"Users",
+            icon:"mynaui:users-group",
+            route: "/settings/users"
           }
         ]}/>
       </div>
