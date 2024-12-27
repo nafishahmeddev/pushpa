@@ -1,6 +1,6 @@
+import Formatter from "@app/lib/formatter";
 import CartsApi from "@app/services/carts";
 import { ICart } from "@app/types/cart";
-import moment from "moment";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { NavLink, Outlet, useLocation, useNavigate } from "react-router";
@@ -53,13 +53,13 @@ export default function PosPage() {
             key={`cart-item-${cart.id}`}
             to={"/pos/" + cart.id}
             className={({ isActive }) =>
-              `rounded-full py-3 flex  items-center justify-between flex-nowrap text-nowrap px-3 gap-2  hover:opacity-50  border transition-all cursor-pointer
+              `rounded-xl py-3 flex  items-center justify-between flex-nowrap text-nowrap px-3 gap-2  hover:opacity-50  border transition-all cursor-pointer
               text-sm  
-            ${isActive ? "bg-emerald-200 border-transparent" : "bg-white"}`
+            ${isActive ? "bg-green-600/10 text-green-800 border-transparent" : "bg-white"}`
             }
           >
-            <strong className="">#{index + 1}</strong>
-            <span className="">{moment(cart.createdAt).format("hh:mm A")}</span>
+            <strong className="">{index + 1}</strong>
+            <span>{Formatter.time(cart.createdAt)}</span>
           </NavLink>
         ))}
 

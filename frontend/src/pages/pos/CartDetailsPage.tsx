@@ -23,7 +23,7 @@ export default function CartDetailsPage() {
   }>({ open: false, order: undefined });
 
   const onAdd = (item: ICartItem) => {
-    CartsApi.addItem(cartId as string, {
+    return CartsApi.addItem(cartId as string, {
       productId: item.productId,
     }).then(() => {
       setItems((_items) => {
@@ -44,7 +44,7 @@ export default function CartDetailsPage() {
   };
 
   const onRemove = (item: ICartItem) => {
-    CartsApi.delItem(cartId as string, {
+    return CartsApi.delItem(cartId as string, {
       productId: item.productId,
     }).then(() => {
       setItems((_items) => {
@@ -65,7 +65,7 @@ export default function CartDetailsPage() {
   };
 
   const onUpdate = (item: ICartItem, quantity: number) => {
-    CartsApi.updateItem(cartId as string, {
+    return CartsApi.updateItem(cartId as string, {
       productId: item.productId,
       quantity,
     }).then(() => {

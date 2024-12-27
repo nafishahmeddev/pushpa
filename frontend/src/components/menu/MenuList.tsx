@@ -14,13 +14,22 @@ type MenuListProps = React.DetailedHTMLProps<
   React.HTMLAttributes<HTMLDivElement>,
   HTMLDivElement
 > & {
-  onItemPress?: (item: IProduct) => void;
+  onItemPress?: (item: IProduct) => Promise<void>;
 };
 export default function MenuList({ onItemPress, ...props }: MenuListProps) {
   const [keyword, setKeyword] = useState("");
-  const { data = {result : []}, error, isLoading } = useGetMenuQuery("test");
+  const { data = { result: [] }, error, isLoading } = useGetMenuQuery("test");
+  const [itemPressLoading, setItemPressLoading] = useState(false);
 
-  if (error ) {
+  const handleOnItemPress = (product: IProduct) => {
+    if (!onItemPress) return;
+    setItemPressLoading(true);
+    onItemPress(product).finally(() => {
+      setItemPressLoading(false);
+    });
+  };
+
+  if (error) {
     return <>Ops! something went wrong...</>;
   }
 
@@ -61,35 +70,34 @@ export default function MenuList({ onItemPress, ...props }: MenuListProps) {
             <Spinner />
           </div>
         ) : (
-          <table className="w-full">
-            <tbody>
-              {filtered.map((category) => (
-                <React.Fragment key={category.name}>
-                  <tr className="sticky top-0">
-                    <th colSpan={2} className=" py-2 px-2">
-                      <div className="py-1 px-4 bg-gray-50 border flex rounded-full text-center items-center justify-center">
-                        {category.name}
-                      </div>
-                    </th>
-                  </tr>
-                  {category.products.map((product) => (
-                    <tr
-                      key={`item-${product.id}`}
-                      className="border-b border-gray-50/50 cursor-pointer hover:bg-blue-100 rounded-xl"
-                      onClick={() => onItemPress && onItemPress(product)}
-                    >
-                      <td className="px-2 py-1 capitalize ps-4">
-                        {product.name}
-                      </td>
-                      <td className="px-2 py-1 text-end font-mono pe-4">
-                        {formatter.format(product.price)}
-                      </td>
-                    </tr>
-                  ))}
-                </React.Fragment>
-              ))}
-            </tbody>
-          </table>
+          <div>
+            {filtered.map((category) => (
+              <React.Fragment key={category.name}>
+                <div className="sticky top-0 py-2 px-2">
+                  <div className="py-1 px-4 bg-gray-50 border flex rounded-xl text-center items-center justify-center">
+                    {category.name}
+                  </div>
+                </div>
+                {category.products.map((product) => (
+                  <div
+                    key={`item-${product.id}`}
+                    className={`border-b border-gray-50/50 cursor-pointer hover:bg-green-800/10 flex justify-between rounded-xl mx-2
+                      ${ itemPressLoading ? "animate-pulse" : "" }`}
+                    onClick={() =>
+                      !itemPressLoading && handleOnItemPress(product)
+                    }
+                  >
+                    <div className="px-1 py-1 ps-2 flex-1">
+                      {product.name}
+                    </div>
+                    <div className="px-1 py-1 text-end font-mono pe-2">
+                      {formatter.format(product.price)}
+                    </div>
+                  </div>
+                ))}
+              </React.Fragment>
+            ))}
+          </div>
         )}
       </ScrollView>
     </div>
