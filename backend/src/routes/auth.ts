@@ -31,6 +31,10 @@ AuthRouter.post("/login", async (req: IRequest, res: IResponse) => {
 
     const tokens = TokenHelper.generateTokens(user);
 
+    user.loggedAt = new Date();
+
+    await user.save();
+
 
     res.json({
         message: "Successful",
