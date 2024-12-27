@@ -5,8 +5,11 @@ export default function AuthMiddleware(req: IRequest, res: IResponse, next: INex
     const token: string = req.headers["authorization"] || "";
     const validated = TokenHelper.validateAccessToken(token);
     if (validated) {
-        req.userId = validated.userId;
-        req.permissions = validated.permissions;
+        req.auth = {
+            userId: validated.userId,
+            permissions: validated.permissions,
+            restaurantId: validated.restaurantId
+        }
         next();
     } else {
         res.status(401).json({

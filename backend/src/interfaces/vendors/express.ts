@@ -4,27 +4,31 @@ export type Language = "en" | "bn";
 
 export interface IRequest extends Request {
     language?: Language,
-    userId?: string,
-    permissions?: Array<string>,
+
+    auth?: {
+        userId: string,
+        permissions: Array<string>,
+        restaurantId: string
+    }
 }
 
 export interface IResponse extends Response {
-    success?:(
+    success?: (
         body: {
             result: any,
             code?: string,
             message?: string
         },
         status?: number
-    )=> void;
-    error?:(
+    ) => void;
+    error?: (
         body: {
             code: string,
             message: string
             result?: any,
         },
         status?: number
-    )=> void;
+    ) => void;
 }
 
-export interface INext extends NextFunction{}
+export interface INext extends NextFunction { }

@@ -75,7 +75,7 @@ AuthRouter.post("/tokens", async (req: IRequest, res: IResponse) => {
 })
 
 AuthRouter.get("/verify", AuthMiddleware, async (req: IRequest, res: IResponse) => {
-    const user = await User.findByPk(req.userId);
+    const user = await User.findByPk(req.auth?.userId);
 
     if (!user) {
         res.status(401).json({
