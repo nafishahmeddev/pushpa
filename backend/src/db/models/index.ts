@@ -8,6 +8,7 @@ import { ProductCategory } from "./product/product-category";
 import { Cart } from "./cart/cart";
 import { CartItem } from "./cart/cart-item";
 import { Sequence } from "./sequence";
+import { User } from "./user/user";
 
 //restaurant associations
 Restaurant.hasMany(ProductCategory, {
@@ -113,6 +114,13 @@ OrderItem.belongsTo(Order, {
   foreignKey: "orderId",
   as: "order",
 });
+
+//User 
+User.belongsTo(Restaurant, {
+  targetKey: "id",
+  foreignKey: "restaurantId",
+  as: "restaurant"
+})
 export {
   ProductCategory,
   Product,
@@ -123,5 +131,6 @@ export {
   OrderItem,
   Cart,
   CartItem,
-  Sequence
+  Sequence,
+  User
 };

@@ -20,6 +20,7 @@ import CategoriesRouter from "@app/routes/categories";
 import ProductsRouter from "@app/routes/products";
 import OrdersRoute from "@app/routes/orders";
 import path from 'path';
+import UsersRouter from './routes/users';
 
 const app: Application = express();
 const port = process.env.PORT || 3000;
@@ -37,6 +38,7 @@ async function main() {
   app.use("/api/v1/categories", CategoriesRouter);
   app.use("/api/v1/products", ProductsRouter);
   app.use("/api/v1/orders", OrdersRoute);
+  app.use("/api/v1/users", UsersRouter);
   app.use(express.static(path.resolve(process.env.FRONTEND_PATH || "")))
   app.use("*", express.static(path.resolve(path.join(process.env.FRONTEND_PATH || "", "index.html"))))
   app.listen(port, () => {
