@@ -1,3 +1,4 @@
+import Dialog from "@app/components/ui/Dialog";
 import Input from "@app/components/ui/form/input";
 import CategoriesApi from "@app/services/categories";
 import { ICategory } from "@app/types/product";
@@ -60,14 +61,8 @@ export default function CategoryForm({
     }
   }, [category]);
   return (
-    <dialog
-      open={open}
-      className="fixed top-0 left-0 flex items-center justify-center w-full h-full bg-black/25  z-20 open:visible collapse group transition-all"
-    >
-      <form
-        className="w-[330px] p-6 bg-white rounded-2xl group-open:scale-100 group-open:opacity-100 scale-50 opacity-0 transition-all flex-1 max-w-[400px]"
-        onSubmit={formik.handleSubmit}
-      >
+    <Dialog open={open} onClose={onReset}>
+      <form className="p-6" onSubmit={formik.handleSubmit}>
         <h3 className="text-xl">{category ? "Update" : "Create"} Category</h3>
         <fieldset disabled={formik.isSubmitting}>
           <div className="flex flex-col gap-4 py-4">
@@ -96,6 +91,6 @@ export default function CategoryForm({
           </div>
         </fieldset>
       </form>
-    </dialog>
+    </Dialog>
   );
 }
