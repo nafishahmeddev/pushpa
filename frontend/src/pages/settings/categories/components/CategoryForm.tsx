@@ -1,3 +1,4 @@
+import Input from "@app/components/form/input";
 import CategoriesApi from "@app/services/categories";
 import { ICategory } from "@app/types/product";
 import { AxiosError } from "axios";
@@ -61,24 +62,21 @@ export default function CategoryForm({
   return (
     <dialog
       open={open}
-      className="fixed top-0 left-0 flex items-center justify-center w-full h-full bg-black/25  z-20 open:visible collapse transition group transition-all"
+      className="fixed top-0 left-0 flex items-center justify-center w-full h-full bg-black/25  z-20 open:visible collapse group transition-all"
     >
       <form
-        className="w-[330px] p-6 bg-white rounded-2xl group-open:scale-100 group-open:opacity-100 scale-50 opacity-0 transition-all flex-1 max-w-[450px]"
+        className="w-[330px] p-6 bg-white rounded-2xl group-open:scale-100 group-open:opacity-100 scale-50 opacity-0 transition-all flex-1 max-w-[400px]"
         onSubmit={formik.handleSubmit}
       >
         <h3 className="text-xl">{category ? "Update" : "Create"} Category</h3>
         <fieldset disabled={formik.isSubmitting}>
           <div className="flex flex-col gap-4 py-4">
-            <div className="input flex flex-col gap-2">
-              <label className="text-sm text-gray-700">Name</label>
-              <input
-                type="text"
-                className="bg-gray-100 rounded-2xl py-3 px-4 focus:outline-2"
-                required
-                {...formik.getFieldProps("name")}
-              />
-            </div>
+            <Input
+              type="text"
+              required
+              label="Name"
+              {...formik.getFieldProps("name")}
+            />
           </div>
 
           <div className="flex gap-2 justify-end">

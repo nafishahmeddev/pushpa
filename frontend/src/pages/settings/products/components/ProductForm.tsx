@@ -1,3 +1,5 @@
+import Input from "@app/components/form/input";
+import Select from "@app/components/form/select";
 import CategoriesApi from "@app/services/categories";
 import ProductsApi from "@app/services/products";
 import { ICategory, IProduct } from "@app/types/product";
@@ -79,67 +81,60 @@ export default function ProductForm({
       className="fixed top-0 left-0 flex items-center justify-center w-full h-full bg-black/25  z-20 open:visible collapse group transition-all"
     >
       <form
-        className="p-6 bg-white rounded-2xl group-open:scale-100 group-open:opacity-100 scale-50 opacity-0 transition-all flex-1 max-w-[450px]"
+        className="p-6 bg-white rounded-2xl group-open:scale-100 group-open:opacity-100 scale-50 opacity-0 transition-all flex-1 max-w-[400px]"
         onSubmit={formik.handleSubmit}
       >
         <h3 className="text-xl">{product ? "Update" : "Create"} Product</h3>
         <fieldset disabled={formik.isSubmitting} className="block w-full">
-          <div className="flex flex-col gap-4 w-full py-4">
-            <div className="input flex flex-col gap-2">
-              <label className="text-sm text-gray-700">Name</label>
-              <input
-                required
-                type="text"
-                className="bg-gray-100 rounded-2xl py-3 px-4 focus:outline-2 min-w-0 w-full"
-                {...formik.getFieldProps("name")}
-              />
-            </div>
-
-            <div className="input flex flex-col gap-2">
-              <label className="text-sm text-gray-700">Category</label>
-              <select
-                className="bg-gray-100 rounded-2xl py-3 px-4 focus:outline-2 min-w-0 w-full"
-                required
-                {...formik.getFieldProps("categoryId")}
-              >
-                <option value="" />
-                {categories.map((category) => (
-                  <option value={category.id}>{category.name}</option>
-                ))}
-              </select>
-            </div>
+          <div className="flex flex-col gap-2 w-full py-4">
+            <Input
+              label="Name"
+              required
+              type="text"
+              {...formik.getFieldProps("name")}
+              meta={formik.getFieldMeta("name")}
+            />
+            <Select
+              label="Name"
+              required
+              {...formik.getFieldProps("categoryId")}
+              meta={formik.getFieldMeta("categoryId")}
+            >
+              <option value="" />
+              {categories.map((category) => (
+                <option value={category.id} key={category.id}>
+                  {category.name}
+                </option>
+              ))}
+            </Select>
 
             <div className="flex gap-2">
-              <div className="input flex flex-col gap-2 flex-1">
-                <label className="text-sm text-gray-700">SGST</label>
-                <input
-                  type="number"
-                  required
-                  className="bg-gray-100 rounded-2xl py-3 px-4 focus:outline-2 min-w-0 w-full"
-                  {...formik.getFieldProps("sgst")}
-                />
-              </div>
-
-              <div className="input flex flex-col gap-2 flex-1">
-                <label className="text-sm text-gray-700">CGST</label>
-                <input
-                  type="number"
-                  required
-                  className="bg-gray-100 rounded-2xl py-3 px-4 focus:outline-2 min-w-0 w-full"
-                  {...formik.getFieldProps("cgst")}
-                />
-              </div>
-            </div>
-
-            <div className="input flex flex-col gap-2">
-              <label className="text-sm text-gray-700">Price</label>
-              <input
-                type="number"
+              <Input
+                label="SGST"
                 required
-                className="bg-gray-100 rounded-2xl py-3 px-4 focus:outline-2"
-                {...formik.getFieldProps("price")}
+                type="number"
+                className="flex-1"
+                {...formik.getFieldProps("sgst")}
+                meta={formik.getFieldMeta("sgst")}
+              />
+
+              <Input
+                label="CGST"
+                required
+                type="number"
+                className="flex-1"
+                {...formik.getFieldProps("cgst")}
+                meta={formik.getFieldMeta("cgst")}
               />
             </div>
+
+            <Input
+              label="Price"
+              required
+              type="number"
+              {...formik.getFieldProps("price")}
+              meta={formik.getFieldMeta("price")}
+            />
           </div>
           <div className="flex gap-2 justify-end">
             <button
