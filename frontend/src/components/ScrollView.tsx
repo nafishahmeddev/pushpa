@@ -1,7 +1,4 @@
-type ScrollViewProps = React.DetailedHTMLProps<
-  React.HTMLAttributes<HTMLDivElement>,
-  HTMLDivElement
-> & {};
-export default function ScrollView({ children, ...props }: ScrollViewProps) {
-  return <div {...props} className={`overflow-auto ${props.className}`}>{children}</div>;
+import { CustomScroll } from "react-custom-scroll";
+export default function ScrollView({...props }) {
+  return <CustomScroll {...props} className={`overflow-auto ${props.className}`} heightRelativeToParent="100%" handleClass="!bg-green-700/30 !w-1.5"/>
 }
