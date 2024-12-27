@@ -4,7 +4,7 @@ import React, { lazy, Suspense, useEffect } from "react";
 import MainLayout from "@app/components/layout/MainLayout";
 import { Toaster } from "react-hot-toast";
 import AuthApi from "./services/auth";
-const LoginPage = lazy(() => import("@app/pages/auth/loginPage"));
+const LoginPage = lazy(() => import("@app/pages/auth/LoginPage"));
 const PosPage = lazy(() => import("@app/pages/pos/PosPage"));
 const CartDetailsPage = lazy(() => import("@app/pages/pos/CartDetailsPage"));
 const CategoriesPage = lazy(
