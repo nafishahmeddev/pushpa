@@ -5,6 +5,11 @@ import { Icon } from "@iconify/react";
 import ProductsApi from "@app/services/products";
 import Formatter from "@app/lib/formatter";
 import ProductForm from "./components/ProductForm";
+import Table, {
+  TableCell,
+  TableHead,
+  TableRow,
+} from "@app/components/ui/table/Table";
 
 export default function ProductsPage() {
   const [products, setCategories] = useState<Array<IProduct>>([]);
@@ -45,32 +50,32 @@ export default function ProductsPage() {
         </button>
       </div>
 
-      <ScrollView className="h-full bg-white border rounded-2xl">
-        <table className="w-full">
-          <thead>
-            <tr className="sticky top-0 left-0 bg-gray-100 z-10">
-              <td className="px-3 py-3  w-0">#</td>
-              <td className="px-3 py-3 ">Name</td>
-              <td className="px-3 py-3">Category</td>
-              <td className="px-3 py-3 w-0">CGST%</td>
-              <td className="px-3 py-3 w-0">SGST%</td>
-              <td className="px-3 py-3 w-0 text-end">Pice</td>
-              <td className="px-3 py-3 w-0"></td>
-            </tr>
-          </thead>
+      <ScrollView className="h-full bg-white border rounded-xl overflow-hidden">
+        <Table bordered>
+          <TableHead>
+            <TableRow
+              className="sticky top-0 left-0 bg-gray-100 z-10 rounded-t-xl"
+              header
+            >
+              <TableCell>#</TableCell>
+              <TableCell>Name</TableCell>
+              <TableCell>Category</TableCell>
+              <TableCell>CGST%</TableCell>
+              <TableCell>SGST%</TableCell>
+              <TableCell>Pice</TableCell>
+              <TableCell></TableCell>
+            </TableRow>
+          </TableHead>
           <tbody>
             {products.map((product, index: number) => (
-              <tr key={`product-${product.id}`}>
-                <td className="px-3 py-3">{index + 1}</td>
-
-                <td className="text-nowrap px-3 py-3 w-full">{product.name}</td>
-                <td className="text-nowrap px-3 py-3">
-                  {product.category?.name}
-                </td>
-                <td className="px-4  w-0">{product.cgst}%</td>
-                <td className="px-4  w-0">{product.sgst}%</td>
-                <td className="px-4  w-0">{Formatter.money(product.price)}</td>
-                <td className="px-4  w-0 sticky right-0 bg-white">
+              <TableRow key={`product-${product.id}`}>
+                <TableCell>{index + 1}</TableCell>
+                <TableCell>{product.name}</TableCell>
+                <TableCell>{product.category?.name}</TableCell>
+                <TableCell>{product.cgst}%</TableCell>
+                <TableCell>{product.sgst}%</TableCell>
+                <TableCell>{Formatter.money(product.price)}</TableCell>
+                <TableCell>
                   <div className="flex flex-nowrap gap-2 text-gray-600">
                     <button
                       onClick={() =>
@@ -88,11 +93,11 @@ export default function ProductsPage() {
                       <Icon icon="proicons:delete" height={20} width={20} />
                     </button>
                   </div>
-                </td>
-              </tr>
+                </TableCell>
+              </TableRow>
             ))}
           </tbody>
-        </table>
+        </Table>
       </ScrollView>
     </div>
   );

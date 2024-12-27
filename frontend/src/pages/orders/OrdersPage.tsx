@@ -10,6 +10,7 @@ import {
   OrderReceiptDialog,
   OrderReceiptDialogProps,
 } from "@app/components/order/OrderReceiptDialog";
+import Table, { TableBody, TableCell, TableHead, TableRow } from "@app/components/ui/table/Table";
 
 export default function ProductsPage() {
   const form = useFormik({
@@ -101,28 +102,27 @@ export default function ProductsPage() {
           </form>
         </div>
 
-        <ScrollView className={`h-full bg-white border rounded-xl relative`}>
-          <table className="w-full text-sm">
-            <thead>
-              <tr className="sticky top-0 left-0 bg-gray-100 z-10">
-                <td className="px-3 py-2 w-0">#</td>
-                <td className="px-0 py-2 w-0" />
-                <td className="px-3 py-2 text-nowrap">Receipt No</td>
-                <td className="px-3 py-2 w-0">Date</td>
-                <td className="px-3 py-2 w-0 text-end">CGST</td>
-                <td className="px-3 py-2 w-0 text-end">SGST</td>
-                <td className="px-3 py-2 w-0 text-end">Amount</td>
-              </tr>
-            </thead>
-            <tbody>
+        <ScrollView className="h-full bg-white border rounded-xl overflow-hidden relative">
+          <Table bordered>
+            <TableHead>
+              <TableRow className="sticky top-0 left-0 z-10" header>
+                <TableCell>#</TableCell>
+                <TableCell/>
+                <TableCell>Receipt No</TableCell>
+                <TableCell>Date</TableCell>
+                <TableCell>CGST</TableCell>
+                <TableCell>SGST</TableCell>
+                <TableCell>Amount</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
               {result.records.map((order, index: number) => (
-                <tr key={`product-${order.id}`}>
-                  <td className="px-3 py-2">
+                <TableRow key={`product-${order.id}`}>
+                  <TableCell className="px-3 py-2 w-0">
                     {(query.page - 1) * query.limit + index + 1}
-                  </td>
-                  <td className="px-0 py-2 w-0 sticky left-0 bg-white">
+                  </TableCell>
+                  <TableCell className="px-0 py-2 w-0 sticky left-0 bg-white">
                     <div className="inline-flex flex-nowrap gap-2 text-gray-600 px-2">
-                     
                       <button className="hover:opacity-70 "     onClick={() => handleOnDetails(order.id)}>
                         <Icon
                           icon="akar-icons:receipt"
@@ -131,24 +131,24 @@ export default function ProductsPage() {
                         />
                       </button>
                     </div>
-                  </td>
-                  <td className="px-3 py-2 w-0">{order.receiptNo}</td>
-                  <td className="px-3 py-2 w-0 text-nowrap">
+                  </TableCell>
+                  <TableCell>{order.receiptNo}</TableCell>
+                  <TableCell className="text-nowrap">
                     {Formatter.datetime(order.createdAt)}
-                  </td>
-                  <td className="px-3 py-2 w-0 text-end">
+                  </TableCell>
+                  <TableCell className="text-end">
                     {Formatter.money(order.cgst)}
-                  </td>
-                  <td className="px-3 py-2 w-0 text-end">
+                  </TableCell>
+                  <TableCell className="text-end">
                     {Formatter.money(order.sgst)}
-                  </td>
-                  <td className="px-3 py-2 w-0 text-end">
+                  </TableCell>
+                  <TableCell className="text-end">
                     {Formatter.money(order.amount)}
-                  </td>
-                </tr>
+                  </TableCell>
+                </TableRow>
               ))}
-            </tbody>
-          </table>
+            </TableBody>
+          </Table>
 
           {form.isSubmitting && (
             <div className="absolute top-0 left-0 w-full h-full p-10 flex items-center justify-center bg-white/10 backdrop-blur-sm">

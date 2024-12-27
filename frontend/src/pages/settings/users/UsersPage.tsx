@@ -5,6 +5,12 @@ import UsersFormDialog from "./components/UsersFormDialog";
 import { IUser } from "@app/types/user";
 import UsersApi from "@app/services/users";
 import { useFormik } from "formik";
+import Table, {
+  TableBody,
+  TableCell,
+  TableHead,
+  TableRow,
+} from "@app/components/ui/table/Table";
 
 export default function UsersPage() {
   const form = useFormik({
@@ -71,31 +77,32 @@ export default function UsersPage() {
         </button>
       </div>
 
-      <ScrollView className="h-full bg-white border rounded-2xl">
-        <table className="w-full">
-          <thead>
-            <tr className="sticky top-0 left-0 bg-gray-100 z-10">
-              <td className="px-3 py-3  w-0">#</td>
-              <td className="px-3 py-3 ">Name</td>
-              <td className="px-3 py-3 ">Email</td>
-              <td className="px-3 py-3 ">Phone</td>
-              <td className="px-3 py-3 ">Designation</td>
-              <td className="px-3 py-3 w-0"></td>
-            </tr>
-          </thead>
-          <tbody>
+      <ScrollView className="h-full bg-white border rounded-xl overflow-hidden">
+        <Table bordered>
+          <TableHead>
+            <TableRow
+              className="sticky top-0 left-0 bg-gray-100 z-10 rounded-t-xl"
+              header
+            >
+              <TableCell>#</TableCell>
+              <TableCell>Name</TableCell>
+              <TableCell>Email</TableCell>
+              <TableCell>Phone</TableCell>
+              <TableCell>Designation</TableCell>
+              <TableCell></TableCell>
+            </TableRow>
+          </TableHead>
+
+          <TableBody>
             {result.records.map((user, index: number) => (
-              <tr key={`product-${user.id}`}>
-                <td className="px-3 py-3">{index + 1}</td>
+              <TableRow key={`product-${user.id}`}>
+                <TableCell>{index + 1}</TableCell>
+                <TableCell>{user.name}</TableCell>
+                <TableCell>{user.email}</TableCell>
+                <TableCell>{user.phone}</TableCell>
+                <TableCell>{user.designation}</TableCell>
 
-                <td className="text-nowrap px-3 py-3 w-full">{user.name}</td>
-                <td className="text-nowrap px-3 py-3 w-full">{user.email}</td>
-                <td className="text-nowrap px-3 py-3 w-full">{user.phone}</td>
-                <td className="text-nowrap px-3 py-3 w-full">
-                  {user.designation}
-                </td>
-
-                <td className="px-4  w-0 sticky right-0 bg-white">
+                <TableCell className="w-0 sticky right-0 bg-white">
                   <div className="flex flex-nowrap gap-2 text-gray-600">
                     <button
                       onClick={() => setUserForm({ user: user, open: true })}
@@ -111,11 +118,11 @@ export default function UsersPage() {
                       <Icon icon="proicons:delete" height={20} width={20} />
                     </button>
                   </div>
-                </td>
-              </tr>
+                </TableCell>
+              </TableRow>
             ))}
-          </tbody>
-        </table>
+          </TableBody>
+        </Table>
       </ScrollView>
 
       <div className="flex items-center gap-2 h-[35px]">

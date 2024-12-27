@@ -4,6 +4,7 @@ import { ICategory } from "@app/types/product";
 import { useEffect, useState } from "react";
 import CategoryForm from "./components/CategoryForm";
 import { Icon } from "@iconify/react";
+import Table, { TableBody, TableCell, TableHead, TableRow } from "@app/components/ui/table/Table";
 
 export default function CategoriesPage() {
   const [categories, setCategories] = useState<Array<ICategory>>([]);
@@ -43,25 +44,23 @@ export default function CategoriesPage() {
           + New
         </button>
       </div>
-
-      <ScrollView className="h-full bg-white border rounded-2xl">
-        <table className="w-full">
-          <thead>
-            <tr className="sticky top-0 left-0 bg-gray-100">
-              <td className="px-3 py-3 w-0">#</td>
-              <td className="px-3 py-3">Name</td>
-              <td className="px-3 py-3 w-0"></td>
-            </tr>
-          </thead>
-          <tbody>
+      <ScrollView className="h-full bg-white border rounded-xl overflow-hidden">
+        <Table bordered>
+          <TableHead>
+            <TableRow className="sticky top-0 left-0 bg-gray-100">
+              <TableCell>#</TableCell>
+              <TableCell>Name</TableCell>
+              <TableCell></TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
             {categories.map((category, index: number) => (
-              <tr key={`category-${category.id}`}>
-                <td className="px-3 py-3 ">{index + 1}</td>
-
-                <td className="text-nowrap px-3 py-3 w-full">
+              <TableRow key={`category-${category.id}`}>
+                <TableCell className="w-0">{index + 1}</TableCell>
+                <TableCell>
                   {category.name}
-                </td>
-                <td className="px-4  w-0">
+                </TableCell>
+                <TableCell className="w-0">
                   <div className="flex flex-nowrap gap-2 text-gray-600">
                     <button
                       onClick={() =>
@@ -79,11 +78,11 @@ export default function CategoriesPage() {
                       <Icon icon="proicons:delete" height={20} width={20} />
                     </button>
                   </div>
-                </td>
-              </tr>
+                </TableCell>
+              </TableRow>
             ))}
-          </tbody>
-        </table>
+          </TableBody>
+        </Table>
       </ScrollView>
     </div>
   );
