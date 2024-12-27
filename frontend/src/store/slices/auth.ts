@@ -1,30 +1,48 @@
+import { IUser } from '@app/types/user'
 import { createSlice } from '@reduxjs/toolkit'
 import type { PayloadAction } from '@reduxjs/toolkit'
 
-export interface CounterState {
-  value: number
+export interface AuthStateLoggedIn {
+  user: IUser,
+  accessToken: string,
+  refreshToken: string,
+  loggedIn: true
 }
 
-const initialState: CounterState = {
-  value: 0,
+
+export interface AuthStateLoggedOut {
+  loggedIn: false
 }
 
-export const counterSlice = createSlice({
-  name: 'counter',
-  initialState,
+export type AuthState = AuthStateLoggedIn | AuthStateLoggedOut;
+
+const initialState: AuthState = {
+  loggedIn: false
+}
+
+export const authSlice = createSlice({
+  name: 'auth',
+  initialState: initialState as AuthState,
   reducers: {
-    increment: (state) => {
-      state.value += 1
+    login: (state, action: PayloadAction<AuthStateLoggedIn>) => {
+      state = action.payload;
+      return state;
     },
-    decrement: (state) => {
-      state.value -= 1
+    update: (state: AuthState, action: PayloadAction<AuthStateLoggedIn>) => {
+      state = action.payload;
+      return state;
     },
-    incrementByAmount: (state, action: PayloadAction<number>) => {
-      state.value += action.payload
+
+    logout: (state: AuthState) => {
+      state = {
+        loggedIn: false
+      };
+      return state;
     },
+
   },
 })
 
 // Action creators are generated for each case reducer function
-export const CounterReducer = counterSlice.reducer;
-export const CounterActions = counterSlice.actions
+export const AuthReducer = authSlice.reducer;
+export const AuthActions = authSlice.actions

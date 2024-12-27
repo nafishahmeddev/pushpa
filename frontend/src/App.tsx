@@ -1,11 +1,10 @@
-import { Provider } from "react-redux";
-import { store } from "@app/store";
+import { useAppSelector } from "@app/store";
 import { BrowserRouter, Route, Routes } from "react-router";
-import { lazy } from "react";
-
+import React, { lazy, Suspense, useEffect } from "react";
 import MainLayout from "@app/components/layout/MainLayout";
 import { Toaster } from "react-hot-toast";
-const SplashPage = lazy(() => import("@app/pages/SplashPage"));
+import AuthApi from "./services/auth";
+const LoginPage = lazy(() => import("@app/pages/auth/loginPage"));
 const PosPage = lazy(() => import("@app/pages/pos/PosPage"));
 const CartDetailsPage = lazy(() => import("@app/pages/pos/CartDetailsPage"));
 const CategoriesPage = lazy(
@@ -19,29 +18,43 @@ const DashboardPage = lazy(() => import("@app/pages/dashboard/DashboardPage"));
 const OrdersPage = lazy(() => import("@app/pages/orders/OrdersPage"));
 
 function App() {
+  const auth = useAppSelector((state) => state.auth);
+
+  const verify = () => {
+    AuthApi.verify();
+  };
+
+  useEffect(() => {
+    verify();
+  }, []);
   return (
-    <Provider store={store}>
+    <Suspense>
       <BrowserRouter>
         <Routes>
-          <Route index Component={SplashPage} />
-          <Route Component={MainLayout}>
-            <Route path="dash" Component={DashboardPage} />
-            <Route path="kot" Component={PosPage} />
-            <Route path="pos" Component={PosPage}>
-              <Route path=":cartId" Component={CartDetailsPage} />
-            </Route>
-            <Route path="settings" Component={SettingsPage}>
-              <Route path="categories" Component={CategoriesPage} />
-              <Route path="products" Component={ProductsPage} />
-            </Route>
-            <Route path="orders">
-              <Route index Component={OrdersPage} />
-            </Route>
-          </Route>
+          {!auth.loggedIn ? (
+            <Route index Component={LoginPage} />
+          ) : (
+            <React.Fragment>
+              <Route Component={MainLayout}>
+                <Route index Component={DashboardPage} />
+                <Route path="kot" Component={PosPage} />
+                <Route path="pos" Component={PosPage}>
+                  <Route path=":cartId" Component={CartDetailsPage} />
+                </Route>
+                <Route path="settings" Component={SettingsPage}>
+                  <Route path="categories" Component={CategoriesPage} />
+                  <Route path="products" Component={ProductsPage} />
+                </Route>
+                <Route path="orders">
+                  <Route index Component={OrdersPage} />
+                </Route>
+              </Route>
+            </React.Fragment>
+          )}
         </Routes>
       </BrowserRouter>
       <Toaster />
-    </Provider>
+    </Suspense>
   );
 }
 

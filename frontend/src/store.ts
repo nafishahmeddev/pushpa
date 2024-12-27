@@ -1,11 +1,11 @@
 import { configureStore } from '@reduxjs/toolkit'
-import { CounterReducer } from './store/slices/counter'
 import { useDispatch, useSelector } from 'react-redux'
 import { MenuApiReducer, menuApi } from './store/services/menu'
+import { AuthReducer } from './store/slices/auth'
 
 export const store = configureStore({
     reducer: {
-        counter: CounterReducer,
+        auth: AuthReducer,
         [menuApi.reducerPath]: MenuApiReducer,
     },
     middleware: (getDefaultMiddleware) => getDefaultMiddleware()
