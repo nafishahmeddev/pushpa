@@ -27,6 +27,7 @@ class User extends Model<
 
     declare createdAt: CreationOptional<Date>;
     declare updatedAt: CreationOptional<Date>;
+    declare loggedAt: CreationOptional<Date>;
 
     declare restaurant?: NonAttribute<Restaurant>;
 
@@ -55,6 +56,7 @@ User.init(
         },
         createdAt: DataTypes.DATE,
         updatedAt: DataTypes.DATE,
+        loggedAt: DataTypes.DATE
     },
     {
         sequelize,

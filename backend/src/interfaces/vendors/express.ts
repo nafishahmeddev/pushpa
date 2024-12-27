@@ -4,7 +4,8 @@ export type Language = "en" | "bn";
 
 export interface IRequest extends Request {
     language?: Language,
-    user?: any,
+    userId?: string,
+    permissions?: Array<string>,
 }
 
 export interface IResponse extends Response {

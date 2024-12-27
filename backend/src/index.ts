@@ -21,6 +21,8 @@ import ProductsRouter from "@app/routes/products";
 import OrdersRoute from "@app/routes/orders";
 import path from 'path';
 import UsersRouter from './routes/users';
+import AuthMiddleware from './middleware/auth';
+import AuthRouter from './routes/auth';
 
 const app: Application = express();
 const port = process.env.PORT || 3000;
@@ -33,12 +35,13 @@ app.use(LocaleMiddleware);
 
 async function main() {
   await sequelize.sync({ alter: true });
-  app.use("/api/v1/menu", menuRouter);
-  app.use("/api/v1/carts", CartsRouter);
-  app.use("/api/v1/categories", CategoriesRouter);
-  app.use("/api/v1/products", ProductsRouter);
-  app.use("/api/v1/orders", OrdersRoute);
-  app.use("/api/v1/users", UsersRouter);
+  app.use("/api/v1/menu", AuthMiddleware, menuRouter);
+  app.use("/api/v1/carts", AuthMiddleware, CartsRouter);
+  app.use("/api/v1/categories", AuthMiddleware, CategoriesRouter);
+  app.use("/api/v1/products", AuthMiddleware, ProductsRouter);
+  app.use("/api/v1/orders", AuthMiddleware, OrdersRoute);
+  app.use("/api/v1/users", AuthMiddleware, UsersRouter);
+  app.use("/api/v1/auth", AuthRouter);
   app.use(express.static(path.resolve(process.env.FRONTEND_PATH || "")))
   app.use("*", express.static(path.resolve(path.join(process.env.FRONTEND_PATH || "", "index.html"))))
   app.listen(port, () => {
