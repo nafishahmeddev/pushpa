@@ -173,7 +173,7 @@ export default function CartDetailsPage() {
                 <tr className="border-b border-dashed" key={`item-${index}`}>
                   <td className="px-2 py-1 text-start">{index + 1}</td>
                   <td className="px-2 py-1 text-start">{item.product.name}</td>
-                  <td className="px-2 py-1 text-end font-mono">
+                  <td className="px-2 py-2 text-end font-mono">
                     {Formatter.money(item.product.price)}
                   </td>
                   <td className="px-10 py-0.5 text-center w-0">

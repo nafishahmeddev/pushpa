@@ -43,10 +43,10 @@ export default function QuantityButton({
     <fieldset disabled={loading}>
       <div className={`flex items-center justify-center ${loading?"animate-pulse":""}`}>
         <button
-          className="border rounded-full h-6 aspect-square flex items-center justify-center hover:opacity-50"
+          className={`border rounded-full h-6 aspect-square flex items-center justify-center hover:opacity-50 ${quantity ==1?"text-red-700":""}`}
           onClick={handleOnRemove}
         >
-          <Icon icon="ic:baseline-remove" />
+          <Icon icon={quantity ==1 ? "fluent:delete-12-regular":"ic:baseline-remove"}/>
         </button>
         <input
           className="text-center  font-mono flex-1 bg-transparent min-w-8 max-w-8 appearance-none"
