@@ -1,11 +1,11 @@
-import ScrollView from "@app/components/ScrollView";
+import ScrollView from "@app/components/ui/ScrollView";
 import React, { useEffect, useState } from "react";
 import { Icon } from "@iconify/react";
 import Formatter from "@app/lib/formatter";
 import OrdersApi from "@app/services/orders";
 import { IOrder } from "@app/types/order";
 import { useFormik } from "formik";
-import Spinner from "@app/components/Spinner";
+import Spinner from "@app/components/ui/Spinner";
 import {
   OrderReceiptDialog,
   OrderReceiptDialogProps,

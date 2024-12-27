@@ -1,6 +1,6 @@
 import { NavLink, Outlet, useNavigate } from "react-router";
 import { Icon } from "@iconify/react";
-import ScrollView from "../ScrollView";
+import ScrollView from "../ui/ScrollView";
 import { AuthStateLoggedIn } from "@app/store/slices/auth";
 import { useAppSelector } from "@app/store";
 import AuthApi from "@app/services/auth";

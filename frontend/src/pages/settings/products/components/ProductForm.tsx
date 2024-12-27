@@ -1,5 +1,5 @@
-import Input from "@app/components/form/input";
-import Select from "@app/components/form/select";
+import Input from "@app/components/ui/form/input";
+import Select from "@app/components/ui/form/select";
 import CategoriesApi from "@app/services/categories";
 import ProductsApi from "@app/services/products";
 import { ICategory, IProduct } from "@app/types/product";

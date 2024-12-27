@@ -1,4 +1,4 @@
-import ScrollView from "@app/components/ScrollView";
+import ScrollView from "@app/components/ui/ScrollView";
 import { IProduct } from "@app/types/product";
 import { useEffect, useState } from "react";
 import { Icon } from "@iconify/react";

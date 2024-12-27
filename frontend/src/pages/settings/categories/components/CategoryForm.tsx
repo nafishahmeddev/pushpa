@@ -1,4 +1,4 @@
-import Input from "@app/components/form/input";
+import Input from "@app/components/ui/form/input";
 import CategoriesApi from "@app/services/categories";
 import { ICategory } from "@app/types/product";
 import { AxiosError } from "axios";

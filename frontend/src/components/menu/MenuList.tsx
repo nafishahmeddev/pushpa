@@ -2,9 +2,9 @@ import React, { useState } from "react";
 import { useGetMenuQuery } from "../../store/services/menu";
 import _ from "lodash";
 import { IProduct } from "../../types/product";
-import ScrollView from "../ScrollView";
+import ScrollView from "../ui/ScrollView";
 import { Icon } from "@iconify/react";
-import Spinner from "../Spinner";
+import Spinner from "../ui/Spinner";
 const formatter = new Intl.NumberFormat("en-IN", {
   style: "currency",
   currency: "INR",

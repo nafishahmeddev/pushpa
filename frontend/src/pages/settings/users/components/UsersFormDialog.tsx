@@ -1,4 +1,4 @@
-import Input from "@app/components/form/input";
+import Input from "@app/components/ui/form/input";
 import UsersApi from "@app/services/users";
 import { IUser } from "@app/types/user";
 import { AxiosError } from "axios";

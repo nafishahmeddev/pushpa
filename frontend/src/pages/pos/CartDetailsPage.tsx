@@ -9,7 +9,7 @@ import CartUtil from "@app/lib/cart";
 import MenuList from "@app/components/menu/MenuList";
 import { IOrder } from "@app/types/order";
 import { OrderReceipt } from "./components/OrderReceipt";
-import ScrollView from "@app/components/ScrollView";
+import ScrollView from "@app/components/ui/ScrollView";
 import { AxiosError } from "axios";
 export default function CartDetailsPage() {
   const navigate = useNavigate();
