@@ -2,8 +2,8 @@ import Formatter from "@app/lib/formatter";
 import { IOrder } from "@app/types/order";
 import moment from "moment";
 import React from "react";
-import Barcode from "react-barcode";
 import { Icon } from "@iconify/react";
+import Dialog from "../ui/Dialog";
 type OrderReceiptDialogOpenProps = {
   open: true;
   order: IOrder;
@@ -23,11 +23,14 @@ export function OrderReceiptDialog({
   onClose,
 }: OrderReceiptDialogProps) {
   return (
-    <dialog
+    <Dialog
       open={open}
-      className="fixed top-0 left-0 flex  justify-center w-full h-full bg-black/25  z-20 open:visible collapse group transition-all overflow-auto p-4"
+      onClose={onClose}
+      paperProps={{
+        className: "!max-w-[350px]",
+      }}
     >
-      <div className="flex flex-col gap-3 bg-white p-6 rounded-2xl group-open:scale-100 group-open:opacity-100 scale-50 opacity-0 transition-all flex-1 max-w-[350px] relative min-h-32 h-min">
+      <div className="p-6">
         <button
           onClick={onClose && onClose}
           className="h-7 aspect-square rounded-2xl border absolute top-3 right-3 text-gray-500 flex items-center justify-center"
@@ -96,24 +99,9 @@ export function OrderReceiptDialog({
                 </tr>
               </table>
             </div>
-            <div className="text-center text-xs py-3">
-              <span className="border border-black px-2 inline-flex rounded-full">
-                ☺ Thank you visit again!
-              </span>
-            </div>
-            <div className="w-60 m-auto">
-              <Barcode
-                value={order.id}
-                width={1}
-                height={45}
-                renderer="img"
-                fontSize={15}
-                margin={0}
-              />
-            </div>
           </React.Fragment>
         )}
       </div>
-    </dialog>
+    </Dialog>
   );
 }

@@ -5,7 +5,7 @@ export interface DialogProps extends React.ComponentProps<"dialog"> {
 }
 
 const paperClassName =
-  "bg-white rounded-2xl group-open/dialog:scale-100 group-open/dialog:opacity-100 scale-50 opacity-0 transition-all flex-1 max-w-[400px] h-min";
+  "max-w-[400px] bg-white rounded-2xl group-open/dialog:scale-100 group-open/dialog:opacity-100 scale-50 opacity-0 transition-all flex-1  h-min";
 export default function Dialog({
   paperProps = {},
   children,
