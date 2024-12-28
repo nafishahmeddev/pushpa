@@ -15,6 +15,7 @@ import path from 'path';
 import UsersRouter from './routes/users';
 import AuthMiddleware from './middleware/auth';
 import AuthRouter from './routes/auth';
+import moment from "moment";
 
 const app: Application = express();
 const port = process.env.PORT || 3000;
@@ -24,6 +25,9 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(MainMiddleware);
 app.use(LocaleMiddleware);
+app.set("view engine", "ejs");
+app.set('views', path.resolve('./views/'))
+app.locals.moment = moment;
 
 async function main() {
   await sequelize.sync({ alter: true });

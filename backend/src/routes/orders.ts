@@ -1,5 +1,5 @@
 
-import { Order, OrderItem } from "@app/db/models";
+import { Order, OrderItem, Restaurant } from "@app/db/models";
 import { IRequest, IResponse } from "@app/interfaces/vendors/express";
 import { Router } from "express";
 import { InferAttributes, Op, WhereOptions } from "sequelize";
@@ -24,11 +24,11 @@ OrdersRoute.post("/paginate", async (req: IRequest, res: IResponse) => {
     } = req.body.filter;
 
     //build filter
-    const where :WhereOptions<InferAttributes<Order, {}>>  = {
+    const where: WhereOptions<InferAttributes<Order, {}>> = {
         restaurantId: req.auth?.restaurantId
     };
 
-    if(filter.createdAt && filter.createdAt[0] && filter.createdAt[1]){
+    if (filter.createdAt && filter.createdAt[0] && filter.createdAt[1]) {
         where.createdAt = {
             [Op.between]: filter.createdAt
         }
@@ -38,7 +38,7 @@ OrdersRoute.post("/paginate", async (req: IRequest, res: IResponse) => {
         order: [["createdAt", "asc"]],
         limit: limit,
         offset: (page - 1) * limit,
-        where:where
+        where: where
     });
 
     const pages = Math.ceil(paginatedOrders.count / limit);
@@ -79,10 +79,16 @@ OrdersRoute.get("/:orderId/receipt", async (req: IRequest, res: IResponse) => {
     const orderId = req.params.orderId;
 
     const order = await Order.findByPk(orderId, {
-        include: [{
-            model: OrderItem,
-            as: "items"
-        }]
+        include: [
+            {
+                model: OrderItem,
+                as: "items"
+            },
+            {
+                model: Restaurant,
+                as: "restaurant"
+            }
+        ]
     });
     if (!order) {
         res.status(404).json({
@@ -90,9 +96,6 @@ OrdersRoute.get("/:orderId/receipt", async (req: IRequest, res: IResponse) => {
         })
         return;
     }
-    res.json({
-        result: order,
-        message: "Successful"
-    })
+    res.render("order-receipt.ejs", { order: order.toJSON() })
 });
 export default OrdersRoute;

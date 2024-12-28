@@ -1,0 +1,136 @@
+<html>
+
+<head>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            font-family: "Fira Mono";
+            box-sizing: border-box;
+            font-size: 14px;
+        }
+
+        table {
+            border-collapse: collapse;
+        }
+
+        th {
+            padding: 8px 5px;
+            text-align: left;
+            font-size: 12px;
+        }
+
+        td {
+            padding: 3px 5px;
+            text-align: left;
+            font-size: 12px;
+        }
+
+        th:nth-child(1),
+        td:nth-child(1) {
+            padding-left: 0;
+        }
+
+        @page {
+            size: 80mm 120mm;
+            margin: 0;
+        }
+    </style>
+
+
+    <% const formatter=new Intl.NumberFormat("en-IN", { style: "currency" , currency: order.restaurant.currency || "INR"
+        }); const moment=locals.moment; %>
+        <script>
+            window.print();
+        </script>
+</head>
+
+<body>
+    <div style="padding:15px">
+        <div style="text-align: center;">
+            <h3 style="margin:0;">
+                <%= order.restaurant.name %>
+            </h3>
+            <p style="margin:0;  margin-top: 10px">
+                <%= order.restaurant.address %>
+            </p>
+        </div>
+        <table style="font-weight: bold; width: 100%; margin-top: 15px; ">
+            <tr>
+                <td>Receipt No: #<%= order.receiptNo %>
+                </td>
+                <td style="text-align: right;">Date: <%= moment(order.createdAt).format("DD/MM/YYYY") %>
+                </td>
+            </tr>
+        </table>
+        <div>
+            <table style="border-collapse: collapse; margin: 10px 0; width:100%; font-size: 14px;">
+                <thead>
+                    <tr style="border-bottom: 1px dashed #000; border-top: 1px dashed #000;">
+                        <th>Description</th>
+                        <th style="text-align: right;">Price</th>
+                        <th style="text-align: right;">Qtd.</th>
+                        <th style="text-align: right;">Total</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td></td>
+                    </tr>
+                    <% for(const item of order.items ?? []){ %>
+                        <React.Fragment key={`order-item-${item.id}`}>
+                            <tr>
+                                <td>
+                                    <%= item.name %>
+                                </td>
+
+                                <td style="text-align: right; width: 0;">
+                                    <%= item.price %>
+                                </td>
+                                <td style="text-align: right; width: 0;">
+                                    <%= item.quantity %>
+                                </td>
+                                <td style="text-align: right; width: 0;">
+                                    <%= item.amount %>
+                                </td>
+                            </tr>
+                        </React.Fragment>
+                        <%}%>
+                </tbody>
+            </table>
+
+            <div style="margin: 20px 0;border-top: 1px dashed #000; "></div>
+
+            <table style="width: 100%; font-weight: bold;">
+                <tr>
+                    <td>Subtotal(excl. Tax):</td>
+                    <td style="text-align: right;">
+                        <%= formatter.format((order.amount -( order.cgst + order.sgst)))%>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>Tax:</td>
+                    <td style="text-align: right;">
+                        <%= formatter.format(order.cgst + order.sgst)%>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>Total:</td>
+                    <td style="text-align: right;">
+                        <%= formatter.format(order.amount)%>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <div style="margin: 20px 0; text-align: center;">
+            <span>
+                ☺ Thank you visit again!
+            </span>
+        </div>
+    </div>
+</body>
+
+</html>
