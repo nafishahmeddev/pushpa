@@ -94,6 +94,7 @@ CartItem.belongsTo(Product, {
   targetKey: "id",
   foreignKey: "productId",
   as: "product",
+  onDelete:"CASCADE"
 });
 
 //order
@@ -113,6 +114,7 @@ OrderItem.belongsTo(Order, {
   targetKey: "id",
   foreignKey: "orderId",
   as: "order",
+  onDelete:"CASCADE"
 });
 
 //User 
