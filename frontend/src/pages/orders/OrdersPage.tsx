@@ -129,10 +129,10 @@ export default function ProductsPage() {
                   <TableCell className="px-0 py-2 w-0 sticky left-0 bg-white">
                     <div className="inline-flex flex-nowrap gap-2 text-gray-600 px-2">
                       <button
-                        className={`border rounded-full h-6 aspect-square flex items-center justify-center hover:opacity-50`}
+                        className={`hover:opacity-50`}
                         onClick={() => handleOnDetails(order.id)}
                       >
-                        <Icon icon="circum:receipt"  />
+                        <Icon icon="circum:receipt" height={20} width={20} />
                       </button>
                     </div>
                   </TableCell>

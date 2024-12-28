@@ -54,7 +54,7 @@ export function SideMenuList({ items }: SideMenuListProps) {
               to={item.route}
               className={({ isActive }) =>
                 `flex py-2 px-3 items-center justify-start gap-2 cursor-pointer transition-all hover:bg-blue-800/15 text-blue-950 rounded-full ${
-                  isActive ? "text-blue-800 bg-blue-600/10" : ""
+                  isActive ? "text-blue-700 bg-blue-600/10" : ""
                 }`
               }
             >
