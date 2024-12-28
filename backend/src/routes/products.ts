@@ -22,7 +22,7 @@ ProductsRouter.get("/", async (req: IRequest, res: IResponse) => {
     })
 })
 
-ProductsRouter.put("/", async (req: IRequest, res: IResponse) => {
+ProductsRouter.post("/", async (req: IRequest, res: IResponse) => {
     const body = req.body;
     const category = await Product.create({
         ...body

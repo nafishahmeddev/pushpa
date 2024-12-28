@@ -15,7 +15,6 @@ CartsRouter.get("/", async (req: IRequest, res: IResponse) => {
 })
 
 CartsRouter.post("/", async (req: IRequest, res: IResponse) => {
-    const restaurant = await Restaurant.findOne();
     const count = await Cart.count();
     if (count > 9) {
         res.status(400).json({
@@ -24,7 +23,7 @@ CartsRouter.post("/", async (req: IRequest, res: IResponse) => {
         return;
     }
     const cart = new Cart({
-        restaurantId: restaurant?.id,
+        restaurantId: req.auth?.restaurantId,
         name: (count + 1).toString()
     });
 

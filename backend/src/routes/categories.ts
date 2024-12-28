@@ -15,12 +15,11 @@ CategoriesRouter.get("/", async (req: IRequest, res: IResponse) => {
     })
 })
 
-CategoriesRouter.put("/", async (req: IRequest, res: IResponse) => {
+CategoriesRouter.post("/", async (req: IRequest, res: IResponse) => {
     const name = req.body.name;
-    const restaurant = await Restaurant.findOne();
     const category = await ProductCategory.create({
         name,
-        restaurantId: restaurant?.id
+        restaurantId: req.auth?.restaurantId
     });
     res.json({
         result: category,
