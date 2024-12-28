@@ -2,7 +2,7 @@ import TokenHelper from "@app/helpers/token";
 import { INext, IRequest, IResponse, Language } from "@app/interfaces/vendors/express"
 
 export default function AuthMiddleware(req: IRequest, res: IResponse, next: INext) {
-    const token: string = req.headers["authorization"] || "";
+    const token: string = req.headers["authorization"] || req.query.authorization as string || "";
     const validated = TokenHelper.validateAccessToken(token);
     if (validated) {
         req.auth = {
