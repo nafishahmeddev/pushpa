@@ -3,4 +3,6 @@ export type IRestaurant = {
     address: string,
     phone: string,
     email: string,
+    country: string,
+    currency: string
 }

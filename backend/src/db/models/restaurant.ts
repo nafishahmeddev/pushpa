@@ -34,6 +34,8 @@ class Restaurant extends Model<
   declare address: string;
   declare phone: string;
   declare email: string;
+  declare currency: string;
+  declare country: string;
 
   declare createdAt: CreationOptional<Date>;
   declare updatedAt: CreationOptional<Date>;
@@ -58,6 +60,8 @@ Restaurant.init(
     address: DataTypes.STRING,
     email: DataTypes.STRING,
     phone: DataTypes.STRING,
+    country: DataTypes.STRING,
+    currency: DataTypes.STRING,
     createdAt: DataTypes.DATE,
     updatedAt: DataTypes.DATE,
   },

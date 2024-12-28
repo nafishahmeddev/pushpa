@@ -46,9 +46,7 @@ function App() {
                   <Route path="categories" Component={CategoriesPage} />
                   <Route path="products" Component={ProductsPage} />
                 </Route>
-                <Route path="orders">
-                  <Route index Component={OrdersPage} />
-                </Route>
+                <Route path="orders" Component={OrdersPage} />
                 <Route path="users" Component={UsersPage} />
               </Route>
             </React.Fragment>

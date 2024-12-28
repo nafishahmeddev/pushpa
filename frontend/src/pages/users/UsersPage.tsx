@@ -11,6 +11,7 @@ import Table, {
   TableHead,
   TableRow,
 } from "@app/components/ui/table/Table";
+import Formatter from "@app/lib/formatter";
 
 export default function UsersPage() {
   const form = useFormik({
@@ -99,7 +100,7 @@ export default function UsersPage() {
                 <TableCell>{index + 1}</TableCell>
                 <TableCell>{user.name}</TableCell>
                 <TableCell>{user.email}</TableCell>
-                <TableCell>{user.phone}</TableCell>
+                <TableCell>{Formatter.phone(user.phone)}</TableCell>
                 <TableCell>{user.designation}</TableCell>
 
                 <TableCell className="w-0 sticky right-0 bg-white">

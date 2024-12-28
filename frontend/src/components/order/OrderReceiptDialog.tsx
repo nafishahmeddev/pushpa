@@ -4,6 +4,8 @@ import moment from "moment";
 import React from "react";
 import { Icon } from "@iconify/react";
 import Dialog from "../ui/Dialog";
+import { useAppSelector } from "@app/store";
+import { AuthStateLoggedIn } from "@app/store/slices/auth";
 type OrderReceiptDialogOpenProps = {
   open: true;
   order: IOrder;
@@ -22,6 +24,7 @@ export function OrderReceiptDialog({
   open,
   onClose,
 }: OrderReceiptDialogProps) {
+  const auth = useAppSelector(state=>state.auth as AuthStateLoggedIn);
   return (
     <Dialog
       open={open}
@@ -40,8 +43,8 @@ export function OrderReceiptDialog({
         {order && (
           <React.Fragment>
             <div className="text-center">
-              <h3 className="font-bold italic">PUSHPA DHABA</h3>
-              <p className="text-xs">Palsanda, Murshidabad, West Bengal</p>
+              <h3 className="font-bold italic">{auth.user.restaurant?.name}</h3>
+              <p className="text-xs">{auth.user.restaurant?.address}</p>
             </div>
             <div className="flex justify-between text-xs pt-3 pb-2  font-bold">
               <span>Receipt No: #{order.receiptNo}</span>
