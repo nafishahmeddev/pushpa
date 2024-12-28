@@ -10,7 +10,7 @@ type OrderReceiptDialogOpenProps = {
   onClose?: () => void;
 };
 type OrderReceiptDialogCloseProps = {
-  open: false;
+  open: boolean;
   order?: IOrder;
   onClose?: () => void;
 };

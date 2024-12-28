@@ -67,7 +67,7 @@ export default function ProductsPage() {
         {...oderDetailsDialog}
         onClose={() => setOderDetailsDialog({ open: false })}
       />
-      <div className="h-full bg-white p-4 grid grid-rows-[55px_1fr_35px] gap-6">
+      <div className="h-full  p-4 grid grid-rows-[55px_1fr_35px] gap-6">
         <div className=" flex gap-4 items-center">
           <div className="flex-1 flex flex-col items-start justify-center">
             <h2 className="text-2xl">Orders</h2>

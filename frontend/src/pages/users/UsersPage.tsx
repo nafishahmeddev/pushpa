@@ -57,7 +57,7 @@ export default function UsersPage() {
     }
   }, [query]);
   return (
-    <div className="h-full bg-white p-4 grid grid-rows-[60px_1fr_35px] gap-5">
+    <div className="h-full  p-4 grid grid-rows-[60px_1fr_35px] gap-5">
       <UsersFormDialog
         {...userForm}
         onReset={() => setUserForm({ open: false, user: undefined })}

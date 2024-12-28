@@ -31,6 +31,11 @@ const mainmenu = [
 
 const backendMenu = [
   {
+    label:"Users",
+    icon:"mynaui:users-group",
+    route: "/users"
+  },
+  {
     label: "Settings",
     icon: "stash:screw-nut",
     route: "/settings",

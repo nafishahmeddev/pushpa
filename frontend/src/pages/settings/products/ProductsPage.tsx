@@ -30,7 +30,7 @@ export default function ProductsPage() {
     refresh();
   }, []);
   return (
-    <div className="h-full bg-white p-4 grid grid-rows-[60px_1fr] gap-5">
+    <div className="h-full p-4 grid grid-rows-[60px_1fr] gap-5">
       <ProductForm
         {...productForm}
         onReset={() => setProductForm({ open: false, product: undefined })}

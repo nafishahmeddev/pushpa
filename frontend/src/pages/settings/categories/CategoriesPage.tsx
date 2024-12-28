@@ -25,7 +25,7 @@ export default function CategoriesPage() {
     refresh();
   }, []);
   return (
-    <div className="h-full bg-white p-4 grid grid-rows-[60px_1fr] gap-5">
+    <div className="h-full  p-4 grid grid-rows-[60px_1fr] gap-5">
       <CategoryForm
         {...categoryForm}
         onReset={() => setCategoryForm({ category: undefined, open: false })}

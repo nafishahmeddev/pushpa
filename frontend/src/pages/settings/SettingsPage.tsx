@@ -26,12 +26,6 @@ export default function MenuPage() {
             icon:"bytesize:book",
             route: "/settings/products"
           },
-
-          {
-            label:"Users",
-            icon:"mynaui:users-group",
-            route: "/settings/users"
-          }
         ]}/>
       </div>
       <div className="h-full overflow-auto">

@@ -8,9 +8,9 @@ import { cloneDeep } from "lodash";
 import CartUtil from "@app/lib/cart";
 import MenuList from "@app/components/menu/MenuList";
 import { IOrder } from "@app/types/order";
-import { OrderReceipt } from "./components/OrderReceipt";
 import ScrollView from "@app/components/ui/ScrollView";
 import { AxiosError } from "axios";
+import { OrderReceiptDialog } from "@app/components/order/OrderReceiptDialog";
 export default function CartDetailsPage() {
   const navigate = useNavigate();
   const { cartId } = useParams<{ cartId: string }>();
@@ -112,35 +112,7 @@ export default function CartDetailsPage() {
 
   return (
     <React.Fragment>
-      <dialog
-        open={orderDialog.open}
-        className=" open:bg-black/40  h-dvh w-dvw fixed top-0 left-0 z-10 overflow-auto"
-      >
-        <div className=" w-[350px] m-auto shadow-sm my-2">
-          <div className="flex mb-4 gap-4">
-            <button
-              className="flex-1 py-2 bg-rose-800 text-white hover:opacity-50"
-              onClick={() => {
-                navigate("/pos");
-              }}
-            >
-              Close
-            </button>
-            <button
-              className="flex-1 py-2 bg-blue-800 text-white hover:opacity-50"
-              onClick={() => {
-                const el = document.getElementById("order_details");
-                console.log(el);
-              }}
-            >
-              Print
-            </button>
-          </div>
-          <div id="order_details" className="bg-white">
-            {orderDialog.order && <OrderReceipt order={orderDialog.order} />}
-          </div>
-        </div>
-      </dialog>
+      <OrderReceiptDialog {...orderDialog} onClose={()=>navigate("/pos")} />
 
       <div className="h-full overflow-auto">
         <MenuList
