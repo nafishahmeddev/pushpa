@@ -108,11 +108,11 @@ export default function ProductsPage() {
               Reset
             </button>
             <button
-              className="rounded-xl px-3 bg-gray-300 hover:opacity-50"
+              className="rounded-xl px-3 bg-gray-300 hover:opacity-50 flex items-center justify-center gap-0.5"
               type="button"
               onClick={() => setProductForm({ open: true, product: undefined })}
             >
-              + New
+              <Icon icon="ic:baseline-add"/> New
             </button>
           </fieldset>
         </form>
