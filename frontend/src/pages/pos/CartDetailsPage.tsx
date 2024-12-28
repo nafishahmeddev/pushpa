@@ -10,20 +10,11 @@ import MenuList from "@app/components/menu/MenuList";
 import { IOrder } from "@app/types/order";
 import ScrollView from "@app/components/ui/ScrollView";
 import { AxiosError } from "axios";
-import { OrderReceiptDialog } from "@app/components/order/OrderReceiptDialog";
-// import Input from "@app/components/ui/form/input";
-// import Select from "@app/components/ui/form/select";
 export default function CartDetailsPage() {
   const navigate = useNavigate();
   const { cartId } = useParams<{ cartId: string }>();
   const [items, setItems] = useState<Array<ICartItem>>([]);
   const cartUtil = new CartUtil(items);
-
-  const [orderDialog, setOrderDialog] = useState<{
-    open: boolean;
-    order?: IOrder;
-  }>({ open: false, order: undefined });
-
   const onAdd = (item: ICartItem) => {
     return CartsApi.addItem(cartId as string, {
       productId: item.productId,
@@ -90,7 +81,11 @@ export default function CartDetailsPage() {
     if (items.length) {
       CartsApi.place(cartId as string)
         .then((order: IOrder) => {
-          setOrderDialog({ open: true, order });
+          window.open(
+            import.meta.env.VITE_BASE_URL + `/orders/${order.id}/receipt?authorization=${localStorage.getItem("accessToken")}`,
+            "_blank",
+            'location=yes,height=600,width=350,scrollbars=yes,status=yes'
+          );
         })
         .catch((err) => {
           alert(err.message);
@@ -114,8 +109,6 @@ export default function CartDetailsPage() {
 
   return (
     <React.Fragment>
-      <OrderReceiptDialog {...orderDialog} onClose={() => navigate("/pos")} />
-
       <div className="h-full overflow-auto">
         <MenuList
           className="border rounded-xl"

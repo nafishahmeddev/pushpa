@@ -74,4 +74,25 @@ OrdersRoute.get("/:orderId", async (req: IRequest, res: IResponse) => {
         message: "Successful"
     })
 });
+
+OrdersRoute.get("/:orderId/receipt", async (req: IRequest, res: IResponse) => {
+    const orderId = req.params.orderId;
+
+    const order = await Order.findByPk(orderId, {
+        include: [{
+            model: OrderItem,
+            as: "items"
+        }]
+    });
+    if (!order) {
+        res.status(404).json({
+            message: "Order not found"
+        })
+        return;
+    }
+    res.json({
+        result: order,
+        message: "Successful"
+    })
+});
 export default OrdersRoute;
