@@ -28,11 +28,13 @@ export default function Select({
           touched && error ? "outline-red-700 border-red-700" : ""
         } ${props.className}`}
       />
-      <small
-        className={`${touched && error ? "text-red-700" : "text-gray-400"}`}
-      >
-        {touched && error ? error : hint}
-      </small>
+      {(hint || (touched && error)) && (
+        <small
+          className={`${touched && error ? "text-red-700" : "text-gray-400"}`}
+        >
+          {touched && error ? error : hint}
+        </small>
+      )}
     </div>
   );
 }

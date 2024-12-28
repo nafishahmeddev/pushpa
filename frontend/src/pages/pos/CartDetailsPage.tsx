@@ -11,6 +11,8 @@ import { IOrder } from "@app/types/order";
 import ScrollView from "@app/components/ui/ScrollView";
 import { AxiosError } from "axios";
 import { OrderReceiptDialog } from "@app/components/order/OrderReceiptDialog";
+// import Input from "@app/components/ui/form/input";
+// import Select from "@app/components/ui/form/select";
 export default function CartDetailsPage() {
   const navigate = useNavigate();
   const { cartId } = useParams<{ cartId: string }>();
@@ -112,7 +114,7 @@ export default function CartDetailsPage() {
 
   return (
     <React.Fragment>
-      <OrderReceiptDialog {...orderDialog} onClose={()=>navigate("/pos")} />
+      <OrderReceiptDialog {...orderDialog} onClose={() => navigate("/pos")} />
 
       <div className="h-full overflow-auto">
         <MenuList
@@ -129,15 +131,20 @@ export default function CartDetailsPage() {
         />
       </div>
       <div className="h-full overflow-auto grid grid-rows-[1fr_auto_40px] gap-4 w-full ">
+        {/* <div className="">
+          <Select>
+            <option value="">Table</option>
+          </Select>
+        </div> */}
         <ScrollView className="h-full w-full overflow-auto rounded-2xl border bg-white">
           <table className="w-full ">
             <thead>
               <tr className="bg-gray-100 sticky top-0">
-                <th className="px-2 py-2 text-start">#</th>
+                <th className="px-2 py-2 text-start w-0">#</th>
                 <th className="px-2 py-2 text-start">Item</th>
-                <th className="px-2 py-2 text-end">Price</th>
-                <th className="px-2 py-2 text-center">Qtd.</th>
-                <th className="px-2 py-2 text-end">Total</th>
+                <th className="px-2 py-2 text-end w-0">Price</th>
+                <th className="px-2 py-2 text-center w-0">Qtd.</th>
+                <th className="px-2 py-2 text-end w-0">Total</th>
               </tr>
             </thead>
             <tbody>
@@ -163,6 +170,12 @@ export default function CartDetailsPage() {
               ))}
             </tbody>
           </table>
+          {items.length == 0 && (
+            <div className="p-6 flex items-center justify-center h-[calc(100%-50px)] flex-col gap-3">
+              <img src="/undraw_notify_rnwe.svg" width={120} />
+              <p className="text-sm">Cart is empty please add some item.</p>
+            </div>
+          )}
         </ScrollView>
         <div className="h-full bg-white flex rounded-2xl border">
           <table>
