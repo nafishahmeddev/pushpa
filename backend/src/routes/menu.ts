@@ -7,6 +7,9 @@ const MenuRouter = Router();
 
 MenuRouter.get("/", async (req: IRequest, res: IResponse) => {
     const menu = await ProductCategory.findAll({
+        where:{
+            restaurantId: req.auth?.restaurantId
+        },
         include: [
             {
                 model: Product,
