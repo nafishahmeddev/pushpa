@@ -1,11 +1,12 @@
-import React, { useEffect } from "react";
-import { useNavigate } from "react-router";
+import Spinner from "@app/components/ui/Spinner";
 
 export default function SplashPage() {
-  const navigate = useNavigate();
+  return (
+    <div className="h-dvh w-dvw flex items-center justify-center text-center">
+      <div>
+      <Spinner />
+      </div>
 
-  useEffect(()=>{
-    navigate("/pos");
-  }, []);
-  return <React.Fragment>Loading...</React.Fragment>;
+    </div>
+  );
 }

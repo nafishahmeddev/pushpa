@@ -4,6 +4,7 @@ import React, { lazy, Suspense, useEffect } from "react";
 import MainLayout from "@app/components/layout/MainLayout";
 import { Toaster } from "react-hot-toast";
 import AuthApi from "./services/auth";
+import SplashPage from "./pages/SplashPage";
 const UsersPage = lazy(() => import("./pages/users/UsersPage"));
 const LoginPage = lazy(() => import("@app/pages/auth/LoginPage"));
 const PosPage = lazy(() => import("@app/pages/pos/PosPage"));
@@ -29,7 +30,7 @@ function App() {
     verify();
   }, []);
   return (
-    <Suspense>
+    <Suspense fallback={<SplashPage/>}>
       <BrowserRouter>
         <Routes>
           {!auth.loggedIn ? (
