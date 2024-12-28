@@ -33,9 +33,9 @@ export default function ProductForm({
     initialValues: {
       name: "",
       categoryId: "",
-      cgst: 0,
-      sgst: 0,
-      price: 0,
+      cgst: NaN,
+      sgst: NaN,
+      price: NaN,
     },
     onSubmit: handleOnSubmit,
   });
@@ -90,7 +90,7 @@ export default function ProductForm({
               meta={formik.getFieldMeta("name")}
             />
             <Select
-              label="Name"
+              label="Category"
               required
               {...formik.getFieldProps("categoryId")}
               meta={formik.getFieldMeta("categoryId")}
