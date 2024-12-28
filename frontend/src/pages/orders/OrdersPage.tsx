@@ -134,7 +134,7 @@ export default function ProductsPage() {
                         className={`hover:opacity-50`}
                         onClick={() => handleOnDetails(order.id)}
                       >
-                        <Icon icon="circum:receipt" height={20} width={20} />
+                        <Icon icon="ph:receipt" height={20} width={20} />
                       </button>
                     </div>
                   </TableCell>
