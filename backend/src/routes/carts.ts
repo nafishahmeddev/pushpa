@@ -16,7 +16,7 @@ CartsRouter.get("/", async (req: IRequest, res: IResponse) => {
 
 CartsRouter.post("/", async (req: IRequest, res: IResponse) => {
     const count = await Cart.count();
-    if (count > 9) {
+    if (count > 5) {
         res.status(400).json({
             message: "Maximum cart number reached..."
         })
