@@ -43,13 +43,17 @@ export default class Formatter {
     }
 
     static phone(number: string, country: CountryCode = "IN"): string {
-        const state = store.getState();
-        const auth = state.auth as AuthStateLoggedIn;
-        if (auth.loggedIn && auth.user.restaurant?.country) {
-            country = auth.user.restaurant?.country as CountryCode;
+        try {
+            const state = store.getState();
+            const auth = state.auth as AuthStateLoggedIn;
+            if (auth.loggedIn && auth.user.restaurant?.country) {
+                country = auth.user.restaurant?.country as CountryCode;
+            }
+            const parsed = parsePhoneNumberWithError(number, country);
+            const formatted = parsed.format("INTERNATIONAL");
+            return formatted;
+        } catch {
+            return number;
         }
-        const parsed = parsePhoneNumberWithError(number, country);
-        const formatted = parsed.format("INTERNATIONAL");
-        return formatted;
     }
 }
