@@ -139,9 +139,9 @@ export default function ProductsPage() {
                 <TableCell>{index + 1}</TableCell>
                 <TableCell>{product.name}</TableCell>
                 <TableCell>{product.category?.name}</TableCell>
-                <TableCell>{product.cgst}%</TableCell>
-                <TableCell>{product.sgst}%</TableCell>
-                <TableCell>{Formatter.money(product.price)}</TableCell>
+                <TableCell className="font-mono">{product.cgst}%</TableCell>
+                <TableCell className="font-mono">{product.sgst}%</TableCell>
+                <TableCell className="font-mono">{Formatter.money(product.price)}</TableCell>
                 <TableCell>
                   <div className="flex flex-nowrap gap-2 text-gray-600">
                     <button
