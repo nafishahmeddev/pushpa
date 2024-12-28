@@ -88,6 +88,7 @@ CartItem.belongsTo(Cart, {
   targetKey: "id",
   foreignKey: "cartId",
   as: "cart",
+  onDelete:"CASCADE"
 })
 
 CartItem.belongsTo(Product, {
