@@ -124,7 +124,7 @@ export default function UserForm({
               Cancel
             </button>
             <button
-              className="px-5 py-2 bg-emerald-600 text-white  hover:opacity-60 rounded-2xl"
+              className="px-5 py-2 bg-blue-600 text-white  hover:opacity-60 rounded-2xl"
               type="submit"
             >
               {user ? "Update" : "Create"}

@@ -55,7 +55,7 @@ export default function PosPage() {
             className={({ isActive }) =>
               `rounded-xl py-3 flex  items-center justify-between flex-nowrap text-nowrap px-3 gap-2  hover:opacity-50  border transition-all cursor-pointer
               text-sm  
-            ${isActive ? "bg-green-600/10 text-green-800 border-transparent" : "bg-white"}`
+            ${isActive ? "bg-blue-600/10 text-blue-800 border-transparent" : "bg-white"}`
             }
           >
             <strong className="">{index + 1}</strong>

@@ -140,7 +140,7 @@ export default function UsersPage() {
             className={`border rounded-xl bg-white px-3 aspect-square  h-full  flex items-center justify-center 
                     ${
                       index + 1 == query.page
-                        ? "bg-green-800/10 text-green-800"
+                        ? "bg-blue-800/10 text-blue-800"
                         : ""
                     }`}
             onClick={() => setQuery({ ...query, page: index + 1 })}

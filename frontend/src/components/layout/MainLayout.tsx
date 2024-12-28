@@ -53,8 +53,8 @@ export function SideMenuList({ items }: SideMenuListProps) {
             <NavLink
               to={item.route}
               className={({ isActive }) =>
-                `flex py-2 px-3 items-center justify-start gap-2 cursor-pointer transition-all hover:bg-green-800/15 text-emerald-950 rounded-full ${
-                  isActive ? "text-green-800 bg-green-600/10" : ""
+                `flex py-2 px-3 items-center justify-start gap-2 cursor-pointer transition-all hover:bg-blue-800/15 text-blue-950 rounded-full ${
+                  isActive ? "text-blue-800 bg-blue-600/10" : ""
                 }`
               }
             >
@@ -76,7 +76,7 @@ export default function MainLayout() {
   return (
     <div className="h-dvh grid grid-cols-[250px_1fr] grid-rows-1 bg-gray-100">
       <div className="bg-white border-e h-full grid grid-rows-[60px_1fr_60px]">
-        <div className="logo italic flex h-full items-center font-bold text-lg text-emerald-800 px-2 py-3">
+        <div className="logo italic flex h-full items-center font-bold text-lg text-blue-800 px-2 py-3">
           PUSHPA DHABA
         </div>
         <ScrollView>
@@ -90,7 +90,7 @@ export default function MainLayout() {
                   onClick={()=>AuthApi.logout().then(()=>{
                     navigate("/");
                   })}
-                  className="flex py-2 px-3 items-center justify-start gap-2 cursor-pointer transition-all hover:bg-green-800/15 rounded-full text-red-700"
+                  className="flex py-2 px-3 items-center justify-start gap-2 cursor-pointer transition-all hover:bg-blue-800/15 rounded-full text-red-700"
                 >
                   <Icon icon="mage:logout" height={20} width={20} />
                   <span>Logout</span>

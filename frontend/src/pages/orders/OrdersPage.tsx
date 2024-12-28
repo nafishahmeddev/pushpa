@@ -94,7 +94,7 @@ export default function ProductsPage() {
                 type="date"
                 {...form.getFieldProps("createdAt.1")}
               />
-              <button className="rounded-xl px-3 bg-green-500 text-white hover:opacity-50">
+              <button className="rounded-xl px-3 bg-blue-500 text-white hover:opacity-50">
                 Search
               </button>
               <button
@@ -174,7 +174,7 @@ export default function ProductsPage() {
               key={`pagination-${index}`}
               className={`border rounded-xl bg-white px-3 aspect-square  h-full  flex items-center justify-center 
               ${
-                index + 1 == query.page ? "bg-green-800/10 text-green-800" : ""
+                index + 1 == query.page ? "bg-blue-800/10 text-blue-800" : ""
               }`}
               onClick={() => setQuery({ ...query, page: index + 1 })}
               disabled={index + 1 == query.page}

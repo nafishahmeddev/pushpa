@@ -127,7 +127,7 @@ export default function CartDetailsPage() {
               Close
             </button>
             <button
-              className="flex-1 py-2 bg-emerald-800 text-white hover:opacity-50"
+              className="flex-1 py-2 bg-blue-800 text-white hover:opacity-50"
               onClick={() => {
                 const el = document.getElementById("order_details");
                 console.log(el);
@@ -221,7 +221,7 @@ export default function CartDetailsPage() {
           </button>
 
           <button
-            className="flex-1 h-full bg-emerald-800 hover:opacity-80 text-white rounded-xl"
+            className="flex-1 h-full bg-blue-800 hover:opacity-80 text-white rounded-xl"
             onClick={onPlaceOrder}
             disabled={items.length == 0}
           >
