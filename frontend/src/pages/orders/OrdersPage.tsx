@@ -10,7 +10,12 @@ import {
   OrderReceiptDialog,
   OrderReceiptDialogProps,
 } from "@app/components/order/OrderReceiptDialog";
-import Table, { TableBody, TableCell, TableHead, TableRow } from "@app/components/ui/table/Table";
+import Table, {
+  TableBody,
+  TableCell,
+  TableHead,
+  TableRow,
+} from "@app/components/ui/table/Table";
 
 export default function ProductsPage() {
   const form = useFormik({
@@ -107,12 +112,12 @@ export default function ProductsPage() {
             <TableHead>
               <TableRow className="sticky top-0 left-0 z-10" header>
                 <TableCell>#</TableCell>
-                <TableCell/>
+                <TableCell />
                 <TableCell>Receipt No</TableCell>
                 <TableCell>Date</TableCell>
-                <TableCell>CGST</TableCell>
-                <TableCell>SGST</TableCell>
-                <TableCell>Amount</TableCell>
+                <TableCell className="text-end">CGST</TableCell>
+                <TableCell className="text-end">SGST</TableCell>
+                <TableCell className="text-end">Amount</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -123,12 +128,11 @@ export default function ProductsPage() {
                   </TableCell>
                   <TableCell className="px-0 py-2 w-0 sticky left-0 bg-white">
                     <div className="inline-flex flex-nowrap gap-2 text-gray-600 px-2">
-                      <button className="hover:opacity-70 "     onClick={() => handleOnDetails(order.id)}>
-                        <Icon
-                          icon="akar-icons:receipt"
-                          height={20}
-                          width={20}
-                        />
+                      <button
+                        className={`border rounded-full h-6 aspect-square flex items-center justify-center hover:opacity-50`}
+                        onClick={() => handleOnDetails(order.id)}
+                      >
+                        <Icon icon="circum:receipt"  />
                       </button>
                     </div>
                   </TableCell>
@@ -136,13 +140,13 @@ export default function ProductsPage() {
                   <TableCell className="text-nowrap">
                     {Formatter.datetime(order.createdAt)}
                   </TableCell>
-                  <TableCell className="text-end">
+                  <TableCell className="text-end font-mono">
                     {Formatter.money(order.cgst)}
                   </TableCell>
-                  <TableCell className="text-end">
+                  <TableCell className="text-end font-mono">
                     {Formatter.money(order.sgst)}
                   </TableCell>
-                  <TableCell className="text-end">
+                  <TableCell className="text-end font-mono">
                     {Formatter.money(order.amount)}
                   </TableCell>
                 </TableRow>
