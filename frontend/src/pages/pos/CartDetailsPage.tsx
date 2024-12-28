@@ -10,6 +10,7 @@ import MenuList from "@app/components/menu/MenuList";
 import { IOrder } from "@app/types/order";
 import ScrollView from "@app/components/ui/ScrollView";
 import { AxiosError } from "axios";
+import { beep } from "@app/lib/notify";
 export default function CartDetailsPage() {
   const navigate = useNavigate();
   const { cartId } = useParams<{ cartId: string }>();
@@ -19,6 +20,7 @@ export default function CartDetailsPage() {
     return CartsApi.addItem(cartId as string, {
       productId: item.productId,
     }).then(() => {
+      beep();
       setItems((_items) => {
         _items = cloneDeep(_items);
         if (_items.some((ci) => ci.productId == item.productId)) {
@@ -40,6 +42,7 @@ export default function CartDetailsPage() {
     return CartsApi.delItem(cartId as string, {
       productId: item.productId,
     }).then(() => {
+      beep();
       setItems((_items) => {
         _items = cloneDeep(_items);
         if (_items.some((ci) => ci.productId == item.productId)) {
@@ -62,6 +65,7 @@ export default function CartDetailsPage() {
       productId: item.productId,
       quantity,
     }).then(() => {
+      beep();
       setItems((_items) => {
         _items = cloneDeep(_items);
         _items = _items
