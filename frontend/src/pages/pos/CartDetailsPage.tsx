@@ -86,6 +86,7 @@ export default function CartDetailsPage() {
             "_blank",
             'location=yes,height=600,width=350,scrollbars=yes,status=yes'
           );
+          navigate("/pos");
         })
         .catch((err) => {
           alert(err.message);
