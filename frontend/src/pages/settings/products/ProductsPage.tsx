@@ -115,12 +115,12 @@ export default function ProductsPage() {
               className="sticky top-0 left-0 bg-gray-100 z-10 rounded-t-xl"
               header
             >
-              <TableCell>#</TableCell>
+              <TableCell className="w-0">#</TableCell>
               <TableCell>Name</TableCell>
               <TableCell>Category</TableCell>
-              <TableCell>CGST%</TableCell>
-              <TableCell>SGST%</TableCell>
-              <TableCell>Pice</TableCell>
+              <TableCell className="w-0">CGST%</TableCell>
+              <TableCell className="w-0">SGST%</TableCell>
+              <TableCell className="w-0">Pice</TableCell>
               <TableCell></TableCell>
             </TableRow>
           </TableHead>
