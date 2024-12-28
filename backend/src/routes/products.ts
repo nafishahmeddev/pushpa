@@ -57,7 +57,10 @@ ProductsRouter.post("/paginate", async (req: IRequest, res: IResponse) => {
             {
                 model: ProductCategory,
                 as: "category",
-                order: [["name", "asc"]]
+                order: [["name", "asc"]],
+                where: {
+                    restaurantId: req.auth?.restaurantId
+                }
             }
         ],
         where: where,
