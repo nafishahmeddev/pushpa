@@ -16,6 +16,7 @@ import Table, {
   TableHead,
   TableRow,
 } from "@app/components/ui/table/Table";
+import Pagination from "@app/components/ui/Pagination";
 
 export default function ProductsPage() {
   const form = useFormik({
@@ -160,36 +161,11 @@ export default function ProductsPage() {
             </div>
           )}
         </ScrollView>
-        <div className="flex items-center gap-2 h-[35px]">
-          <button
-            className={`border rounded-xl bg-white px-3 aspect-square h-full  flex items-center justify-center`}
-            onClick={() => setQuery({ ...query, page: query.page - 1 })}
-            disabled={query.page <= 1}
-          >
-            <Icon icon="formkit:left" />
-          </button>
-
-          {Array.from({ length: result.pages }).map((_, index) => (
-            <button
-              key={`pagination-${index}`}
-              className={`border rounded-xl bg-white px-3 aspect-square  h-full  flex items-center justify-center 
-              ${
-                index + 1 == query.page ? "bg-blue-800/10 text-blue-800" : ""
-              }`}
-              onClick={() => setQuery({ ...query, page: index + 1 })}
-              disabled={index + 1 == query.page}
-            >
-              {index + 1}
-            </button>
-          ))}
-          <button
-            className={`border rounded-xl bg-white px-3 aspect-square h-full flex items-center justify-center`}
-            onClick={() => setQuery({ ...query, page: query.page + 1 })}
-            disabled={query.page >= result.pages}
-          >
-            <Icon icon="formkit:right" />
-          </button>
-        </div>
+        <Pagination
+          page={query.page}
+          pages={result.pages}
+          onChange={(props) => setQuery({ ...query, ...props })}
+        />
       </div>
     </React.Fragment>
   );

@@ -76,8 +76,8 @@ export default function MainLayout() {
   return (
     <div className="h-dvh grid grid-cols-[250px_1fr] grid-rows-1 bg-gray-100">
       <div className="bg-white border-e h-full grid grid-rows-[60px_1fr_60px]">
-        <div className="logo italic flex h-full items-center font-bold text-lg text-blue-800 px-2 py-3">
-          PUSHPA DHABA
+        <div className="logo italic flex h-full font-bold text-xl text-blue-800 px-4 py-3 items-center font-mono border-b">
+          {auth.user.restaurant?.name}
         </div>
         <ScrollView>
           <SideMenuList items={mainmenu} />

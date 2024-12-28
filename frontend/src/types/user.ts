@@ -1,3 +1,5 @@
+import { IRestaurant } from "./restaurant"
+
 export type IUser = {
     id: string,
     email: string,
@@ -6,6 +8,7 @@ export type IUser = {
     password: string,
     name: string,
     permissions: Array<string>,
+    restaurant?: IRestaurant,
     createdAt: Date,
     updatedAt: Date,
     loggedAt: Date

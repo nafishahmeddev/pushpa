@@ -1,5 +1,5 @@
 
-import { ProductCategory, Product, User } from "@app/db/models";
+import { ProductCategory, Product, User, Restaurant } from "@app/db/models";
 import { IRequest, IResponse } from "@app/interfaces/vendors/express";
 import { Router } from "express";
 import bcrypt from "bcrypt";
@@ -13,7 +13,12 @@ AuthRouter.post("/login", async (req: IRequest, res: IResponse) => {
     const pass = req.body.pass;
 
 
-    const user = await User.findOne({ where: { email } });
+    const user = await User.findOne({
+        where: { email }, include: [{
+            model: Restaurant,
+            as: "restaurant"
+        }]
+    });
     if (!user) {
         res.status(401).json({
             message: "Invalid email id"
@@ -60,7 +65,12 @@ AuthRouter.post("/tokens", async (req: IRequest, res: IResponse) => {
         return;
     }
 
-    const user = await User.findByPk(validated.userId);
+    const user = await User.findByPk(validated.userId, {
+        include: [{
+            model: Restaurant,
+            as: "restaurant"
+        }]
+    });
     if (!user) {
         res.status(401).json({
             message: "user has been deleted."
@@ -79,7 +89,12 @@ AuthRouter.post("/tokens", async (req: IRequest, res: IResponse) => {
 })
 
 AuthRouter.get("/verify", AuthMiddleware, async (req: IRequest, res: IResponse) => {
-    const user = await User.findByPk(req.auth?.userId);
+    const user = await User.findByPk(req.auth?.userId, {
+        include: [{
+            model: Restaurant,
+            as: "restaurant"
+        }]
+    });
 
     if (!user) {
         res.status(401).json({

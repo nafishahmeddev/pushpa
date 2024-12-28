@@ -110,7 +110,7 @@ export default function UserForm({
 
             <Input
               label="Password"
-              type="text"
+              type="password"
               {...formik.getFieldProps("password")}
               meta={formik.getFieldMeta("password")}
             />

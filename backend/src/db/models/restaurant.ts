@@ -31,6 +31,9 @@ class Restaurant extends Model<
 > {
   declare id: CreationOptional<string>;
   declare name: string;
+  declare address: string;
+  declare phone: string;
+  declare email: string;
 
   declare createdAt: CreationOptional<Date>;
   declare updatedAt: CreationOptional<Date>;
@@ -52,6 +55,9 @@ Restaurant.init(
       defaultValue: UUIDV4,
     },
     name: DataTypes.STRING,
+    address: DataTypes.STRING,
+    email: DataTypes.STRING,
+    phone: DataTypes.STRING,
     createdAt: DataTypes.DATE,
     updatedAt: DataTypes.DATE,
   },
