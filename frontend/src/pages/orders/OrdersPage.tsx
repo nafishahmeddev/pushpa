@@ -57,6 +57,17 @@ export default function ProductsPage() {
     });
   };
 
+  const handleOnPrint = (orderId: string) => {
+    window.open(
+      import.meta.env.VITE_BASE_URL +
+        `/orders/${orderId}/receipt?authorization=${localStorage.getItem(
+          "accessToken"
+        )}`,
+      "_blank",
+      "location=yes,height=600,width=350,scrollbars=yes,status=yes"
+    );
+  };
+
   useEffect(() => {
     if (query.page != result.page) {
       form.submitForm();
@@ -135,6 +146,13 @@ export default function ProductsPage() {
                         onClick={() => handleOnDetails(order.id)}
                       >
                         <Icon icon="ph:receipt" height={20} width={20} />
+                      </button>
+
+                      <button
+                        className={`hover:opacity-50 text-blue-700`}
+                        onClick={() => handleOnPrint(order.id)}
+                      >
+                        <Icon icon="lsicon:print-outline" height={20} width={20} />
                       </button>
                     </div>
                   </TableCell>
