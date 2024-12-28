@@ -23,7 +23,7 @@ export default function Input({
       {...containerProps}
       className={`input flex flex-col gap-2 ${containerProps.className ?? ""}`}
     >
-      <label className="text-sm text-gray-700">{label}</label>
+      {label && <label className="text-sm text-gray-700">{label}</label>}
       <div className="flex relative">
         <input
           {...props}
@@ -42,9 +42,9 @@ export default function Input({
           <button
             className="pe-3 absolute right-0 top-0 h-full flex items-center justify-center text-gray-400 hover:opacity-50"
             type="button"
-            onClick={()=>setShowPassword(!showPassword)}
+            onClick={() => setShowPassword(!showPassword)}
           >
-            <Icon icon={showPassword ? "lucide:eye":"lucide:eye-off"} />
+            <Icon icon={showPassword ? "lucide:eye" : "lucide:eye-off"} />
           </button>
         )}
       </div>

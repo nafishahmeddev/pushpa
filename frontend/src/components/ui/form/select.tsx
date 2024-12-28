@@ -21,7 +21,7 @@ export default function Select({
       {...containerProps}
       className={`input flex flex-col gap-2 ${containerProps.className ?? ""}`}
     >
-      <label className="text-sm text-gray-700">{label}</label>
+      {label && <label className="text-sm text-gray-700">{label}</label>}
       <select
         {...props}
         className={`bg-gray-50 rounded-xl py-2 px-3 focus:outline-2 border h-10 min-w-0 w-full ${

@@ -17,6 +17,7 @@ import Table, {
   TableRow,
 } from "@app/components/ui/table/Table";
 import Pagination from "@app/components/ui/Pagination";
+import Input from "@app/components/ui/form/input";
 
 export default function ProductsPage() {
   const form = useFormik({
@@ -83,13 +84,13 @@ export default function ProductsPage() {
               className="flex gap-3 h-full"
               disabled={form.isSubmitting}
             >
-              <input
+              <Input
                 className="border rounded-xl px-3"
                 placeholder="Date from"
                 type="date"
                 {...form.getFieldProps("createdAt.0")}
               />
-              <input
+              <Input
                 className="border rounded-xl px-3"
                 placeholder="Date to"
                 type="date"

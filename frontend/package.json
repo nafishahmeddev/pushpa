@@ -17,6 +17,7 @@
     "clsx": "^2.1.1",
     "formik": "^2.4.6",
     "install": "^0.13.0",
+    "libphonenumber-js": "^1.11.17",
     "lodash": "^4.17.21",
     "lucide-react": "^0.469.0",
     "moment": "^2.30.1",
