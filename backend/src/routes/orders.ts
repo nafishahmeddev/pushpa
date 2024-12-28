@@ -25,7 +25,7 @@ OrdersRoute.post("/paginate", async (req: IRequest, res: IResponse) => {
 
     //build filter
     const where :WhereOptions<InferAttributes<Order, {}>>  = {
-
+        restaurantId: req.auth?.restaurantId
     };
 
     if(filter.createdAt && filter.createdAt[0] && filter.createdAt[1]){
