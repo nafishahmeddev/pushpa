@@ -5,6 +5,7 @@ type PaginationProps = {
   onChange?: (props: { page: number }) => Promise<void> | void;
 };
 export default function Pagination({ page, pages, onChange }: PaginationProps) {
+  if(pages == 0) return <></>;
   return (
     <div className="flex items-center gap-2 h-[35px]">
       <button

@@ -14,14 +14,14 @@ import { useFormik } from "formik";
 import Pagination from "@app/components/ui/Pagination";
 import Input from "@app/components/ui/form/input";
 
+type FormType = {
+  filter: {
+    name: string;
+  };
+  query: { page: number; limit: number };
+};
+
 export default function ProductsPage() {
-  const formik = useFormik({
-    initialValues: {
-      name: "",
-    },
-    onSubmit: paginate,
-  });
-  const [query, setQuery] = useState({ page: 1, limit: 20 });
   const [result, setResult] = useState<{
     pages: number;
     page: number;
@@ -31,16 +31,23 @@ export default function ProductsPage() {
     page: 0,
     records: [],
   });
+  const formik = useFormik<FormType>({
+    initialValues: {
+      filter: {
+        name: "",
+      },
+      query: { page: 1, limit: 20 },
+    },
+    onSubmit: async (values, helper) =>
+      ProductsApi.paginate(
+        { page: values.query.page, limit: values.query.limit },
+        values.filter
+      ).then((res) => {
+        setResult(res);
+        helper.setFieldValue("query.page", res.page);
+      }),
+  });
 
-  function paginate(values: { [key: string]: unknown }) {
-    return ProductsApi.paginate(
-      { page: query.page, limit: query.limit },
-      values
-    ).then((res) => {
-      setResult(res);
-      setQuery({ page: res.page, limit: query.limit });
-    });
-  }
   const [productForm, setProductForm] = useState<{
     open: boolean;
     product?: IProduct;
@@ -53,10 +60,9 @@ export default function ProductsPage() {
   };
 
   useEffect(() => {
-    if (query.page != result.page) {
-      formik.submitForm();
-    }
-  }, [query]);
+    formik.submitForm();
+  }, []);
+
   return (
     <div className="h-full p-4 grid grid-rows-[60px_1fr_35px] gap-5">
       <ProductForm
@@ -67,7 +73,6 @@ export default function ProductsPage() {
           formik.submitForm();
         }}
       />
-
       <div className="py-4 flex gap-4 items-center h-full">
         <div>
           <h2 className="text-2xl">Products</h2>
@@ -81,15 +86,19 @@ export default function ProductsPage() {
           <fieldset
             className="flex gap-3 h-full"
             disabled={formik.isSubmitting}
+            onBlur={() => formik.setFieldValue("query.page", 1)}
           >
             <Input
               className="border rounded-xl px-3"
               placeholder="Name"
               type="text"
-              {...formik.getFieldProps("name")}
+              {...formik.getFieldProps("filter.name")}
             />
 
-            <button className="rounded-xl px-3 bg-blue-500 text-white hover:opacity-50">
+            <button
+              className="rounded-xl px-3 bg-blue-500 text-white hover:opacity-50"
+              type="submit"
+            >
               Search
             </button>
             <button
@@ -100,6 +109,7 @@ export default function ProductsPage() {
             </button>
             <button
               className="rounded-xl px-3 bg-gray-300 hover:opacity-50"
+              type="button"
               onClick={() => setProductForm({ open: true, product: undefined })}
             >
               + New
@@ -107,7 +117,6 @@ export default function ProductsPage() {
           </fieldset>
         </form>
       </div>
-
       <ScrollView className="h-full bg-white border rounded-xl overflow-hidden">
         <Table bordered>
           <TableHead>
@@ -158,9 +167,11 @@ export default function ProductsPage() {
         </Table>
       </ScrollView>
       <Pagination
-        page={query.page}
+        page={formik.values.query.page}
         pages={result.pages}
-        onChange={(e) => setQuery({ ...query, ...e })}
+        onChange={(e) => {
+          formik.setFieldValue("query.page", e.page).then(formik.submitForm);
+        }}
       />
     </div>
   );
