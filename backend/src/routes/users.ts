@@ -58,11 +58,12 @@ UsersRouter.post("/", async (req: IRequest, res: IResponse) => {
         return;
     }
     body.restaurantId = req.auth?.restaurantId;
-    const category = await User.create({
-        ...body
+    const user = await User.create({
+        ...body,
+        password: bcrypt.hashSync(req.body.password, 12)
     });
     res.json({
-        result: category,
+        result: user,
         message: "Successful"
     })
 })
@@ -100,12 +101,12 @@ UsersRouter.put("/:userId", async (req: IRequest, res: IResponse) => {
 
 UsersRouter.delete("/:userId", async (req: IRequest, res: IResponse) => {
     const userId = req.params.userId;
-    const category = await User.destroy({
+    const user = await User.destroy({
         where: {
             id: userId
         }
     });
-    if (!category) {
+    if (!user) {
         res.status(404).json({
             message: "Category not found..."
         });
