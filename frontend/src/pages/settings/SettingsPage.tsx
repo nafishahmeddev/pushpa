@@ -29,7 +29,7 @@ export default function MenuPage() {
 
           {
             label:"Tables",
-            icon:"material-symbols:chair-outline",
+            icon:"solar:armchair-outline",
             route: "/settings/tables"
           },
         ]}/>
