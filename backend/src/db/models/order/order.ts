@@ -12,10 +12,11 @@ import {
 import { sequelize } from "../../conn";
 import { Restaurant } from "../restaurant";
 import { Sequence } from "../sequence";
+import { Table } from "../table/table";
 
 class Order extends Model<
-  InferAttributes<Order, {}>,
-  InferCreationAttributes<Order, {}>
+  InferAttributes<Order, { omit: "restaurant" | "table" }>,
+  InferCreationAttributes<Order, { omit: "restaurant" | "table" }>
 > {
   declare id: CreationOptional<string>;
   declare receiptNo: CreationOptional<number>;
@@ -23,14 +24,17 @@ class Order extends Model<
   declare cgst: number;
   declare sgst: number;
   declare restaurantId: ForeignKey<Restaurant["id"]>;
+  declare tableId: ForeignKey<Table["id"]>
 
   declare createdAt: CreationOptional<Date>;
   declare updatedAt: CreationOptional<Date>;
 
   declare restaurant?: NonAttribute<Restaurant>;
+  declare table?: NonAttribute<Table>;
 
   declare static associations: {
     restaurant: Association<Order, Restaurant>
+    table: Association<Order, Table>
   };
 }
 

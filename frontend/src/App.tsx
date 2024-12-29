@@ -5,6 +5,7 @@ import MainLayout from "@app/components/layout/MainLayout";
 import { Toaster } from "react-hot-toast";
 import AuthApi from "./services/auth";
 import SplashPage from "./pages/SplashPage";
+const TablesPage = lazy(() => import("./pages/settings/tables/TablesPage"));
 const UsersPage = lazy(() => import("./pages/users/UsersPage"));
 const LoginPage = lazy(() => import("@app/pages/auth/LoginPage"));
 const PosPage = lazy(() => import("@app/pages/pos/PosPage"));
@@ -46,6 +47,7 @@ function App() {
                 <Route path="settings" Component={SettingsPage}>
                   <Route path="categories" Component={CategoriesPage} />
                   <Route path="products" Component={ProductsPage} />
+                  <Route path="tables" Component={TablesPage} />
                 </Route>
                 <Route path="orders" Component={OrdersPage} />
                 <Route path="users" Component={UsersPage} />

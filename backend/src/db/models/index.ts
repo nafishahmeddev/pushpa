@@ -3,12 +3,13 @@ import { Restaurant } from "./restaurant";
 import { Table } from "./table/table";
 import { Order } from "./order/order";
 import { OrderItem } from "./order/order-item";
-import { TableItem } from "./table/table-item";
 import { ProductCategory } from "./product/product-category";
 import { Cart } from "./cart/cart";
 import { CartItem } from "./cart/cart-item";
 import { Sequence } from "./sequence";
 import { User } from "./user/user";
+import { Kot } from "./kot/kot";
+import { KotItem } from "./kot/kot-item";
 
 //restaurant associations
 Restaurant.hasMany(ProductCategory, {
@@ -49,34 +50,18 @@ Table.belongsTo(Restaurant, {
   as: "restaurant",
 });
 
-Table.hasMany(Order, {
-  foreignKey: "tableId",
-  as: "orders",
-});
-
-Table.hasMany(TableItem, {
-  foreignKey: "tableId",
-  as: "items",
-});
-
-//table item
-TableItem.belongsTo(Table, {
-  targetKey: "id",
-  foreignKey: "tableId",
-  as: "table",
-});
-TableItem.belongsTo(Product, {
-  targetKey: "id",
-  foreignKey: "productId",
-  as: "product",
-});
-
 //Cart
 Cart.belongsTo(Restaurant, {
   targetKey: "id",
   foreignKey: "restaurantId",
   as: "restaurant"
 })
+
+Cart.belongsTo(Table, {
+  foreignKey: "tableId",
+  as: "table"
+})
+
 
 Cart.hasMany(CartItem, {
   foreignKey: "cartId",
@@ -88,14 +73,14 @@ CartItem.belongsTo(Cart, {
   targetKey: "id",
   foreignKey: "cartId",
   as: "cart",
-  onDelete:"CASCADE"
+  onDelete: "CASCADE"
 })
 
 CartItem.belongsTo(Product, {
   targetKey: "id",
   foreignKey: "productId",
   as: "product",
-  onDelete:"CASCADE"
+  onDelete: "CASCADE"
 });
 
 //order
@@ -104,6 +89,11 @@ Order.belongsTo(Restaurant, {
   foreignKey: "restaurantId",
   as: "restaurant",
 });
+
+Order.belongsTo(Table, {
+  foreignKey: "tableId",
+  as: "table"
+})
 
 Order.hasMany(OrderItem, {
   foreignKey: "orderId",
@@ -115,8 +105,32 @@ OrderItem.belongsTo(Order, {
   targetKey: "id",
   foreignKey: "orderId",
   as: "order",
-  onDelete:"CASCADE"
+  onDelete: "CASCADE"
 });
+
+//Kot
+Kot.belongsTo(Table, {
+  targetKey: "id",
+  foreignKey: "tableId",
+  as: "table"
+});
+
+Kot.hasMany(KotItem, {
+  foreignKey: "kotId",
+  as: "items"
+})
+
+KotItem.belongsTo(Kot, {
+  targetKey: "id",
+  foreignKey: "kotId",
+  as: "kot"
+})
+
+KotItem.belongsTo(Product, {
+  targetKey: "id",
+  foreignKey: "productId",
+  as: "product"
+})
 
 //User 
 User.belongsTo(Restaurant, {
@@ -124,12 +138,12 @@ User.belongsTo(Restaurant, {
   foreignKey: "restaurantId",
   as: "restaurant"
 })
+
 export {
   ProductCategory,
   Product,
   Restaurant,
   Table,
-  TableItem,
   Order,
   OrderItem,
   Cart,

@@ -11,7 +11,6 @@ import {
 } from "sequelize";
 import { sequelize } from "@app/db/conn";
 import { Restaurant } from "../restaurant";
-import { TableItem } from "./table-item";
 
 type TableStatus = "Occupied" | "Available" | "Reserved" | "Blocked";
 
@@ -21,6 +20,7 @@ class Table extends Model<
 > {
     declare id: CreationOptional<string>;
     declare name: string;
+    declare capacity: number;
     declare status: TableStatus;
     declare restaurantId: ForeignKey<Restaurant["id"]>;
 
@@ -28,11 +28,9 @@ class Table extends Model<
     declare updatedAt: CreationOptional<Date>;
 
     declare restaurant?: NonAttribute<Restaurant>;
-    declare items?: NonAttribute<TableItem[]>;
 
     declare static associations: {
         restaurant: Association<Table, Restaurant>;
-        items: Association<Table, TableItem>
     };
 }
 
@@ -49,6 +47,7 @@ Table.init(
             type: DataTypes.STRING,
             allowNull: false,
         },
+        capacity: DataTypes.INTEGER,
         status: {
             type: DataTypes.ENUM,
             values: ["Occupied", "Available", "Reserved", "Blocked"],

@@ -9,36 +9,32 @@ import {
     ForeignKey,
     UUIDV4,
 } from "sequelize";
-import { sequelize } from "../../conn";
-import { Order } from "../order/order";
+import { sequelize } from "@app/db/conn";
+import { Kot } from "./kot";
 import { Product } from "../product/product";
-import { Table } from "./table";
 
-type TableItemStatus = "Pending" | "Preparing" | "Served";
-class TableItem extends Model<
-    InferAttributes<TableItem, { omit: "table" }>,
-    InferCreationAttributes<TableItem, { omit: "table" }>
+class KotItem extends Model<
+    InferAttributes<KotItem, { omit: "kot" | "product" }>,
+    InferCreationAttributes<KotItem, { omit: "kot" | "product" }>
 > {
     declare id: CreationOptional<string>;
-    declare quantity: number;
-    declare status: CreationOptional<TableItemStatus>;
-
-    declare tableId: ForeignKey<Order["id"]>;
+    declare kotId: ForeignKey<Kot["id"]>;
     declare productId: ForeignKey<Product["id"]>;
+    declare quantity: number;
 
     declare createdAt: CreationOptional<Date>;
     declare updatedAt: CreationOptional<Date>;
 
-    declare table?: NonAttribute<Table>;
+    declare kot?: NonAttribute<Kot>;
     declare product?: NonAttribute<Product>;
 
     declare static associations: {
-        table: Association<TableItem, Table>;
-        product: Association<TableItem, Product>;
+        kot: Association<KotItem, Kot>;
+        product: Association<KotItem, Product>;
     };
 }
 
-TableItem.init(
+KotItem.init(
     {
         id: {
             type: DataTypes.UUID,
@@ -47,19 +43,14 @@ TableItem.init(
             allowNull: false,
             defaultValue: UUIDV4,
         },
-        status: {
-            type: DataTypes.ENUM,
-            values: ["Pending", "Preparing", "Served"],
-            defaultValue:"Pending"
-        },
         quantity: DataTypes.INTEGER,
         createdAt: DataTypes.DATE,
         updatedAt: DataTypes.DATE,
     },
     {
-        sequelize,
-        tableName: "TableItems",
+        sequelize: sequelize,
+        tableName: "KotItems",
     }
 );
 
-export { TableItem };
+export { KotItem };

@@ -16,6 +16,7 @@ import UsersRouter from './routes/users';
 import AuthMiddleware from './middleware/auth';
 import AuthRouter from './routes/auth';
 import moment from "moment";
+import TablesRouter from "./routes/tables";
 
 const app: Application = express();
 const port = process.env.PORT || 3000;
@@ -37,6 +38,7 @@ async function main() {
   app.use("/api/v1/products", AuthMiddleware, ProductsRouter);
   app.use("/api/v1/orders", AuthMiddleware, OrdersRoute);
   app.use("/api/v1/users", AuthMiddleware, UsersRouter);
+  app.use("/api/v1/tables", AuthMiddleware, TablesRouter);
   app.use("/api/v1/auth", AuthRouter);
   app.use(express.static(path.resolve(process.env.FRONTEND_PATH || "")))
   app.use("*", express.static(path.resolve(path.join(process.env.FRONTEND_PATH || "", "index.html"))))

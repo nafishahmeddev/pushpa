@@ -10,34 +10,29 @@ import {
     UUIDV4,
 } from "sequelize";
 import { sequelize } from "@app/db/conn";
-import { Restaurant } from "../restaurant";
-import { CartItem } from "./cart-item";
 import { Table } from "../table/table";
 
-class Cart extends Model<
-    InferAttributes<Cart, { omit: "restaurant" | "table"}>,
-    InferCreationAttributes<Cart, { omit: "restaurant" | "table" }>
+type KotStatus = "Pending" | "Started" | "Completed" | "Delivered";
+
+class Kot extends Model<
+    InferAttributes<Kot, { omit: "table" }>,
+    InferCreationAttributes<Kot, { omit: "table" }>
 > {
     declare id: CreationOptional<string>;
-    declare name: string;
-    declare restaurantId: ForeignKey<Restaurant["id"]>;
+    declare status: KotStatus;
     declare tableId: ForeignKey<Table["id"]>;
 
     declare createdAt: CreationOptional<Date>;
     declare updatedAt: CreationOptional<Date>;
 
-    declare restaurant?: NonAttribute<Restaurant>;
     declare table?: NonAttribute<Table>;
-    declare items?: NonAttribute<CartItem[]>;
 
     declare static associations: {
-        restaurant: Association<Cart, Restaurant>;
-        table: Association<Cart, Table>;
-        items: Association<Cart, CartItem>
+        table: Association<Kot, Table>;
     };
 }
 
-Cart.init(
+Kot.init(
     {
         id: {
             type: DataTypes.UUID,
@@ -46,17 +41,18 @@ Cart.init(
             allowNull: false,
             defaultValue: UUIDV4,
         },
-        name: {
-            type: DataTypes.STRING,
-            allowNull: false,
+        status: {
+            type: DataTypes.ENUM,
+            values: ["Pending", "Started", "Completed", "Delivered"],
+
         },
         createdAt: DataTypes.DATE,
         updatedAt: DataTypes.DATE,
     },
     {
         sequelize: sequelize,
-        tableName: "Carts",
+        tableName: "Kots",
     }
 );
 
-export { Cart };
+export { Kot };

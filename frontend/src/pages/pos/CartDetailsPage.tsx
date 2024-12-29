@@ -86,9 +86,12 @@ export default function CartDetailsPage() {
       CartsApi.place(cartId as string)
         .then((order: IOrder) => {
           window.open(
-            import.meta.env.VITE_BASE_URL + `/orders/${order.id}/receipt?authorization=${localStorage.getItem("accessToken")}`,
+            import.meta.env.VITE_BASE_URL +
+              `/orders/${order.id}/receipt?authorization=${localStorage.getItem(
+                "accessToken"
+              )}`,
             "_blank",
-            'location=yes,height=600,width=350,scrollbars=yes,status=yes'
+            "location=yes,height=600,width=350,scrollbars=yes,status=yes"
           );
           navigate("/pos");
         })
@@ -199,12 +202,9 @@ export default function CartDetailsPage() {
           </table>
         </div>
         <div className="h-full flex gap-4">
-          <button className="flex-1 h-full bg-rose-800 hover:opacity-80 text-white rounded-xl">
-            Cancel
-          </button>
-
+          <div className="flex-1"></div>
           <button
-            className="flex-1 h-full bg-blue-800 hover:opacity-80 text-white rounded-xl"
+            className="h-full bg-blue-800 hover:opacity-80 text-white rounded-xl px-6"
             onClick={onPlaceOrder}
             disabled={items.length == 0}
           >

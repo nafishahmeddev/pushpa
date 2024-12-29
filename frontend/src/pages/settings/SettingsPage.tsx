@@ -17,7 +17,7 @@ export default function MenuPage() {
         <SideMenuList items={[
           {
             label:"Categories",
-            icon:"fluent-mdl2:rows-group",
+            icon:"clarity:file-group-line",
             route: "/settings/categories"
           },
 
@@ -25,6 +25,12 @@ export default function MenuPage() {
             label:"Products",
             icon:"bytesize:book",
             route: "/settings/products"
+          },
+
+          {
+            label:"Tables",
+            icon:"material-symbols:chair-outline",
+            route: "/settings/tables"
           },
         ]}/>
       </div>

@@ -4,6 +4,7 @@ import { ICart } from "@app/types/cart";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { NavLink, Outlet, useLocation, useNavigate } from "react-router";
+import {Icon}from "@iconify/react";
 export default function PosPage() {
   const navigate = useNavigate();
   const location = useLocation();
@@ -68,10 +69,10 @@ export default function PosPage() {
               text-sm bg-white"
           onClick={handleNewCart}
         >
-          + New Order
+          <Icon icon="ic:baseline-add"/>
         </button>
       </div>
-      <div className="h-full grid grid-cols-[450px_1fr]  m-auto w-full overflow-auto gap-4">
+      <div className="h-full grid grid-cols-[auto_1fr]  m-auto w-full overflow-auto gap-4 select-none">
         <Outlet />
       </div>
     </div>
