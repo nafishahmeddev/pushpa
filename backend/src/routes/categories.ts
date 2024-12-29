@@ -7,7 +7,10 @@ const CategoriesRouter = Router();
 
 CategoriesRouter.get("/", async (req: IRequest, res: IResponse) => {
     const menu = await ProductCategory.findAll({
-        order: [["name", "asc"]]
+        order: [["name", "asc"]],
+        where: {
+            restaurantId: req.auth?.restaurantId
+        }
     });
     res.json({
         result: menu,
