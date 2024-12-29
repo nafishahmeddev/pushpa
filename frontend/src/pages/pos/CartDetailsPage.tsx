@@ -85,7 +85,7 @@ export default function CartDetailsPage() {
     if (items.length) {
       CartsApi.place(cartId as string)
         .then((order: IOrder) => {
-          window.open(
+          const w = window.open(
             import.meta.env.VITE_BASE_URL +
               `/orders/${order.id}/receipt?authorization=${localStorage.getItem(
                 "accessToken"
@@ -93,6 +93,16 @@ export default function CartDetailsPage() {
             "_blank",
             "location=yes,height=600,width=350,scrollbars=yes,status=yes"
           );
+
+          if (w) {
+            setTimeout(function () {
+              w.document.close();
+              w.focus();
+              w.print();
+              w.close();
+            }, 1000);
+          }
+
           navigate("/pos");
         })
         .catch((err) => {

@@ -50,15 +50,8 @@ export default function ProductsPage() {
       setQuery({ page: res.page, limit: query.limit });
     });
   }
-
-  const handleOnDetails = (orderId: string) => {
-    OrdersApi.get(orderId).then((res) => {
-      setOderDetailsDialog({ open: true, order: res });
-    });
-  };
-
-  const handleOnPrint = (orderId: string) => {
-    window.open(
+  const handleOnDetails = (orderId: string, print: boolean = false) => {
+    const w = window.open(
       import.meta.env.VITE_BASE_URL +
         `/orders/${orderId}/receipt?authorization=${localStorage.getItem(
           "accessToken"
@@ -66,6 +59,15 @@ export default function ProductsPage() {
       "_blank",
       "location=yes,height=600,width=350,scrollbars=yes,status=yes"
     );
+
+    if (w && print) {
+      setTimeout(function () {
+        w.document.close();
+        w.focus();
+        w.print();
+        w.close();
+      }, 1000);
+    }
   };
 
   useEffect(() => {
@@ -150,9 +152,13 @@ export default function ProductsPage() {
 
                       <button
                         className={`hover:opacity-50 text-blue-700`}
-                        onClick={() => handleOnPrint(order.id)}
+                        onClick={() => handleOnDetails(order.id, true)}
                       >
-                        <Icon icon="lsicon:print-outline" height={20} width={20} />
+                        <Icon
+                          icon="lsicon:print-outline"
+                          height={20}
+                          width={20}
+                        />
                       </button>
                     </div>
                   </TableCell>
