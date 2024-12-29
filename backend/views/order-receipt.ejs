@@ -37,13 +37,10 @@
             margin: 0;
         }
     </style>
-
-
-    <% const formatter=new Intl.NumberFormat("en-IN", { style: "currency" , currency: order.restaurant.currency || "INR"
-        }); const moment=locals.moment; %>
-        <script>
-            window.print();
-        </script>
+    <% 
+    const formatter=new Intl.NumberFormat("en-IN", { style: "currency" , currency: order.restaurant.currency || "INR" }); 
+    const moment=locals.moment; 
+    %>
 </head>
 
 <body>
