@@ -130,9 +130,8 @@ export default function ProductsPage() {
                 <TableCell />
                 <TableCell>Receipt No</TableCell>
                 <TableCell>Date</TableCell>
-                <TableCell className="text-end">CGST</TableCell>
-                <TableCell className="text-end">SGST</TableCell>
-                <TableCell className="text-end">Amount</TableCell>
+                <TableCell className="text-end w-0">Tax</TableCell>
+                <TableCell className="text-end w-0">Amount</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -166,13 +165,10 @@ export default function ProductsPage() {
                   <TableCell className="text-nowrap">
                     {Formatter.datetime(order.createdAt)}
                   </TableCell>
-                  <TableCell className="text-end font-mono">
-                    {Formatter.money(order.cgst)}
+                  <TableCell className="text-end">
+                    {Formatter.money(order.sgst + order.cgst)}
                   </TableCell>
-                  <TableCell className="text-end font-mono">
-                    {Formatter.money(order.sgst)}
-                  </TableCell>
-                  <TableCell className="text-end font-mono">
+                  <TableCell className="text-end">
                     {Formatter.money(order.amount)}
                   </TableCell>
                 </TableRow>

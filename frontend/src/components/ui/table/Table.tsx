@@ -25,7 +25,7 @@ export function TableRow({
   if (tableTheme.bordered) {
     classNames.push("border-b border-dashed");
   }
-  if(header){
+  if (header) {
     classNames.push("bg-gray-100");
   }
   return (
@@ -35,7 +35,7 @@ export function TableRow({
   );
 }
 
-export function TableCell(props: React.ComponentProps<"td" | "th">) {
+export function TableCell({ ...props }: React.ComponentProps<"td" | "th">) {
   const tableTheme = useContext(TableContext);
   const tableRowTheme = useContext(TableRowContext);
   const classNames = ["text-start"];
@@ -53,16 +53,15 @@ export function TableCell(props: React.ComponentProps<"td" | "th">) {
       break;
     }
   }
-  if (tableRowTheme.header) {
-    return (
-      <th
-        {...props}
-        className={[...classNames, "text-start", props.className].join(" ")}
-      ></th>
-    );
-  }
+
   return (
-    <td {...props} className={[...classNames, props.className].join(" ")}></td>
+    <React.Fragment>
+      {tableRowTheme.header ? (
+        <th {...props} className={[...classNames, props.className].join(" ")} />
+      ) : (
+        <td {...props} className={[...classNames, props.className].join(" ")} />
+      )}
+    </React.Fragment>
   );
 }
 
@@ -76,7 +75,7 @@ export default function Table({
 }) {
   return (
     <TableContext.Provider value={{ size, bordered }}>
-      <table {...props} className={['w-full', props.className].join(" ")} />
+      <table {...props} className={["w-full", props.className].join(" ")} />
     </TableContext.Provider>
   );
 }
