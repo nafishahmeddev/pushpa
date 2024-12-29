@@ -1,5 +1,10 @@
-import React from "react";
+
+import { faker } from "@faker-js/faker";
 
 export default function DashboardPage() {
-  return <React.Fragment>Ops working....</React.Fragment>;
+  return (
+    <div className="h-full p-4">
+   
+    </div>
+  );
 }
