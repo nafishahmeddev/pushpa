@@ -51,7 +51,8 @@ TablesRouter.post("/paginate", async (req: IRequest, res: IResponse) => {
 TablesRouter.post("/", async (req: IRequest, res: IResponse) => {
     const body = req.body;
     const category = await Table.create({
-        ...body
+        ...body,
+        restaurantId: req.auth?.restaurantId
     });
     res.json({
         result: category,
