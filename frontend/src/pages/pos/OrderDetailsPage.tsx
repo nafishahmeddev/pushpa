@@ -209,7 +209,7 @@ export default function OrderDetailsPage() {
         <div className="h-full flex gap-4">
           <div className="flex-1"></div>
           <button
-            className="h-full bg-blue-800 hover:opacity-80 text-white rounded-xl px-6 disabled:bg-gray-300 disabled:opacity-100"
+            className="h-full bg-fuchsia-800 hover:opacity-80 text-white rounded-xl px-6 disabled:bg-gray-300 disabled:opacity-100"
             onClick={onPlaceOrder}
             disabled={items.length == 0}
           >

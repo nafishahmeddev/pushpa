@@ -126,7 +126,7 @@ export default function TableForm({
             <Button className="bg-gray-300" onClick={onReset} type="button">
               Cancel
             </Button>
-            <Button className="bg-blue-600 text-white" type="submit">
+            <Button className="bg-fuchsia-600 text-white" type="submit">
               {table ? "Update" : "Create"}
             </Button>
           </div>

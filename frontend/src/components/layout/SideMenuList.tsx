@@ -17,8 +17,8 @@ export function SideMenuList({ items }: SideMenuListProps) {
             <NavLink
               to={item.route}
               className={({ isActive }) =>
-                `flex py-2 px-3 items-center justify-start gap-2 cursor-pointer transition-all hover:bg-blue-800/15 text-blue-950 rounded-full ${
-                  isActive ? "text-blue-700 bg-blue-600/10" : ""
+                `flex py-2 px-3 items-center justify-start gap-2 cursor-pointer transition-all hover:bg-fuchsia-800/15 text-fuchsia-950 rounded-full ${
+                  isActive ? "text-fuchsia-700 bg-fuchsia-600/10" : ""
                 }`
               }
             >

@@ -95,7 +95,7 @@ export default function LocationsPage() {
             />
 
             <button
-              className="rounded-xl px-3 bg-blue-500 text-white hover:opacity-50"
+              className="rounded-xl px-3 bg-fuchsia-500 text-white hover:opacity-50"
               type="submit"
             >
               Search

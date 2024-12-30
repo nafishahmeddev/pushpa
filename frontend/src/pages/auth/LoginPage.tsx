@@ -49,7 +49,7 @@ export default function LoginPage() {
 
           <Button
             type="submit"
-            className="bg-blue-700 text-white"
+            className="bg-fuchsia-700 text-white"
           >
             Sign In
           </Button>

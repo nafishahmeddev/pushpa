@@ -81,7 +81,7 @@ export default function MenuList({ onItemPress, ...props }: MenuListProps) {
                 {category.products.map((product) => (
                   <div
                     key={`item-${product.id}`}
-                    className={`border-b border-gray-50/50 cursor-pointer hover:bg-blue-800/10 flex justify-between rounded-xl mx-2
+                    className={`border-b border-gray-50/50 cursor-pointer hover:bg-fuchsia-800/10 flex justify-between rounded-xl mx-2
                       ${ itemPressLoading ? "animate-pulse" : "" }`}
                     onClick={() =>
                       !itemPressLoading && handleOnItemPress(product)
