@@ -1,4 +1,5 @@
-import { SideMenuList } from "@app/components/layout/MainLayout";
+
+import { SideMenuList } from "@app/components/layout/SideMenuList";
 import { useEffect } from "react";
 import { Outlet, useLocation, useNavigate } from "react-router";
 export default function MenuPage() {

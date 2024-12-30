@@ -7,9 +7,9 @@ export default {
   ],
   theme: {
     fontFamily: {
-      'sans': ['Nunito'],
-      'serif': ["PT Serif"],
-      'mono': ['Fira Mono'],
+      'sans': ['Nunito', 'sans-serif'],
+      'serif': ["PT Serif", 'serif'],
+      'mono': ['Fira Mono', 'mono'],
     }
   }
 }
