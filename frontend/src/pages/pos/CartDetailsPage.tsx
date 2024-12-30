@@ -142,11 +142,6 @@ export default function CartDetailsPage() {
         />
       </div>
       <div className="h-full overflow-auto grid grid-rows-[1fr_auto_40px] gap-4 w-full ">
-        {/* <div className="">
-          <Select>
-            <option value="">Table</option>
-          </Select>
-        </div> */}
         <ScrollView className="h-full w-full overflow-auto rounded-2xl border bg-white">
           <table className="w-full ">
             <thead>
