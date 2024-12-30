@@ -10,31 +10,22 @@ import {
     UUIDV4,
 } from "sequelize";
 import { sequelize } from "@app/db/conn";
-import { Kot } from "./kot";
-import { Product } from "../product/product";
+import { Order } from "./order";
 
-class KotItem extends Model<
-    InferAttributes<KotItem, { omit: "kot" | "product" }>,
-    InferCreationAttributes<KotItem, { omit: "kot" | "product" }>
+class Kot extends Model<
+    InferAttributes<Kot, { omit: "order" }>,
+    InferCreationAttributes<Kot, { omit: "order" }>
 > {
     declare id: CreationOptional<string>;
-    declare kotId: ForeignKey<Kot["id"]>;
-    declare productId: ForeignKey<Product["id"]>;
-    declare quantity: number;
+    declare orderId: ForeignKey<Order["id"]>;
 
     declare createdAt: CreationOptional<Date>;
     declare updatedAt: CreationOptional<Date>;
 
-    declare kot?: NonAttribute<Kot>;
-    declare product?: NonAttribute<Product>;
-
-    declare static associations: {
-        kot: Association<KotItem, Kot>;
-        product: Association<KotItem, Product>;
-    };
+    declare order?: NonAttribute<Order>;
 }
 
-KotItem.init(
+Kot.init(
     {
         id: {
             type: DataTypes.UUID,
@@ -43,14 +34,13 @@ KotItem.init(
             allowNull: false,
             defaultValue: UUIDV4,
         },
-        quantity: DataTypes.INTEGER,
         createdAt: DataTypes.DATE,
         updatedAt: DataTypes.DATE,
     },
     {
         sequelize: sequelize,
-        tableName: "KotItems",
+        tableName: "Kots",
     }
 );
 
-export { KotItem };
+export { Kot };

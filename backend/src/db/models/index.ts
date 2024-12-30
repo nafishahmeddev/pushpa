@@ -4,8 +4,7 @@ import { Table } from "./restaurant/table";
 import { ProductCategory } from "./product/product-category";
 import { Sequence } from "./sequence";
 import { User } from "./user/user";
-import { Kot } from "./kot/kot";
-import { KotItem } from "./kot/kot-item";
+import { Kot } from "./order/kot";
 import { Location } from "./restaurant/location";
 import { Invoice } from "./invoice/invoice";
 import { InvoiceItem } from "./invoice/invoice-item";
@@ -122,27 +121,15 @@ InvoiceItem.belongsTo(Invoice, {
 });
 
 //Kot
-Kot.belongsTo(Table, {
+Kot.belongsTo(Order, {
   targetKey: "id",
-  foreignKey: "tableId",
-  as: "table"
+  foreignKey: "orderId",
+  as: "order"
 });
 
-Kot.hasMany(KotItem, {
+Kot.hasMany(OrderItem, {
   foreignKey: "kotId",
   as: "items"
-})
-
-KotItem.belongsTo(Kot, {
-  targetKey: "id",
-  foreignKey: "kotId",
-  as: "kot"
-})
-
-KotItem.belongsTo(Product, {
-  targetKey: "id",
-  foreignKey: "productId",
-  as: "product"
 })
 
 //User 
