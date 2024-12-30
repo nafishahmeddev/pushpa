@@ -14,12 +14,13 @@ import { Restaurant } from "../restaurant/restaurant";
 import { OrderItem } from "./order-item";
 import { Table } from "../restaurant/table";
 
+type OrderStatus = "Draft" | "Pending" | "Cancelled" | "Paid" | "Completed";
 class Order extends Model<
-    InferAttributes<Order, { omit: "restaurant" | "table"}>,
+    InferAttributes<Order, { omit: "restaurant" | "table" }>,
     InferCreationAttributes<Order, { omit: "restaurant" | "table" }>
 > {
     declare id: CreationOptional<string>;
-    declare name: string;
+    declare status: CreationOptional<OrderStatus>;
     declare restaurantId: ForeignKey<Restaurant["id"]>;
     declare tableId: ForeignKey<Table["id"]>;
 
@@ -46,10 +47,12 @@ Order.init(
             allowNull: false,
             defaultValue: UUIDV4,
         },
-        name: {
-            type: DataTypes.STRING,
-            allowNull: false,
+        status: {
+            type: DataTypes.ENUM,
+            values: ["Draft", "Pending", "Cancelled", "Paid", "Completed",],
+            defaultValue: "Draft"
         },
+
         createdAt: DataTypes.DATE,
         updatedAt: DataTypes.DATE,
     },

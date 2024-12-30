@@ -22,7 +22,7 @@ class OrderItem extends Model<
 > {
     declare id: CreationOptional<string>;
     declare quantity: number;
-    declare status: OrderItemStatus;
+    declare status: CreationOptional<OrderItemStatus>;
 
     declare orderId: ForeignKey<Order["id"]>;
     declare kotId: ForeignKey<Kot["id"]>;
