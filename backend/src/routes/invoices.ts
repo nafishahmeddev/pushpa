@@ -4,9 +4,9 @@ import { IRequest, IResponse } from "@app/interfaces/vendors/express";
 import { Router } from "express";
 import { InferAttributes, Op, WhereOptions } from "sequelize";
 
-const InvoicesRoute = Router();
+const InvoicesRouter = Router();
 
-InvoicesRoute.get("/", async (req: IRequest, res: IResponse) => {
+InvoicesRouter.get("/", async (req: IRequest, res: IResponse) => {
     const menu = await Invoice.findAll({
         order: [["name", "asc"]],
     });
@@ -16,7 +16,7 @@ InvoicesRoute.get("/", async (req: IRequest, res: IResponse) => {
     })
 })
 
-InvoicesRoute.post("/paginate", async (req: IRequest, res: IResponse) => {
+InvoicesRouter.post("/paginate", async (req: IRequest, res: IResponse) => {
     const page: number = Number(req.query.page || 1);
     const limit: number = Number(req.query.limit || 20);
     const filter: {
@@ -52,7 +52,7 @@ InvoicesRoute.post("/paginate", async (req: IRequest, res: IResponse) => {
     })
 })
 
-InvoicesRoute.get("/:invoiceId", async (req: IRequest, res: IResponse) => {
+InvoicesRouter.get("/:invoiceId", async (req: IRequest, res: IResponse) => {
     const invoiceId = req.params.invoiceId;
 
     const invoice = await Invoice.findByPk(invoiceId, {
@@ -75,7 +75,7 @@ InvoicesRoute.get("/:invoiceId", async (req: IRequest, res: IResponse) => {
     })
 });
 
-InvoicesRoute.get("/:invoiceId/receipt", async (req: IRequest, res: IResponse) => {
+InvoicesRouter.get("/:invoiceId/receipt", async (req: IRequest, res: IResponse) => {
     const invoiceId = req.params.invoiceId;
 
     const invoice = await Invoice.findByPk(invoiceId, {
@@ -98,4 +98,4 @@ InvoicesRoute.get("/:invoiceId/receipt", async (req: IRequest, res: IResponse) =
     }
     res.render("invoice-receipt.ejs", { order: invoice.toJSON() })
 });
-export default InvoicesRoute;
+export default InvoicesRouter;

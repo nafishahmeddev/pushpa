@@ -1,24 +1,27 @@
-import express, { Application } from "express";
 import dotenv from "dotenv";
 dotenv.config();
+import path from 'path';
+import express, { Application } from "express";
 import consola from "consola";
-import menuRouter from "@app/routes/menu";
+import moment from "moment";
+
+import { sequelize } from "@app/db/conn";
+
+import cors from "cors";
 import MainMiddleware from "@app/middleware/main";
 import LocaleMiddleware from "@app/middleware/locale";
-import { sequelize } from "@app/db/conn";
-import cors from "cors";
+import AuthMiddleware from '@app/middleware/auth';
+
+import MenuRouter from "@app/routes/menu";
 import CategoriesRouter from "@app/routes/categories";
 import ProductsRouter from "@app/routes/products";
-import InvoicesRoute from "@app/routes/invoices";
-import path from 'path';
-import UsersRouter from './routes/users';
-import AuthMiddleware from './middleware/auth';
-import AuthRouter from './routes/auth';
-import moment from "moment";
-import TablesRouter from "./routes/tables";
-import DashboardRouter from "./routes/dashboard";
-import LocationsRouter from "./routes/locations";
-import OrdersRouter from "./routes/orders";
+import InvoicesRouter from "@app/routes/invoices";
+import UsersRouter from '@app/routes/users';
+import AuthRouter from '@app/routes/auth';
+import TablesRouter from "@app/routes/tables";
+import DashboardRouter from "@app/routes/dashboard";
+import LocationsRouter from "@app/routes/locations";
+import OrdersRouter from "@app/routes/orders";
 
 const app: Application = express();
 const port = process.env.PORT || 3000;
@@ -28,15 +31,22 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(MainMiddleware);
 app.use(LocaleMiddleware);
+
 app.set("view engine", "ejs");
 app.set('views', path.resolve('./views/'))
+
+//set express locals
 app.locals.moment = moment;
 
+
 async function main() {
+  consola.info("[DB]","Booting the database")
   await sequelize.sync({ alter: true });
-  app.use("/api/v1/menu", AuthMiddleware, menuRouter);
+
+  consola.info("[HTTP]","Attaching the routers")
+  app.use("/api/v1/menu", AuthMiddleware, MenuRouter);
   app.use("/api/v1/dashboard", AuthMiddleware, DashboardRouter);
-  app.use("/api/v1/invoices", AuthMiddleware, InvoicesRoute);
+  app.use("/api/v1/invoices", AuthMiddleware, InvoicesRouter);
   app.use("/api/v1/categories", AuthMiddleware, CategoriesRouter);
   app.use("/api/v1/products", AuthMiddleware, ProductsRouter);
   app.use("/api/v1/orders", AuthMiddleware, OrdersRouter);
@@ -44,10 +54,15 @@ async function main() {
   app.use("/api/v1/locations", AuthMiddleware, LocationsRouter);
   app.use("/api/v1/tables", AuthMiddleware, TablesRouter);
   app.use("/api/v1/auth", AuthRouter);
+
+  //frontend route
   app.use(express.static(path.resolve(process.env.FRONTEND_PATH || "")))
   app.use("*", express.static(path.resolve(path.join(process.env.FRONTEND_PATH || "", "index.html"))))
-  app.listen(port, () => {
-    consola.info("[HTTP]", `Listening to ${port}`);
+
+  //start the server
+  consola.info("[HTTP]","Starting http server")
+  app.listen({port: port, hostname:"localhost"}, () => {
+    consola.info("[HTTP]", `Server is running on ${port}`);
   });
 }
 
