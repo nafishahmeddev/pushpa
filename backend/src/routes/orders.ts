@@ -228,15 +228,7 @@ OrdersRouter.get("/:orderId/place", async (req: IRequest, res: IResponse) => {
             sgst: 0
         });
 
-        const kot = await Kot.create({
-            orderId: order.id,
-            restaurantId: order.restaurantId
-        });
-
-        await OrderItem.update({ kotId: kot.id, status: "Delivered" }, { where: { orderId: order.id } });
-
         const cartItems = order.items ?? [];
-
         await Promise.all(cartItems.map(async (item) => {
             const price = item?.product?.price ?? 0;
             const cgst = item?.product?.sgst ?? 0;
@@ -262,13 +254,18 @@ OrdersRouter.get("/:orderId/place", async (req: IRequest, res: IResponse) => {
 
         await invoice.save({ transaction: transaction });
 
-        await order.update({ status: "Completed" }, { transaction: transaction });
+        const kot = await Kot.create({
+            orderId: order.id,
+            restaurantId: order.restaurantId
+        });
+
+        await OrderItem.update({ kotId: kot.id, status: "Delivered" }, { where: { orderId: order.id } });
+        await order.update({ status: "Completed", invoiceId: invoice.id }, { transaction: transaction });
 
         invoiceId = invoice.id;
     }).catch(er => {
         console.log(er);
         return undefined;
-
     })
 
     if (invoiceId) {
