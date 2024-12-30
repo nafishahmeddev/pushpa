@@ -129,7 +129,7 @@ export default function CartDetailsPage() {
     <React.Fragment>
       <div className="h-full overflow-auto">
         <MenuList
-          className=""
+          className="border rounded-xl"
           onItemPress={(item) =>
             onAdd({
               id: "",
@@ -141,8 +141,13 @@ export default function CartDetailsPage() {
           }
         />
       </div>
-      <div className="h-full overflow-auto grid grid-rows-[1fr_auto_40px] w-full border-s">
-        <ScrollView className="h-full w-full overflow-auto bg-white">
+      <div className="h-full overflow-auto grid grid-rows-[1fr_auto_40px] gap-4 w-full ">
+        {/* <div className="">
+          <Select>
+            <option value="">Table</option>
+          </Select>
+        </div> */}
+        <ScrollView className="h-full w-full overflow-auto rounded-2xl border bg-white">
           <table className="w-full ">
             <thead>
               <tr className="bg-gray-100 sticky top-0">
@@ -183,7 +188,7 @@ export default function CartDetailsPage() {
             </div>
           )}
         </ScrollView>
-        <div className="h-full bg-white flex border-y">
+        <div className="h-full bg-white flex rounded-2xl border">
           <table>
             <tfoot>
               <tr>
@@ -209,7 +214,7 @@ export default function CartDetailsPage() {
         <div className="h-full flex gap-4">
           <div className="flex-1"></div>
           <button
-            className="h-full bg-blue-800 hover:opacity-80 text-white px-6"
+            className="h-full bg-blue-800 hover:opacity-80 text-white rounded-xl px-6"
             onClick={onPlaceOrder}
             disabled={items.length == 0}
           >
