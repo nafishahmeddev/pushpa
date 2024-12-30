@@ -1,5 +1,5 @@
 
-import { Order } from "@app/db/models";
+import { Invoice } from "@app/db/models";
 import { IRequest, IResponse } from "@app/interfaces/vendors/express";
 import { Router } from "express";
 import moment from "moment";
@@ -13,7 +13,7 @@ DashboardRouter.post("/stats", async (req: IRequest, res: IResponse) => {
     const start = moment().startOf("D");
     const end = moment().endOf("D");
 
-    const sales = await Order.sum("amount", {
+    const sales = await Invoice.sum("amount", {
         where: {
             createdAt: {
                 [Op.between]: [start.toDate(), end.toDate()]
@@ -22,7 +22,7 @@ DashboardRouter.post("/stats", async (req: IRequest, res: IResponse) => {
         }
     })
 
-    const orders = await Order.count({
+    const invoices = await Invoice.count({
         where: {
             createdAt: {
                 [Op.between]: [start.toDate(), end.toDate()]
@@ -34,7 +34,7 @@ DashboardRouter.post("/stats", async (req: IRequest, res: IResponse) => {
         message: "Successful",
         result: {
             sales,
-            orders
+            invoices
         }
     })
 })

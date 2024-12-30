@@ -1,16 +1,16 @@
-export type IOrder = {
+export type IInvoice = {
     id: string,
     receiptNo:number,
     amount: number,
     cgst: number,
     sgst: number,
-    items?: Array<IOrderItem>
+    items?: Array<IInvoiceItem>
     createdAt: Date,
     updatedAt: Date,
 }
 
 
-export type IOrderItem = {
+export type IInvoiceItem = {
     id: string,
     name: string,
     quantity: number,

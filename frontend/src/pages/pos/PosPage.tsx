@@ -1,6 +1,6 @@
 import Formatter from "@app/lib/formatter";
-import CartsApi from "@app/services/carts";
-import { ICart } from "@app/types/cart";
+import OrdersApi from "@app/services/orders";
+import { IOrder } from "@app/types/orders";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { NavLink, Outlet, useLocation, useNavigate } from "react-router";
@@ -8,14 +8,14 @@ import {Icon}from "@iconify/react";
 export default function PosPage() {
   const navigate = useNavigate();
   const location = useLocation();
-  const [carts, setCarts] = useState<Array<ICart>>([]);
+  const [orders, setCarts] = useState<Array<IOrder>>([]);
 
   const refresh = () => {
-    const promise = CartsApi.all();
+    const promise = OrdersApi.all();
     return promise;
   };
   const handleNewCart = () => {
-    const promise = CartsApi.create()
+    const promise = OrdersApi.create()
       .then((item) => {
         navigate("/pos/" + item.id);
         refresh().then(setCarts);
@@ -49,10 +49,10 @@ export default function PosPage() {
   return (
     <div className="h-full grid grid-rows-[35px_1fr] m-auto p-4 gap-4">
       <div className="flex flex-row h-full gap-2 ">
-        {carts.map((cart, index) => (
+        {orders.map((order, index) => (
           <NavLink
-            key={`cart-item-${cart.id}`}
-            to={"/pos/" + cart.id}
+            key={`order-item-${order.id}`}
+            to={"/pos/" + order.id}
             className={({ isActive }) =>
               `rounded-xl py-3 flex  items-center justify-between flex-nowrap text-nowrap px-3 gap-2  hover:opacity-50  border transition-all cursor-pointer
               text-sm  
@@ -60,7 +60,7 @@ export default function PosPage() {
             }
           >
             <strong className="">{index + 1}</strong>
-            <span>{Formatter.time(cart.createdAt)}</span>
+            <span>{Formatter.time(order.createdAt)}</span>
           </NavLink>
         ))}
 

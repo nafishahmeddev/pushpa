@@ -1,23 +1,23 @@
 import Formatter from "@app/lib/formatter";
 import QuantityButton from "./components/QuantityButton";
 import React, { useEffect, useState } from "react";
-import { ICartItem } from "@app/types/cart";
+import { IOrderItem } from "@app/types/orders";
 import { useNavigate, useParams } from "react-router";
-import CartsApi from "@app/services/carts";
+import OrdersApi from "@app/services/orders";
 import { cloneDeep } from "lodash";
-import CartUtil from "@app/lib/cart";
+import OrderUtil from "@app/lib/order";
 import MenuList from "@app/components/menu/MenuList";
-import { IOrder } from "@app/types/order";
+import { IInvoice } from "@app/types/invoice";
 import ScrollView from "@app/components/ui/ScrollView";
 import { AxiosError } from "axios";
 import { beep } from "@app/lib/notify";
 export default function CartDetailsPage() {
   const navigate = useNavigate();
   const { cartId } = useParams<{ cartId: string }>();
-  const [items, setItems] = useState<Array<ICartItem>>([]);
-  const cartUtil = new CartUtil(items);
-  const onAdd = (item: ICartItem) => {
-    return CartsApi.addItem(cartId as string, {
+  const [items, setItems] = useState<Array<IOrderItem>>([]);
+  const cartUtil = new OrderUtil(items);
+  const onAdd = (item: IOrderItem) => {
+    return OrdersApi.addItem(cartId as string, {
       productId: item.productId,
     }).then(() => {
       beep();
@@ -38,8 +38,8 @@ export default function CartDetailsPage() {
     });
   };
 
-  const onRemove = (item: ICartItem) => {
-    return CartsApi.delItem(cartId as string, {
+  const onRemove = (item: IOrderItem) => {
+    return OrdersApi.delItem(cartId as string, {
       productId: item.productId,
     }).then(() => {
       beep();
@@ -60,8 +60,8 @@ export default function CartDetailsPage() {
     });
   };
 
-  const onUpdate = (item: ICartItem, quantity: number) => {
-    return CartsApi.updateItem(cartId as string, {
+  const onUpdate = (item: IOrderItem, quantity: number) => {
+    return OrdersApi.updateItem(cartId as string, {
       productId: item.productId,
       quantity,
     }).then(() => {
@@ -83,11 +83,11 @@ export default function CartDetailsPage() {
 
   const onPlaceOrder = () => {
     if (items.length) {
-      CartsApi.place(cartId as string)
-        .then((order: IOrder) => {
+      OrdersApi.place(cartId as string)
+        .then((invoice: IInvoice) => {
           const w = window.open(
             import.meta.env.VITE_BASE_URL +
-              `/orders/${order.id}/receipt?authorization=${localStorage.getItem(
+              `/invoices/${invoice.id}/receipt?authorization=${localStorage.getItem(
                 "accessToken"
               )}`,
             "_blank",
@@ -114,9 +114,9 @@ export default function CartDetailsPage() {
   };
 
   useEffect(() => {
-    CartsApi.get(cartId as string)
+    OrdersApi.get(cartId as string)
       .then((res) => {
-        setItems(res.items as Array<ICartItem>);
+        setItems(res.items as Array<IOrderItem>);
       })
       .catch((err: AxiosError) => {
         if (err.status == 404) {
@@ -179,7 +179,7 @@ export default function CartDetailsPage() {
           {items.length == 0 && (
             <div className="p-6 flex items-center justify-center h-[calc(100%-50px)] flex-col gap-3">
               <img src="/undraw_notify_rnwe.svg" width={120} />
-              <p className="text-sm">Cart is empty please add some item.</p>
+              <p className="text-sm">Order is empty please add some item.</p>
             </div>
           )}
         </ScrollView>

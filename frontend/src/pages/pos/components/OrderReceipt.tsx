@@ -1,12 +1,12 @@
 import Formatter from "@app/lib/formatter";
-import { IOrder } from "@app/types/order";
+import { IInvoice } from "@app/types/invoice";
 import moment from "moment";
 import React from "react";
 import Barcode from "react-barcode";
 type OrderReceiptProps = {
-  order: IOrder;
+  invoice: IInvoice;
 };
-export function OrderReceipt({ order }: OrderReceiptProps) {
+export function OrderReceipt({ invoice }: OrderReceiptProps) {
   return (
     <div className="flex flex-col gap-3 p-6">
       <div className="text-center">
@@ -14,8 +14,8 @@ export function OrderReceipt({ order }: OrderReceiptProps) {
         <p className="text-xs">Palsanda, Murshidabad, West Bengal</p>
       </div>
       <div className="flex justify-between text-xs pt-3 pb-2  font-bold">
-        <span>Receipt No: #{order.receiptNo}</span>
-        <span>Date: {moment(order.createdAt).format("DD/MM/YYYY")}</span>
+        <span>Receipt No: #{invoice.receiptNo}</span>
+        <span>Date: {moment(invoice.createdAt).format("DD/MM/YYYY")}</span>
       </div>
       <div>
         <table className="text-xs w-full">
@@ -31,8 +31,8 @@ export function OrderReceipt({ order }: OrderReceiptProps) {
             <tr>
               <td className="py-1"></td>
             </tr>
-            {(order.items ?? []).map((item) => (
-              <React.Fragment key={`order-item-${item.id}`}>
+            {(invoice.items ?? []).map((item) => (
+              <React.Fragment key={`invoice-item-${item.id}`}>
                 <tr>
                   <td className="px-1 py-1 ps-0">{item.name}</td>
                   <td className="px-1 py-1 text-end">
@@ -52,20 +52,20 @@ export function OrderReceipt({ order }: OrderReceiptProps) {
           <tr>
             <td>Subtotal(excl. Tax):</td>
             <td className="text-end">
-              {Formatter.money((order.amount -( order.cgst + order.sgst)))}
+              {Formatter.money((invoice.amount -( invoice.cgst + invoice.sgst)))}
             </td>
           </tr>
 
           <tr>
             <td>Tax:</td>
             <td className="text-end">
-              {Formatter.money(order.cgst + order.sgst)}
+              {Formatter.money(invoice.cgst + invoice.sgst)}
             </td>
           </tr>
 
           <tr>
             <td>Total:</td>
-            <td className="text-end">{Formatter.money(order.amount)}</td>
+            <td className="text-end">{Formatter.money(invoice.amount)}</td>
           </tr>
         </table>
       </div>
@@ -76,7 +76,7 @@ export function OrderReceipt({ order }: OrderReceiptProps) {
       </div>
       <div className="w-60 m-auto">
         <Barcode
-          value={order.id}
+          value={invoice.id}
           width={1}
           height={45}
           renderer="img"

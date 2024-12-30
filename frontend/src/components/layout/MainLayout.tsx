@@ -18,15 +18,15 @@ const mainmenu = [
     route: "/pos",
   },
   {
-    label: "Orders",
+    label: "Invoices",
     icon: "ep:fork-spoon",
-    route: "/orders",
+    route: "/invoices",
   },
 
   // {
   //   label: "Kitchen",
   //   icon: "solar:chef-hat-minimalistic-outline",
-  //   route: "/orders",
+  //   route: "/invoices",
   // },
   {
     label: "Table",

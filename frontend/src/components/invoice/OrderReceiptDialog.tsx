@@ -1,5 +1,5 @@
 import Formatter from "@app/lib/formatter";
-import { IOrder } from "@app/types/order";
+import { IInvoice } from "@app/types/invoice";
 import moment from "moment";
 import React from "react";
 import { Icon } from "@iconify/react";
@@ -8,19 +8,19 @@ import { useAppSelector } from "@app/store";
 import { AuthStateLoggedIn } from "@app/store/slices/auth";
 type OrderReceiptDialogOpenProps = {
   open: true;
-  order: IOrder;
+  invoice: IInvoice;
   onClose?: () => void;
 };
 type OrderReceiptDialogCloseProps = {
   open: boolean;
-  order?: IOrder;
+  invoice?: IInvoice;
   onClose?: () => void;
 };
 export type OrderReceiptDialogProps =
   | OrderReceiptDialogOpenProps
   | OrderReceiptDialogCloseProps;
 export function OrderReceiptDialog({
-  order,
+  invoice,
   open,
   onClose,
 }: OrderReceiptDialogProps) {
@@ -40,15 +40,15 @@ export function OrderReceiptDialog({
         >
           <Icon icon="ic:round-close" height={20} width={20} />
         </button>
-        {order && (
+        {invoice && (
           <React.Fragment>
             <div className="text-center">
               <h3 className="font-bold italic">{auth.user.restaurant?.name}</h3>
               <p className="text-xs">{auth.user.restaurant?.address}</p>
             </div>
             <div className="flex justify-between text-xs pt-3 pb-2  font-bold">
-              <span>Receipt No: #{order.receiptNo}</span>
-              <span>Date: {moment(order.createdAt).format("DD/MM/YYYY")}</span>
+              <span>Receipt No: #{invoice.receiptNo}</span>
+              <span>Date: {moment(invoice.createdAt).format("DD/MM/YYYY")}</span>
             </div>
             <div>
               <table className="text-xs w-full">
@@ -64,8 +64,8 @@ export function OrderReceiptDialog({
                   <tr>
                     <td className="py-1"></td>
                   </tr>
-                  {(order.items ?? []).map((item) => (
-                    <React.Fragment key={`order-item-${item.id}`}>
+                  {(invoice.items ?? []).map((item) => (
+                    <React.Fragment key={`invoice-item-${item.id}`}>
                       <tr>
                         <td className="px-1 py-1 ps-0">{item.name}</td>
                         <td className="px-1 py-1 text-end">
@@ -85,20 +85,20 @@ export function OrderReceiptDialog({
                 <tr>
                   <td>Subtotal(excl. Tax):</td>
                   <td className="text-end">
-                    {Formatter.money(order.amount - (order.cgst + order.sgst))}
+                    {Formatter.money(invoice.amount - (invoice.cgst + invoice.sgst))}
                   </td>
                 </tr>
 
                 <tr>
                   <td>Tax:</td>
                   <td className="text-end">
-                    {Formatter.money(order.cgst + order.sgst)}
+                    {Formatter.money(invoice.cgst + invoice.sgst)}
                   </td>
                 </tr>
 
                 <tr>
                   <td>Total:</td>
-                  <td className="text-end">{Formatter.money(order.amount)}</td>
+                  <td className="text-end">{Formatter.money(invoice.amount)}</td>
                 </tr>
               </table>
             </div>

@@ -20,7 +20,7 @@ const ProductsPage = lazy(
   () => import("@app/pages/settings/products/ProductsPage")
 );
 const DashboardPage = lazy(() => import("@app/pages/dashboard/DashboardPage"));
-const OrdersPage = lazy(() => import("@app/pages/orders/OrdersPage"));
+const InvoicesPage = lazy(() => import("@app/pages/invoices/InvoicesPage"));
 
 function App() {
   const auth = useAppSelector((state) => state.auth);
@@ -52,7 +52,7 @@ function App() {
                   <Route path="locations" Component={LocationsPage} />
                   <Route path="tables" Component={TablesPage} />
                 </Route>
-                <Route path="orders" Component={OrdersPage} />
+                <Route path="invoices" Component={InvoicesPage} />
                 <Route path="users" Component={UsersPage} />
                 <Route path="location-scout" Component={LocationScoutPage} />
               </Route>

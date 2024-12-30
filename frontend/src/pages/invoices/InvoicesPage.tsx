@@ -2,14 +2,14 @@ import ScrollView from "@app/components/ui/ScrollView";
 import React, { useEffect, useState } from "react";
 import { Icon } from "@iconify/react";
 import Formatter from "@app/lib/formatter";
-import OrdersApi from "@app/services/orders";
-import { IOrder } from "@app/types/order";
+import OrdersApi from "@app/services/invoices";
+import { IInvoice } from "@app/types/invoice";
 import { useFormik } from "formik";
 import Spinner from "@app/components/ui/Spinner";
 import {
   OrderReceiptDialog,
   OrderReceiptDialogProps,
-} from "@app/components/order/OrderReceiptDialog";
+} from "@app/components/invoice/OrderReceiptDialog";
 import Table, {
   TableBody,
   TableCell,
@@ -19,7 +19,7 @@ import Table, {
 import Pagination from "@app/components/ui/Pagination";
 import Input from "@app/components/ui/form/input";
 
-export default function ProductsPage() {
+export default function InvoicesPage() {
   const form = useFormik({
     initialValues: {
       createdAt: ["", ""],
@@ -30,7 +30,7 @@ export default function ProductsPage() {
   const [result, setResult] = useState<{
     pages: number;
     page: number;
-    records: Array<IOrder>;
+    records: Array<IInvoice>;
   }>({
     pages: 1,
     page: 0,
@@ -53,7 +53,7 @@ export default function ProductsPage() {
   const handleOnDetails = (orderId: string, print: boolean = false) => {
     const w = window.open(
       import.meta.env.VITE_BASE_URL +
-        `/orders/${orderId}/receipt?authorization=${localStorage.getItem(
+        `/invoices/${orderId}/receipt?authorization=${localStorage.getItem(
           "accessToken"
         )}`,
       "_blank",
@@ -84,7 +84,7 @@ export default function ProductsPage() {
       <div className="h-full  p-4 grid grid-rows-[55px_1fr_35px] gap-6">
         <div className=" flex gap-4 items-center">
           <div className="flex-1 flex flex-col items-start justify-center">
-            <h2 className="text-2xl">Orders</h2>
+            <h2 className="text-2xl">Invoices</h2>
             <p>Showing Invoices for Today</p>
           </div>
 
@@ -135,8 +135,8 @@ export default function ProductsPage() {
               </TableRow>
             </TableHead>
             <TableBody>
-              {result.records.map((order, index: number) => (
-                <TableRow key={`product-${order.id}`}>
+              {result.records.map((invoice, index: number) => (
+                <TableRow key={`product-${invoice.id}`}>
                   <TableCell className="px-3 py-2 w-0">
                     {(query.page - 1) * query.limit + index + 1}
                   </TableCell>
@@ -144,14 +144,14 @@ export default function ProductsPage() {
                     <div className="inline-flex flex-nowrap gap-2 text-gray-600 px-2">
                       <button
                         className={`hover:opacity-50`}
-                        onClick={() => handleOnDetails(order.id)}
+                        onClick={() => handleOnDetails(invoice.id)}
                       >
                         <Icon icon="ph:receipt" height={20} width={20} />
                       </button>
 
                       <button
                         className={`hover:opacity-50 text-blue-700`}
-                        onClick={() => handleOnDetails(order.id, true)}
+                        onClick={() => handleOnDetails(invoice.id, true)}
                       >
                         <Icon
                           icon="lsicon:print-outline"
@@ -161,15 +161,15 @@ export default function ProductsPage() {
                       </button>
                     </div>
                   </TableCell>
-                  <TableCell>{order.receiptNo}</TableCell>
+                  <TableCell>{invoice.receiptNo}</TableCell>
                   <TableCell className="text-nowrap">
-                    {Formatter.datetime(order.createdAt)}
+                    {Formatter.datetime(invoice.createdAt)}
                   </TableCell>
                   <TableCell className="text-end">
-                    {Formatter.money(order.sgst + order.cgst)}
+                    {Formatter.money(invoice.sgst + invoice.cgst)}
                   </TableCell>
                   <TableCell className="text-end">
-                    {Formatter.money(order.amount)}
+                    {Formatter.money(invoice.amount)}
                   </TableCell>
                 </TableRow>
               ))}

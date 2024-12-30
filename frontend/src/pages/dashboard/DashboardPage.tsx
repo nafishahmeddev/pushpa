@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 export default function DashboardPage() {
   const [result, setResult] = useState({
     sales: 0,
-    orders:0
+    invoices:0
   })
 
   const fetchStats = () => DashboardApi.stats().then(setResult);
@@ -19,8 +19,8 @@ export default function DashboardPage() {
         <span className="text-2xl text-blue-700">{Formatter.money(result.sales)}</span>
       </div>
       <div className="border bg-white rounded-xl h-full p-4 flex flex-col gap-2 w-full">
-        <p>Today's Orders</p>
-        <span className="text-2xl text-blue-700">{result.orders}</span>
+        <p>Today's Invoices</p>
+        <span className="text-2xl text-blue-700">{result.invoices}</span>
       </div>
     </div>
   );
