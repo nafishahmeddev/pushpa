@@ -111,11 +111,4 @@ AuthRouter.get("/verify", AuthMiddleware, async (req: IRequest, res: IResponse) 
     })
 })
 
-function toTitleCase(str: string) {
-    return str.replace(
-        /\w\S*/g,
-        text => text.charAt(0).toUpperCase() + text.substring(1).toLowerCase()
-    );
-}
-
 export default AuthRouter;

@@ -17,6 +17,7 @@ import AuthMiddleware from './middleware/auth';
 import AuthRouter from './routes/auth';
 import moment from "moment";
 import TablesRouter from "./routes/tables";
+import DashboardRouter from "./routes/dashboard";
 
 const app: Application = express();
 const port = process.env.PORT || 3000;
@@ -33,6 +34,7 @@ app.locals.moment = moment;
 async function main() {
   await sequelize.sync({ alter: true });
   app.use("/api/v1/menu", AuthMiddleware, menuRouter);
+  app.use("/api/v1/dashboard", AuthMiddleware, DashboardRouter);
   app.use("/api/v1/carts", AuthMiddleware, CartsRouter);
   app.use("/api/v1/categories", AuthMiddleware, CategoriesRouter);
   app.use("/api/v1/products", AuthMiddleware, ProductsRouter);
