@@ -5,5 +5,6 @@ export const sequelize = new Sequelize(process.env.DB_NAME as string, process.en
   host: process.env.DB_HOST as string,
   port: Number(process.env.DB_PORT),
   dialect: "mysql",
-  logging: e => consola.info("[SEQUELIZE]", e)
+  // logging: e => consola.info("[SEQUELIZE]", e)
+  logging: false
 });
