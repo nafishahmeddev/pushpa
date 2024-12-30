@@ -70,7 +70,7 @@ Invoice.addHook("beforeCreate", async function (invoice: Invoice, options) {
     if (!sequence) {
       sequence = await Sequence.create({
         table: Invoice.tableName, restaurantId: invoice.restaurantId,
-        value: 768789
+        value: 10000
       }, {
         transaction
       });
