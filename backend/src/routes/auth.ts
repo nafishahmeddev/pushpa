@@ -110,4 +110,27 @@ AuthRouter.get("/verify", AuthMiddleware, async (req: IRequest, res: IResponse) 
         }
     })
 })
+
+function toTitleCase(str: string) {
+    return str.replace(
+        /\w\S*/g,
+        text => text.charAt(0).toUpperCase() + text.substring(1).toLowerCase()
+    );
+}
+
+AuthRouter.get("/mig", async (req: IRequest, res: IResponse) => {
+    const categories = await ProductCategory.findAll();
+    for (const cat of categories) {
+        cat.name = toTitleCase(cat.name);
+        await cat.save();
+    }
+
+    const products = await Product.findAll();
+    for (const prod of products) {
+        prod.name = toTitleCase(prod.name);
+        await prod.save();
+    }
+
+
+});
 export default AuthRouter;
