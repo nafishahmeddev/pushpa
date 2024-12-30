@@ -29,6 +29,12 @@ export default function MenuPage() {
           },
 
           {
+            label:"Locations",
+            icon:"hugeicons:floor-plan",
+            route: "/settings/locations"
+          },
+
+          {
             label:"Tables",
             icon:"solar:armchair-outline",
             route: "/settings/tables"

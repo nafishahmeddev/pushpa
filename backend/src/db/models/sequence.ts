@@ -8,7 +8,7 @@ import {
   ForeignKey,
 } from "sequelize";
 import { sequelize } from "../conn";
-import { Restaurant } from "./restaurant";
+import { Restaurant } from "./restaurant/restaurant";
 
 class Sequence extends Model<
   InferAttributes<Sequence>,

@@ -1,6 +1,6 @@
 import { Product } from "./product/product";
-import { Restaurant } from "./restaurant";
-import { Table } from "./table/table";
+import { Restaurant } from "./restaurant/restaurant";
+import { Table } from "./restaurant/table";
 import { Order } from "./order/order";
 import { OrderItem } from "./order/order-item";
 import { ProductCategory } from "./product/product-category";
@@ -10,6 +10,7 @@ import { Sequence } from "./sequence";
 import { User } from "./user/user";
 import { Kot } from "./kot/kot";
 import { KotItem } from "./kot/kot-item";
+import { Location } from "./restaurant/location";
 
 //restaurant associations
 Restaurant.hasMany(ProductCategory, {
@@ -43,11 +44,18 @@ Product.belongsTo(ProductCategory, {
   as: "category",
 });
 
-//table
-Table.belongsTo(Restaurant, {
+//location
+Location.belongsTo(Restaurant, {
   targetKey: "id",
   foreignKey: "restaurantId",
   as: "restaurant",
+});
+
+//table
+Table.belongsTo(Location, {
+  targetKey: "id",
+  foreignKey: "locationId",
+  as: "location",
 });
 
 //Cart
@@ -149,5 +157,6 @@ export {
   Cart,
   CartItem,
   Sequence,
-  User
+  User,
+  Location
 };

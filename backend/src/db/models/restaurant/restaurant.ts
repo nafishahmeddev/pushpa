@@ -1,29 +1,15 @@
 import {
   Association,
   DataTypes,
-  HasManyAddAssociationMixin,
-  HasManyCountAssociationsMixin,
-  HasManyCreateAssociationMixin,
-  HasManyGetAssociationsMixin,
-  HasManyHasAssociationMixin,
-  HasManySetAssociationsMixin,
-  HasManyAddAssociationsMixin,
-  HasManyHasAssociationsMixin,
-  HasManyRemoveAssociationMixin,
-  HasManyRemoveAssociationsMixin,
   Model,
-  ModelDefined,
-  Optional,
-  Sequelize,
   InferAttributes,
   InferCreationAttributes,
   CreationOptional,
   NonAttribute,
-  ForeignKey,
   UUIDV4,
 } from "sequelize";
-import { sequelize } from "../conn";
-import { ProductCategory } from "./product/product-category";
+import { ProductCategory } from "../product/product-category";
+import { sequelize } from "@app/db/conn";
 
 class Restaurant extends Model<
   InferAttributes<Restaurant, { omit: "categories" }>,
@@ -66,7 +52,7 @@ Restaurant.init(
     updatedAt: DataTypes.DATE,
   },
   {
-    sequelize,
+    sequelize:sequelize,
     tableName: "Restaurants",
   }
 );

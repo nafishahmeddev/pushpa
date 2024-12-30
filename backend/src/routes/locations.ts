@@ -1,38 +1,25 @@
 
-import { Table } from "@app/db/models";
-import { Location } from "@app/db/models/restaurant/location";
+import { Location } from "@app/db/models";
 import { IRequest, IResponse } from "@app/interfaces/vendors/express";
 import { Router } from "express";
 import { InferAttributes, Op, WhereOptions } from "sequelize";
 
-const TablesRouter = Router();
-TablesRouter.get("/stats", async (req: IRequest, res: IResponse) => {
-    //build filter
-    const where: WhereOptions<InferAttributes<Table, {}>> = {
+const LocationsRouter = Router();
 
-    };
-
-
-    const tables = await Table.findAll({
+LocationsRouter.get("/", async (req: IRequest, res: IResponse) => {
+    const locations = await Location.findAll({
         order: [["name", "asc"]],
-        where: where,
-        include: [{
-            model: Location,
-            as: "location",
-            where: {
-                restaurantId: req.auth?.restaurantId
-            },
-            required: true
-        }]
-
+        where: {
+            restaurantId: req.auth?.restaurantId
+        },
     });
 
     res.json({
-        result: tables,
+        result: locations,
         message: "Successful"
     })
 })
-TablesRouter.post("/paginate", async (req: IRequest, res: IResponse) => {
+LocationsRouter.post("/paginate", async (req: IRequest, res: IResponse) => {
     const page: number = Number(req.query.page || 1);
     const limit: number = Number(req.query.limit || 20);
     const filter: {
@@ -42,8 +29,8 @@ TablesRouter.post("/paginate", async (req: IRequest, res: IResponse) => {
     } = req.body.filter;
 
     //build filter
-    const where: WhereOptions<InferAttributes<Table, {}>> = {
-
+    const where: WhereOptions<InferAttributes<Location, {}>> = {
+        restaurantId: req.auth?.restaurantId
     };
     if (filter.createdAt && filter.createdAt[0] && filter.createdAt[1]) {
         where.createdAt = {
@@ -55,20 +42,11 @@ TablesRouter.post("/paginate", async (req: IRequest, res: IResponse) => {
         where.name = { [Op.like]: "%" + filter.name + "%" }
     }
 
-    const paginatedOrders = await Table.findAndCountAll({
+    const paginatedOrders = await Location.findAndCountAll({
         order: [["name", "asc"]],
         limit: limit,
         offset: (page - 1) * limit,
         where: where,
-        include: [{
-            model: Location,
-            as:"location",
-            where:{
-                restaurantId: req.auth?.restaurantId
-            },
-            required: true
-        }]
-
     });
 
     const pages = Math.ceil(paginatedOrders.count / limit);
@@ -83,9 +61,9 @@ TablesRouter.post("/paginate", async (req: IRequest, res: IResponse) => {
 })
 
 
-TablesRouter.post("/", async (req: IRequest, res: IResponse) => {
+LocationsRouter.post("/", async (req: IRequest, res: IResponse) => {
     const body = req.body;
-    const category = await Table.create({
+    const category = await Location.create({
         ...body,
         restaurantId: req.auth?.restaurantId
     });
@@ -95,13 +73,13 @@ TablesRouter.post("/", async (req: IRequest, res: IResponse) => {
     })
 })
 
-TablesRouter.put("/:tableId", async (req: IRequest, res: IResponse) => {
-    const tableId = req.params.tableId;
+LocationsRouter.put("/:locationId", async (req: IRequest, res: IResponse) => {
+    const locationId = req.params.locationId;
 
-    const product = await Table.findByPk(tableId);
+    const product = await Location.findByPk(locationId);
     if (!product) {
         res.status(404).json({
-            message: "Table not found"
+            message: "Location not found"
         })
         return;
     }
@@ -113,11 +91,11 @@ TablesRouter.put("/:tableId", async (req: IRequest, res: IResponse) => {
     })
 });
 
-TablesRouter.delete("/:tableId", async (req: IRequest, res: IResponse) => {
-    const tableId = req.params.tableId;
-    const category = await Table.destroy({
+LocationsRouter.delete("/:locationId", async (req: IRequest, res: IResponse) => {
+    const locationId = req.params.locationId;
+    const category = await Location.destroy({
         where: {
-            id: tableId
+            id: locationId
         }
     });
     if (!category) {
@@ -130,4 +108,4 @@ TablesRouter.delete("/:tableId", async (req: IRequest, res: IResponse) => {
         message: "Successful"
     })
 });
-export default TablesRouter;
+export default LocationsRouter;

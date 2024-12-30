@@ -7,7 +7,7 @@ export default class TablesApi {
         page: number,
         records: Array<ITable>
     });
-    static create = (data: { name: string }) => ApiRequest.post("/tables", data).then(res => res.data.result as ITable);
+    static create = (data: { name: string, locationId: string }) => ApiRequest.post("/tables", data).then(res => res.data.result as ITable);
     static update = (id: string, data: { name: string }) => ApiRequest.put(`/tables/${id}`, data).then(res => res.data.result as ITable);
     static delete = (id: string) => ApiRequest.delete(`/tables/${id}`).then(res => res.data.message as string);
 }

@@ -1,12 +1,12 @@
-import { IRestaurant } from "./restaurant"
+import { ILocation } from "./location"
 
 export type ITable = {
     id: string,
     name: string,
+    locationId: string,
+    location?:ILocation,
     capacity: number,
     status: string,
-    restaurantId: string,
-    restaurant?: IRestaurant,
     createdAt: Date,
     updatedAt: Date,
 }

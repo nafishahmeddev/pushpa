@@ -1,37 +1,38 @@
 import {
-    Association,
     DataTypes,
     Model,
     InferAttributes,
     InferCreationAttributes,
     CreationOptional,
-    NonAttribute,
     ForeignKey,
     UUIDV4,
+    Association,
+    NonAttribute,
 } from "sequelize";
 import { sequelize } from "@app/db/conn";
-import { Restaurant } from "../restaurant";
+import { Location } from "./location";
 
 type TableStatus = "Occupied" | "Available" | "Reserved" | "Blocked";
 
 class Table extends Model<
-    InferAttributes<Table, { omit: "restaurant" }>,
-    InferCreationAttributes<Table, { omit: "restaurant" }>
+    InferAttributes<Table>,
+    InferCreationAttributes<Table>
 > {
     declare id: CreationOptional<string>;
     declare name: string;
     declare capacity: number;
     declare status: TableStatus;
-    declare restaurantId: ForeignKey<Restaurant["id"]>;
+    declare locationId: ForeignKey<Location["id"]>
 
     declare createdAt: CreationOptional<Date>;
     declare updatedAt: CreationOptional<Date>;
 
-    declare restaurant?: NonAttribute<Restaurant>;
+    declare location?: NonAttribute<Location>;
 
     declare static associations: {
-        restaurant: Association<Table, Restaurant>;
+        location: Association<Location, Location>;
     };
+  
 }
 
 Table.init(

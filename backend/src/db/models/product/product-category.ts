@@ -10,7 +10,7 @@ import {
   UUIDV4,
 } from "sequelize";
 import { sequelize } from "../../conn";
-import { Restaurant } from "../restaurant";
+import { Restaurant } from "../restaurant/restaurant";
 
 class ProductCategory extends Model<
   InferAttributes<ProductCategory, { omit: "restaurant" }>,

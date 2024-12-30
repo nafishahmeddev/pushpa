@@ -10,7 +10,7 @@ import {
     UUIDV4,
 } from "sequelize";
 import { sequelize } from "@app/db/conn";
-import { Table } from "../table/table";
+import { Table } from "../restaurant/table";
 
 type KotStatus = "Pending" | "Started" | "Completed" | "Delivered";
 

@@ -10,7 +10,7 @@ import {
   UUIDV4,
 } from "sequelize";
 import { sequelize } from "../../conn";
-import { Table } from "../table/table";
+import { Table } from "../restaurant/table";
 import { Order } from "./order";
 
 class OrderItem extends Model<

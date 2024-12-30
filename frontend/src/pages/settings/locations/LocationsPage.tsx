@@ -1,8 +1,6 @@
 import ScrollView from "@app/components/ui/ScrollView";
-import { ITable } from "@app/types/table";
 import { useEffect, useState } from "react";
 import { Icon } from "@iconify/react";
-import TablesApi from "@app/services/tables";
 import Table, {
   TableCell,
   TableHead,
@@ -11,7 +9,9 @@ import Table, {
 import { useFormik } from "formik";
 import Pagination from "@app/components/ui/Pagination";
 import Input from "@app/components/ui/form/input";
-import TableForm from "./components/TableForm";
+import { ILocation } from "@app/types/location";
+import LocationsApi from "@app/services/locations";
+import LocationForm from "./components/LocationForm";
 
 type FormType = {
   filter: {
@@ -20,11 +20,11 @@ type FormType = {
   query: { page: number; limit: number };
 };
 
-export default function TablesPage() {
+export default function LocationsPage() {
   const [result, setResult] = useState<{
     pages: number;
     page: number;
-    records: Array<ITable>;
+    records: Array<ILocation>;
   }>({
     pages: 1,
     page: 0,
@@ -38,7 +38,7 @@ export default function TablesPage() {
       query: { page: 1, limit: 20 },
     },
     onSubmit: async (values, helper) =>
-      TablesApi.paginate(
+      LocationsApi.paginate(
         { page: values.query.page, limit: values.query.limit },
         values.filter
       ).then((res) => {
@@ -47,14 +47,14 @@ export default function TablesPage() {
       }),
   });
 
-  const [tableForm, setTableForm] = useState<{
+  const [locationForm, setTableForm] = useState<{
     open: boolean;
-    table?: ITable;
+    table?: ILocation;
   }>({ open: false });
 
-  const handleOnDelete = (table: ITable) => {
+  const handleOnDelete = (table: ILocation) => {
     if (confirm("Are you sure?")) {
-      TablesApi.delete(table.id).then(formik.submitForm);
+      LocationsApi.delete(table.id).then(formik.submitForm);
     }
   };
 
@@ -64,8 +64,8 @@ export default function TablesPage() {
 
   return (
     <div className="h-full p-4 grid grid-rows-[60px_1fr_35px] gap-5">
-      <TableForm
-        {...tableForm}
+      <LocationForm
+        {...locationForm}
         onReset={() => setTableForm({ open: false, table: undefined })}
         onSave={async () => {
           setTableForm({ open: false, table: undefined });
@@ -74,7 +74,7 @@ export default function TablesPage() {
       />
       <div className="py-4 flex gap-4 items-center h-full">
         <div>
-          <h2 className="text-2xl">Tables</h2>
+          <h2 className="text-2xl">Locations</h2>
         </div>
         <div className="flex-1" />
         <form
@@ -125,9 +125,6 @@ export default function TablesPage() {
             >
               <TableCell className="w-0">#</TableCell>
               <TableCell>Name</TableCell>
-              <TableCell>Location</TableCell>
-              <TableCell className="w-0">Status</TableCell>
-              <TableCell className="w-0">Capacity</TableCell>
               <TableCell className="w-0"></TableCell>
             </TableRow>
           </TableHead>
@@ -136,9 +133,6 @@ export default function TablesPage() {
               <TableRow key={`table-${table.id}`}>
                 <TableCell>{index + 1}</TableCell>
                 <TableCell>{table.name}</TableCell>
-                <TableCell>{table.location?.name}</TableCell>
-                <TableCell>{table.status}</TableCell>
-                <TableCell>{table.capacity}</TableCell>
                 <TableCell>
                   <div className="flex flex-nowrap gap-2 text-gray-600">
                     <button

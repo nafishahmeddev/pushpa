@@ -9,7 +9,7 @@ import {
     UUIDV4,
     ForeignKey,
 } from "sequelize";
-import { Restaurant } from "@app/db/models/restaurant";
+import { Restaurant } from "@app/db/models/restaurant/restaurant";
 import { sequelize } from "@app/db/conn";
 
 class User extends Model<

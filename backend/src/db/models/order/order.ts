@@ -10,9 +10,9 @@ import {
   ForeignKey,
 } from "sequelize";
 import { sequelize } from "../../conn";
-import { Restaurant } from "../restaurant";
+import { Restaurant } from "../restaurant/restaurant";
 import { Sequence } from "../sequence";
-import { Table } from "../table/table";
+import { Table } from "../restaurant/table";
 
 class Order extends Model<
   InferAttributes<Order, { omit: "restaurant" | "table" }>,
