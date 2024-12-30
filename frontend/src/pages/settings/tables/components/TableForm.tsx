@@ -1,4 +1,5 @@
 import Dialog from "@app/components/ui/Dialog";
+import Button from "@app/components/ui/form/button";
 import Input from "@app/components/ui/form/input";
 import Select from "@app/components/ui/form/select";
 import TablesApi from "@app/services/tables";
@@ -102,19 +103,19 @@ export default function TableForm({
             />
           </div>
           <div className="flex gap-2 justify-end">
-            <button
-              className="px-5 py-2 bg-gray-300  hover:opacity-60 rounded-2xl"
+            <Button
+              className="bg-gray-300"
               onClick={onReset}
               type="button"
             >
               Cancel
-            </button>
-            <button
-              className="px-5 py-2 bg-blue-600 text-white  hover:opacity-60 rounded-2xl"
+            </Button>
+            <Button
+              className="bg-blue-600 text-white"
               type="submit"
             >
               {table ? "Update" : "Create"}
-            </button>
+            </Button>
           </div>
         </fieldset>
       </form>

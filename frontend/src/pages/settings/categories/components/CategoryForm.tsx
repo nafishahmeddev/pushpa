@@ -1,4 +1,5 @@
 import Dialog from "@app/components/ui/Dialog";
+import Button from "@app/components/ui/form/button";
 import Input from "@app/components/ui/form/input";
 import CategoriesApi from "@app/services/categories";
 import { ICategory } from "@app/types/product";
@@ -75,19 +76,12 @@ export default function CategoryForm({
           </div>
 
           <div className="flex gap-2 justify-end">
-            <button
-              className="px-5 py-2 bg-gray-300  hover:opacity-60 rounded-2xl"
-              onClick={onReset}
-              type="button"
-            >
+            <Button className=" bg-gray-300" onClick={onReset} type="button">
               Cancel
-            </button>
-            <button
-              className="px-5 py-2 bg-blue-600 text-white  hover:opacity-60 rounded-2xl"
-              type="submit"
-            >
+            </Button>
+            <Button className=" bg-blue-600 text-white" type="submit">
               {category ? "Update" : "Create"}
-            </button>
+            </Button>
           </div>
         </fieldset>
       </form>

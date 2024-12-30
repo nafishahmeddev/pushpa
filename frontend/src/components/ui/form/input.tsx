@@ -48,11 +48,13 @@ export default function Input({
           </button>
         )}
       </div>
-      <small
-        className={`${touched && error ? "text-red-700" : "text-gray-400"}`}
-      >
-        {touched && error ? error : hint}
-      </small>
+      {(hint || (touched && error)) && (
+        <small
+          className={`${touched && error ? "text-red-700" : "text-gray-400"}`}
+        >
+          {touched && error ? error : hint}
+        </small>
+      )}
     </div>
   );
 }

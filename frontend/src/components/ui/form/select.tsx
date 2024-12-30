@@ -1,4 +1,5 @@
 import { FieldMetaProps } from "formik";
+import { Icon } from "@iconify/react";
 
 export interface SelectProps extends React.ComponentProps<"select"> {
   label?: string;
@@ -15,19 +16,31 @@ export default function Select({
 }: SelectProps) {
   const touched: boolean = meta?.touched ?? false;
   const error: string = meta?.error ?? "";
+  props.id =
+    props.id ??
+    `select-${Math.random() * 999999}-${Math.random() * 999999}-item`;
 
   return (
     <div
       {...containerProps}
       className={`input flex flex-col gap-2 ${containerProps.className ?? ""}`}
     >
-      {label && <label className="text-sm text-gray-700">{label}</label>}
-      <select
-        {...props}
-        className={`bg-gray-50 rounded-xl py-2 px-3 focus:outline-2 border h-10 min-w-0 w-full ${
-          touched && error ? "outline-red-700 border-red-700" : ""
-        } ${props.className}`}
-      />
+      {label && (
+        <label className="text-sm text-gray-700" htmlFor={props.id}>
+          {label}
+        </label>
+      )}
+      <div className="flex relative">
+        <select
+          {...props}
+          className={`bg-gray-50 rounded-xl py-2 px-3 focus:outline-2 border h-10 min-w-0 w-full appearance-none ${
+            touched && error ? "outline-red-700 border-red-700" : ""
+          } ${props.className}`}
+        />
+        <label className="absolute right-0 h-full flex items-center pe-1 pointer-events-none cursor-pointer">
+          <Icon icon="formkit:down" height={20} width={20}/>
+        </label>
+      </div>
       {(hint || (touched && error)) && (
         <small
           className={`${touched && error ? "text-red-700" : "text-gray-400"}`}

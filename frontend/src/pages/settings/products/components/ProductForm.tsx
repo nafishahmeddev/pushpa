@@ -1,4 +1,5 @@
 import Dialog from "@app/components/ui/Dialog";
+import Button from "@app/components/ui/form/button";
 import Input from "@app/components/ui/form/input";
 import Select from "@app/components/ui/form/select";
 import CategoriesApi from "@app/services/categories";
@@ -77,7 +78,7 @@ export default function ProductForm({
     CategoriesApi.all().then(setCategories);
   }, []);
   return (
-    <Dialog open={open} onClose={()=>onReset()}>
+    <Dialog open={open} onClose={() => onReset()}>
       <form className="p-6" onSubmit={formik.handleSubmit}>
         <h3 className="text-xl">{product ? "Update" : "Create"} Product</h3>
         <fieldset disabled={formik.isSubmitting} className="block w-full">
@@ -132,19 +133,12 @@ export default function ProductForm({
             />
           </div>
           <div className="flex gap-2 justify-end">
-            <button
-              className="px-5 py-2 bg-gray-300  hover:opacity-60 rounded-2xl"
-              onClick={onReset}
-              type="button"
-            >
+            <Button className=" bg-gray-300  " onClick={onReset} type="button">
               Cancel
-            </button>
-            <button
-              className="px-5 py-2 bg-blue-600 text-white  hover:opacity-60 rounded-2xl"
-              type="submit"
-            >
+            </Button>
+            <Button className="bg-blue-600 text-white " type="submit">
               {product ? "Update" : "Create"}
-            </button>
+            </Button>
           </div>
         </fieldset>
       </form>
