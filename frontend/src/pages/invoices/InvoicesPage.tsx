@@ -50,10 +50,10 @@ export default function InvoicesPage() {
       setQuery({ page: res.page, limit: query.limit });
     });
   }
-  const handleOnDetails = (orderId: string, print: boolean = false) => {
+  const handleOnDetails = (invoiceId: string, print: boolean = false) => {
     const w = window.open(
       import.meta.env.VITE_BASE_URL +
-        `/invoices/${orderId}/receipt?authorization=${localStorage.getItem(
+        `/invoices/${invoiceId}/receipt?authorization=${localStorage.getItem(
           "accessToken"
         )}`,
       "_blank",

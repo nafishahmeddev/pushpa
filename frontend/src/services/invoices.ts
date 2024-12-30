@@ -6,5 +6,5 @@ export default class InvoicesApi {
         page: number,
         records: Array<IInvoice>
     });
-    static get = (orderId: string) => ApiRequest.get(`/invoices/${orderId}`).then(res => res.data.result as IInvoice);
+    static get = (invoiceId: string) => ApiRequest.get(`/invoices/${invoiceId}`).then(res => res.data.result as IInvoice);
 }

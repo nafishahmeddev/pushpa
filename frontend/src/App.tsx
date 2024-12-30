@@ -11,7 +11,7 @@ const TablesPage = lazy(() => import("./pages/settings/tables/TablesPage"));
 const UsersPage = lazy(() => import("./pages/users/UsersPage"));
 const LoginPage = lazy(() => import("@app/pages/auth/LoginPage"));
 const PosPage = lazy(() => import("@app/pages/pos/PosPage"));
-const CartDetailsPage = lazy(() => import("@app/pages/pos/CartDetailsPage"));
+const OrderDetailsPage = lazy(() => import("@app/pages/pos/OrderDetailsPage"));
 const CategoriesPage = lazy(
   () => import("@app/pages/settings/categories/CategoriesPage")
 );
@@ -44,7 +44,7 @@ function App() {
                 <Route index Component={DashboardPage} />
                 <Route path="kot" Component={PosPage} />
                 <Route path="pos" Component={PosPage}>
-                  <Route path=":cartId" Component={CartDetailsPage} />
+                  <Route path=":orderId" Component={OrderDetailsPage} />
                 </Route>
                 <Route path="settings" Component={SettingsPage}>
                   <Route path="categories" Component={CategoriesPage} />

@@ -8,17 +8,17 @@ import {Icon}from "@iconify/react";
 export default function PosPage() {
   const navigate = useNavigate();
   const location = useLocation();
-  const [orders, setCarts] = useState<Array<IOrder>>([]);
+  const [orders, setOrders] = useState<Array<IOrder>>([]);
 
   const refresh = () => {
     const promise = OrdersApi.all();
     return promise;
   };
-  const handleNewCart = () => {
+  const handleNewOrder = () => {
     const promise = OrdersApi.create()
       .then((item) => {
         navigate("/pos/" + item.id);
-        refresh().then(setCarts);
+        refresh().then(setOrders);
       })
       .catch((err) => {
         alert(err.response.data.message);
@@ -33,16 +33,16 @@ export default function PosPage() {
   useEffect(() => {
     if (location.pathname == "/pos") {
       refresh().then((_items) => {
-        setCarts(_items);
+        setOrders(_items);
         if (_items.length) {
           navigate("/pos/" + _items[0].id);
         } else {
-          handleNewCart();
+          handleNewOrder();
         }
       });
     } else if (location.pathname.startsWith("/pos")) {
       refresh().then((_items) => {
-        setCarts(_items);
+        setOrders(_items);
       });
     }
   }, [location.pathname, navigate]);
@@ -67,7 +67,7 @@ export default function PosPage() {
         <button
           className="rounded-xl py-3 flex  items-center justify-between flex-nowrap text-nowrap px-3 gap-2  hover:opacity-50  border transition-all cursor-pointer
               text-sm bg-white"
-          onClick={handleNewCart}
+          onClick={handleNewOrder}
         >
           <Icon icon="ic:baseline-add"/>
         </button>

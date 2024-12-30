@@ -11,13 +11,13 @@ import { IInvoice } from "@app/types/invoice";
 import ScrollView from "@app/components/ui/ScrollView";
 import { AxiosError } from "axios";
 import { beep } from "@app/lib/notify";
-export default function CartDetailsPage() {
+export default function OrderDetailsPage() {
   const navigate = useNavigate();
-  const { cartId } = useParams<{ cartId: string }>();
+  const { orderId } = useParams<{ orderId: string }>();
   const [items, setItems] = useState<Array<IOrderItem>>([]);
   const cartUtil = new OrderUtil(items);
   const onAdd = (item: IOrderItem) => {
-    return OrdersApi.addItem(cartId as string, {
+    return OrdersApi.addItem(orderId as string, {
       productId: item.productId,
     }).then(() => {
       beep();
@@ -39,7 +39,7 @@ export default function CartDetailsPage() {
   };
 
   const onRemove = (item: IOrderItem) => {
-    return OrdersApi.delItem(cartId as string, {
+    return OrdersApi.delItem(orderId as string, {
       productId: item.productId,
     }).then(() => {
       beep();
@@ -61,7 +61,7 @@ export default function CartDetailsPage() {
   };
 
   const onUpdate = (item: IOrderItem, quantity: number) => {
-    return OrdersApi.updateItem(cartId as string, {
+    return OrdersApi.updateItem(orderId as string, {
       productId: item.productId,
       quantity,
     }).then(() => {
@@ -83,7 +83,7 @@ export default function CartDetailsPage() {
 
   const onPlaceOrder = () => {
     if (items.length) {
-      OrdersApi.place(cartId as string)
+      OrdersApi.place(orderId as string)
         .then((invoice: IInvoice) => {
           const w = window.open(
             import.meta.env.VITE_BASE_URL +
@@ -114,7 +114,7 @@ export default function CartDetailsPage() {
   };
 
   useEffect(() => {
-    OrdersApi.get(cartId as string)
+    OrdersApi.get(orderId as string)
       .then((res) => {
         setItems(res.items as Array<IOrderItem>);
       })
@@ -123,7 +123,7 @@ export default function CartDetailsPage() {
           navigate("/pos");
         }
       });
-  }, [cartId, navigate]);
+  }, [orderId, navigate]);
 
   return (
     <React.Fragment>
