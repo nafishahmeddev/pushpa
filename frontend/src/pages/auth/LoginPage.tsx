@@ -1,3 +1,4 @@
+import Button from "@app/components/ui/form/button";
 import Input from "@app/components/ui/form/input";
 import AuthApi from "@app/services/auth";
 import { AxiosError } from "axios";
@@ -46,12 +47,12 @@ export default function LoginPage() {
             label="Password"
           />
 
-          <button
+          <Button
             type="submit"
-            className="px-5 py-2 bg-blue-600 text-white  hover:opacity-60 rounded-2xl"
+            className="bg-purple-700 text-white"
           >
             Sign In
-          </button>
+          </Button>
         </div>
       </form>
     </div>

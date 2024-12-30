@@ -5,6 +5,7 @@ import MainLayout from "@app/components/layout/MainLayout";
 import { Toaster } from "react-hot-toast";
 import AuthApi from "./services/auth";
 import SplashPage from "./pages/SplashPage";
+const TableViewPage = lazy(() => import("./pages/table-view/TableViewPage"));
 const TablesPage = lazy(() => import("./pages/settings/tables/TablesPage"));
 const UsersPage = lazy(() => import("./pages/users/UsersPage"));
 const LoginPage = lazy(() => import("@app/pages/auth/LoginPage"));
@@ -31,7 +32,7 @@ function App() {
     verify();
   }, []);
   return (
-    <Suspense fallback={<SplashPage/>}>
+    <Suspense fallback={<SplashPage />}>
       <BrowserRouter>
         <Routes>
           {!auth.loggedIn ? (
@@ -51,6 +52,7 @@ function App() {
                 </Route>
                 <Route path="orders" Component={OrdersPage} />
                 <Route path="users" Component={UsersPage} />
+                <Route path="tables" Component={TableViewPage} />
               </Route>
             </React.Fragment>
           )}

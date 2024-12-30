@@ -28,7 +28,11 @@ const mainmenu = [
   //   icon: "solar:chef-hat-minimalistic-outline",
   //   route: "/orders",
   // },
-
+  // {
+  //   label: "Table",
+  //   icon: "stash:screw-nut",
+  //   route: "/tables",
+  // },
   {
     label: "Users",
     icon: "mynaui:users-group",
@@ -48,7 +52,7 @@ export default function MainLayout() {
   return (
     <div className="grid h-dvh grid-rows-[60px_1fr]">
       <div className="flex border-b gap-4">
-        <div className="logo italic flex h-full font-bold text-xl text-blue-800 px-4 py-3 items-center font-mono">
+        <div className="logo italic flex h-full font-bold text-xl text-purple-800 px-4 py-3 items-center font-mono">
           {auth.user.restaurant?.name}
         </div>
         <MainNav items={mainmenu} />

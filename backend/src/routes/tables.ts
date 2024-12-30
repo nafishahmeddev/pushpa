@@ -5,6 +5,24 @@ import { Router } from "express";
 import { InferAttributes, Op, WhereOptions } from "sequelize";
 
 const TablesRouter = Router();
+TablesRouter.get("/stats", async (req: IRequest, res: IResponse) => {
+    //build filter
+    const where: WhereOptions<InferAttributes<Table, {}>> = {
+        restaurantId: req.auth?.restaurantId
+    };
+
+
+    const tables = await Table.findAll({
+        order: [["name", "asc"]],
+        where: where,
+
+    });
+
+    res.json({
+        result: tables,
+        message: "Successful"
+    })
+})
 TablesRouter.post("/paginate", async (req: IRequest, res: IResponse) => {
     const page: number = Number(req.query.page || 1);
     const limit: number = Number(req.query.limit || 20);

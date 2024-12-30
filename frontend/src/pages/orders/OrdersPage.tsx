@@ -109,7 +109,7 @@ export default function ProductsPage() {
                 type="date"
                 {...form.getFieldProps("createdAt.1")}
               />
-              <button className="rounded-xl px-3 bg-blue-500 text-white hover:opacity-50">
+              <button className="rounded-xl px-3 bg-purple-500 text-white hover:opacity-50">
                 Search
               </button>
               <button
@@ -150,7 +150,7 @@ export default function ProductsPage() {
                       </button>
 
                       <button
-                        className={`hover:opacity-50 text-blue-700`}
+                        className={`hover:opacity-50 text-purple-700`}
                         onClick={() => handleOnDetails(order.id, true)}
                       >
                         <Icon
