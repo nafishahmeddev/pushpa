@@ -51,6 +51,11 @@ Location.belongsTo(Restaurant, {
   as: "restaurant",
 });
 
+Location.hasMany(Table, {
+  foreignKey: "locationId",
+  as: "tables",
+});
+
 //table
 Table.belongsTo(Location, {
   targetKey: "id",

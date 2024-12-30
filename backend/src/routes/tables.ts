@@ -6,16 +6,9 @@ import { Router } from "express";
 import { InferAttributes, Op, WhereOptions } from "sequelize";
 
 const TablesRouter = Router();
-TablesRouter.get("/stats", async (req: IRequest, res: IResponse) => {
-    //build filter
-    const where: WhereOptions<InferAttributes<Table, {}>> = {
-
-    };
-
-
+TablesRouter.get("/", async (req: IRequest, res: IResponse) => {
     const tables = await Table.findAll({
         order: [["name", "asc"]],
-        where: where,
         include: [{
             model: Location,
             as: "location",

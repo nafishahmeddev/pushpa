@@ -2,6 +2,7 @@ import { ApiRequest } from "@app/lib/axios"
 import { ILocation } from "@app/types/location";
 export default class LocationsApi {
     static all = () => ApiRequest.get("/locations").then(res => res.data.result as Array<ILocation>);
+    static scout = () => ApiRequest.get("/locations/scout").then(res => res.data.result as Array<ILocation>);
     static paginate = ({ page, limit }: { page: number, limit: number }, filter: { name: string }) => ApiRequest.post(`/locations/paginate?page=${page}&limit=${limit}`, { filter },).then(res => res.data.result as {
         pages: number,
         page: number,

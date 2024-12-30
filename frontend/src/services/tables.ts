@@ -1,7 +1,7 @@
 import { ApiRequest } from "@app/lib/axios"
 import { ITable } from "@app/types/table";
 export default class TablesApi {
-    static stats = () => ApiRequest.get("/tables/stats").then(res => res.data.result as Array<ITable>);
+    static all = () => ApiRequest.get("/tables").then(res => res.data.result as Array<ITable>);
     static paginate = ({ page, limit }: { page: number, limit: number }, filter: { name: string }) => ApiRequest.post(`/tables/paginate?page=${page}&limit=${limit}`, { filter },).then(res => res.data.result as {
         pages: number,
         page: number,

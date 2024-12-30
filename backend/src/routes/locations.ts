@@ -1,5 +1,5 @@
 
-import { Location } from "@app/db/models";
+import { Location, Table } from "@app/db/models";
 import { IRequest, IResponse } from "@app/interfaces/vendors/express";
 import { Router } from "express";
 import { InferAttributes, Op, WhereOptions } from "sequelize";
@@ -12,6 +12,24 @@ LocationsRouter.get("/", async (req: IRequest, res: IResponse) => {
         where: {
             restaurantId: req.auth?.restaurantId
         },
+    });
+
+    res.json({
+        result: locations,
+        message: "Successful"
+    })
+})
+
+LocationsRouter.get("/scout", async (req: IRequest, res: IResponse) => {
+    const locations = await Location.findAll({
+        order: [["name", "asc"]],
+        where: {
+            restaurantId: req.auth?.restaurantId
+        },
+        include: [{
+            model: Table,
+            as: "tables"
+        }]
     });
 
     res.json({

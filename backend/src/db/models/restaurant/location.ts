@@ -11,6 +11,7 @@ import {
 } from "sequelize";
 import { sequelize } from "@app/db/conn";
 import { Restaurant } from "./restaurant";
+import { Table } from "./table";
 
 class Location extends Model<
     InferAttributes<Location, { omit: "restaurant" }>,
@@ -24,9 +25,11 @@ class Location extends Model<
     declare updatedAt: CreationOptional<Date>;
 
     declare restaurant?: NonAttribute<Restaurant>;
+    declare tables?: NonAttribute<Table[]>;
 
     declare static associations: {
         restaurant: Association<Location, Restaurant>;
+        tables: Association<Location, Table>;
     };
 }
 

@@ -3,10 +3,10 @@ import { BrowserRouter, Route, Routes } from "react-router";
 import React, { lazy, Suspense, useEffect } from "react";
 import MainLayout from "@app/components/layout/MainLayout";
 import { Toaster } from "react-hot-toast";
-import AuthApi from "./services/auth";
-import SplashPage from "./pages/SplashPage";
+import AuthApi from "@app/services/auth";
+import SplashPage from "@app/pages/SplashPage";
 const LocationsPage  = lazy(() => import("./pages/settings/locations/LocationsPage"));
-const TableViewPage = lazy(() => import("./pages/table-view/TableViewPage"));
+const LocationScoutPage = lazy(() => import("./pages/location-scout/LocationScoutPage"));
 const TablesPage = lazy(() => import("./pages/settings/tables/TablesPage"));
 const UsersPage = lazy(() => import("./pages/users/UsersPage"));
 const LoginPage = lazy(() => import("@app/pages/auth/LoginPage"));
@@ -54,7 +54,7 @@ function App() {
                 </Route>
                 <Route path="orders" Component={OrdersPage} />
                 <Route path="users" Component={UsersPage} />
-                <Route path="tables" Component={TableViewPage} />
+                <Route path="location-scout" Component={LocationScoutPage} />
               </Route>
             </React.Fragment>
           )}

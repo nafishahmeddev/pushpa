@@ -28,11 +28,11 @@ const mainmenu = [
   //   icon: "solar:chef-hat-minimalistic-outline",
   //   route: "/orders",
   // },
-  // {
-  //   label: "Table",
-  //   icon: "stash:screw-nut",
-  //   route: "/tables",
-  // },
+  {
+    label: "Table",
+    icon: "hugeicons:floor-plan",
+    route: "/location-scout",
+  },
   {
     label: "Users",
     icon: "mynaui:users-group",
