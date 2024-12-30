@@ -47,14 +47,14 @@ export default function PosPage() {
     }
   }, [location.pathname, navigate]);
   return (
-    <div className="h-full grid grid-rows-[35px_1fr] m-auto p-4 gap-4">
-      <div className="flex flex-row h-full gap-2 ">
+    <div className="h-full grid grid-rows-[35px_1fr] m-auto">
+      <div className="flex flex-row h-full gap-[1px]">
         {carts.map((cart, index) => (
           <NavLink
             key={`cart-item-${cart.id}`}
             to={"/pos/" + cart.id}
             className={({ isActive }) =>
-              `rounded-xl py-3 flex  items-center justify-between flex-nowrap text-nowrap px-3 gap-2  hover:opacity-50  border transition-all cursor-pointer
+              `py-3 flex  items-center justify-between flex-nowrap text-nowrap px-3 gap-2  hover:opacity-50   transition-all cursor-pointer
               text-sm  
             ${isActive ? "bg-blue-600/10 text-blue-800 border-transparent" : "bg-white"}`
             }
@@ -65,14 +65,14 @@ export default function PosPage() {
         ))}
 
         <button
-          className="rounded-xl py-3 flex  items-center justify-between flex-nowrap text-nowrap px-3 gap-2  hover:opacity-50  border transition-all cursor-pointer
+          className="py-3 flex  items-center justify-between flex-nowrap text-nowrap px-3 gap-2  hover:opacity-50 transition-all cursor-pointer
               text-sm bg-white"
           onClick={handleNewCart}
         >
           <Icon icon="ic:baseline-add"/>
         </button>
       </div>
-      <div className="h-full grid grid-cols-[auto_1fr]  m-auto w-full overflow-auto gap-4 select-none">
+      <div className="h-full grid grid-cols-[auto_1fr]  m-auto w-full overflow-auto select-none border-t">
         <Outlet />
       </div>
     </div>

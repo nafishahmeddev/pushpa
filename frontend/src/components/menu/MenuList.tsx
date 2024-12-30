@@ -64,7 +64,7 @@ export default function MenuList({ onItemPress, ...props }: MenuListProps) {
           />
         </div>
       </div>
-      <ScrollView className="h-full overflow-auto bg-white relative rounded-2xl border-t">
+      <ScrollView className="h-full overflow-auto bg-white relative  border-t">
         {isLoading ? (
           <div className="w-full flex items-center justify-center p-5">
             <Spinner />

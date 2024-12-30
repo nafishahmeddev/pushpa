@@ -54,7 +54,7 @@ export default function MainLayout() {
         <MainNav items={mainmenu} />
         <AccountButton />
       </div>
-      <div className="h-full bg-gray-50 overflow-auto ">
+      <div className="h-full bg-gray-100 overflow-auto ">
         <Outlet />
       </div>
     </div>
