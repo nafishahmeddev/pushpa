@@ -13,6 +13,7 @@ import { sequelize } from "@app/db/conn";
 import { Restaurant } from "../restaurant/restaurant";
 import { OrderItem } from "./order-item";
 import { Table } from "../restaurant/table";
+import { Invoice } from "../invoice/invoice";
 
 type OrderStatus = "Draft" | "Pending" | "Cancelled" | "Paid" | "Completed";
 class Order extends Model<
@@ -23,12 +24,14 @@ class Order extends Model<
     declare status: CreationOptional<OrderStatus>;
     declare restaurantId: ForeignKey<Restaurant["id"]>;
     declare tableId: ForeignKey<Table["id"]>;
+    declare invoiceId: ForeignKey<Invoice["id"]>;
 
     declare createdAt: CreationOptional<Date>;
     declare updatedAt: CreationOptional<Date>;
 
     declare restaurant?: NonAttribute<Restaurant>;
     declare table?: NonAttribute<Table>;
+    declare invoice?: NonAttribute<Invoice>;
     declare items?: NonAttribute<OrderItem[]>;
 
     declare static associations: {

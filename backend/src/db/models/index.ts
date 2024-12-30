@@ -74,6 +74,11 @@ Order.belongsTo(Table, {
   as: "table"
 })
 
+Order.belongsTo(Invoice, {
+  foreignKey: "invoiceId",
+  as: "invoice"
+})
+
 
 Order.hasMany(OrderItem, {
   foreignKey: "orderId",

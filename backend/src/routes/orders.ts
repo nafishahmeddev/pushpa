@@ -1,6 +1,6 @@
 
 import { sequelize } from "@app/db/conn";
-import { Product, Order, OrderItem, Restaurant, Invoice, InvoiceItem } from "@app/db/models";
+import { Product, Order, OrderItem, Invoice, InvoiceItem } from "@app/db/models";
 import { IRequest, IResponse } from "@app/interfaces/vendors/express";
 import { Router } from "express";
 
@@ -24,7 +24,6 @@ OrdersRouter.post("/", async (req: IRequest, res: IResponse) => {
     }
     const order = new Order({
         restaurantId: req.auth?.restaurantId,
-        name: (count + 1).toString()
     });
 
     await order.save();
