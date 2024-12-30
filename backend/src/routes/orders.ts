@@ -25,7 +25,7 @@ OrdersRouter.get("/drafts", async (req: IRequest, res: IResponse) => {
 })
 
 OrdersRouter.post("/", async (req: IRequest, res: IResponse) => {
-    const count = await Order.count();
+    const count = await Order.count({ where: { status: "Draft" } });
     if (count > 5) {
         res.status(400).json({
             message: "Maximum order number reached..."
@@ -230,9 +230,10 @@ OrdersRouter.get("/:orderId/place", async (req: IRequest, res: IResponse) => {
 
         const kot = await Kot.create({
             orderId: order.id,
+            restaurantId: order.restaurantId
         });
 
-        await OrderItem.update({ kotId: kot.id, status:"Delivered" }, { where: { orderId: order.id } });
+        await OrderItem.update({ kotId: kot.id, status: "Delivered" }, { where: { orderId: order.id } });
 
         const cartItems = order.items ?? [];
 

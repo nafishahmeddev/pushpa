@@ -132,6 +132,12 @@ Kot.belongsTo(Order, {
   as: "order"
 });
 
+Kot.belongsTo(Restaurant, {
+  targetKey: "id",
+  foreignKey: "restaurantId",
+  as: "restaurant"
+});
+
 Kot.hasMany(OrderItem, {
   foreignKey: "kotId",
   as: "items"

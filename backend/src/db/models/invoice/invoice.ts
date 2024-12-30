@@ -63,13 +63,13 @@ Invoice.addHook("beforeCreate", async function (invoice: Invoice, options) {
   let receiptNo = 0;
   await sequelize.transaction(async (transaction) => {
     let sequence = await Sequence.findOne({
-      where: { table: "Invoices", restaurantId: invoice.restaurantId },
+      where: { table: Invoice.tableName, restaurantId: invoice.restaurantId },
       lock: transaction.LOCK.UPDATE,
       transaction
     });
     if (!sequence) {
       sequence = await Sequence.create({
-        table: "Invoices", restaurantId: invoice.restaurantId,
+        table: Invoice.tableName, restaurantId: invoice.restaurantId,
         value: 768789
       }, {
         transaction
