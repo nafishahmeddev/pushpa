@@ -166,7 +166,7 @@ export default function InvoicesPage() {
                     {Formatter.datetime(invoice.createdAt)}
                   </TableCell>
                   <TableCell className="text-end">
-                    {Formatter.money(invoice.sgst + invoice.cgst)}
+                    {Formatter.money(invoice.tax)}
                   </TableCell>
                   <TableCell className="text-end">
                     {Formatter.money(invoice.amount)}

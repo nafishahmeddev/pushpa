@@ -24,8 +24,7 @@ class Product extends Model<
   declare status: ProductStatus;
   declare netPrice: number;
   declare price: number;
-  declare cgst: number;
-  declare sgst: number;
+  declare tax: number;
 
   declare createdAt: CreationOptional<Date>;
   declare updatedAt: CreationOptional<Date>;
@@ -59,11 +58,7 @@ Product.init(
       type: DataTypes.DOUBLE,
       defaultValue:0
     },
-    cgst: {
-      type: DataTypes.DOUBLE,
-      defaultValue:0
-    },
-    sgst: {
+    tax: {
       type: DataTypes.DOUBLE,
       defaultValue:0
     },

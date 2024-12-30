@@ -19,8 +19,7 @@ type ProductFormProps = {
 type ValueType = {
   name: string;
   categoryId: string;
-  cgst: number;
-  sgst: number;
+  tax: number;
   price: number;
 };
 export default function ProductForm({
@@ -34,8 +33,7 @@ export default function ProductForm({
     initialValues: {
       name: "",
       categoryId: "",
-      cgst: NaN,
-      sgst: NaN,
+      tax: NaN,
       price: NaN,
     },
     onSubmit: handleOnSubmit,
@@ -105,22 +103,15 @@ export default function ProductForm({
             </Select>
 
             <div className="flex gap-2">
-              <Input
-                label="SGST"
-                required
-                type="number"
-                className="flex-1"
-                {...formik.getFieldProps("sgst")}
-                meta={formik.getFieldMeta("sgst")}
-              />
+          
 
               <Input
-                label="CGST"
+                label="Tax"
                 required
                 type="number"
                 className="flex-1"
-                {...formik.getFieldProps("cgst")}
-                meta={formik.getFieldMeta("cgst")}
+                {...formik.getFieldProps("tax")}
+                meta={formik.getFieldMeta("tax")}
               />
             </div>
 

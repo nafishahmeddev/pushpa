@@ -127,8 +127,7 @@ export default function ProductsPage() {
               <TableCell className="w-0">#</TableCell>
               <TableCell>Name</TableCell>
               <TableCell>Category</TableCell>
-              <TableCell className="w-0">CGST%</TableCell>
-              <TableCell className="w-0">SGST%</TableCell>
+              <TableCell className="w-0">Tax</TableCell>
               <TableCell className="w-0">Pice</TableCell>
               <TableCell></TableCell>
             </TableRow>
@@ -139,8 +138,7 @@ export default function ProductsPage() {
                 <TableCell>{index + 1}</TableCell>
                 <TableCell>{product.name}</TableCell>
                 <TableCell>{product.category?.name}</TableCell>
-                <TableCell className="font-mono">{product.cgst}%</TableCell>
-                <TableCell className="font-mono">{product.sgst}%</TableCell>
+                <TableCell className="font-mono">{product.tax}%</TableCell>
                 <TableCell className="font-mono">{Formatter.money(product.price)}</TableCell>
                 <TableCell>
                   <div className="flex flex-nowrap gap-2 text-gray-600">

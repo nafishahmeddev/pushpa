@@ -85,14 +85,14 @@ export function OrderReceiptDialog({
                 <tr>
                   <td>Subtotal(excl. Tax):</td>
                   <td className="text-end">
-                    {Formatter.money(invoice.amount - (invoice.cgst + invoice.sgst))}
+                    {Formatter.money(invoice.amount - (invoice.tax))}
                   </td>
                 </tr>
 
                 <tr>
                   <td>Tax:</td>
                   <td className="text-end">
-                    {Formatter.money(invoice.cgst + invoice.sgst)}
+                    {Formatter.money(invoice.tax)}
                   </td>
                 </tr>
 

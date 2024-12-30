@@ -224,16 +224,14 @@ OrdersRouter.get("/:orderId/place", async (req: IRequest, res: IResponse) => {
         const invoice = await Invoice.create({
             restaurantId: order.restaurantId,
             amount: 0,
-            cgst: 0,
-            sgst: 0
+            tax: 0
         });
 
         const cartItems = order.items ?? [];
         await Promise.all(cartItems.map(async (item) => {
             const price = item?.product?.price ?? 0;
-            const cgst = item?.product?.sgst ?? 0;
-            const sgst = item?.product?.sgst ?? 0;
-            const basePrice = price / (1 + ((cgst + sgst) / 100));
+            const tax = item?.product?.tax ?? 0;
+            const basePrice = price / (1 + (tax / 100));
             const amount = price * item.quantity;
             const orderItem = new InvoiceItem({
                 invoiceId: invoice.id,
@@ -241,12 +239,10 @@ OrdersRouter.get("/:orderId/place", async (req: IRequest, res: IResponse) => {
                 name: item.product?.name ?? "",
                 price: price,
                 amount: amount,
-                cgst: (basePrice * ((item.product?.cgst ?? 0) / 100)) * item.quantity,
-                sgst: (basePrice * ((item.product?.sgst ?? 0) / 100)) * item.quantity,
+                tax: (basePrice * (tax / 100)) * item.quantity
             });
 
-            invoice.cgst += orderItem.cgst;
-            invoice.sgst += orderItem.sgst;
+            invoice.tax += orderItem.tax;
             invoice.amount += orderItem.amount;
             await orderItem.save({ transaction: transaction });
             return orderItem;

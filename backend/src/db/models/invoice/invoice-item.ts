@@ -22,12 +22,9 @@ class InvoiceItem extends Model<
   declare name: string;
   declare price: number;
   declare amount: number;
-  declare cgst: number;
-  declare sgst: number;
-
+  declare tax: number;
 
   declare invoiceId: ForeignKey<Invoice["id"]>;
-
   declare createdAt: CreationOptional<Date>;
   declare updatedAt: CreationOptional<Date>;
 
@@ -52,11 +49,7 @@ InvoiceItem.init(
     quantity: DataTypes.INTEGER,
     price: DataTypes.INTEGER,
     amount: DataTypes.INTEGER,
-    cgst: {
-      type: DataTypes.DOUBLE,
-      defaultValue: 0
-    },
-    sgst: {
+    tax: {
       type: DataTypes.DOUBLE,
       defaultValue: 0
     },

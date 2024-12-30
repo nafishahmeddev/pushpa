@@ -21,8 +21,7 @@ class Invoice extends Model<
   declare id: CreationOptional<string>;
   declare receiptNo: CreationOptional<number>;
   declare amount: number;
-  declare cgst: number;
-  declare sgst: number;
+  declare tax: number;
   declare restaurantId: ForeignKey<Restaurant["id"]>;
   declare tableId: ForeignKey<Table["id"]>
 
@@ -49,8 +48,7 @@ Invoice.init(
     },
     receiptNo: DataTypes.BIGINT,
     amount: DataTypes.DOUBLE,
-    cgst: DataTypes.DOUBLE,
-    sgst: DataTypes.DOUBLE,
+    tax: DataTypes.DOUBLE,
     createdAt: DataTypes.DATE,
     updatedAt: DataTypes.DATE,
   },
