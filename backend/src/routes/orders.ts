@@ -1,15 +1,25 @@
 
 import { sequelize } from "@app/db/conn";
 import { Product, Order, OrderItem, Invoice, InvoiceItem } from "@app/db/models";
+import { Kot } from "@app/db/models/order/kot";
 import { IRequest, IResponse } from "@app/interfaces/vendors/express";
 import { Router } from "express";
+import { Op } from "sequelize";
 
 const OrdersRouter = Router();
 
 OrdersRouter.get("/", async (req: IRequest, res: IResponse) => {
-    const invoices = await Order.findAll();
+    const orders = await Order.findAll();
     res.json({
-        result: invoices,
+        result: orders,
+        message: "Successful"
+    })
+})
+
+OrdersRouter.get("/drafts", async (req: IRequest, res: IResponse) => {
+    const orders = await Order.findAll({ where: { status: "Draft" } });
+    res.json({
+        result: orders,
         message: "Successful"
     })
 })
@@ -185,7 +195,10 @@ OrdersRouter.delete("/:orderId/items", async (req: IRequest, res: IResponse) => 
 OrdersRouter.get("/:orderId/place", async (req: IRequest, res: IResponse) => {
     const order = await Order.findOne({
         where: {
-            id: req.params.orderId
+            id: req.params.orderId,
+            status: {
+                [Op.notIn]: ["Completed"]
+            }
         },
         include: [
             {
@@ -208,14 +221,18 @@ OrdersRouter.get("/:orderId/place", async (req: IRequest, res: IResponse) => {
     }
     let invoiceId: string = "";
     await sequelize.transaction({}, async (transaction) => {
-        const invoice = new Invoice({
+        const invoice = await Invoice.create({
             restaurantId: order.restaurantId,
             amount: 0,
             cgst: 0,
             sgst: 0
         });
 
-        await invoice.save();
+        const kot = await Kot.create({
+            orderId: order.id,
+        });
+
+        await OrderItem.update({ kotId: kot.id, status:"Delivered" }, { where: { orderId: order.id } });
 
         const cartItems = order.items ?? [];
 
@@ -244,8 +261,7 @@ OrdersRouter.get("/:orderId/place", async (req: IRequest, res: IResponse) => {
 
         await invoice.save({ transaction: transaction });
 
-        await OrderItem.destroy({ where: { orderId: order.id }, transaction: transaction });
-        await order.destroy({ transaction: transaction });
+        await order.update({ status: "Completed" }, { transaction: transaction });
 
         invoiceId = invoice.id;
     }).catch(er => {

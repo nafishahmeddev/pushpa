@@ -14,7 +14,7 @@ import { Product } from "../product/product";
 import { Order } from "./order";
 import { Kot } from "./kot";
 
-type OrderItemStatus = "Preparing" | "Completed" | "Delivered" | "Cancelled";
+type OrderItemStatus = "Preparing" | "Prepared" | "Delivered"  | "Cancelled";
 
 class OrderItem extends Model<
     InferAttributes<OrderItem, { omit: "order" | "product" }>,
@@ -48,7 +48,7 @@ OrderItem.init(
         quantity: DataTypes.INTEGER,
         status: {
             type: DataTypes.ENUM,
-            values: ["Preparing", "Completed", "Delivered", "Cancelled"],
+            values: ["Preparing", "Prepared", "Delivered", "Cancelled"],
             defaultValue: "Preparing"
         },
         createdAt: DataTypes.DATE,

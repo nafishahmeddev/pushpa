@@ -11,7 +11,7 @@ export default function PosPage() {
   const [orders, setOrders] = useState<Array<IOrder>>([]);
 
   const refresh = () => {
-    const promise = OrdersApi.all();
+    const promise = OrdersApi.drafts();
     return promise;
   };
   const handleNewOrder = () => {
