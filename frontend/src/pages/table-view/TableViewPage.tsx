@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 // "Occupied" | "Available" | "Reserved" | "Blocked";
 const bg = (table: ITable) => {
   if (table.status == "Occupied") {
-    return "bg-purple-100";
+    return "bg-blue-100";
   }
   return "bg-white";
 };

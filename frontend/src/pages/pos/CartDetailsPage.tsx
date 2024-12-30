@@ -209,7 +209,7 @@ export default function CartDetailsPage() {
         <div className="h-full flex gap-4">
           <div className="flex-1"></div>
           <button
-            className="h-full bg-purple-800 hover:opacity-80 text-white rounded-xl px-6"
+            className="h-full bg-blue-800 hover:opacity-80 text-white rounded-xl px-6"
             onClick={onPlaceOrder}
             disabled={items.length == 0}
           >

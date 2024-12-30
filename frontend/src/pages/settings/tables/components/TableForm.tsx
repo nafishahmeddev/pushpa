@@ -111,7 +111,7 @@ export default function TableForm({
               Cancel
             </Button>
             <Button
-              className="bg-purple-600 text-white"
+              className="bg-blue-600 text-white"
               type="submit"
             >
               {table ? "Update" : "Create"}

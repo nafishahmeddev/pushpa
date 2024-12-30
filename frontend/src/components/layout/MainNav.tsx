@@ -17,7 +17,7 @@ export function MainNav({ items }: MainNavProps) {
               to={item.route}
               className={({ isActive }) =>
                 `h-full flex py-2 px-3 items-center justify-start gap-2 cursor-pointer transition-all  border-y-2 border-transparent ${
-                  isActive ? "text-purple-700 border-b-purple-700" : "text-purple-950"
+                  isActive ? "text-blue-700 border-b-blue-700" : "text-blue-950"
                 }`
               }
             >
