@@ -5,8 +5,13 @@ import MainLayout from "@app/components/layout/MainLayout";
 import { Toaster } from "react-hot-toast";
 import AuthApi from "@app/services/auth";
 import SplashPage from "@app/pages/SplashPage";
-const LocationsPage  = lazy(() => import("./pages/settings/locations/LocationsPage"));
-const LocationScoutPage = lazy(() => import("./pages/location-scout/LocationScoutPage"));
+import { NotFoundPage } from "./pages/NotFoundPage";
+const LocationsPage = lazy(
+  () => import("./pages/settings/locations/LocationsPage")
+);
+const LocationScoutPage = lazy(
+  () => import("./pages/location-scout/LocationScoutPage")
+);
 const TablesPage = lazy(() => import("./pages/settings/tables/TablesPage"));
 const UsersPage = lazy(() => import("./pages/users/UsersPage"));
 const LoginPage = lazy(() => import("@app/pages/auth/LoginPage"));
@@ -24,40 +29,33 @@ const InvoicesPage = lazy(() => import("@app/pages/invoices/InvoicesPage"));
 
 function App() {
   const auth = useAppSelector((state) => state.auth);
-
-  const verify = () => {
-    AuthApi.verify();
-  };
-
   useEffect(() => {
-    verify();
+    AuthApi.verify();
   }, []);
   return (
     <Suspense fallback={<SplashPage />}>
       <BrowserRouter>
         <Routes>
-          {!auth.loggedIn ? (
-            <Route index Component={LoginPage} />
-          ) : (
-            <React.Fragment>
-              <Route Component={MainLayout}>
-                <Route index Component={DashboardPage} />
-                <Route path="kot" Component={PosPage} />
-                <Route path="pos" Component={PosPage}>
-                  <Route path=":orderId" Component={OrderDetailsPage} />
-                </Route>
-                <Route path="settings" Component={SettingsPage}>
-                  <Route path="categories" Component={CategoriesPage} />
-                  <Route path="products" Component={ProductsPage} />
-                  <Route path="locations" Component={LocationsPage} />
-                  <Route path="tables" Component={TablesPage} />
-                </Route>
-                <Route path="invoices" Component={InvoicesPage} />
-                <Route path="users" Component={UsersPage} />
-                <Route path="location-scout" Component={LocationScoutPage} />
-              </Route>
-            </React.Fragment>
-          )}
+          {!auth.loggedIn && !auth.loading && <Route index Component={LoginPage} />}
+
+          <Route Component={MainLayout}>
+            <Route index Component={DashboardPage} />
+            <Route path="kot" Component={PosPage} />
+            <Route path="pos" Component={PosPage}>
+              <Route path=":orderId" Component={OrderDetailsPage} />
+            </Route>
+            <Route path="settings" Component={SettingsPage}>
+              <Route path="categories" Component={CategoriesPage} />
+              <Route path="products" Component={ProductsPage} />
+              <Route path="locations" Component={LocationsPage} />
+              <Route path="tables" Component={TablesPage} />
+            </Route>
+            <Route path="invoices" Component={InvoicesPage} />
+            <Route path="users" Component={UsersPage} />
+            <Route path="location-scout" Component={LocationScoutPage} />
+          </Route>
+
+          <Route path="*" Component={NotFoundPage}/>
         </Routes>
       </BrowserRouter>
       <Toaster />

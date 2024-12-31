@@ -5,8 +5,9 @@ import { useAppSelector } from "@app/store";
 
 import { MainNav } from "./MainNav";
 import AccountButton from "./AccountButton";
+import SplashPage from "@app/pages/SplashPage";
 
-const mainmenu = [
+const menu = [
   {
     label: "Dashboard",
     icon: "mage:dashboard-3",
@@ -49,17 +50,30 @@ export default function MainLayout() {
   const auth: AuthStateLoggedIn = useAppSelector(
     (state) => state.auth as AuthStateLoggedIn
   );
+
+  if (auth.loading) {
+    return <SplashPage />;
+  }
+
+  if (!auth.loggedIn) {
+    return <>please log in</>;
+  }
+
   return (
     <div className="grid h-dvh grid-rows-[60px_1fr]">
-      <div className="flex border-b gap-4">
-        <div className="logo italic flex h-full font-bold text-xl text-fuchsia-800 px-4 py-3 items-center font-mono">
-          {auth.user.restaurant?.name}
+      <div className="border-b h-full">
+        <div className="max-w-[1100px] m-auto flex  gap-4 h-full">
+          <div className="logo italic flex h-full font-bold text-xl text-fuchsia-800 px-4 py-3 items-center font-mono">
+            {auth.user.restaurant?.name}
+          </div>
+          <MainNav items={menu} />
+          <AccountButton />
         </div>
-        <MainNav items={mainmenu} />
-        <AccountButton />
       </div>
       <div className="h-full bg-gray-100 overflow-auto ">
+        <div className="h-full m-auto max-w-[1100px]">
         <Outlet />
+        </div>
       </div>
     </div>
   );

@@ -6,18 +6,21 @@ export interface AuthStateLoggedIn {
   user: IUser,
   accessToken: string,
   refreshToken: string,
-  loggedIn: true
+  loggedIn: true,
+  loading: boolean
 }
 
 
 export interface AuthStateLoggedOut {
-  loggedIn: false
+  loggedIn: false,
+  loading: boolean
 }
 
 export type AuthState = AuthStateLoggedIn | AuthStateLoggedOut;
 
 const initialState: AuthState = {
-  loggedIn: false
+  loggedIn: false,
+  loading: true
 }
 
 export const authSlice = createSlice({
@@ -35,7 +38,8 @@ export const authSlice = createSlice({
 
     logout: (state: AuthState) => {
       state = {
-        loggedIn: false
+        loggedIn: false,
+        loading: false
       };
       return state;
     },

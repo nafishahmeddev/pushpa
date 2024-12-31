@@ -15,7 +15,8 @@ export default class AuthApi {
 
         store.dispatch(AuthActions.login({
             ...response,
-            loggedIn: true
+            loggedIn: true,
+            loading: false
         }));
 
         return response;
@@ -25,18 +26,27 @@ export default class AuthApi {
         refreshToken: string,
         user: IUser
     });
-    static verify = () => ApiRequest.get(`/auth/verify`).then(res => {
-        const response = res.data.result as {
-            user: IUser
+    static verify = () => {
+        if (!localStorage.getItem("accessToken")) {
+            store.dispatch(AuthActions.logout());
+            localStorage.removeItem("accessToken");
+            localStorage.removeItem("refreshToken");
+            return;
         }
-        store.dispatch(AuthActions.login({
-            accessToken: localStorage.getItem("accessToken") as string,
-            refreshToken: localStorage.getItem("refreshToken") as string,
-            ...response,
-            loggedIn: true
-        }));
-        return response;
-    });
+        return ApiRequest.get(`/auth/verify`).then(res => {
+            const response = res.data.result as {
+                user: IUser
+            }
+            store.dispatch(AuthActions.login({
+                accessToken: localStorage.getItem("accessToken") as string,
+                refreshToken: localStorage.getItem("refreshToken") as string,
+                ...response,
+                loggedIn: true,
+                loading: false
+            }));
+            return response;
+        });
+    }
 
     static logout = async () => {
         localStorage.removeItem("accessToken");
