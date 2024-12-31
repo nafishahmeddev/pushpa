@@ -4,7 +4,6 @@ import { Table } from "./restaurant/table";
 import { ProductCategory } from "./product/product-category";
 import { Sequence } from "./sequence";
 import { User } from "./user/user";
-import { Kot } from "./order/kot";
 import { Location } from "./restaurant/location";
 import { Invoice } from "./invoice/invoice";
 import { InvoiceItem } from "./invoice/invoice-item";
@@ -124,24 +123,6 @@ InvoiceItem.belongsTo(Invoice, {
   as: "invoice",
   onDelete: "CASCADE"
 });
-
-//Kot
-Kot.belongsTo(Order, {
-  targetKey: "id",
-  foreignKey: "orderId",
-  as: "order"
-});
-
-Kot.belongsTo(Restaurant, {
-  targetKey: "id",
-  foreignKey: "restaurantId",
-  as: "restaurant"
-});
-
-Kot.hasMany(OrderItem, {
-  foreignKey: "kotId",
-  as: "items"
-})
 
 //User 
 User.belongsTo(Restaurant, {

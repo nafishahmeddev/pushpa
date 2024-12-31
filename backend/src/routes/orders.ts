@@ -1,7 +1,6 @@
 
 import { sequelize } from "@app/db/conn";
 import { Product, Order, OrderItem, Invoice, InvoiceItem } from "@app/db/models";
-import { Kot } from "@app/db/models/order/kot";
 import { IRequest, IResponse } from "@app/interfaces/vendors/express";
 import { Router } from "express";
 import { Op } from "sequelize";
@@ -250,12 +249,7 @@ OrdersRouter.get("/:orderId/place", async (req: IRequest, res: IResponse) => {
 
         await invoice.save({ transaction: transaction });
 
-        const kot = await Kot.create({
-            orderId: order.id,
-            restaurantId: order.restaurantId
-        });
-
-        await OrderItem.update({ kotId: kot.id, status: "Delivered" }, { where: { orderId: order.id } });
+        await OrderItem.update({ status: "Delivered" }, { where: { orderId: order.id } });
         await order.update({ status: "Completed", invoiceId: invoice.id }, { transaction: transaction });
 
         invoiceId = invoice.id;

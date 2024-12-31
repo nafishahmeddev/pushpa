@@ -12,7 +12,6 @@ import {
 import { sequelize } from "../../conn";
 import { Product } from "../product/product";
 import { Order } from "./order";
-import { Kot } from "./kot";
 
 type OrderItemStatus = "Preparing" | "Prepared" | "Delivered"  | "Cancelled";
 
@@ -25,7 +24,6 @@ class OrderItem extends Model<
     declare status: CreationOptional<OrderItemStatus>;
 
     declare orderId: ForeignKey<Order["id"]>;
-    declare kotId: ForeignKey<Kot["id"]>;
     declare productId: ForeignKey<Product["id"]>;
 
     declare createdAt: CreationOptional<Date>;
@@ -33,7 +31,6 @@ class OrderItem extends Model<
 
     declare order?: NonAttribute<Order>;
     declare product?: NonAttribute<Product>;
-    declare kot?: NonAttribute<Kot>;
 }
 
 OrderItem.init(
