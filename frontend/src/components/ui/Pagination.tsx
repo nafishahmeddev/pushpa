@@ -22,7 +22,7 @@ export default function Pagination({ page, pages, onChange }: PaginationProps) {
           <button
             key={`pagination-${seq}`}
             className={`border rounded-xl px-3 aspect-square  h-full  flex items-center justify-center 
-                      ${seq == page ? "bg-fuchsia-800/10 text-fuchsia-800" : "bg-white"}`}
+                      ${seq == page ? "bg-lime-800/10 text-lime-800" : "bg-white"}`}
             onClick={() => page != seq && onChange && onChange({ page: seq })}
             disabled={seq == page}
           >

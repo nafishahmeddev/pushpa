@@ -125,7 +125,7 @@ export default function UserForm({
               Cancel
             </Button>
             <Button
-              className="bg-fuchsia-600 text-white"
+              className="bg-lime-600 text-white"
               type="submit"
             >
               {user ? "Update" : "Create"}

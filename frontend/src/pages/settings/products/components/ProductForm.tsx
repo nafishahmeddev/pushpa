@@ -127,7 +127,7 @@ export default function ProductForm({
             <Button className=" bg-gray-300  " onClick={onReset} type="button">
               Cancel
             </Button>
-            <Button className="bg-fuchsia-600 text-white " type="submit">
+            <Button className="bg-lime-600 text-white " type="submit">
               {product ? "Update" : "Create"}
             </Button>
           </div>

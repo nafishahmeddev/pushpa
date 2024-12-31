@@ -109,7 +109,7 @@ export default function InvoicesPage() {
                 type="date"
                 {...form.getFieldProps("createdAt.1")}
               />
-              <button className="rounded-xl px-3 bg-fuchsia-500 text-white hover:opacity-50">
+              <button className="rounded-xl px-3 bg-lime-500 text-white hover:opacity-50">
                 Search
               </button>
               <button
@@ -150,7 +150,7 @@ export default function InvoicesPage() {
                       </button>
 
                       <button
-                        className={`hover:opacity-50 text-fuchsia-700`}
+                        className={`hover:opacity-50 text-lime-700`}
                         onClick={() => handleOnDetails(invoice.id, true)}
                       >
                         <Icon
