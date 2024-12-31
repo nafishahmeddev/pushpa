@@ -9,16 +9,13 @@ export default class AuthApi {
             refreshToken: string,
             user: IUser
         }
-
         localStorage.setItem("accessToken", response.accessToken);
         localStorage.setItem("refreshToken", response.refreshToken);
-
         store.dispatch(AuthActions.login({
             ...response,
             loggedIn: true,
             loading: false
         }));
-
         return response;
     });
     static tokens = (accessToken: string, refreshToken: string) => ApiRequest.post("/auth/tokens", { refreshToken, accessToken }).then(res => res.data.result as {
