@@ -24,6 +24,7 @@ class Order extends Model<
 > {
     declare id: CreationOptional<string>;
     declare status: CreationOptional<OrderStatus>;
+    declare name: CreationOptional<string>;
     declare tokenNo: CreationOptional<number>;
     declare restaurantId: ForeignKey<Restaurant["id"]>;
     declare tableId: ForeignKey<Table["id"]>;
@@ -53,6 +54,7 @@ Order.init(
             allowNull: false,
             defaultValue: UUIDV4,
         },
+        name: DataTypes.STRING,
         status: {
             type: DataTypes.ENUM,
             values: ["Draft", "Pending", "Cancelled", "Paid", "Completed",],

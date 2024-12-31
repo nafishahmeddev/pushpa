@@ -1,8 +1,7 @@
-import { IOrderItem } from "@app/types/orders";
-
-export default class OrderUtil {
-    items: Array<IOrderItem> = []
-    constructor(items: Array<IOrderItem>) {
+import { ICartItem } from "@app/types/cart";
+export default class CartUtil {
+    items: Array<ICartItem> = []
+    constructor(items: Array<ICartItem>) {
         this.items = items;
     }
     get total() {
@@ -11,7 +10,7 @@ export default class OrderUtil {
         }, 0)
     }
 
-    basePrice(item: IOrderItem) {
+    basePrice(item: ICartItem) {
         const amount = item.product.price / (1 + (item.product.tax) / 100);
         return amount;
     }

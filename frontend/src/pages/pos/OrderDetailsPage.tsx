@@ -5,7 +5,7 @@ import { IOrderItem } from "@app/types/orders";
 import { useNavigate, useParams } from "react-router";
 import OrdersApi from "@app/services/orders";
 import { cloneDeep } from "lodash";
-import OrderUtil from "@app/lib/order";
+import CartUtil from "@app/lib/cart-util";
 import MenuList from "@app/components/menu/MenuList";
 import { IInvoice } from "@app/types/invoice";
 import ScrollView from "@app/components/ui/ScrollView";
@@ -15,7 +15,7 @@ export default function OrderDetailsPage() {
   const navigate = useNavigate();
   const { orderId } = useParams<{ orderId: string }>();
   const [items, setItems] = useState<Array<IOrderItem>>([]);
-  const cartUtil = new OrderUtil(items);
+  const cartUtil = new CartUtil(items);
   const onAdd = (item: IOrderItem) => {
     return OrdersApi.addItem(orderId as string, {
       productId: item.productId,
@@ -209,7 +209,7 @@ export default function OrderDetailsPage() {
         <div className="h-full flex gap-4">
           <div className="flex-1"></div>
           <button
-            className="h-full bg-lime-800 hover:opacity-80 text-white rounded-xl px-6 disabled:bg-gray-300 disabled:opacity-100"
+            className="h-full bg-lime-600 hover:opacity-80 text-white rounded-xl px-6 disabled:bg-gray-300 disabled:opacity-100"
             onClick={onPlaceOrder}
             disabled={items.length == 0}
           >
