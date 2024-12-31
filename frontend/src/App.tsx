@@ -1,29 +1,21 @@
 import { useAppSelector } from "@app/store";
 import { BrowserRouter, Route, Routes } from "react-router";
-import React, { lazy, Suspense, useEffect } from "react";
+import { lazy, Suspense, useEffect } from "react";
 import MainLayout from "@app/components/layout/MainLayout";
 import { Toaster } from "react-hot-toast";
 import AuthApi from "@app/services/auth";
 import SplashPage from "@app/pages/SplashPage";
 import { NotFoundPage } from "./pages/NotFoundPage";
-const LocationsPage = lazy(
-  () => import("./pages/settings/locations/LocationsPage")
-);
-const LocationScoutPage = lazy(
-  () => import("./pages/location-scout/LocationScoutPage")
-);
+const LocationsPage = lazy(() => import("./pages/settings/locations/LocationsPage"));
+const LocationScoutPage = lazy(() => import("./pages/location-scout/LocationScoutPage"));
 const TablesPage = lazy(() => import("./pages/settings/tables/TablesPage"));
 const UsersPage = lazy(() => import("./pages/users/UsersPage"));
 const LoginPage = lazy(() => import("@app/pages/auth/LoginPage"));
 const PosPage = lazy(() => import("@app/pages/pos/PosPage"));
 const OrderDetailsPage = lazy(() => import("@app/pages/pos/OrderDetailsPage"));
-const CategoriesPage = lazy(
-  () => import("@app/pages/settings/categories/CategoriesPage")
-);
+const CategoriesPage = lazy(() => import("@app/pages/settings/categories/CategoriesPage"));
 const SettingsPage = lazy(() => import("@app/pages/settings/SettingsPage"));
-const ProductsPage = lazy(
-  () => import("@app/pages/settings/products/ProductsPage")
-);
+const ProductsPage = lazy(() => import("@app/pages/settings/products/ProductsPage"));
 const DashboardPage = lazy(() => import("@app/pages/dashboard/DashboardPage"));
 const InvoicesPage = lazy(() => import("@app/pages/invoices/InvoicesPage"));
 
@@ -37,7 +29,6 @@ function App() {
       <BrowserRouter>
         <Routes>
           {!auth.loggedIn && !auth.loading && <Route index Component={LoginPage} />}
-
           <Route Component={MainLayout}>
             <Route index Component={DashboardPage} />
             <Route path="kot" Component={PosPage} />
@@ -54,8 +45,7 @@ function App() {
             <Route path="users" Component={UsersPage} />
             <Route path="location-scout" Component={LocationScoutPage} />
           </Route>
-
-          <Route path="*" Component={NotFoundPage}/>
+          <Route path="*" Component={NotFoundPage} />
         </Routes>
       </BrowserRouter>
       <Toaster />
