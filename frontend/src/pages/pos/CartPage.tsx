@@ -15,6 +15,7 @@ import Button from "@app/components/ui/form/button";
 import { ICart, ICartItem } from "@app/types/cart";
 import { IOrder } from "@app/types/orders";
 import { IInvoice } from "@app/types/invoice";
+import toast from "react-hot-toast";
 
 export default function CartPage() {
   const navigate = useNavigate();
@@ -75,7 +76,7 @@ export default function CartPage() {
   };
 
   const onPlaceOrder = () => {
-    OrdersApi.place({ id: orderId, ...cart }).then((invoice: IInvoice) => {
+    const promise = OrdersApi.place({ id: orderId, ...cart }).then((invoice: IInvoice) => {
       const w = window.open(import.meta.env.VITE_BASE_URL + `/invoices/${invoice.id}/receipt?authorization=${localStorage.getItem("accessToken")}`, "_blank", "location=yes,height=600,width=350,scrollbars=yes,status=yes");
 
       if (w) {
@@ -89,6 +90,11 @@ export default function CartPage() {
       setCart({ items: [], name: "" });
       navigate("/pos");
     });
+    toast.promise(promise, {
+      loading: "Please wait",
+      success: "Order placed",
+      error: "Error while placing order",
+    });
   };
 
   const onDraft = () => {
@@ -101,6 +107,11 @@ export default function CartPage() {
     } else {
       promise = OrdersApi.create({ ...cart, name: name as string });
     }
+    toast.promise(promise, {
+      loading: "Please wait",
+      success: "Draft saved",
+      error: "Error while drafting order",
+    });
     return promise
       .then((order: IOrder) => {
         navigate("/pos/" + order.id);
