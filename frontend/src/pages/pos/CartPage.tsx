@@ -18,6 +18,7 @@ import { IInvoice } from "@app/types/invoice";
 import toast from "react-hot-toast";
 
 export default function CartPage() {
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const { orderId } = useParams<{ orderId: string }>();
   const [cart, setCart] = useState<ICart>({ items: [], name: "" });
@@ -76,20 +77,25 @@ export default function CartPage() {
   };
 
   const onPlaceOrder = () => {
-    const promise = OrdersApi.place({ id: orderId, ...cart }).then((invoice: IInvoice) => {
-      const w = window.open(import.meta.env.VITE_BASE_URL + `/invoices/${invoice.id}/receipt?authorization=${localStorage.getItem("accessToken")}`, "_blank", "location=yes,height=600,width=350,scrollbars=yes,status=yes");
+    setLoading(true);
+    const promise = OrdersApi.place({ id: orderId, ...cart })
+      .then((invoice: IInvoice) => {
+        const w = window.open(import.meta.env.VITE_BASE_URL + `/invoices/${invoice.id}/receipt?authorization=${localStorage.getItem("accessToken")}`, "_blank", "location=yes,height=600,width=350,scrollbars=yes,status=yes");
 
-      if (w) {
-        setTimeout(function () {
-          w.document.close();
-          w.focus();
-          w.print();
-          w.close();
-        }, 1000);
-      }
-      setCart({ items: [], name: "" });
-      navigate("/pos");
-    });
+        if (w) {
+          setTimeout(function () {
+            w.document.close();
+            w.focus();
+            w.print();
+            w.close();
+          }, 1000);
+        }
+        setCart({ items: [], name: "" });
+        navigate("/pos");
+      })
+      .finally(() => {
+        setLoading(false);
+      });
     toast.promise(promise, {
       loading: "Please wait",
       success: "Order placed",
@@ -112,12 +118,16 @@ export default function CartPage() {
       success: "Draft saved",
       error: "Error while drafting order",
     });
+    setLoading(true);
     return promise
       .then((order: IOrder) => {
         navigate("/pos/" + order.id);
       })
       .catch((err) => {
         alert(err.message);
+      })
+      .finally(() => {
+        setLoading(false);
       });
   };
 
@@ -202,10 +212,10 @@ export default function CartPage() {
         </div>
         <div className="h-full flex gap-1 pt-2">
           <div className="flex-1"></div>
-          <Button className="bg-gray-50 border  h-auto !px-3 py-1.5 text-sm" onClick={onDraft} disabled={items.length == 0}>
+          <Button className="bg-gray-50 border  h-auto !px-3 py-1.5 text-sm" onClick={onDraft} disabled={items.length == 0 || loading}>
             <Icon icon="fluent:money-16-regular" height={18} width={18} /> Draft
           </Button>
-          <Button className="bg-lime-600 h-auto !px-3 text-white  disabled:bg-gray-300 disabled:opacity-100 text-sm" onClick={onPlaceOrder} disabled={items.length == 0}>
+          <Button className="bg-lime-600 h-auto !px-3 text-white  disabled:bg-gray-300 disabled:opacity-100 text-sm" onClick={onPlaceOrder} disabled={items.length == 0 || loading}>
             <Icon icon="fluent:money-16-regular" height={18} width={18} /> Create Receipt & Pay
           </Button>
         </div>
