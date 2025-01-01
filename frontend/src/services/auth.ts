@@ -42,6 +42,9 @@ export default class AuthApi {
                 loading: false
             }));
             return response;
+        }).catch(e=>{
+            AuthApi.logout();
+            throw e;
         });
     }
 

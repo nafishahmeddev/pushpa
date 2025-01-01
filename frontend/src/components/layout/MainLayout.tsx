@@ -1,4 +1,4 @@
-import { Outlet } from "react-router";
+import { NavLink, Outlet } from "react-router";
 
 import { AuthStateLoggedIn } from "@app/store/slices/auth";
 import { useAppSelector } from "@app/store";
@@ -45,34 +45,42 @@ const menu = [
     route: "/settings",
   },
 ];
-
-export default function MainLayout() {
-  const auth: AuthStateLoggedIn = useAppSelector(
-    (state) => state.auth as AuthStateLoggedIn
+const LoggedOutSection = () => {
+  return (
+    <div className="h-dvh w-dvw flex items-center justify-center">
+      <p>
+        Session expired please{" "}
+        <NavLink to="/" className=" underline text-lime-600">
+          click here
+        </NavLink>{" "}
+        to login
+      </p>
+    </div>
   );
+};
+export default function MainLayout() {
+  const auth: AuthStateLoggedIn = useAppSelector((state) => state.auth as AuthStateLoggedIn);
 
   if (auth.loading) {
     return <SplashPage />;
   }
 
   if (!auth.loggedIn) {
-    return <>please log in</>;
+    return <LoggedOutSection />;
   }
 
   return (
     <div className="grid h-dvh grid-rows-[60px_1fr]">
       <div className="border-b h-full">
         <div className="max-w-[1100px] m-auto flex  gap-4 h-full">
-          <div className="logo italic flex h-full font-bold text-xl text-lime-800 px-4 py-3 items-center font-mono">
-            {auth.user.restaurant?.name}
-          </div>
+          <div className="logo italic flex h-full font-bold text-xl text-lime-800 px-4 py-3 items-center font-mono">{auth.user.restaurant?.name}</div>
           <MainNav items={menu} />
           <AccountButton />
         </div>
       </div>
       <div className="h-full bg-gray-100 overflow-auto ">
         <div className="h-full m-auto max-w-[1100px]">
-        <Outlet />
+          <Outlet />
         </div>
       </div>
     </div>
