@@ -126,7 +126,9 @@ export default function ProductsPage() {
             >
               <TableCell className="w-0">#</TableCell>
               <TableCell>Name</TableCell>
+              <TableCell>Description</TableCell>
               <TableCell>Category</TableCell>
+              <TableCell className="w-0 text-nowrap">Net Price</TableCell>
               <TableCell className="w-0">Tax</TableCell>
               <TableCell className="w-0">Pice</TableCell>
               <TableCell></TableCell>
@@ -137,7 +139,9 @@ export default function ProductsPage() {
               <TableRow key={`product-${product.id}`}>
                 <TableCell>{index + 1}</TableCell>
                 <TableCell>{product.name}</TableCell>
+                <TableCell>{product.description}</TableCell>
                 <TableCell>{product.category?.name}</TableCell>
+                <TableCell className="font-mono">{Formatter.money(product.netPrice)}</TableCell>
                 <TableCell className="font-mono">{product.tax}%</TableCell>
                 <TableCell className="font-mono">{Formatter.money(product.price)}</TableCell>
                 <TableCell>
