@@ -1,4 +1,3 @@
-import ScrollView from "@app/components/ui/ScrollView";
 import Formatter from "@app/lib/formatter";
 import DashboardApi from "@app/services/dashboard";
 import { useEffect, useState } from "react";
