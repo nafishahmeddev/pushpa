@@ -7,7 +7,6 @@ import AuthApi from "@app/services/auth";
 import SplashPage from "@app/pages/SplashPage";
 import { NotFoundPage } from "./pages/NotFoundPage";
 const LocationsPage = lazy(() => import("./pages/settings/locations/LocationsPage"));
-const LocationScoutPage = lazy(() => import("./pages/location-scout/LocationScoutPage"));
 const TablesPage = lazy(() => import("./pages/settings/tables/TablesPage"));
 const UsersPage = lazy(() => import("./pages/users/UsersPage"));
 const LoginPage = lazy(() => import("@app/pages/auth/LoginPage"));
@@ -43,7 +42,6 @@ function App() {
             </Route>
             <Route path="invoices" Component={InvoicesPage} />
             <Route path="users" Component={UsersPage} />
-            <Route path="location-scout" Component={LocationScoutPage} />
           </Route>
           <Route path="*" Component={NotFoundPage} />
         </Routes>

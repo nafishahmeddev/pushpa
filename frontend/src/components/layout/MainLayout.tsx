@@ -29,11 +29,11 @@ const menu = [
   //   icon: "solar:chef-hat-minimalistic-outline",
   //   route: "/invoices",
   // },
-  {
-    label: "Table",
-    icon: "hugeicons:floor-plan",
-    route: "/location-scout",
-  },
+  // {
+  //   label: "Table",
+  //   icon: "hugeicons:floor-plan",
+  //   route: "/location-scout",
+  // },
   {
     label: "Users",
     icon: "mynaui:users-group",
