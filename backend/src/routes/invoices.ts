@@ -6,16 +6,6 @@ import { InferAttributes, Op, WhereOptions } from "sequelize";
 
 const InvoicesRouter = Router();
 
-InvoicesRouter.get("/", async (req: IRequest, res: IResponse) => {
-    const menu = await Invoice.findAll({
-        order: [["name", "asc"]],
-    });
-    res.json({
-        result: menu,
-        message: "Successful"
-    })
-})
-
 InvoicesRouter.post("/paginate", async (req: IRequest, res: IResponse) => {
     const page: number = Number(req.query.page || 1);
     const limit: number = Number(req.query.limit || 20);
@@ -35,7 +25,7 @@ InvoicesRouter.post("/paginate", async (req: IRequest, res: IResponse) => {
     }
 
     const paginatedOrders = await Invoice.findAndCountAll({
-        order: [["createdAt", "asc"]],
+        order: [["createdAt", "desc"]],
         limit: limit,
         offset: (page - 1) * limit,
         where: where
