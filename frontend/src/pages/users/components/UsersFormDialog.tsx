@@ -1,6 +1,7 @@
 import Dialog from "@app/components/ui/Dialog";
 import Button from "@app/components/ui/form/button";
 import Input from "@app/components/ui/form/input";
+import Select from "@app/components/ui/form/select";
 import UsersApi from "@app/services/users";
 import { IUser } from "@app/types/user";
 import { AxiosError } from "axios";
@@ -21,12 +22,7 @@ type ValueType = {
   designation: string;
   password: string;
 };
-export default function UserForm({
-  open = false,
-  user,
-  onReset,
-  onSave,
-}: UserFormProps) {
+export default function UserForm({ open = false, user, onReset, onSave }: UserFormProps) {
   const formik = useFormik<ValueType>({
     initialValues: {
       name: "",
@@ -39,9 +35,7 @@ export default function UserForm({
   });
 
   async function handleOnSubmit(values: ValueType) {
-    const promise = user
-      ? UsersApi.update(user.id, values)
-      : UsersApi.create(values);
+    const promise = user ? UsersApi.update(user.id, values) : UsersApi.create(values);
 
     toast.promise(promise, {
       success: "Successfully saved",
@@ -77,57 +71,26 @@ export default function UserForm({
         <h3 className="text-xl">{user ? "Update" : "Create"} User</h3>
         <fieldset disabled={formik.isSubmitting} className="block w-full">
           <div className="flex flex-col gap-2 w-full py-4">
-            <Input
-              label="Name"
-              required
-              type="text"
-              {...formik.getFieldProps("name")}
-              meta={formik.getFieldMeta("name")}
-            />
+            <Input label="Name" required type="text" {...formik.getFieldProps("name")} meta={formik.getFieldMeta("name")} />
 
-            <Input
-              label="Email"
-              required
-              type="email"
-              {...formik.getFieldProps("email")}
-              meta={formik.getFieldMeta("email")}
-            />
+            <Input label="Email" required type="email" {...formik.getFieldProps("email")} meta={formik.getFieldMeta("email")} />
 
-            <Input
-              label="Phone"
-              required
-              type="text"
-              {...formik.getFieldProps("phone")}
-              meta={formik.getFieldMeta("phone")}
-            />
+            <Input label="Phone" required type="text" {...formik.getFieldProps("phone")} meta={formik.getFieldMeta("phone")} />
 
-            <Input
-              label="Designation"
-              required
-              type="text"
-              {...formik.getFieldProps("designation")}
-              meta={formik.getFieldMeta("designation")}
-            />
+            <Select label="Designation" required {...formik.getFieldProps("designation")} meta={formik.getFieldMeta("designation")}>
+              <option value=""></option>
+              <option>Admin</option>
+              <option>Biller</option>
+              <option>Service</option>
+            </Select>
 
-            <Input
-              label="Password"
-              type="password"
-              {...formik.getFieldProps("password")}
-              meta={formik.getFieldMeta("password")}
-            />
+            <Input label="Password" type="password" {...formik.getFieldProps("password")} meta={formik.getFieldMeta("password")} />
           </div>
           <div className="flex gap-2 justify-end">
-            <Button
-              className="bg-gray-300"
-              onClick={onReset}
-              type="button"
-            >
+            <Button className="bg-gray-300" onClick={onReset} type="button">
               Cancel
             </Button>
-            <Button
-              className="bg-lime-600 text-white"
-              type="submit"
-            >
+            <Button className="bg-lime-600 text-white" type="submit">
               {user ? "Update" : "Create"}
             </Button>
           </div>
