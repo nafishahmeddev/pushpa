@@ -53,8 +53,10 @@ DashboardRouter.post("/stats", async (req: IRequest, res: IResponse) => {
                 attributes: [],
                 model: Order,
                 as: 'order',
+                required: true,
                 where: {
-                    restaurantId: restaurantId
+                    restaurantId: restaurantId,
+                    status: ["Paid", "Completed"]
                 }
             }
         ],
