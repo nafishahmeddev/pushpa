@@ -52,20 +52,20 @@ export default function DashboardPage() {
 
       <div className="border bg-white rounded-2xl h-28 p-6 flex flex-col gap-2 w-full">
         <p className="font-bold">Avg. Order Value</p>
-        <span className="text-4xl font-mono">{Formatter.money(result.averageOrder)}</span>
+        <span className="text-4xl">{Formatter.money(result.averageOrder)}</span>
       </div>
 
       <div className="border bg-white rounded-2xl h-28 p-6 flex flex-col gap-2 w-full">
         <p className="font-bold">Revenue</p>
-        <span className="text-4xl font-mono">{Formatter.money(result.revenue)}</span>
+        <span className="text-4xl">{Formatter.money(result.revenue)}</span>
       </div>
       <div className="border bg-white rounded-2xl h-28 p-6 flex flex-col gap-2 w-full">
         <p className="font-bold">Tax</p>
-        <span className="text-4xl font-mono">{Formatter.money(result.tax)}</span>
+        <span className="text-4xl">{Formatter.money(result.tax)}</span>
       </div>
       <div className="border bg-white rounded-2xl h-28 p-6 flex flex-col gap-2 w-full">
         <p className="font-bold">Net Sales</p>
-        <span className="text-4xl font-mono">{Formatter.money(result.netSales)}</span>
+        <span className="text-4xl">{Formatter.money(result.netSales)}</span>
       </div>
     </div>
   );
