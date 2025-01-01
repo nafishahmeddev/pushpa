@@ -34,12 +34,14 @@ export default function DashboardPage() {
         <ScrollView className="flex-1 overflow-auto">
           <div className="px-4">
             <table className="text-sm w-full">
-              {result.topSellingItems.map((item, i) => (
-                <tr key={i}>
-                  <td>{item.name}</td>
-                  <td className="w-0 text-lime-700">{item.count}</td>
-                </tr>
-              ))}
+              <tbody>
+                {result.topSellingItems.map((item, i) => (
+                  <tr key={i}>
+                    <td>{item.name}</td>
+                    <td className="w-0 text-lime-700">{item.count}</td>
+                  </tr>
+                ))}
+              </tbody>
             </table>
           </div>
         </ScrollView>
