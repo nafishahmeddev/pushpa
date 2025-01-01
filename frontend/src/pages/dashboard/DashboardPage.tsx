@@ -28,16 +28,16 @@ export default function DashboardPage() {
     fetchStats();
   }, []);
   return (
-    <div className="h-full p-4 grid lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-3 auto-rows-min">
-      <div className="border bg-white rounded-xl h-[215px] flex flex-col gap-2 w-full row-span-2 py-4">
-        <p className="px-4">Top Selling Items</p>
-        <div className="px-4 flex-1 ">
-          <table className="text-sm w-full">
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 p-4 py-6">
+      <div className="border bg-white rounded-2xl h-96 flex flex-col gap-2 w-full row-span-3 py-6">
+        <p className="px-6 font-bold">Top Selling Items</p>
+        <div className="px-6 flex-1 ">
+          <table className="w-full">
             <tbody>
               {result.topSellingItems.map((item, i) => (
                 <tr key={i}>
-                  <td>{item.name}</td>
-                  <td className="w-0 text-lime-700">{item.count}</td>
+                  <td className="py-1">{item.name}</td>
+                  <td className="w-0 text-lime-700 py-1">{item.count}</td>
                 </tr>
               ))}
             </tbody>
@@ -45,27 +45,27 @@ export default function DashboardPage() {
         </div>
       </div>
 
-      <div className="border bg-white rounded-xl h-[100px] p-4 flex flex-col gap-2 w-full">
-        <p>Orders</p>
-        <span className="text-2xl text-lime-700">{result.orders}</span>
+      <div className="border bg-white rounded-2xl h-28 p-6 flex flex-col gap-2 w-full">
+        <p className="font-bold">Orders</p>
+        <span className="text-4xl">{result.orders}</span>
       </div>
 
-      <div className="border bg-white rounded-xl h-[100px] p-4 flex flex-col gap-2 w-full">
-        <p>Avg. Order Value</p>
-        <span className="text-2xl text-lime-700">{Formatter.money(result.averageOrder)}</span>
+      <div className="border bg-white rounded-2xl h-28 p-6 flex flex-col gap-2 w-full">
+        <p className="font-bold">Avg. Order Value</p>
+        <span className="text-4xl font-mono">{Formatter.money(result.averageOrder)}</span>
       </div>
 
-      <div className="border bg-white rounded-xl h-[100px] p-4 flex flex-col gap-2 w-full">
-        <p>Revenue</p>
-        <span className="text-2xl text-lime-700">{Formatter.money(result.revenue)}</span>
+      <div className="border bg-white rounded-2xl h-28 p-6 flex flex-col gap-2 w-full">
+        <p className="font-bold">Revenue</p>
+        <span className="text-4xl font-mono">{Formatter.money(result.revenue)}</span>
       </div>
-      <div className="border bg-white rounded-xl h-[100px] p-4 flex flex-col gap-2 w-full">
-        <p>Tax</p>
-        <span className="text-2xl text-lime-700">{Formatter.money(result.tax)}</span>
+      <div className="border bg-white rounded-2xl h-28 p-6 flex flex-col gap-2 w-full">
+        <p className="font-bold">Tax</p>
+        <span className="text-4xl font-mono">{Formatter.money(result.tax)}</span>
       </div>
-      <div className="border bg-white rounded-xl h-[100px] p-4 flex flex-col gap-2 w-full">
-        <p>Net Sales</p>
-        <span className="text-2xl text-lime-700">{Formatter.money(result.netSales)}</span>
+      <div className="border bg-white rounded-2xl h-28 p-6 flex flex-col gap-2 w-full">
+        <p className="font-bold">Net Sales</p>
+        <span className="text-4xl font-mono">{Formatter.money(result.netSales)}</span>
       </div>
     </div>
   );
