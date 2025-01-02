@@ -34,11 +34,11 @@ OrdersRouter.post("/paginate", async (req: IRequest, res: IResponse) => {
         where: where,
     });
 
-    const kots = await Kot.findAll({where: {orderId : paginatedOrders.rows.map(e=>e.id)}});
+    const kots = await Kot.findAll({ where: { orderId: paginatedOrders.rows.map(e => e.id) } });
 
-    paginatedOrders.rows = paginatedOrders.rows.map(e=>{
+    paginatedOrders.rows = paginatedOrders.rows.map(e => {
         e = e.toJSON();
-        e.kotList = kots.filter(k=>k.orderId == e.id);
+        e.kotList = kots.filter(k => k.orderId == e.id);
         return e;
     })
 
@@ -360,6 +360,11 @@ OrdersRouter.post("/:orderId/kot-create", async (req: IRequest, res: IResponse) 
                 orderId: orderId,
                 kotId: null
             },
+            transaction
+        });
+
+        order.status = OrderStatus.Pending;
+        await order.save({
             transaction
         });
         transaction.commit();
