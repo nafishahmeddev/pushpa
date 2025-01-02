@@ -213,7 +213,7 @@ export default function CartPage() {
                         <div className={`flex w-full items-center justify-end ${loading ? "animate-pulse" : ""}`}>
                           <input className="text-center  font-mono flex-1 bg-transparent min-w-8 max-w-8 appearance-none" value={item.quantity} readOnly disabled />
                           {item.status != OrderItemStatus.Cancelled && (
-                            <Button title="Cancel" className={`bg-red-600 rounded-lg h-5 aspect-square flex items-center justify-center hover:opacity-50  text-white !px-0`} onClick={() => onCancelItem(item)} ask>
+                            <Button title="Cancel" className={`bg-red-600 !rounded-lg h-5 aspect-square flex items-center justify-center hover:opacity-50  text-white !px-0`} onClick={() => onCancelItem(item)} ask>
                               <Icon icon="ic:round-close" />
                             </Button>
                           )}
