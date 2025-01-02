@@ -121,14 +121,14 @@ export default function CartPage() {
       .then((kot: IKot) => {
         init();
         const w = window.open(import.meta.env.VITE_BASE_URL + `/orders/${orderId}/kots/${kot.id}/print?authorization=${localStorage.getItem("accessToken")}`, "_blank", "location=yes,height=600,width=350,scrollbars=yes,status=yes");
-        // if (w) {
-        //   setTimeout(function () {
-        //     w.document.close();
-        //     w.focus();
-        //     w.print();
-        //     w.close();
-        //   }, 1000);
-        // }
+        if (w) {
+          setTimeout(function () {
+            w.document.close();
+            w.focus();
+            w.print();
+            w.close();
+          }, 1000);
+        }
       })
       .finally(() => {
         setLoading(false);
