@@ -10,6 +10,7 @@ import Table, { TableBody, TableCell, TableHead, TableRow } from "@app/component
 import Pagination from "@app/components/ui/Pagination";
 import Input from "@app/components/ui/form/input";
 import { IOrder, OrderStatus } from "@app/types/orders";
+import { useNavigate } from "react-router";
 
 const OrderStatusLabel = ({ order }: { order: IOrder }) => {
   const classNames = ["border px-1 py-0 text-sm rounded-lg"];
@@ -40,6 +41,7 @@ const OrderStatusLabel = ({ order }: { order: IOrder }) => {
 };
 
 export default function OrdersPage() {
+  const navigate  = useNavigate();
   const form = useFormik({
     initialValues: {
       createdAt: ["", ""],
@@ -127,6 +129,12 @@ export default function OrdersPage() {
                         {order.invoiceId && (
                           <button className={`hover:opacity-50`} onClick={() => handleOnDetails(order.invoiceId as string)}>
                             <Icon icon="ph:receipt" height={20} width={20} />
+                          </button>
+                        )}
+
+                        {[OrderStatus.Draft, OrderStatus.Pending].includes(order.status) && (
+                          <button className={`hover:opacity-50`} onClick={() => navigate("/pos/"+order.id)} title="Go to billing">
+                            <Icon icon="hugeicons:payment-02" height={20} width={20} />
                           </button>
                         )}
                       </div>

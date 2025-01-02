@@ -25,7 +25,7 @@ const menu = [
   },
   {
     label: "Invoices",
-    icon: "ep:fork-spoon",
+    icon: "basil:invoice-outline",
     route: "/invoices",
   },
 
