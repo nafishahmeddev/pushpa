@@ -37,12 +37,12 @@ export default function MenuPage() {
     }
   }, [pathname]);
   return (
-    <div className="h-full grid grid-cols-[auto_1fr]">
-      <div className="bg-white border rounded-2xl w-[200px] h-min my-4">
-        <ul className="flex flex-col rounded-2xl overflow-hidden p-3 gap-2">
+    <div className="h-full grid grid-rows-[auto_1fr]">
+      <div className="bg-white border border-t-0 rounded-b-2xl h-min">
+        <ul className="flex flex-row rounded-2xl overflow-hidden justify-center">
           {items.map((item, index) => (
             <li key={`item-${index}`}>
-              <NavLink to={item.route} className={({ isActive }) => `flex rounded-2xl py-2 px-3 items-center justify-start gap-2 cursor-pointer hover:bg-lime-600/15 text-lime-950 ${isActive ? "text-lime-700 bg-lime-600/10" : ""}`}>
+              <NavLink to={item.route} className={({ isActive }) => `flex py-1 border-y-2 border-transparent px-3 items-center justify-start gap-2 cursor-pointer hover:opacity-50 ${isActive ? "text-lime-600 border-b-lime-600" : "text-lime-950"}`}>
                 <Icon icon={item.icon} height={20} width={20} />
                 <span>{item.label}</span>
               </NavLink>
