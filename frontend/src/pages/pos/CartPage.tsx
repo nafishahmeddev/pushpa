@@ -13,7 +13,7 @@ import Button from "@app/components/ui/form/button";
 import { IInvoice } from "@app/types/invoice";
 import toast from "react-hot-toast";
 import { ICartItem } from "@app/types/cart";
-import { IKot, IOrder, IOrderItem, OrderItemStatus } from "@app/types/orders";
+import { IKot, IOrder, IOrderItem, OrderItemStatus, OrderStatus } from "@app/types/orders";
 import { cloneDeep } from "lodash";
 
 export default function CartPage() {
@@ -80,6 +80,18 @@ export default function CartPage() {
 
   const onCancel = () => {
     const promise = OrdersApi.cancelOrder(orderId as string).then(() => {
+      navigate("/pos");
+    });
+    toast.promise(promise, {
+      loading: "please wait..",
+      success: "Order cancelled",
+      error: (err) => err.message,
+    });
+    return promise;
+  };
+
+  const onDelete = () => {
+    const promise = OrdersApi.deleteOrder(orderId as string).then(() => {
       navigate("/pos");
     });
     toast.promise(promise, {
@@ -184,6 +196,12 @@ export default function CartPage() {
               <Icon icon="ep:remove" height={18} width={18} /> Cancel Order
             </Button>
           )}
+
+          {order?.status == OrderStatus.Draft && !items.length && (
+            <Button className="bg-white border text-red-600  disabled:opacity-50 text-sm !px-2.5 h-full" onClick={onDelete} disabled={loading} ask>
+              <Icon icon="ep:remove" height={18} width={18} /> Delete Order
+            </Button>
+          )}
           <Button className="bg-white border text-gray-600 disabled:opacity-50 text-sm !px-2.5 h-full" onClick={onCreateKot} disabled={items.length == 0 || loading}>
             <Icon icon="hugeicons:kitchen-utensils" height={18} width={18} /> Send to kitchen
           </Button>
@@ -210,7 +228,7 @@ export default function CartPage() {
                     </td>
                     <td className="text-white text-right px-2 w-0">
                       <div className="flex justify-end">
-                        <button className="h-full flex items-center text-lg text-right" onClick={()=>printKot(kot)}>
+                        <button className="h-full flex items-center text-lg text-right" onClick={() => printKot(kot)}>
                           <Icon icon="cil:print" />
                         </button>
                       </div>

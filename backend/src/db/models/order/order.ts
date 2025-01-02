@@ -15,7 +15,6 @@ import { OrderItem } from "./order-item";
 import { Table } from "../restaurant/table";
 import { Invoice } from "../invoice/invoice";
 import { Sequence } from "../sequence";
-import moment from "moment";
 import { Kot } from "./kot";
 
 export enum OrderStatus {

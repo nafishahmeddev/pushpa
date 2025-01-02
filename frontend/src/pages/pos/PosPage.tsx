@@ -3,11 +3,7 @@ import { DeliverType, IOrder } from "@app/types/orders";
 import React, { useEffect, useState } from "react";
 import { NavLink, Outlet, useLocation, useNavigate, useParams } from "react-router";
 import { Icon } from "@iconify/react";
-import { cloneDeep } from "lodash";
 import NewOrderModal from "./components/NewOrderModal";
-import toast from "react-hot-toast";
-import { AxiosError } from "axios";
-import Button from "@app/components/ui/form/button";
 export default function PosPage() {
   const navigate = useNavigate();
   const { pathname } = useLocation();
@@ -25,21 +21,6 @@ export default function PosPage() {
     return promise;
   };
 
-  const handleOnDelete = (orderId: string) => {
-    const promise = OrdersApi.deleteOrder(orderId).then(() => {
-      setOrders((items) => items.filter((e) => e.id != orderId));
-      const items = cloneDeep(orders).filter((e) => e.id != orderId);
-      if (!items.length || !items.map((e) => e.id).includes(pOrderId as string)) {
-        navigate("/pos");
-      }
-    });
-    toast.promise(promise, {
-      success: "Successfully deleted",
-      error: (err: AxiosError) => err.message,
-      loading: "Deleting..",
-    });
-    return promise;
-  };
   const handleOnNew = (item: IOrder) => {
     if (!orders.map((e) => e.id).includes(pOrderId as string)) {
       navigate("/pos/" + item.id);
@@ -88,14 +69,11 @@ export default function PosPage() {
                   </>
                 ) : (
                   <>
-                    <Icon icon="fluent:couch-12-regular"  width={16} height={16} />
+                    <Icon icon="fluent:couch-12-regular" width={16} height={16} />
                     <span className="flex-1 overflow-ellipsis w-full overflow-x-hidden text-sm">{[order.table?.name].filter((e) => !!e).join(":")} </span>
                   </>
                 )}
               </NavLink>
-              <Button className="absolute right-0 top-0 flex items-center justify-center h-full pe-1.5 text-sm text-red-600 hover:opacity-50" onClick={() => handleOnDelete(order.id)} ask="Are you sure want to delete?">
-                <Icon icon="fluent:delete-32-regular" />
-              </Button>
             </div>
           ))}
           <button
