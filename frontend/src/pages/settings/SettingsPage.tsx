@@ -42,7 +42,7 @@ export default function MenuPage() {
         <ul className="flex flex-col rounded-2xl overflow-hidden p-3 gap-2">
           {items.map((item, index) => (
             <li key={`item-${index}`}>
-              <NavLink to={item.route} className={({ isActive }) => `flex rounded-2xl py-2 px-3 items-center justify-start gap-2 cursor-pointer transition-all hover:bg-lime-600/15 text-lime-950 ${isActive ? "text-lime-700 bg-lime-600/10" : ""}`}>
+              <NavLink to={item.route} className={({ isActive }) => `flex rounded-2xl py-2 px-3 items-center justify-start gap-2 cursor-pointer hover:bg-lime-600/15 text-lime-950 ${isActive ? "text-lime-700 bg-lime-600/10" : ""}`}>
                 <Icon icon={item.icon} height={20} width={20} />
                 <span>{item.label}</span>
               </NavLink>
