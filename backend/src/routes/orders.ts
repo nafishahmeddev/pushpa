@@ -646,7 +646,7 @@ OrdersRouter.get("/:orderId/kots/:kotId/print", async (req: IRequest, res: IResp
 
     const kot = await Kot.findOne({
         where: {
-            orderId:orderId,
+            orderId: orderId,
             id: kotId
         },
         include: [
@@ -657,10 +657,12 @@ OrdersRouter.get("/:orderId/kots/:kotId/print", async (req: IRequest, res: IResp
             {
                 model: OrderItem,
                 as: "items",
-                include: [{
-                    model: Product,
-                    as:"product"
-                }]
+                include: [
+                    {
+                        model: Product,
+                        as: "product"
+                    }
+                ],
             },
             {
                 model: Restaurant,

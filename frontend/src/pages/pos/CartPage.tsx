@@ -78,17 +78,17 @@ export default function CartPage() {
       beep();
     });
 
-  const onCancel = () =>{
-    const promise = OrdersApi.cancelOrder(orderId as string).then(()=>{
+  const onCancel = () => {
+    const promise = OrdersApi.cancelOrder(orderId as string).then(() => {
       navigate("/pos");
     });
     toast.promise(promise, {
       loading: "please wait..",
-      success:"Order cancelled",
-      error: (err)=>err.message
-    })
+      success: "Order cancelled",
+      error: (err) => err.message,
+    });
     return promise;
-  }
+  };
 
   const onPlaceOrder = () => {
     setLoading(true);
@@ -115,20 +115,24 @@ export default function CartPage() {
     });
   };
 
+  const printKot = (kot: IKot) => {
+    const w = window.open(import.meta.env.VITE_BASE_URL + `/orders/${orderId}/kots/${kot.id}/print?authorization=${localStorage.getItem("accessToken")}`, "_blank", "location=yes,height=600,width=350,scrollbars=yes,status=yes");
+    if (w) {
+      setTimeout(function () {
+        w.document.close();
+        w.focus();
+        w.print();
+        w.close();
+      }, 1000);
+    }
+  };
+
   const onCreateKot = () => {
     setLoading(true);
     const promise = OrdersApi.createKot(orderId as string)
       .then((kot: IKot) => {
+        printKot(kot);
         init();
-        const w = window.open(import.meta.env.VITE_BASE_URL + `/orders/${orderId}/kots/${kot.id}/print?authorization=${localStorage.getItem("accessToken")}`, "_blank", "location=yes,height=600,width=350,scrollbars=yes,status=yes");
-        if (w) {
-          setTimeout(function () {
-            w.document.close();
-            w.focus();
-            w.print();
-            w.close();
-          }, 1000);
-        }
       })
       .finally(() => {
         setLoading(false);
@@ -201,8 +205,15 @@ export default function CartPage() {
               {getKots().map((kot: IKot) => (
                 <React.Fragment key={`item-${kot.id}`}>
                   <tr className={`border-b border-dashed bg-lime-600 text-white`}>
-                    <td className="px-2 py-2 text-start font-bold" colSpan={4}>
+                    <td className="px-2 py-2 text-start font-bold" colSpan={3}>
                       Token No: {kot.tokenNo}
+                    </td>
+                    <td className="text-white text-right px-2 w-0">
+                      <div className="flex justify-end">
+                        <button className="h-full flex items-center text-lg text-right" onClick={()=>printKot(kot)}>
+                          <Icon icon="cil:print" />
+                        </button>
+                      </div>
                     </td>
                   </tr>
                   {(kot.items ?? []).map((item, index) => (

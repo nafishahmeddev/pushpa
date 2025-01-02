@@ -74,18 +74,18 @@
                     <tr>
                         <td></td>
                     </tr>
-                    <% for(const item of kot.items ?? []){ %>
-                        <React.Fragment key={`order-item-${item.id}`}>
-                            <tr>
-                                <td>
-                                    <%= item?.product?.name %>
-                                </td>
-                                <td style="text-align: right; width: 0;">
-                                    <%= item.quantity %>
-                                </td>
-                            </tr>
-                        </React.Fragment>
-                        <%}%>
+                    <% for(const item of kot.items ?? []){ 
+                        const textStyle = item.status == "Cancelled" ? "text-decoration: line-through;":"";
+                        %>
+                        <tr style="<%= textStyle %>">
+                            <td>
+                                <%= item?.product?.name %>
+                            </td>
+                            <td style="text-align: right; width: 0;">
+                                <%= item.quantity %>
+                            </td>
+                        </tr>
+                    <%}%>
                 </tbody>
             </table>
             <div style="margin: 20px 0;border-top: 1px dashed #000; "></div>
