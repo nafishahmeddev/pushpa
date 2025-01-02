@@ -29,12 +29,13 @@ export default function QuantityButton({ quantity, onUpdate, onDelete }: Quantit
     }
   };
 
-  const handleOnUpdate = (quantity: number) => {
-    if (quantity == 0) {
+  const handleOnUpdate = (qtd: number) => {
+    if(qtd == quantity) return Promise.resolve(true);
+    if (qtd == 0) {
       return handleOnRemove();
     }
     setLoading(true);
-    return onUpdate(quantity).finally(() => {
+    return onUpdate(qtd).finally(() => {
       setLoading(false);
     });
   };
