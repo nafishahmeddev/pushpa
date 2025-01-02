@@ -30,6 +30,9 @@ export default function QuantityButton({ quantity, onUpdate, onDelete }: Quantit
   };
 
   const handleOnUpdate = (quantity: number) => {
+    if (quantity == 0) {
+      return handleOnRemove();
+    }
     setLoading(true);
     return onUpdate(quantity).finally(() => {
       setLoading(false);
