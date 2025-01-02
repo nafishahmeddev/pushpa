@@ -9,6 +9,7 @@ export default class OrdersApi {
     static updateOrder = (orderId:string,data: { tableId?: string, deliveryType: string }) => ApiRequest.put(`/orders/${orderId}`, data).then(res => res.data.result as IOrder);
     static deleteOrder = (orderId: string) => ApiRequest.delete(`/orders/${orderId}`).then(res => res.data.message as string);
     static createKot = (orderId: string) => ApiRequest.post(`/orders/${orderId}/kot-create`).then(res => res.data.result as IKot);
+    static cancelOrder = (orderId: string,) => ApiRequest.post(`/orders/${orderId}/cancel`).then(res => res.data.result as IInvoice);
     static completeOrder = (orderId: string,) => ApiRequest.post(`/orders/${orderId}/complete`).then(res => res.data.result as IInvoice);
 
     static modifyItem = (orderId: string, cartItem: ICartItem) => ApiRequest.post(`/orders/${orderId}/items`, { item: cartItem }).then(res => res.data.result as IOrder);

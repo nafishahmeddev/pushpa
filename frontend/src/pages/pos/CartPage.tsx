@@ -57,7 +57,7 @@ export default function CartPage() {
       });
   };
 
-  const onCancel = async (item: IOrderItem) =>
+  const onCancelItem = async (item: IOrderItem) =>
     OrdersApi.cancelItem(orderId as string, item.id).then(() => {
       beep();
       setPlacedItems((items) => {
@@ -70,13 +70,25 @@ export default function CartPage() {
       });
     });
 
-  const onDelete = async (item: ICartItem) =>
+  const onDeleteItem = async (item: ICartItem) =>
     OrdersApi.deleteItem(orderId as string, item.productId).then(() => {
       setItems((_items: Array<ICartItem>) => {
         return _items.filter((e) => e.productId != item.productId);
       });
       beep();
     });
+
+  const onCancel = () =>{
+    const promise = OrdersApi.cancelOrder(orderId as string).then(()=>{
+      navigate("/pos");
+    });
+    toast.promise(promise, {
+      loading: "please wait..",
+      success:"Order cancelled",
+      error: (err)=>err.message
+    })
+    return promise;
+  }
 
   const onPlaceOrder = () => {
     setLoading(true);
@@ -129,10 +141,12 @@ export default function CartPage() {
   };
 
   const getKots = () => {
-    const list = (order?.kotList ?? []).map((kot) => {
-      kot.items = placedItems.filter((item) => item.kotId == kot.id);
-      return kot;
-    }).sort((a,b)=>a.tokenNo < b.tokenNo ? -1:0)
+    const list = (order?.kotList ?? [])
+      .map((kot) => {
+        kot.items = placedItems.filter((item) => item.kotId == kot.id);
+        return kot;
+      })
+      .sort((a, b) => (a.tokenNo < b.tokenNo ? -1 : 0));
     return list;
   };
 
@@ -161,6 +175,11 @@ export default function CartPage() {
       <div className="h-full overflow-auto grid grid-rows-[auto_1fr_auto] w-full ">
         <div className="h-full flex gap-1 pb-2">
           <div className="flex-1"></div>
+          {placedItems.length > 0 && (
+            <Button className="bg-red-600 text-white border border-transparent  h-auto !px-3 py-1.5 text-sm disabled:opacity-50" onClick={onCancel} disabled={placedItems.length == 0 || loading} ask>
+              <Icon icon="ic:round-close" height={18} width={18} /> Cancel
+            </Button>
+          )}
           <Button className="bg-gray-50 border  h-auto !px-3 py-1.5 text-sm disabled:opacity-50" onClick={onCreateKot} disabled={items.length == 0 || loading}>
             <Icon icon="hugeicons:kitchen-utensils" height={18} width={18} /> Send to kitchen
           </Button>
@@ -194,7 +213,7 @@ export default function CartPage() {
                         <div className={`flex w-full items-center justify-end ${loading ? "animate-pulse" : ""}`}>
                           <input className="text-center  font-mono flex-1 bg-transparent min-w-8 max-w-8 appearance-none" value={item.quantity} readOnly disabled />
                           {item.status != OrderItemStatus.Cancelled && (
-                            <Button title="Cancel" className={`border rounded-full h-6 aspect-square flex items-center justify-center hover:opacity-50 text-red-700 bg-white !px-0`} onClick={() => onCancel(item)} ask>
+                            <Button title="Cancel" className={`border rounded-full h-6 aspect-square flex items-center justify-center hover:opacity-50 text-red-700 bg-white !px-0`} onClick={() => onCancelItem(item)} ask>
                               <Icon icon="ic:round-close" />
                             </Button>
                           )}
@@ -210,7 +229,7 @@ export default function CartPage() {
                   <td className="px-2 py-1 text-start">{item.product.name}</td>
                   <td className="px-2 py-2 text-end font-mono">{Formatter.money(item.product.price)}</td>
                   <td className="px-10 py-0.5 text-center w-0">
-                    <QuantityButton quantity={item.quantity} onUpdate={(quantity) => onModify({ ...item, quantity })} onDelete={() => onDelete(item)} />
+                    <QuantityButton quantity={item.quantity} onUpdate={(quantity) => onModify({ ...item, quantity })} onDelete={() => onDeleteItem(item)} />
                   </td>
                   <td className="px-2 py-1 text-end font-mono">{Formatter.money(item.product.price * item.quantity)}</td>
                 </tr>

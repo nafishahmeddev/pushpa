@@ -311,7 +311,7 @@ OrdersRouter.post("/:orderId/kot-create", async (req: IRequest, res: IResponse) 
             transaction
         });
 
-        await OrderItem.update({ kotId: kot.id }, {
+        await OrderItem.update({ kotId: kot.id, status: OrderItemStatus.Preparing }, {
             where: {
                 orderId: orderId,
                 kotId: null
@@ -321,6 +321,52 @@ OrdersRouter.post("/:orderId/kot-create", async (req: IRequest, res: IResponse) 
         transaction.commit();
         res.json({
             result: kot,
+            message: "Successful"
+        })
+    } catch (error) {
+        console.log(error);
+        transaction.rollback();
+        res.status(400).json({
+            message: "Something went wrong..."
+        })
+    }
+});
+
+OrdersRouter.post("/:orderId/cancel", async (req: IRequest, res: IResponse) => {
+    const orderId = req.params.orderId;
+    const transaction = await sequelize.transaction();
+    try {
+        let order = await Order.findOne({
+            where: {
+                id: orderId,
+                status: {
+                    [Op.notIn]: ["Paid", "Completed"]
+                }
+            },
+            include: [
+                {
+                    model: OrderItem,
+                    as: "items",
+                    where: {
+                        kotId: { [Op.not]: null }
+                    },
+                    required: true
+                }
+            ],
+            transaction
+        },);
+        if (!order) {
+            res.status(404).json({
+                message: "Order not found"
+            })
+            return;
+        }
+
+        await OrderItem.update({ status: OrderItemStatus.Cancelled }, { where: { orderId: order.id }, transaction });
+        await Order.update({ status: OrderStatus.Cancelled }, { where: { id: order.id }, transaction });
+
+        transaction.commit();
+        res.json({
             message: "Successful"
         })
     } catch (error) {
@@ -375,11 +421,14 @@ OrdersRouter.post("/:orderId/complete", async (req: IRequest, res: IResponse) =>
             transaction
         });
         await Promise.all((order.items ?? []).map(async (item) => {
+            item.status = OrderItemStatus.Delivered;
+            await item.save();
+
             const price = item?.product?.price ?? 0;
             const tax = item?.product?.tax ?? 0;
             const basePrice = price / (1 + (tax / 100));
             const amount = price * item.quantity;
-            const orderItem = new InvoiceItem({
+            const invoiceItem = new InvoiceItem({
                 invoiceId: invoice.id,
                 quantity: item.quantity,
                 name: item.product?.name ?? "",
@@ -388,10 +437,10 @@ OrdersRouter.post("/:orderId/complete", async (req: IRequest, res: IResponse) =>
                 tax: (basePrice * (tax / 100)) * item.quantity
             });
 
-            invoice.tax += orderItem.tax;
-            invoice.amount += orderItem.amount;
-            await orderItem.save({ transaction: transaction });
-            return orderItem;
+            invoice.tax += invoiceItem.tax;
+            invoice.amount += invoiceItem.amount;
+            await invoiceItem.save({ transaction: transaction });
+            return invoiceItem;
         }));
 
         await invoice.save({ transaction: transaction });
@@ -528,7 +577,6 @@ OrdersRouter.delete("/:orderId/items", async (req: IRequest, res: IResponse) => 
     }
 });
 
-
 OrdersRouter.patch("/:orderId/items/cancel", async (req: IRequest, res: IResponse) => {
     const orderId = req.params.orderId;
     const orderItemId = req.body.orderItemId;
@@ -590,8 +638,6 @@ OrdersRouter.patch("/:orderId/items/cancel", async (req: IRequest, res: IRespons
 
     }
 });
-
-
 
 
 export default OrdersRouter;

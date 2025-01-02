@@ -104,7 +104,7 @@ Order.addHook("beforeCreate", (async (order: Order) => {
                 transaction
             });
         }
-        seq += 1;
+        seq = sequence.value + 1;
         await sequence.update({ value: seq, }, { transaction });
     });
     order.seq = seq;
