@@ -36,20 +36,25 @@ export default function CartPage() {
     const _items = cloneDeep(items);
     const itm = _items.find((e) => e.productId == item.productId);
     item.quantity = increment ? (itm?.quantity ?? 0) + item.quantity : item.quantity;
-    OrdersApi.modifyItem(orderId as string, item).then(() => {
-      beep();
-      if (_items.some((i) => i.productId == item.productId)) {
-        _items.map((itm) => {
-          if (itm.productId == item.productId) {
-            itm.quantity = item.quantity;
-          }
-          return itm;
-        });
-      } else {
-        _items.push(item);
-      }
-      setItems(_items);
-    });
+    const _toast = toast.loading("Please wait..");
+    OrdersApi.modifyItem(orderId as string, item)
+      .then(() => {
+        beep();
+        if (_items.some((i) => i.productId == item.productId)) {
+          _items.map((itm) => {
+            if (itm.productId == item.productId) {
+              itm.quantity = item.quantity;
+            }
+            return itm;
+          });
+        } else {
+          _items.push(item);
+        }
+        setItems(_items);
+      })
+      .finally(() => {
+        toast.dismiss(_toast);
+      });
   };
 
   const onCancel = async (item: IOrderItem) =>
@@ -143,7 +148,7 @@ export default function CartPage() {
           <Button className="bg-gray-50 border  h-auto !px-3 py-1.5 text-sm disabled:opacity-50" onClick={onCreateKot} disabled={items.length == 0 || loading}>
             <Icon icon="hugeicons:kitchen-utensils" height={18} width={18} /> Send to kitchen
           </Button>
-          <Button className="bg-lime-600 h-auto !px-3 text-white  disabled:bg-gray-300 disabled:opacity-100 text-sm" onClick={onPlaceOrder} disabled={[...placedItems,...items].length == 0 || loading}>
+          <Button className="bg-lime-600 h-auto !px-3 text-white  disabled:bg-gray-300 disabled:opacity-100 text-sm" onClick={onPlaceOrder} disabled={[...placedItems, ...items].length == 0 || loading}>
             <Icon icon="fluent:money-16-regular" height={18} width={18} /> Pay & Complete
           </Button>
         </div>
