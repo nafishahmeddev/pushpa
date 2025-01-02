@@ -5,15 +5,9 @@ import { IProduct } from "../../types/product";
 import ScrollView from "../ui/ScrollView";
 import { Icon } from "@iconify/react";
 import Spinner from "../ui/Spinner";
-const formatter = new Intl.NumberFormat("en-IN", {
-  style: "currency",
-  currency: "INR",
-});
+import Formatter from "@app/lib/formatter";
 
-type MenuListProps = React.DetailedHTMLProps<
-  React.HTMLAttributes<HTMLDivElement>,
-  HTMLDivElement
-> & {
+type MenuListProps = React.ComponentProps<"div"> & {
   onItemPress?: (item: IProduct) => Promise<void>;
 };
 export default function MenuList({ onItemPress, ...props }: MenuListProps) {
@@ -91,7 +85,7 @@ export default function MenuList({ onItemPress, ...props }: MenuListProps) {
                       {product.name}
                     </div>
                     <div className="px-1 py-1 text-end font-mono pe-2">
-                      {formatter.format(product.price)}
+                      {Formatter.money(product.price)}
                     </div>
                   </div>
                 ))}
