@@ -42,11 +42,11 @@ export default function QuantityButton({ quantity, onUpdate, onDelete }: Quantit
   return (
     <fieldset disabled={loading}>
       <div className={`flex items-center justify-center ${loading ? "animate-pulse" : ""}`}>
-        <button className={`border rounded-full h-6 aspect-square flex items-center justify-center hover:opacity-50 ${quantity == 1 ? "text-red-700" : ""}`} onClick={handleOnRemove}>
+        <button className={`rounded-lg h-5 aspect-square flex items-center justify-center hover:opacity-50 text-white ${quantity == 1 ? "bg-red-500" : "bg-lime-600"}`} onClick={handleOnRemove}>
           <Icon icon={quantity == 1 ? "fluent:delete-12-regular" : "ic:baseline-remove"} />
         </button>
-        <input className="text-center  font-mono flex-1 bg-transparent min-w-8 max-w-8 appearance-none" value={qtd} onChange={(e) => setQtd(Number(e.target.value.replace(/\D/g, "")))} onBlur={() => handleOnUpdate(qtd)} />
-        <button className="border rounded-full h-6 aspect-square flex items-center justify-center hover:opacity-50" onClick={handleOnAdd}>
+        <input className="text-center  font-mono flex-1 bg-transparent min-w-8 max-w-8 appearance-none rounded-lg" value={qtd} onChange={(e) => setQtd(Number(e.target.value.replace(/\D/g, "")))} onBlur={() => handleOnUpdate(qtd)} />
+        <button className="rounded-lg h-5 aspect-square flex items-center justify-center hover:opacity-50 text-white bg-lime-600" onClick={handleOnAdd}>
           <Icon icon="ic:baseline-add" />
         </button>
       </div>
