@@ -3,6 +3,11 @@ import { IKot, IOrder } from "@app/types/orders";
 import { IInvoice } from "@app/types/invoice";
 import { ICartItem } from "@app/types/cart";
 export default class OrdersApi {
+    static paginate = ({ page, limit }: { page: number, limit: number }, filter: {[key: string]: unknown}) => ApiRequest.post(`/orders/paginate?page=${page}&limit=${limit}`, {filter},).then(res => res.data.result as {
+        pages: number,
+        page: number,
+        records: Array<IOrder>
+    });
     static pendingList = () => ApiRequest.get("/orders/pending-list").then(res => res.data.result as Array<IOrder>);
     static getOrder = (orderId: string) => ApiRequest.get(`/orders/${orderId}`).then(res => res.data.result as IOrder);
     static createOrder = (data: { tableId?: string, deliveryType: string }) => ApiRequest.post(`/orders/`, data).then(res => res.data.result as IOrder);

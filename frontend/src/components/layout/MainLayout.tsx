@@ -19,6 +19,11 @@ const menu = [
     route: "/pos",
   },
   {
+    label: "Orders",
+    icon: "ep:fork-spoon",
+    route: "/orders",
+  },
+  {
     label: "Invoices",
     icon: "ep:fork-spoon",
     route: "/invoices",

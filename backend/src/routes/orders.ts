@@ -6,9 +6,48 @@ import { OrderItemStatus } from "@app/db/models/order/order-item";
 import { IRequest, IResponse } from "@app/interfaces/vendors/express";
 import { ICartItem } from "@app/types/cart";
 import { Router } from "express";
-import { Op } from "sequelize";
+import { InferAttributes, Op, WhereOptions } from "sequelize";
 
 const OrdersRouter = Router();
+OrdersRouter.post("/paginate", async (req: IRequest, res: IResponse) => {
+    const page: number = Number(req.query.page || 1);
+    const limit: number = Number(req.query.limit || 20);
+    const filter: {
+        createdAt: [from: string, to: string]
+    } = req.body.filter;
+
+    //build filter
+    const where: WhereOptions<InferAttributes<Order, {}>> = {
+        restaurantId: req.auth?.restaurantId
+    };
+
+    if (filter.createdAt && filter.createdAt[0] && filter.createdAt[1]) {
+        where.createdAt = {
+            [Op.between]: filter.createdAt
+        }
+    }
+
+    const paginatedOrders = await Order.findAndCountAll({
+        order: [["createdAt", "desc"]],
+        limit: limit,
+        offset: (page - 1) * limit,
+        where: where,
+        include: [{
+            model: Kot,
+            as: "kotList"
+        }]
+    });
+
+    const pages = Math.ceil(paginatedOrders.count / limit);
+    res.json({
+        result: {
+            page: page,
+            pages: pages,
+            records: paginatedOrders.rows
+        },
+        message: "Successful"
+    })
+})
 
 OrdersRouter.get("/pending-list", async (req: IRequest, res: IResponse) => {
     const orders = await Order.findAll({

@@ -1,3 +1,4 @@
+import { IInvoice } from "./invoice";
 import { IProduct } from "./product";
 import { IRestaurant } from "./restaurant";
 import { ITable } from "./table";
@@ -31,6 +32,8 @@ export type IOrder = {
     restaurant?: unknown;
     tableId?: string,
     table?: ITable,
+    invoiceId?:string,
+    invoice?:IInvoice,
     deliveryType: DeliverType,
     items?: Array<IOrderItem>,
     kotList?: Array<IKot>,
