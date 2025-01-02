@@ -208,8 +208,8 @@ export default function CartPage() {
                   {(kot.items ?? []).map((item, index) => (
                     <tr className={`border-b border-dashed ${item.status == OrderItemStatus.Cancelled ? "bg-red-50 line-through" : ""}`} key={`item-${index}`}>
                       <td className="px-2 py-1 text-start">{item.product.name}</td>
-                      <td className="px-2 py-2 text-end font-mono">{Formatter.money(item.product.price)}</td>
-                      <td className="px-10 py-0.5 text-center w-0 text-nowrap">
+                      <td className="px-2 py-1.5 text-end font-mono">{Formatter.money(item.product.price)}</td>
+                      <td className="px-4 py-0.5 text-center w-0 text-nowrap">
                         <div className={`flex w-full items-center justify-end ${loading ? "animate-pulse" : ""}`}>
                           <input className="text-center  font-mono flex-1 bg-transparent min-w-8 max-w-8 appearance-none" value={item.quantity} readOnly disabled />
                           {item.status != OrderItemStatus.Cancelled && (
@@ -228,7 +228,7 @@ export default function CartPage() {
                 <tr className="border-b border-dashed" key={`item-${index}`}>
                   <td className="px-2 py-1 text-start">{item.product.name}</td>
                   <td className="px-2 py-2 text-end font-mono">{Formatter.money(item.product.price)}</td>
-                  <td className="px-10 py-0.5 text-center w-0">
+                  <td className="px-4 py-0.5 text-center w-0">
                     <QuantityButton quantity={item.quantity} onUpdate={(quantity) => onModify({ ...item, quantity })} onDelete={() => onDeleteItem(item)} />
                   </td>
                   <td className="px-2 py-1 text-end font-mono">{Formatter.money(item.product.price * item.quantity)}</td>
