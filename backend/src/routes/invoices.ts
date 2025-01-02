@@ -1,5 +1,5 @@
 
-import { Invoice, InvoiceItem, Restaurant } from "@app/db/models";
+import { Invoice, InvoiceItem, Kot, Order, Restaurant } from "@app/db/models";
 import { IRequest, IResponse } from "@app/interfaces/vendors/express";
 import { Router } from "express";
 import { InferAttributes, Op, WhereOptions } from "sequelize";
@@ -86,6 +86,20 @@ InvoicesRouter.get("/:invoiceId/receipt", async (req: IRequest, res: IResponse) 
         })
         return;
     }
-    res.render("invoice-receipt.ejs", { order: invoice.toJSON() })
+
+    const order = await Order.findOne({
+        where:{
+            invoiceId: invoiceId
+        },
+        include:[
+            {
+                attributes: ["tokenNo"],
+                model: Kot,
+                as:"kotList"
+            }
+        ]
+    })
+
+    res.render("invoice-receipt.ejs", { invoice: invoice.toJSON(), order:  order?.toJSON() })
 });
 export default InvoicesRouter;

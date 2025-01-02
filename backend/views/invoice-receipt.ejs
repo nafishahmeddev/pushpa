@@ -4,7 +4,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap" rel="stylesheet">
-    <title>Order: #<%= order.receiptNo %></title>
+    <title>Order: #<%= invoice.receiptNo %></title>
     <style>
         :root {
             font-family: "Nunito", sans-serif;
@@ -39,7 +39,7 @@
         }
     </style>
     <% 
-    const formatter=new Intl.NumberFormat("en-IN", { style: "currency" , currency: order.restaurant.currency || "INR" }); 
+    const formatter=new Intl.NumberFormat("en-IN", { style: "currency" , currency: invoice.restaurant.currency || "INR" }); 
     const moment=locals.moment; 
     %>
 </head>
@@ -48,17 +48,17 @@
     <div style="padding:15px">
         <div style="text-align: center;">
             <h3 style="margin:0;">
-                <%= order.restaurant.name %>
+                <%= invoice.restaurant.name %>
             </h3>
             <p style="margin:0;  margin-top: 10px">
-                <%= order.restaurant.address %>
+                <%= invoice.restaurant.address %>
             </p>
         </div>
         <table style="font-weight: bold; width: 100%; margin-top: 15px; ">
             <tr>
-                <td>Receipt No: #<%= order.receiptNo %>
+                <td>Receipt No: #<%= invoice.receiptNo %>
                 </td>
-                <td style="text-align: right;">Date: <%= moment(order.createdAt).format("DD/MM/YYYY") %>
+                <td style="text-align: right;">Date: <%= moment(invoice.createdAt).format("DD/MM/YYYY") %>
                 </td>
             </tr>
         </table>
@@ -76,7 +76,7 @@
                     <tr>
                         <td></td>
                     </tr>
-                    <% for(const item of order.items ?? []){ %>
+                    <% for(const item of invoice.items ?? []){ %>
                         <React.Fragment key={`order-item-${item.id}`}>
                             <tr>
                                 <td>
@@ -104,24 +104,29 @@
                 <tr>
                     <td>Subtotal(excl. Tax):</td>
                     <td style="text-align: right;">
-                        <%= formatter.format((order.amount -( order.tax)))%>
+                        <%= formatter.format((invoice.amount -( invoice.tax)))%>
                     </td>
                 </tr>
 
                 <tr>
                     <td>Tax:</td>
                     <td style="text-align: right;">
-                        <%= formatter.format(order.tax)%>
+                        <%= formatter.format(invoice.tax)%>
                     </td>
                 </tr>
 
                 <tr>
                     <td>Total:</td>
                     <td style="text-align: right;">
-                        <%= formatter.format(order.amount)%>
+                        <%= formatter.format(invoice.amount)%>
                     </td>
                 </tr>
             </table>
+        </div>
+        <div style="margin: 20px 0; text-align: center;">
+            <span>
+                Kot: <%= order.kotList.map(kot=>kot.tokenNo).join(",") %>
+            </span>
         </div>
         <div style="margin: 20px 0; text-align: center;">
             <span>
