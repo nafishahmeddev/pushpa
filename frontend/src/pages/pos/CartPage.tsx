@@ -180,14 +180,14 @@ export default function CartPage() {
         <div className="flex gap-1 pb-2 h-10 items-stretch">
           <div className="flex-1"></div>
           {placedItems.length > 0 && (
-            <Button className="bg-white border text-red-600  disabled:bg-gray-300 disabled:opacity-100 text-sm !px-2.5 h-full" onClick={onCancel} disabled={placedItems.length == 0 || loading} ask>
+            <Button className="bg-white border text-red-600  disabled:opacity-50 text-sm !px-2.5 h-full" onClick={onCancel} disabled={loading} ask>
               <Icon icon="ep:remove" height={18} width={18} /> Cancel Order
             </Button>
           )}
-          <Button className="bg-white border text-gray-600 disabled:bg-gray-300 disabled:opacity-100 text-sm !px-2.5 h-full" onClick={onCreateKot} disabled={items.length == 0 || loading}>
+          <Button className="bg-white border text-gray-600 disabled:opacity-50 text-sm !px-2.5 h-full" onClick={onCreateKot} disabled={items.length == 0 || loading}>
             <Icon icon="hugeicons:kitchen-utensils" height={18} width={18} /> Send to kitchen
           </Button>
-          <Button className="bg-lime-500 border border-transparent text-white  disabled:bg-gray-300 disabled:opacity-100 text-sm !px-2.5 h-full" onClick={onPlaceOrder} disabled={[...placedItems, ...items].length == 0 || loading}>
+          <Button className="bg-lime-500 border border-transparent text-white disabled:opacity-50 text-sm !px-2.5 h-full" onClick={onPlaceOrder} disabled={[...placedItems, ...items].length == 0 || loading}>
             <Icon icon="fluent:money-16-regular" height={18} width={18} /> Pay & Complete
           </Button>
         </div>
