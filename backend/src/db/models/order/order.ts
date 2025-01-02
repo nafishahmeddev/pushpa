@@ -15,7 +15,13 @@ import { OrderItem } from "./order-item";
 import { Table } from "../restaurant/table";
 import { Invoice } from "../invoice/invoice";
 
-type OrderStatus = "Draft" | "Pending" | "Cancelled" | "Paid" | "Completed";
+export enum OrderStatus {
+    Draft = "Draft",
+    Pending =  "Pending",
+    Cancelled = "Cancelled",
+    Paid = "Paid",
+    Completed =  "Completed"
+}
 class Order extends Model<
     InferAttributes<Order, { omit: "restaurant" | "table" }>,
     InferCreationAttributes<Order, { omit: "restaurant" | "table" }>
@@ -52,8 +58,8 @@ Order.init(
         },
         status: {
             type: DataTypes.ENUM,
-            values: ["Draft", "Pending", "Cancelled", "Paid", "Completed",],
-            defaultValue: "Draft"
+            values: Object.values(OrderStatus),
+            defaultValue: OrderStatus.Draft
         },
         createdAt: DataTypes.DATE,
         updatedAt: DataTypes.DATE,

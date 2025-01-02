@@ -1,6 +1,7 @@
 
 import { sequelize } from "@app/db/conn";
 import { Product, Order, OrderItem, Invoice, InvoiceItem, Kot } from "@app/db/models";
+import { OrderStatus } from "@app/db/models/order/order";
 import { OrderItemStatus } from "@app/db/models/order/order-item";
 import { IRequest, IResponse } from "@app/interfaces/vendors/express";
 import { ICartItem } from "@app/types/cart";
@@ -224,7 +225,7 @@ OrdersRouter.post("/:orderId/place", async (req: IRequest, res: IResponse) => {
         await invoice.save({ transaction: transaction });
 
         await OrderItem.update({ status: OrderItemStatus.Delivered }, { where: { orderId: order.id }, transaction });
-        await order.update({ status: "Completed", invoiceId: invoice.id }, { transaction: transaction });
+        await order.update({ status: OrderStatus.Completed, invoiceId: invoice.id }, { transaction: transaction });
 
 
         const createdInvoice = await Invoice.findOne({
@@ -313,7 +314,7 @@ OrdersRouter.post("/:orderId/complete", async (req: IRequest, res: IResponse) =>
         await invoice.save({ transaction: transaction });
 
         await OrderItem.update({ status: OrderItemStatus.Delivered }, { where: { orderId: order.id }, transaction });
-        await order.update({ status: "Completed", invoiceId: invoice.id }, { transaction: transaction });
+        await order.update({ status: OrderStatus.Completed, invoiceId: invoice.id }, { transaction: transaction });
 
 
         const createdInvoice = await Invoice.findOne({
