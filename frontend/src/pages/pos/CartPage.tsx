@@ -162,10 +162,14 @@ export default function CartPage() {
         <div className="h-full flex gap-1 pb-2">
           <div className="flex-1"></div>
           <Button className="bg-gray-50 border  h-auto !px-3 py-1.5 text-sm" onClick={onDraft} disabled={items.length == 0 || loading}>
-            <Icon icon="fluent:money-16-regular" height={18} width={18} /> Draft
+            <Icon icon="mage:save-floppy" height={18} width={18} /> Draft
+          </Button>
+
+          <Button className="bg-gray-50 border  h-auto !px-3 py-1.5 text-sm" onClick={onDraft} disabled={items.length == 0 || loading}>
+            <Icon icon="hugeicons:kitchen-utensils" height={18} width={18} /> Send to kitchen
           </Button>
           <Button className="bg-lime-600 h-auto !px-3 text-white  disabled:bg-gray-300 disabled:opacity-100 text-sm" onClick={onPlaceOrder} disabled={items.length == 0 || loading}>
-            <Icon icon="fluent:money-16-regular" height={18} width={18} /> Create Receipt & Pay
+            <Icon icon="fluent:money-16-regular" height={18} width={18} /> Pay & Complete
           </Button>
         </div>
         <ScrollView className="h-full w-full overflow-auto rounded-t-xl border border-b-0 bg-white">
