@@ -13,6 +13,6 @@ export default class OrdersApi {
 
     static modifyItem = (orderId: string, cartItem: ICartItem) => ApiRequest.post(`/orders/${orderId}/items`, { item: cartItem }).then(res => res.data.result as IOrder);
     static deleteItem = (orderId: string, productId: string) => ApiRequest.delete(`/orders/${orderId}/items`, { data: { productId } }).then(res => res.data.result as IOrder);
-    static cancelItem = (orderId: string, productId: string) => ApiRequest.patch(`/orders/${orderId}/items/cancel`, { productId }).then(res => res.data.result as IOrder);
+    static cancelItem = (orderId: string, orderItemId: string) => ApiRequest.patch(`/orders/${orderId}/items/cancel`, { orderItemId }).then(res => res.data.result as IOrder);
 
 }

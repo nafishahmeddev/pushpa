@@ -16,6 +16,7 @@ import { Table } from "../restaurant/table";
 import { Invoice } from "../invoice/invoice";
 import { Sequence } from "../sequence";
 import moment from "moment";
+import { Kot } from "./kot";
 
 export enum OrderStatus {
     Draft = "Draft",
@@ -48,11 +49,13 @@ class Order extends Model<
     declare table?: NonAttribute<Table>;
     declare invoice?: NonAttribute<Invoice>;
     declare items?: NonAttribute<OrderItem[]>;
+    declare kotList?: NonAttribute<Kot[]>;
 
     declare static associations: {
         restaurant: Association<Order, Restaurant>;
         table: Association<Order, Table>;
         items: Association<Order, OrderItem>
+        kotList: Association<Order, Kot>
     };
 }
 

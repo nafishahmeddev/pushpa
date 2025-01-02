@@ -1,5 +1,5 @@
 import OrdersApi from "@app/services/orders";
-import { IOrder } from "@app/types/orders";
+import { DeliverType, IOrder } from "@app/types/orders";
 import React, { useEffect, useState } from "react";
 import { NavLink, Outlet, useLocation, useNavigate, useParams } from "react-router";
 import { Icon } from "@iconify/react";
@@ -7,6 +7,7 @@ import { cloneDeep } from "lodash";
 import NewOrderModal from "./components/NewOrderModal";
 import toast from "react-hot-toast";
 import { AxiosError } from "axios";
+import Button from "@app/components/ui/form/button";
 export default function PosPage() {
   const navigate = useNavigate();
   const { pathname } = useLocation();
@@ -33,10 +34,10 @@ export default function PosPage() {
       }
     });
     toast.promise(promise, {
-      success:"Successfully deleted",
-      error:(err: AxiosError)=>err.message,
-      loading:"Deleting.."
-    })
+      success: "Successfully deleted",
+      error: (err: AxiosError) => err.message,
+      loading: "Deleting..",
+    });
     return promise;
   };
   const handleOnNew = (item: IOrder) => {
@@ -68,7 +69,7 @@ export default function PosPage() {
     <React.Fragment>
       <NewOrderModal {...newOrderModal} onSave={handleOnNew} onReset={() => setNewOrderModal({ open: false })} />
 
-      <div className="h-full grid grid-cols-[190px_1fr] m-auto p-4 gap-4">
+      <div className="h-full grid grid-cols-[120px_1fr] m-auto p-4 gap-4">
         <div className="flex flex-col h-full gap-2 ">
           {orders.map((order) => (
             <div key={`order-item-${order.id}`} className="relative">
@@ -80,11 +81,21 @@ export default function PosPage() {
             ${isActive ? "bg-lime-600/10 text-lime-800 border-transparent" : "bg-white"}`
                 }
               >
-                <span className="flex-1 overflow-ellipsis w-full overflow-x-hidden">{[order.seq, order.deliveryType, order.table?.name].filter((e) => !!e).join(":")} </span>
+                {order.deliveryType == DeliverType.Takeaway ? (
+                  <>
+                    <Icon icon="ri:takeaway-line" width={16} height={16} />
+                    <span className="flex-1 overflow-ellipsis w-full overflow-x-hidden text-sm">{[order.seq].filter((e) => !!e).join(":")} </span>
+                  </>
+                ) : (
+                  <>
+                    <Icon icon="fluent:couch-12-regular"  width={16} height={16} />
+                    <span className="flex-1 overflow-ellipsis w-full overflow-x-hidden text-sm">{[order.table?.name].filter((e) => !!e).join(":")} </span>
+                  </>
+                )}
               </NavLink>
-              <button className="absolute right-0 top-0 flex items-center justify-center h-full pe-1.5 text-sm text-red-600 hover:opacity-50" onClick={() => handleOnDelete(order.id)}>
+              <Button className="absolute right-0 top-0 flex items-center justify-center h-full pe-1.5 text-sm text-red-600 hover:opacity-50" onClick={() => handleOnDelete(order.id)} ask="Are you sure want to delete?">
                 <Icon icon="fluent:delete-32-regular" />
-              </button>
+              </Button>
             </div>
           ))}
           <button

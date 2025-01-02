@@ -45,6 +45,10 @@ OrdersRouter.get("/:orderId", async (req: IRequest, res: IResponse) => {
                         as: "kot"
                     },
                 ]
+            },
+            {
+                model: Kot,
+                as: "kotList"
             }
         ]
     });
@@ -309,7 +313,8 @@ OrdersRouter.post("/:orderId/kot-create", async (req: IRequest, res: IResponse) 
 
         await OrderItem.update({ kotId: kot.id }, {
             where: {
-                orderId: orderId
+                orderId: orderId,
+                kotId: null
             },
             transaction
         });
@@ -347,7 +352,9 @@ OrdersRouter.post("/:orderId/complete", async (req: IRequest, res: IResponse) =>
                             model: Product,
                             as: "product"
                         }
-                    ]
+                    ], where: {
+                        status: { [Op.not]: OrderItemStatus.Cancelled }
+                    }
                 }
             ],
             transaction

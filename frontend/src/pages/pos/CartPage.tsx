@@ -13,18 +13,18 @@ import Button from "@app/components/ui/form/button";
 import { IInvoice } from "@app/types/invoice";
 import toast from "react-hot-toast";
 import { ICartItem } from "@app/types/cart";
-import { IKot, IOrder, IOrderItem } from "@app/types/orders";
+import { IKot, IOrder, IOrderItem, OrderItemStatus } from "@app/types/orders";
 import { cloneDeep } from "lodash";
 
 export default function CartPage() {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const { orderId } = useParams<{ orderId: string }>();
-  const [, setOrder] = useState<IOrder>();
+  const [order, setOrder] = useState<IOrder>();
   const [placedItems, setPlacedItems] = useState<Array<IOrderItem>>([]);
   const [items, setItems] = useState<Array<ICartItem>>([]);
 
-  const cartUtil = new CartUtil([...items, ...placedItems]);
+  const cartUtil = new CartUtil([...items, ...placedItems.filter((e) => e.status != OrderItemStatus.Cancelled)]);
 
   const init = () =>
     OrdersApi.getOrder(orderId as string).then((res) => {
@@ -60,6 +60,14 @@ export default function CartPage() {
   const onCancel = async (item: IOrderItem) =>
     OrdersApi.cancelItem(orderId as string, item.id).then(() => {
       beep();
+      setPlacedItems((items) => {
+        return items.map((_item) => {
+          if (_item.id == item.id) {
+            _item.status = OrderItemStatus.Cancelled;
+          }
+          return _item;
+        });
+      });
     });
 
   const onDelete = async (item: ICartItem) =>
@@ -120,6 +128,14 @@ export default function CartPage() {
     });
   };
 
+  const getKots = () => {
+    const list = (order?.kotList ?? []).map((kot) => {
+      kot.items = placedItems.filter((item) => item.kotId == kot.id);
+      return kot;
+    }).sort((a,b)=>a.tokenNo < b.tokenNo ? -1:0)
+    return list;
+  };
+
   useEffect(() => {
     init();
   }, [orderId, navigate]);
@@ -163,20 +179,31 @@ export default function CartPage() {
               </tr>
             </thead>
             <tbody>
-              {placedItems.map((item, index) => (
-                <tr className="border-b border-dashed bg-yellow-50" key={`item-${index}`}>
-                  <td className="px-2 py-1 text-start">{item.product.name}</td>
-                  <td className="px-2 py-2 text-end font-mono">{Formatter.money(item.product.price)}</td>
-                  <td className="px-10 py-0.5 text-center w-0 text-nowrap">
-                    <div className={`flex items-center justify-end ${loading ? "animate-pulse" : ""}`}>
-                      <input className="text-center  font-mono flex-1 bg-transparent min-w-8 max-w-8 appearance-none" value={item.quantity} readOnly disabled />
-                      <button title="Cancel" className={`border rounded-full h-6 aspect-square flex items-center justify-center hover:opacity-50 text-red-700 bg-white`} onClick={() => onCancel(item)}>
-                        <Icon icon="ic:round-close" />
-                      </button>
-                    </div>
-                  </td>
-                  <td className="px-2 py-1 text-end font-mono">{Formatter.money(item.product.price * item.quantity)}</td>
-                </tr>
+              {getKots().map((kot: IKot) => (
+                <React.Fragment key={`item-${kot.id}`}>
+                  <tr className={`border-b border-dashed bg-lime-100`}>
+                    <td className="px-2 py-1 text-start" colSpan={4}>
+                      {kot.tokenNo}
+                    </td>
+                  </tr>
+                  {(kot.items ?? []).map((item, index) => (
+                    <tr className={`border-b border-dashed bg-yellow-50 ${item.status == OrderItemStatus.Cancelled ? "bg-red-50 line-through" : ""}`} key={`item-${index}`}>
+                      <td className="px-2 py-1 text-start">{item.product.name}</td>
+                      <td className="px-2 py-2 text-end font-mono">{Formatter.money(item.product.price)}</td>
+                      <td className="px-10 py-0.5 text-center w-0 text-nowrap">
+                        <div className={`flex w-full items-center justify-end ${loading ? "animate-pulse" : ""}`}>
+                          <input className="text-center  font-mono flex-1 bg-transparent min-w-8 max-w-8 appearance-none" value={item.quantity} readOnly disabled />
+                          {item.status != OrderItemStatus.Cancelled && (
+                            <Button title="Cancel" className={`border rounded-full h-6 aspect-square flex items-center justify-center hover:opacity-50 text-red-700 bg-white !px-0`} onClick={() => onCancel(item)} ask>
+                              <Icon icon="ic:round-close" />
+                            </Button>
+                          )}
+                        </div>
+                      </td>
+                      <td className="px-2 py-1 text-end font-mono">{Formatter.money(item.product.price * item.quantity)}</td>
+                    </tr>
+                  ))}
+                </React.Fragment>
               ))}
               {items.map((item, index) => (
                 <tr className="border-b border-dashed" key={`item-${index}`}>
