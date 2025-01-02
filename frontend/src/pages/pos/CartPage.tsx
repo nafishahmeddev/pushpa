@@ -200,9 +200,9 @@ export default function CartPage() {
             <tbody>
               {getKots().map((kot: IKot) => (
                 <React.Fragment key={`item-${kot.id}`}>
-                  <tr className={`border-b border-dashed bg-lime-100`}>
-                    <td className="px-2 py-1 text-start" colSpan={4}>
-                      {kot.tokenNo}
+                  <tr className={`border-b border-dashed bg-lime-600 text-white`}>
+                    <td className="px-2 py-2 text-start font-bold" colSpan={4}>
+                      Token No: {kot.tokenNo}
                     </td>
                   </tr>
                   {(kot.items ?? []).map((item, index) => (
