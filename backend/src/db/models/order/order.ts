@@ -35,7 +35,7 @@ class Order extends Model<
     InferCreationAttributes<Order, { omit: "restaurant" | "table" }>
 > {
     declare id: CreationOptional<string>;
-    declare seq: CreationOptional<number>;
+    declare orderNo: CreationOptional<number>;
     declare status: CreationOptional<OrderStatus>;
     declare deliveryType: CreationOptional<DeliverType>;
     declare restaurantId: ForeignKey<Restaurant["id"]>;
@@ -68,7 +68,7 @@ Order.init(
             allowNull: false,
             defaultValue: UUIDV4,
         },
-        seq: DataTypes.BIGINT,
+        orderNo: DataTypes.BIGINT,
         status: {
             type: DataTypes.ENUM,
             values: Object.values(OrderStatus),
@@ -89,7 +89,7 @@ Order.init(
 );
 
 Order.addHook("beforeCreate", (async (order: Order) => {
-    let seq = 0;
+    let orderNo = 0;
     await sequelize.transaction(async (transaction) => {
         let sequence = await Sequence.findOne({
             where: { table: Order.tableName, restaurantId: order.restaurantId },
@@ -104,10 +104,10 @@ Order.addHook("beforeCreate", (async (order: Order) => {
                 transaction
             });
         }
-        seq = sequence.value + 1;
-        await sequence.update({ value: seq, }, { transaction });
+        orderNo = sequence.value + 1;
+        await sequence.update({ value: orderNo, }, { transaction });
     });
-    order.seq = seq;
+    order.orderNo = orderNo;
 }))
 
 export { Order };

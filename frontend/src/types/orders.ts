@@ -26,7 +26,7 @@ export enum OrderItemStatus {
 }
 export type IOrder = {
     id: string,
-    seq: number,
+    orderNo: number,
     status: OrderStatus,
     restaurantId: string;
     restaurant?: unknown;

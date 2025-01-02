@@ -84,7 +84,7 @@ export default function PosPage() {
                 {order.deliveryType == DeliverType.Takeaway ? (
                   <>
                     <Icon icon="ri:takeaway-line" width={16} height={16} />
-                    <span className="flex-1 overflow-ellipsis w-full overflow-x-hidden text-sm">{[order.seq].filter((e) => !!e).join(":")} </span>
+                    <span className="flex-1 overflow-ellipsis w-full overflow-x-hidden text-sm">{[order.orderNo].filter((e) => !!e).join(":")} </span>
                   </>
                 ) : (
                   <>
