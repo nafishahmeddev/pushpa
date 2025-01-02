@@ -206,7 +206,7 @@ export default function CartPage() {
                     </td>
                   </tr>
                   {(kot.items ?? []).map((item, index) => (
-                    <tr className={`border-b border-dashed bg-yellow-50 ${item.status == OrderItemStatus.Cancelled ? "bg-red-50 line-through" : ""}`} key={`item-${index}`}>
+                    <tr className={`border-b border-dashed ${item.status == OrderItemStatus.Cancelled ? "bg-red-50 line-through" : ""}`} key={`item-${index}`}>
                       <td className="px-2 py-1 text-start">{item.product.name}</td>
                       <td className="px-2 py-2 text-end font-mono">{Formatter.money(item.product.price)}</td>
                       <td className="px-10 py-0.5 text-center w-0 text-nowrap">
