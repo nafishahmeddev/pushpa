@@ -72,9 +72,9 @@ export default function MenuList({ onItemPress, ...props }: MenuListProps) {
         ) : (
           <div>
             {filtered.map((category) => (
-              <React.Fragment key={category.name}>
+              <div key={category.name}>
                 <div className="sticky top-0 py-2 px-2">
-                  <div className="py-1 px-4 bg-gray-50 border flex rounded-xl text-center items-center justify-center text-lime-700 font-semibold">
+                  <div className="py-1 px-4 bg-white/80 text-gray-700 backdrop-blur-sm border flex rounded-xl text-center items-center justify-center font-bold">
                     {category.name}
                   </div>
                 </div>
@@ -95,7 +95,7 @@ export default function MenuList({ onItemPress, ...props }: MenuListProps) {
                     </div>
                   </div>
                 ))}
-              </React.Fragment>
+              </div>
             ))}
           </div>
         )}
