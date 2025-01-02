@@ -176,7 +176,6 @@ export default function CartPage() {
           <table className="w-full ">
             <thead>
               <tr className="bg-gray-100 sticky top-0">
-                <th className="px-2 py-2 text-start w-0">#</th>
                 <th className="px-2 py-2 text-start">Item</th>
                 <th className="px-2 py-2 text-end w-0">Price</th>
                 <th className="px-2 py-2 text-center w-0">Qtd.</th>
@@ -186,7 +185,6 @@ export default function CartPage() {
             <tbody>
               {items.map((item, index) => (
                 <tr className="border-b border-dashed" key={`item-${index}`}>
-                  <td className="px-2 py-1 text-start">{index + 1}</td>
                   <td className="px-2 py-1 text-start">{item.product.name}</td>
                   <td className="px-2 py-2 text-end font-mono">{Formatter.money(item.product.price)}</td>
                   <td className="px-10 py-0.5 text-center w-0">
