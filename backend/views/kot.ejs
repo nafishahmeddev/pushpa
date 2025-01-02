@@ -1,0 +1,100 @@
+<html>
+
+<head>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap"
+        rel="stylesheet">
+    <title>Order: #<%= kot.receiptNo %>
+    </title>
+    <style>
+        :root {
+            font-family: "Nunito", sans-serif;
+            box-sizing: border-box;
+            font-size: 14px;
+        }
+
+        table {
+            border-collapse: collapse;
+        }
+
+        th {
+            padding: 8px 5px;
+            text-align: left;
+            font-size: 12px;
+        }
+
+        td {
+            padding: 3px 5px;
+            text-align: left;
+            font-size: 12px;
+        }
+
+        th:nth-child(1),
+        td:nth-child(1) {
+            padding-left: 0;
+        }
+
+        @page {
+            size: 80mm 120mm;
+            margin: 0;
+        }
+    </style>
+    <% const formatter=new Intl.NumberFormat("en-IN", { style: "currency" , currency: kot.restaurant.currency || "INR"
+        }); const moment=locals.moment; %>
+</head>
+
+<body>
+    <div style="padding:15px">
+        <div style="text-align: center;">
+            <h3 style="margin:0;">
+                <%= kot.restaurant.name %>
+            </h3>
+            <p style="margin:0;  margin-top: 10px">
+                <%= kot.restaurant.address %>
+            </p>
+        </div>
+        <table style="font-weight: bold; width: 100%; margin-top: 15px; ">
+            <tr>
+                <td>Order: #<%= kot.order.seq %>
+                </td>
+                <td style="text-align: right;">Date: <%= moment(kot.createdAt).format("DD/MM/YYYY") %>
+                </td>
+            </tr>
+        </table>
+        <div>
+            <table style="border-collapse: collapse; margin: 10px 0; width:100%; font-size: 14px;">
+                <thead>
+                    <tr style="border-bottom: 1px dashed #000; border-top: 1px dashed #000;">
+                        <th>Description</th>
+                        <th style="text-align: right;">Quantity</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td></td>
+                    </tr>
+                    <% for(const item of kot.items ?? []){ %>
+                        <React.Fragment key={`order-item-${item.id}`}>
+                            <tr>
+                                <td>
+                                    <%= item?.product?.name %>
+                                </td>
+                                <td style="text-align: right; width: 0;">
+                                    <%= item.quantity %>
+                                </td>
+                            </tr>
+                        </React.Fragment>
+                        <%}%>
+                </tbody>
+            </table>
+            <div style="margin: 20px 0;border-top: 1px dashed #000; "></div>
+
+            <div style="text-align: center; font-weight: bold; font-size: 20px;">
+                Token No: #<%= kot.tokenNo %>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

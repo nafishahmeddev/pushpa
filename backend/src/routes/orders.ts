@@ -1,6 +1,6 @@
 
 import { sequelize } from "@app/db/conn";
-import { Product, Order, OrderItem, Invoice, InvoiceItem, Kot, Table } from "@app/db/models";
+import { Product, Order, OrderItem, Invoice, InvoiceItem, Kot, Table, Restaurant } from "@app/db/models";
 import { DeliverType, OrderStatus } from "@app/db/models/order/order";
 import { OrderItemStatus } from "@app/db/models/order/order-item";
 import { IRequest, IResponse } from "@app/interfaces/vendors/express";
@@ -637,6 +637,46 @@ OrdersRouter.patch("/:orderId/items/cancel", async (req: IRequest, res: IRespons
         });
 
     }
+});
+
+
+OrdersRouter.get("/:orderId/kots/:kotId/print", async (req: IRequest, res: IResponse) => {
+    const orderId = req.params.orderId;
+    const kotId = req.params.kotId;
+
+    const kot = await Kot.findOne({
+        where: {
+            orderId:orderId,
+            id: kotId
+        },
+        include: [
+            {
+                model: Order,
+                as: "order"
+            },
+            {
+                model: OrderItem,
+                as: "items",
+                include: [{
+                    model: Product,
+                    as:"product"
+                }]
+            },
+            {
+                model: Restaurant,
+                as: "restaurant"
+            }
+        ]
+    })
+
+    if (!kot) {
+        res.status(404).json({
+            message: "kot not found"
+        })
+        return;
+    }
+
+    res.render("kot.ejs", { kot: kot.toJSON() })
 });
 
 
