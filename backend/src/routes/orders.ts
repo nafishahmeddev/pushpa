@@ -1,18 +1,25 @@
 
 import { sequelize } from "@app/db/conn";
-import { Product, Order, OrderItem, Invoice, InvoiceItem, Kot } from "@app/db/models";
+import { Product, Order, OrderItem, Invoice, InvoiceItem, Kot, Table } from "@app/db/models";
 import { DeliverType, OrderStatus } from "@app/db/models/order/order";
 import { OrderItemStatus } from "@app/db/models/order/order-item";
 import { IRequest, IResponse } from "@app/interfaces/vendors/express";
 import { ICartItem } from "@app/types/cart";
 import { Router } from "express";
-import { Op, or } from "sequelize";
-import { v4 } from "uuid";
+import { Op } from "sequelize";
 
 const OrdersRouter = Router();
 
 OrdersRouter.get("/pending-list", async (req: IRequest, res: IResponse) => {
-    const orders = await Order.findAll({ where: { status: ["Draft", "Pending"] } });
+    const orders = await Order.findAll({
+        where: { status: ["Draft", "Pending"] },
+        include: [
+            {
+                model: Table,
+                as: "table"
+            }
+        ]
+    });
     res.json({
         result: orders,
         message: "Successful"
@@ -66,6 +73,12 @@ OrdersRouter.post("/", async (req: IRequest, res: IResponse) => {
 
         await transaction.commit();
 
+        await order.reload({
+            include: [{
+                model: Table,
+                as: "table"
+            }]
+        })
         res.json({
             result: order,
             message: "Successful"
@@ -81,17 +94,16 @@ OrdersRouter.post("/", async (req: IRequest, res: IResponse) => {
 
 OrdersRouter.put("/:orderId", async (req: IRequest, res: IResponse) => {
     const orderId = req.params.orderId;
-    const name: string = req.body.name;
-    const items: Array<ICartItem> = req.body.items;
-
     const order = await Order.findOne({
         where: {
             id: orderId
         },
-        include: [{
-            model: OrderItem,
-            as: "items"
-        }]
+        include: [
+            {
+                model: Table,
+                as: "table"
+            }
+        ]
     });
     if (!order) {
         res.status(404).json({
@@ -101,21 +113,9 @@ OrdersRouter.put("/:orderId", async (req: IRequest, res: IResponse) => {
     }
     const transaction = await sequelize.transaction();
     try {
-
-        await OrderItem.destroy({
-            where: { orderId: orderId, kotId: null },
-            transaction
-        });
-
-        await Promise.all(items.map(item => OrderItem.create({
-            ...item,
-            orderId: order.id
-        }, {
-            transaction
-        })))
-
         await Order.update({
             restaurantId: req.auth?.restaurantId,
+            ...req.body,
         }, { transaction, where: { id: orderId } });
 
         await transaction.commit();
@@ -149,6 +149,16 @@ OrdersRouter.delete("/:orderId", async (req: IRequest, res: IResponse) => {
         })
         return;
     }
+
+    const count = await OrderItem.count({ where: { orderId } });
+
+    if (count > 0) {
+        res.status(400).json({
+            message: "Order cannot be deleted with items"
+        })
+        return;
+    }
+
     const transaction = await sequelize.transaction();
     try {
         await OrderItem.destroy({ where: { orderId: orderId } });
@@ -244,6 +254,68 @@ OrdersRouter.post("/:orderId/place", async (req: IRequest, res: IResponse) => {
         transaction.commit();
         res.json({
             result: createdInvoice,
+            message: "Successful"
+        })
+    } catch (error) {
+        console.log(error);
+        transaction.rollback();
+        res.status(400).json({
+            message: "Something went wrong..."
+        })
+    }
+});
+
+OrdersRouter.post("/:orderId/kot-create", async (req: IRequest, res: IResponse) => {
+    const orderId = req.params.orderId;
+
+    const order = await Order.findOne({
+        where: {
+            id: orderId,
+            status: {
+                [Op.notIn]: ["Paid", "Completed"]
+            }
+        }
+    });
+
+    if (!order) {
+        res.status(404).json({
+            message: "Order not found"
+        })
+        return;
+    }
+
+    const count = await OrderItem.count({
+        where: {
+            kotId: null,
+            orderId: orderId
+        },
+    });
+
+    if (!count) {
+        res.status(404).json({
+            message: "Order not found"
+        })
+        return;
+    }
+
+    const transaction = await sequelize.transaction();
+    try {
+        const kot = await Kot.create({
+            orderId,
+            restaurantId: order.restaurantId
+        }, {
+            transaction
+        });
+
+        await OrderItem.update({ kotId: kot.id }, {
+            where: {
+                orderId: orderId
+            },
+            transaction
+        });
+        transaction.commit();
+        res.json({
+            result: kot,
             message: "Successful"
         })
     } catch (error) {

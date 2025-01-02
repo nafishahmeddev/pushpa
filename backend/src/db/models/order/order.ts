@@ -14,13 +14,15 @@ import { Restaurant } from "../restaurant/restaurant";
 import { OrderItem } from "./order-item";
 import { Table } from "../restaurant/table";
 import { Invoice } from "../invoice/invoice";
+import { Sequence } from "../sequence";
+import moment from "moment";
 
 export enum OrderStatus {
     Draft = "Draft",
-    Pending =  "Pending",
+    Pending = "Pending",
     Cancelled = "Cancelled",
     Paid = "Paid",
-    Completed =  "Completed"
+    Completed = "Completed"
 }
 
 export enum DeliverType {
@@ -32,6 +34,7 @@ class Order extends Model<
     InferCreationAttributes<Order, { omit: "restaurant" | "table" }>
 > {
     declare id: CreationOptional<string>;
+    declare seq: CreationOptional<number>;
     declare status: CreationOptional<OrderStatus>;
     declare deliveryType: CreationOptional<DeliverType>;
     declare restaurantId: ForeignKey<Restaurant["id"]>;
@@ -62,6 +65,7 @@ Order.init(
             allowNull: false,
             defaultValue: UUIDV4,
         },
+        seq: DataTypes.BIGINT,
         status: {
             type: DataTypes.ENUM,
             values: Object.values(OrderStatus),
@@ -80,5 +84,27 @@ Order.init(
         tableName: "Orders",
     }
 );
+
+Order.addHook("beforeCreate", (async (order: Order) => {
+    let seq = 0;
+    await sequelize.transaction(async (transaction) => {
+        let sequence = await Sequence.findOne({
+            where: { table: Order.tableName, restaurantId: order.restaurantId },
+            lock: transaction.LOCK.UPDATE,
+            transaction
+        });
+        if (!sequence) {
+            sequence = await Sequence.create({
+                table: Order.tableName, restaurantId: order.restaurantId,
+                value: 0
+            }, {
+                transaction
+            });
+        }
+        seq += 1;
+        await sequence.update({ value: seq, }, { transaction });
+    });
+    order.seq = seq;
+}))
 
 export { Order };

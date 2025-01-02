@@ -1,6 +1,6 @@
 import { store } from '@app/store';
 import { AuthActions } from '@app/store/slices/auth';
-import axios from 'axios';
+import axios, { AxiosError } from 'axios';
 const ApiRequest = axios.create({
     baseURL: import.meta.env.VITE_BASE_URL,
 });
@@ -13,12 +13,19 @@ ApiRequest.interceptors.request.use(config => {
 })
 
 ApiRequest.interceptors.response.use((response,) => {
-    if(response.status==401){
+
+
+    return response;
+}, (error: AxiosError) => {
+    if (error.status == 401) {
         store.dispatch(AuthActions.logout());
         localStorage.removeItem("accessToken");
         localStorage.removeItem("refreshToken");
     }
-    return response;
+    if ((error?.response?.data as { message: string })?.message) {
+        error.message = (error?.response?.data as { message: string })?.message
+    }
+    return Promise.reject(error);
 })
 
 export { ApiRequest };
