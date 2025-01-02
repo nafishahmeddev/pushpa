@@ -139,7 +139,7 @@ export default function OrdersPage() {
                         )}
                       </div>
                     </TableCell>
-                    <TableCell className="w-0">{order.seq}</TableCell>
+                    <TableCell className="w-0">{order.orderNo}</TableCell>
                     <TableCell>
                       <OrderStatusLabel order={order} />
                     </TableCell>
