@@ -239,13 +239,16 @@ export default function CartPage() {
                       <td className="px-2 py-1 text-start">{item.product.name}</td>
                       <td className="px-2 py-1.5 text-end font-mono">{Formatter.money(item.product.price)}</td>
                       <td className="px-4 py-0.5 text-center w-0 text-nowrap">
-                        <div className={`flex w-full items-center justify-end ${loading ? "animate-pulse" : ""}`}>
-                          <input className="text-center  font-mono flex-1 bg-transparent min-w-8 max-w-8 appearance-none" value={item.quantity} readOnly disabled />
-                          {item.status != OrderItemStatus.Cancelled && (
-                            <Button title="Cancel" className={`bg-red-600 !rounded-lg h-5 aspect-square flex items-center justify-center hover:opacity-50  text-white !px-0`} onClick={() => onCancelItem(item)} ask>
-                              <Icon icon="ic:round-close" />
-                            </Button>
-                          )}
+                        <div className={`grid grid-cols-[20px_30px_20px] gap-[4px] justify-center items-center ${loading ? "animate-pulse" : ""}`}>
+                          <div></div>
+                          <input className="text-center  font-mono flex-1 bg-transparent min-w-0 w-full flex appearance-none" value={item.quantity} readOnly />
+                          <div>
+                            {item.status != OrderItemStatus.Cancelled && (
+                              <Button title="Cancel" className={`bg-red-600 !rounded-lg h-5 aspect-square flex items-center justify-center hover:opacity-50  text-white !px-0`} onClick={() => onCancelItem(item)} ask>
+                                <Icon icon="ic:round-close" />
+                              </Button>
+                            )}
+                          </div>
                         </div>
                       </td>
                       <td className="px-2 py-1 text-end font-mono">{Formatter.money(item.product.price * item.quantity)}</td>

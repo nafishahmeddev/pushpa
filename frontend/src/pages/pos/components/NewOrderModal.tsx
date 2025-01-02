@@ -37,7 +37,7 @@ export default function NewOrderModal({ open = false, order, onReset, onSave }: 
     toast.promise(promise, {
       success: "Successfully saved",
       loading: "please wait...",
-      error: (err)=>err.message,
+      error: (err) => err.message,
     });
     return promise
       .then((res: IOrder) => {
@@ -83,7 +83,7 @@ export default function NewOrderModal({ open = false, order, onReset, onSave }: 
             <option>Dine-In</option>
           </Select>
 
-          <Select required label="Table" {...formik.getFieldProps("tableId")} meta={formik.getFieldMeta("tableId")} disabled={formik.values.deliveryType == "Takeaway"}>
+          <Select required label="Table" {...formik.getFieldProps("tableId")} meta={formik.getFieldMeta("tableId")} disabled={formik.values.deliveryType == "Takeaway"} value={formik.values.tableId || ""}>
             <option></option>
             {tables.map((table) => (
               <option key={table.id} value={table.id}>

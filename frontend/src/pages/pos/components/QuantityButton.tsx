@@ -41,7 +41,7 @@ export default function QuantityButton({ quantity, onUpdate, onDelete }: Quantit
   }, [quantity]);
   return (
     <fieldset disabled={loading}>
-      <div className={`flex items-center justify-center ${loading ? "animate-pulse" : ""}`}>
+      <div className={`grid grid-cols-[20px_30px_20px] gap-[4px] justify-center items-center ${loading ? "animate-pulse" : ""}`}>
         <button className={`rounded-lg h-5 aspect-square flex items-center justify-center hover:opacity-50 text-white ${quantity == 1 ? "bg-red-500" : "bg-lime-600"}`} onClick={handleOnRemove}>
           <Icon icon={quantity == 1 ? "fluent:delete-12-regular" : "ic:baseline-remove"} />
         </button>
