@@ -158,7 +158,16 @@ export default function CartPage() {
           }
         />
       </div>
-      <div className="h-full overflow-auto grid grid-rows-[1fr_auto_auto] w-full ">
+      <div className="h-full overflow-auto grid grid-rows-[auto_1fr_auto] w-full ">
+        <div className="h-full flex gap-1 pb-2">
+          <div className="flex-1"></div>
+          <Button className="bg-gray-50 border  h-auto !px-3 py-1.5 text-sm" onClick={onDraft} disabled={items.length == 0 || loading}>
+            <Icon icon="fluent:money-16-regular" height={18} width={18} /> Draft
+          </Button>
+          <Button className="bg-lime-600 h-auto !px-3 text-white  disabled:bg-gray-300 disabled:opacity-100 text-sm" onClick={onPlaceOrder} disabled={items.length == 0 || loading}>
+            <Icon icon="fluent:money-16-regular" height={18} width={18} /> Create Receipt & Pay
+          </Button>
+        </div>
         <ScrollView className="h-full w-full overflow-auto rounded-t-xl border border-b-0 bg-white">
           <table className="w-full ">
             <thead>
@@ -209,15 +218,6 @@ export default function CartPage() {
               </tr>
             </tfoot>
           </table>
-        </div>
-        <div className="h-full flex gap-1 pt-2">
-          <div className="flex-1"></div>
-          <Button className="bg-gray-50 border  h-auto !px-3 py-1.5 text-sm" onClick={onDraft} disabled={items.length == 0 || loading}>
-            <Icon icon="fluent:money-16-regular" height={18} width={18} /> Draft
-          </Button>
-          <Button className="bg-lime-600 h-auto !px-3 text-white  disabled:bg-gray-300 disabled:opacity-100 text-sm" onClick={onPlaceOrder} disabled={items.length == 0 || loading}>
-            <Icon icon="fluent:money-16-regular" height={18} width={18} /> Create Receipt & Pay
-          </Button>
         </div>
       </div>
     </React.Fragment>
