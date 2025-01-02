@@ -657,12 +657,13 @@ OrdersRouter.get("/:orderId/kots/:kotId/print", async (req: IRequest, res: IResp
             {
                 model: OrderItem,
                 as: "items",
-                include: [
-                    {
-                        model: Product,
-                        as: "product"
-                    }
-                ],
+                include: [{
+                    model: Product,
+                    as: "product"
+                }],
+                where: {
+                    status: { [Op.not]: OrderItemStatus.Cancelled }
+                }
             },
             {
                 model: Restaurant,

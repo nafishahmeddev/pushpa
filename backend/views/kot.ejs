@@ -74,10 +74,8 @@
                     <tr>
                         <td></td>
                     </tr>
-                    <% for(const item of kot.items ?? []){ 
-                        const textStyle = item.status == "Cancelled" ? "text-decoration: line-through;":"";
-                        %>
-                        <tr style="<%= textStyle %>">
+                    <% for(const item of kot.items ?? []){   %>
+                        <tr>
                             <td>
                                 <%= item?.product?.name %>
                             </td>
