@@ -74,14 +74,14 @@ export default function MenuList({ onItemPress, ...props }: MenuListProps) {
             {filtered.map((category) => (
               <React.Fragment key={category.name}>
                 <div className="sticky top-0 py-2 px-2">
-                  <div className="py-1 px-4 bg-gray-50 border flex rounded-xl text-center items-center justify-center">
+                  <div className="py-1 px-4 bg-gray-50 border flex rounded-xl text-center items-center justify-center text-lime-700 font-semibold">
                     {category.name}
                   </div>
                 </div>
                 {category.products.map((product) => (
                   <div
                     key={`item-${product.id}`}
-                    className={`border-b border-gray-50/50 cursor-pointer hover:bg-lime-600/10 flex justify-between rounded-xl mx-2
+                    className={`border-b border-gray-100 cursor-pointer hover:bg-lime-600/10 flex justify-between rounded-xl mx-2
                       ${ itemPressLoading ? "animate-pulse" : "" }`}
                     onClick={() =>
                       !itemPressLoading && handleOnItemPress(product)

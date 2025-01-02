@@ -180,14 +180,14 @@ export default function CartPage() {
         <div className="h-full flex gap-1 pb-2">
           <div className="flex-1"></div>
           {placedItems.length > 0 && (
-            <Button className="bg-red-600 text-white border border-transparent  h-auto !px-3 py-1.5 text-sm disabled:opacity-50" onClick={onCancel} disabled={placedItems.length == 0 || loading} ask>
-              <Icon icon="ic:round-close" height={18} width={18} /> Cancel
+            <Button className="bg-red-600 h-auto text-white  disabled:bg-gray-300 disabled:opacity-100 text-sm !px-2 !py-1 !rounded-lg" onClick={onCancel} disabled={placedItems.length == 0 || loading} ask>
+              <Icon icon="ep:remove" height={18} width={18} /> Cancel
             </Button>
           )}
-          <Button className="bg-gray-50 border  h-auto !px-3 py-1.5 text-sm disabled:opacity-50" onClick={onCreateKot} disabled={items.length == 0 || loading}>
+          <Button className="bg-blue-600 h-auto text-white  disabled:bg-gray-300 disabled:opacity-100 text-sm !px-2 !py-1 !rounded-lg" onClick={onCreateKot} disabled={items.length == 0 || loading}>
             <Icon icon="hugeicons:kitchen-utensils" height={18} width={18} /> Send to kitchen
           </Button>
-          <Button className="bg-lime-600 h-auto !px-3 text-white  disabled:bg-gray-300 disabled:opacity-100 text-sm" onClick={onPlaceOrder} disabled={[...placedItems, ...items].length == 0 || loading}>
+          <Button className="bg-lime-600 h-auto text-white  disabled:bg-gray-300 disabled:opacity-100 text-sm !px-2 !py-1 !rounded-lg" onClick={onPlaceOrder} disabled={[...placedItems, ...items].length == 0 || loading}>
             <Icon icon="fluent:money-16-regular" height={18} width={18} /> Pay & Complete
           </Button>
         </div>

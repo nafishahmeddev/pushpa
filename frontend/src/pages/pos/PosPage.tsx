@@ -103,7 +103,7 @@ export default function PosPage() {
             className={`rounded-xl py-2 flex  items-center justify-start flex-nowrap text-nowrap px-3 gap-2  hover:opacity-50  border transition-all cursor-pointer
               text-sm bg-white`}
           >
-            <Icon icon="ic:baseline-add" /> New Cart
+            <Icon icon="gala:add" /> New Order
           </button>
         </div>
         <div className="h-full grid grid-cols-[auto_1fr]  m-auto w-full overflow-auto gap-4 select-none">
