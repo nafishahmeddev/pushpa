@@ -6,7 +6,7 @@ import { ITable } from "./table";
 
 export enum OrderStatus {
     Draft = "Draft",
-    Pending = "Pending",
+    Ongoing = "Ongoing",
     Cancelled = "Cancelled",
     Paid = "Paid",
     Completed = "Completed"

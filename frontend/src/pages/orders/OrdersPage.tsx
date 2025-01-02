@@ -15,7 +15,7 @@ import { useNavigate } from "react-router";
 const OrderStatusLabel = ({ order }: { order: IOrder }) => {
   const classNames = ["border px-1 py-0 text-sm rounded-lg"];
   switch (order.status) {
-    case OrderStatus.Pending: {
+    case OrderStatus.Ongoing: {
       classNames.push("border-orange-600/50 text-orange-600 bg-orange-50");
       break;
     }
@@ -132,7 +132,7 @@ export default function OrdersPage() {
                           </button>
                         )}
 
-                        {[OrderStatus.Draft, OrderStatus.Pending].includes(order.status) && (
+                        {[OrderStatus.Draft, OrderStatus.Ongoing].includes(order.status) && (
                           <button className={`hover:opacity-50`} onClick={() => navigate("/pos/"+order.id)} title="Go to billing">
                             <Icon icon="hugeicons:payment-02" height={20} width={20} />
                           </button>

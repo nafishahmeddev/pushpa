@@ -56,7 +56,7 @@ OrdersRouter.post("/paginate", async (req: IRequest, res: IResponse) => {
 
 OrdersRouter.get("/pending-list", async (req: IRequest, res: IResponse) => {
     const orders = await Order.findAll({
-        where: { status: ["Draft", "Pending"] },
+        where: { status: [OrderStatus.Draft, OrderStatus.Ongoing] },
         include: [
             {
                 model: Table,
@@ -320,7 +320,7 @@ OrdersRouter.post("/:orderId/kot-create", async (req: IRequest, res: IResponse) 
         where: {
             id: orderId,
             status: {
-                [Op.notIn]: ["Paid", "Completed"]
+                [Op.notIn]: [OrderStatus.Paid, OrderStatus.Completed]
             }
         }
     });
@@ -363,7 +363,7 @@ OrdersRouter.post("/:orderId/kot-create", async (req: IRequest, res: IResponse) 
             transaction
         });
 
-        order.status = OrderStatus.Pending;
+        order.status = OrderStatus.Ongoing;
         await order.save({
             transaction
         });

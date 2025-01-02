@@ -20,7 +20,7 @@ import { Kot } from "./kot";
 
 export enum OrderStatus {
     Draft = "Draft",
-    Pending = "Pending",
+    Ongoing = "Ongoing",
     Cancelled = "Cancelled",
     Paid = "Paid",
     Completed = "Completed"
