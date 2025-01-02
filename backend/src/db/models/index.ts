@@ -9,6 +9,7 @@ import { Invoice } from "./invoice/invoice";
 import { InvoiceItem } from "./invoice/invoice-item";
 import { Order } from "./order/order";
 import { OrderItem } from "./order/order-item";
+import { Kot } from "./order/kot";
 
 //restaurant associations
 Restaurant.hasMany(ProductCategory, {
@@ -82,7 +83,24 @@ Order.belongsTo(Invoice, {
 Order.hasMany(OrderItem, {
   foreignKey: "orderId",
   as: "items",
+});
+
+Kot.belongsTo(Restaurant, {
+  targetKey: "id",
+  foreignKey: "restaurantId",
+  as: "restaurant"
 })
+
+Kot.belongsTo(Order, {
+  targetKey: "id",
+  foreignKey: "orderId",
+  as: "order"
+})
+
+Kot.hasMany(OrderItem, {
+  foreignKey: "kotId",
+  as: "items"
+});
 
 //order item
 OrderItem.belongsTo(Order, {
@@ -97,6 +115,12 @@ OrderItem.belongsTo(Product, {
   foreignKey: "productId",
   as: "product",
   onDelete: "CASCADE"
+});
+
+OrderItem.belongsTo(Kot, {
+  targetKey: "id",
+  foreignKey: "kotId",
+  as: "kot",
 });
 
 //invoice
@@ -142,5 +166,6 @@ export {
   OrderItem,
   Sequence,
   User,
-  Location
+  Location,
+  Kot
 };

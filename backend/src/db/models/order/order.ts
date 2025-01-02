@@ -14,8 +14,6 @@ import { Restaurant } from "../restaurant/restaurant";
 import { OrderItem } from "./order-item";
 import { Table } from "../restaurant/table";
 import { Invoice } from "../invoice/invoice";
-import { Sequence } from "../sequence";
-import moment from "moment";
 
 type OrderStatus = "Draft" | "Pending" | "Cancelled" | "Paid" | "Completed";
 class Order extends Model<
@@ -24,8 +22,6 @@ class Order extends Model<
 > {
     declare id: CreationOptional<string>;
     declare status: CreationOptional<OrderStatus>;
-    declare name: CreationOptional<string>;
-    declare tokenNo: CreationOptional<number>;
     declare restaurantId: ForeignKey<Restaurant["id"]>;
     declare tableId: ForeignKey<Table["id"]>;
     declare invoiceId: ForeignKey<Invoice["id"]>;
@@ -54,13 +50,11 @@ Order.init(
             allowNull: false,
             defaultValue: UUIDV4,
         },
-        name: DataTypes.STRING,
         status: {
             type: DataTypes.ENUM,
             values: ["Draft", "Pending", "Cancelled", "Paid", "Completed",],
             defaultValue: "Draft"
         },
-        tokenNo: DataTypes.INTEGER,
         createdAt: DataTypes.DATE,
         updatedAt: DataTypes.DATE,
     },
@@ -69,31 +63,5 @@ Order.init(
         tableName: "Orders",
     }
 );
-
-Order.addHook("beforeCreate", (async(order: Order)=>{
-    let tokenNo = 0;
-    await sequelize.transaction(async (transaction) => {
-        let sequence = await Sequence.findOne({
-            where: { table: Order.tableName, restaurantId: order.restaurantId },
-            lock: transaction.LOCK.UPDATE,
-            transaction
-        });
-        if (!sequence) {
-            sequence = await Sequence.create({
-                table: Order.tableName, restaurantId: order.restaurantId,
-                value: 0
-            }, {
-                transaction
-            });
-        }
-        if (moment(order.updatedAt).isBetween(moment().startOf("D"), moment().endOf("D"))) {
-            tokenNo = sequence.value + 1;
-        } else {
-            tokenNo = 1
-        }
-        await sequence.update({ value: tokenNo, }, { transaction });
-    });
-    order.tokenNo = tokenNo;
-}))
 
 export { Order };

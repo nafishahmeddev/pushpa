@@ -1,12 +1,16 @@
 import { ApiRequest } from "@app/lib/axios"
 import { IOrder } from "@app/types/orders";
 import { IInvoice } from "@app/types/invoice";
-import { ICart } from "@app/types/cart";
+import { ICartItem } from "@app/types/cart";
 export default class OrdersApi {
-    static drafts = () => ApiRequest.get("/orders/drafts").then(res => res.data.result as Array<IOrder>);
-    static create = (data: ICart) => ApiRequest.post(`/orders/`, data).then(res => res.data.result as IOrder);
-    static update = (orderId: string, data: ICart) => ApiRequest.put(`/orders/${orderId}`, data).then(res => res.data.result as IOrder);
-    static get = (orderId: string) => ApiRequest.get(`/orders/${orderId}`).then(res => res.data.result as IOrder);
-    static delete = (orderId: string) => ApiRequest.delete(`/orders/${orderId}`).then(res => res.data.message as string);
-    static place = (data: {id?: string } & ICart) => ApiRequest.post(`/orders/place`, data).then(res => res.data.result as IInvoice);
+    static pendingList = () => ApiRequest.get("/orders/pending-list").then(res => res.data.result as Array<IOrder>);
+    static getOrder = (orderId: string) => ApiRequest.get(`/orders/${orderId}`).then(res => res.data.result as IOrder);
+    static newOrder = () => ApiRequest.post(`/orders/`).then(res => res.data.result as IOrder);
+    static deleteOrder = (orderId: string) => ApiRequest.delete(`/orders/${orderId}`).then(res => res.data.message as string);
+    static completeOrder = (orderId: string) => ApiRequest.post(`/orders/${orderId}/complete`).then(res => res.data.result as IInvoice);
+    
+    static modifyItem = (orderId: string, cartItem: ICartItem) => ApiRequest.post(`/orders/${orderId}/items`, { item: cartItem }).then(res => res.data.result as IOrder);
+    static deleteItem = (orderId: string, productId: string) => ApiRequest.delete(`/orders/${orderId}/items`, { data: { productId } }).then(res => res.data.result as IOrder);
+    static cancelItem = (orderId: string, productId: string) => ApiRequest.patch(`/orders/${orderId}/items/cancel`, { productId }).then(res => res.data.result as IOrder);
+
 }

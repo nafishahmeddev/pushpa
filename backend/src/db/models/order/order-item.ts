@@ -1,5 +1,4 @@
 import {
-    Association,
     DataTypes,
     Model,
     InferAttributes,
@@ -12,12 +11,18 @@ import {
 import { sequelize } from "../../conn";
 import { Product } from "../product/product";
 import { Order } from "./order";
+import { Kot } from "./kot";
 
-type OrderItemStatus = "Preparing" | "Prepared" | "Delivered"  | "Cancelled";
+export enum OrderItemStatus {
+    Preparing = "Preparing",
+    Prepared = "Prepared",
+    Delivered = "Delivered",
+    Cancelled = "Cancelled"
+}
 
 class OrderItem extends Model<
-    InferAttributes<OrderItem, { omit: "order" | "product" }>,
-    InferCreationAttributes<OrderItem, { omit: "order" | "product" }>
+    InferAttributes<OrderItem, { omit: "order" | "product" | "kot" }>,
+    InferCreationAttributes<OrderItem, { omit: "order" | "product" | "kot" }>
 > {
     declare id: CreationOptional<string>;
     declare quantity: number;
@@ -25,12 +30,14 @@ class OrderItem extends Model<
 
     declare orderId: ForeignKey<Order["id"]>;
     declare productId: ForeignKey<Product["id"]>;
+    declare kotId: CreationOptional<ForeignKey<Kot["id"]> | null>;
 
     declare createdAt: CreationOptional<Date>;
     declare updatedAt: CreationOptional<Date>;
 
     declare order?: NonAttribute<Order>;
     declare product?: NonAttribute<Product>;
+    declare kot?: NonAttribute<Kot>;
 }
 
 OrderItem.init(
@@ -45,8 +52,8 @@ OrderItem.init(
         quantity: DataTypes.INTEGER,
         status: {
             type: DataTypes.ENUM,
-            values: ["Preparing", "Prepared", "Delivered", "Cancelled"],
-            defaultValue: "Preparing"
+            values: Object.values(OrderItemStatus),
+            defaultValue: OrderItemStatus.Preparing
         },
         createdAt: DataTypes.DATE,
         updatedAt: DataTypes.DATE,

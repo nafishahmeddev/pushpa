@@ -7,6 +7,5 @@ export type ICartItem = {
     price: number,
 };
 export type ICart = {
-    name: string,
     items: Array<ICartItem>,
 }

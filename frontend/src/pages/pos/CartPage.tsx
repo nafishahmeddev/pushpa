@@ -3,7 +3,6 @@ import QuantityButton from "./components/QuantityButton";
 import React, { useEffect, useState } from "react";
 
 import OrdersApi from "@app/services/orders";
-import { cloneDeep } from "lodash";
 import CartUtil from "@app/lib/cart-util";
 import MenuList from "@app/components/menu/MenuList";
 import ScrollView from "@app/components/ui/ScrollView";
@@ -12,76 +11,59 @@ import { useNavigate, useParams } from "react-router";
 import { AxiosError } from "axios";
 import { Icon } from "@iconify/react";
 import Button from "@app/components/ui/form/button";
-import { ICart, ICartItem } from "@app/types/cart";
-import { IOrder } from "@app/types/orders";
 import { IInvoice } from "@app/types/invoice";
 import toast from "react-hot-toast";
+import { ICartItem } from "@app/types/cart";
+import { IOrder, IOrderItem } from "@app/types/orders";
+import { cloneDeep } from "lodash";
 
 export default function CartPage() {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const { orderId } = useParams<{ orderId: string }>();
-  const [cart, setCart] = useState<ICart>({ items: [], name: "" });
-  const { items } = cart;
+  const [, setOrder] = useState<IOrder>();
+  const [placedItems, setPlacedItems] = useState<Array<IOrderItem>>([]);
+  const [items, setItems] = useState<Array<ICartItem>>([]);
+
   const cartUtil = new CartUtil(items);
-  const onAdd = async (item: ICartItem) => {
-    beep();
-    setCart((cart) => {
-      let { items } = cloneDeep(cart);
-      if (items.some((ci) => ci.productId == item.productId)) {
-        items = items.map((ci) => {
-          if (ci.productId == item.productId) {
-            ci.quantity += 1;
+  const onModify = async (item: ICartItem, increment: boolean = false) => {
+    const _items = cloneDeep(items);
+    const itm = _items.find((e) => e.productId == item.productId);
+    item.quantity = increment ? (itm?.quantity ?? 0) + item.quantity : item.quantity;
+    OrdersApi.modifyItem(orderId as string, item).then(() => {
+      beep();
+      if (_items.some((i) => i.productId == item.productId)) {
+        _items.map((itm) => {
+          if (itm.productId == item.productId) {
+            itm.quantity = item.quantity;
           }
-          return ci;
+          return itm;
         });
       } else {
-        items.push(item);
+        _items.push(item);
       }
-      return { ...cart, items };
+      setItems(_items);
     });
   };
 
-  const onRemove = async (item: ICartItem) => {
-    beep();
-    setCart((cart) => {
-      let { items } = cloneDeep(cart);
-      if (items.some((ci) => ci.productId == item.productId)) {
-        items = items
-          .map((ci) => {
-            if (ci.productId == item.productId) {
-              ci.quantity -= 1;
-            }
-            return ci;
-          })
-          .filter((item) => !!item.quantity);
-      }
-      return { ...cart, items };
+  const onCancel = async (item: IOrderItem) =>
+    OrdersApi.cancelItem(orderId as string, item.id).then(() => {
+      beep();
     });
-  };
 
-  const onUpdate = async (item: ICartItem, quantity: number) => {
-    beep();
-    setCart((cart) => {
-      let { items } = cloneDeep(cart);
-      items = items
-        .map((ci) => {
-          if (ci.productId == item.productId) {
-            ci.quantity = quantity;
-          }
-          return ci;
-        })
-        .filter((item) => !!item.quantity);
-      return { ...cart, items };
+  const onDelete = async (item: ICartItem) =>
+    OrdersApi.deleteItem(orderId as string, item.productId).then(() => {
+      setItems((_items: Array<ICartItem>) => {
+        return _items.filter((e) => e.productId != item.productId);
+      });
+      beep();
     });
-  };
 
   const onPlaceOrder = () => {
     setLoading(true);
-    const promise = OrdersApi.place({ id: orderId, ...cart })
+    const promise = OrdersApi.completeOrder(orderId as string)
       .then((invoice: IInvoice) => {
         const w = window.open(import.meta.env.VITE_BASE_URL + `/invoices/${invoice.id}/receipt?authorization=${localStorage.getItem("accessToken")}`, "_blank", "location=yes,height=600,width=350,scrollbars=yes,status=yes");
-
         if (w) {
           setTimeout(function () {
             w.document.close();
@@ -90,7 +72,6 @@ export default function CartPage() {
             w.close();
           }, 1000);
         }
-        setCart({ items: [], name: "" });
         navigate("/pos");
       })
       .finally(() => {
@@ -103,38 +84,12 @@ export default function CartPage() {
     });
   };
 
-  const onDraft = () => {
-    if (!items.length) return alert("please add some products!");
-    const name = prompt("Name", cart.name);
-    if (!name) return;
-    let promise;
-    if (orderId) {
-      promise = OrdersApi.update(orderId, { ...cart, name: name as string });
-    } else {
-      promise = OrdersApi.create({ ...cart, name: name as string });
-    }
-    toast.promise(promise, {
-      loading: "Please wait",
-      success: "Draft saved",
-      error: "Error while drafting order",
-    });
-    setLoading(true);
-    return promise
-      .then((order: IOrder) => {
-        navigate("/pos/" + order.id);
-      })
-      .catch((err) => {
-        alert(err.message);
-      })
-      .finally(() => {
-        setLoading(false);
-      });
-  };
-
   useEffect(() => {
-    OrdersApi.get(orderId as string)
+    OrdersApi.getOrder(orderId as string)
       .then((res) => {
-        setCart(res as ICart);
+        setOrder(res);
+        setItems((res.items ?? []).filter((e) => !e.kotId));
+        setPlacedItems((res.items ?? []).filter((e) => !!e.kotId));
       })
       .catch((err: AxiosError) => {
         if (err.status == 404) {
@@ -149,23 +104,22 @@ export default function CartPage() {
         <MenuList
           className="border rounded-xl"
           onItemPress={(item) =>
-            onAdd({
-              productId: item.id,
-              product: item,
-              quantity: 1,
-              price: item.price,
-            })
+            onModify(
+              {
+                productId: item.id,
+                product: item,
+                quantity: 1,
+                price: item.price,
+              },
+              true
+            )
           }
         />
       </div>
       <div className="h-full overflow-auto grid grid-rows-[auto_1fr_auto] w-full ">
         <div className="h-full flex gap-1 pb-2">
           <div className="flex-1"></div>
-          <Button className="bg-gray-50 border  h-auto !px-3 py-1.5 text-sm" onClick={onDraft} disabled={items.length == 0 || loading}>
-            <Icon icon="mage:save-floppy" height={18} width={18} /> Draft
-          </Button>
-
-          <Button className="bg-gray-50 border  h-auto !px-3 py-1.5 text-sm" onClick={onDraft} disabled={items.length == 0 || loading}>
+          <Button className="bg-gray-50 border  h-auto !px-3 py-1.5 text-sm" disabled={items.length == 0 || loading}>
             <Icon icon="hugeicons:kitchen-utensils" height={18} width={18} /> Send to kitchen
           </Button>
           <Button className="bg-lime-600 h-auto !px-3 text-white  disabled:bg-gray-300 disabled:opacity-100 text-sm" onClick={onPlaceOrder} disabled={items.length == 0 || loading}>
@@ -183,12 +137,22 @@ export default function CartPage() {
               </tr>
             </thead>
             <tbody>
+              {placedItems.map((item, index) => (
+                <tr className="border-b border-dashed" key={`item-${index}`}>
+                  <td className="px-2 py-1 text-start">{item.product.name}</td>
+                  <td className="px-2 py-2 text-end font-mono">{Formatter.money(item.product.price)}</td>
+                  <td className="px-10 py-0.5 text-center w-0">
+                    {item.quantity} <button onClick={() => onCancel(item)}>C</button>
+                  </td>
+                  <td className="px-2 py-1 text-end font-mono">{Formatter.money(item.product.price * item.quantity)}</td>
+                </tr>
+              ))}
               {items.map((item, index) => (
                 <tr className="border-b border-dashed" key={`item-${index}`}>
                   <td className="px-2 py-1 text-start">{item.product.name}</td>
                   <td className="px-2 py-2 text-end font-mono">{Formatter.money(item.product.price)}</td>
                   <td className="px-10 py-0.5 text-center w-0">
-                    <QuantityButton quantity={item.quantity} onAdd={() => onAdd(item)} onRemove={() => onRemove(item)} onUpdate={(quantity) => onUpdate(item, quantity)} />
+                    <QuantityButton quantity={item.quantity} onUpdate={(quantity) => onModify({ ...item, quantity })} onDelete={() => onDelete(item)} />
                   </td>
                   <td className="px-2 py-1 text-end font-mono">{Formatter.money(item.product.price * item.quantity)}</td>
                 </tr>
