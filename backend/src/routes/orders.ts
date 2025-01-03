@@ -32,6 +32,7 @@ OrdersRouter.post("/paginate", async (req: IRequest, res: IResponse) => {
         limit: limit,
         offset: (page - 1) * limit,
         where: where,
+        include: [{model: Table, as:"table"}]
     });
 
     const kots = await Kot.findAll({ where: { orderId: paginatedOrders.rows.map(e => e.id) } });

@@ -223,13 +223,13 @@ export default function CartPage() {
               {getKots().map((kot: IKot) => (
                 <React.Fragment key={`item-${kot.id}`}>
                   <tr className={`border-b border-dashed bg-lime-600 text-white`}>
-                    <td className="px-2 py-2 text-start font-bold" colSpan={3}>
+                    <td className="px-2 py-1 text-start font-bold" colSpan={3}>
                       Token No: {kot.tokenNo}
                     </td>
                     <td className="text-white text-right px-2 w-0">
                       <div className="flex justify-end">
                         <button className="h-full flex items-center text-lg text-right" onClick={() => printKot(kot)}>
-                          <Icon icon="cil:print" />
+                          <Icon icon="uil:print" />
                         </button>
                       </div>
                     </td>

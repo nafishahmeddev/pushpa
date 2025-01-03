@@ -113,10 +113,12 @@ export default function OrdersPage() {
               <TableRow className="sticky top-0 left-0 z-10" header>
                 <TableCell>#</TableCell>
                 <TableCell />
-                <TableCell>Sequence</TableCell>
+                <TableCell className="text-nowrap">Order No</TableCell>
                 <TableCell>Status</TableCell>
+                <TableCell>Type</TableCell>
+                <TableCell>Table</TableCell>
                 <TableCell className="text-end w-0">Kot</TableCell>
-                <TableCell className="text-end w-0">Created At</TableCell>
+                <TableCell className="text-end w-0">Created</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -143,6 +145,9 @@ export default function OrdersPage() {
                     <TableCell>
                       <OrderStatusLabel order={order} />
                     </TableCell>
+                 
+                    <TableCell className="text-nowrap">{order.deliveryType}</TableCell>
+                    <TableCell className="text-nowrap">{order.table?.name}</TableCell>
                     <TableCell className="text-nowrap text-end">
                       {order.status != OrderStatus.Cancelled && (
                         <>
