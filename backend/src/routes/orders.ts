@@ -1,7 +1,7 @@
 
 import { sequelize } from "@app/db/conn";
 import { Product, Order, OrderItem, Invoice, InvoiceItem, Kot, Table, Restaurant, User } from "@app/db/models";
-import { DeliverType, OrderStatus } from "@app/db/models/order/order";
+import { OrderType, OrderStatus } from "@app/db/models/order/order";
 import { OrderItemStatus } from "@app/db/models/order/order-item";
 import { IRequest, IResponse } from "@app/interfaces/vendors/express";
 import { ICartItem } from "@app/types/cart";
@@ -110,7 +110,7 @@ OrdersRouter.get("/:orderId", async (req: IRequest, res: IResponse) => {
 });
 
 OrdersRouter.post("/", async (req: IRequest, res: IResponse) => {
-    const deliveryType: DeliverType = req.body.deliveryType;
+    const type: OrderType = req.body.type;
     const tableId: string | undefined = req.body.tableId;
     const transaction = await sequelize.transaction();
     try {
@@ -118,7 +118,7 @@ OrdersRouter.post("/", async (req: IRequest, res: IResponse) => {
             restaurantId: req.auth?.restaurantId,
             userId: req.auth?.userId,
             tableId,
-            deliveryType
+            type
         }, { transaction });
 
         await transaction.commit();

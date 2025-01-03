@@ -10,8 +10,8 @@ export default class OrdersApi {
     });
     static pendingList = () => ApiRequest.get("/orders/pending-list").then(res => res.data.result as Array<IOrder>);
     static getOrder = (orderId: string) => ApiRequest.get(`/orders/${orderId}`).then(res => res.data.result as IOrder);
-    static createOrder = (data: { tableId?: string, deliveryType: string }) => ApiRequest.post(`/orders/`, data).then(res => res.data.result as IOrder);
-    static updateOrder = (orderId:string,data: { tableId?: string, deliveryType: string }) => ApiRequest.put(`/orders/${orderId}`, data).then(res => res.data.result as IOrder);
+    static createOrder = (data: { tableId?: string, type: string }) => ApiRequest.post(`/orders/`, data).then(res => res.data.result as IOrder);
+    static updateOrder = (orderId:string,data: { tableId?: string, type: string }) => ApiRequest.put(`/orders/${orderId}`, data).then(res => res.data.result as IOrder);
     static deleteOrder = (orderId: string) => ApiRequest.delete(`/orders/${orderId}`).then(res => res.data.message as string);
     static createKot = (orderId: string) => ApiRequest.post(`/orders/${orderId}/kot-create`).then(res => res.data.result as IKot);
     static cancelOrder = (orderId: string,) => ApiRequest.post(`/orders/${orderId}/cancel`).then(res => res.data.result as IInvoice);

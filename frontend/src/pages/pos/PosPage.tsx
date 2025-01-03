@@ -1,5 +1,5 @@
 import OrdersApi from "@app/services/orders";
-import { DeliverType, IOrder } from "@app/types/orders";
+import { OrderType, IOrder } from "@app/types/orders";
 import React, { useEffect, useState } from "react";
 import { NavLink, Outlet, useLocation, useNavigate, useParams } from "react-router";
 import { Icon } from "@iconify/react";
@@ -62,7 +62,7 @@ export default function PosPage() {
             ${isActive ? "bg-lime-600/10 text-lime-800 border-transparent" : "bg-white"}`
                 }
               >
-                {order.deliveryType == DeliverType.Takeaway ? (
+                {order.type == OrderType.Takeaway ? (
                   <>
                     <Icon icon="ri:takeaway-line" width={16} height={16} />
                     <span className="flex-1 overflow-ellipsis w-full overflow-x-hidden text-sm">{[order.orderNo].filter((e) => !!e).join(":")} </span>

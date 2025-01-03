@@ -25,7 +25,7 @@ export enum OrderStatus {
     Completed = "Completed"
 }
 
-export enum DeliverType {
+export enum OrderType {
     Takeaway = "Takeaway",
     DineIn = "Dine-In",
 }
@@ -36,7 +36,7 @@ class Order extends Model<
     declare id: CreationOptional<string>;
     declare orderNo: CreationOptional<number>;
     declare status: CreationOptional<OrderStatus>;
-    declare deliveryType: CreationOptional<DeliverType>;
+    declare type: CreationOptional<OrderType>;
     declare restaurantId: ForeignKey<Restaurant["id"]>;
     declare tableId: ForeignKey<Table["id"]>;
     declare invoiceId: ForeignKey<Invoice["id"]>;
@@ -68,10 +68,10 @@ Order.init(
             values: Object.values(OrderStatus),
             defaultValue: OrderStatus.Draft
         },
-        deliveryType: {
+        type: {
             type: DataTypes.ENUM,
-            values: Object.values(DeliverType),
-            defaultValue: DeliverType.Takeaway
+            values: Object.values(OrderType),
+            defaultValue: OrderType.Takeaway
         },
         createdAt: DataTypes.DATE,
         updatedAt: DataTypes.DATE,

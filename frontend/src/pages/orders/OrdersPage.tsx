@@ -147,7 +147,7 @@ export default function OrdersPage() {
                       <OrderStatusLabel order={order} />
                     </TableCell>
                  
-                    <TableCell className="text-nowrap">{order.deliveryType}</TableCell>
+                    <TableCell className="text-nowrap">{order.type}</TableCell>
                     <TableCell className="text-nowrap">{order.table?.name}</TableCell>
                     <TableCell className="text-nowrap">{order.user?.name}</TableCell>
                     <TableCell className="text-nowrap text-end">

@@ -13,7 +13,7 @@ export enum OrderStatus {
     Completed = "Completed"
 }
 
-export enum DeliverType {
+export enum OrderType {
     Takeaway = "Takeaway",
     DineIn = "Dine-In",
 }
@@ -37,7 +37,7 @@ export type IOrder = {
     table?: ITable,
     invoiceId?:string,
     invoice?:IInvoice,
-    deliveryType: DeliverType,
+    type: OrderType,
     items?: Array<IOrderItem>,
     kotList?: Array<IKot>,
     createdAt: Date,

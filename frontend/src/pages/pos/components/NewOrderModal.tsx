@@ -12,7 +12,7 @@ import toast from "react-hot-toast";
 
 type ValueType = {
   tableId?: string;
-  deliveryType: string;
+  type: string;
 };
 
 type NewOrderModalProps = {
@@ -27,7 +27,7 @@ export default function NewOrderModal({ open = false, order, onReset, onSave }: 
   const formik = useFormik<ValueType>({
     initialValues: {
       tableId: "",
-      deliveryType: "Takeaway",
+      type: "Takeaway",
     },
     onSubmit: handleOnSubmit,
   });
@@ -54,7 +54,7 @@ export default function NewOrderModal({ open = false, order, onReset, onSave }: 
   }
 
   useEffect(() => {
-    if (formik.values.deliveryType == "Takeaway") {
+    if (formik.values.type == "Takeaway") {
       formik.setFieldValue("tableId", null);
     }
   }, [formik.values]);
@@ -78,12 +78,12 @@ export default function NewOrderModal({ open = false, order, onReset, onSave }: 
       <form className="p-6 flex flex-col gap-4" onSubmit={formik.handleSubmit}>
         <h3 className="text-xl">{order ? "Update" : "Create"} Order</h3>
         <fieldset disabled={formik.isSubmitting} className="flex flex-col gap-4">
-          <Select required label="Delivery Type" {...formik.getFieldProps("deliveryType")} meta={formik.getFieldMeta("deliveryType")}>
+          <Select required label="Type" {...formik.getFieldProps("type")} meta={formik.getFieldMeta("type")}>
             <option>Takeaway</option>
             <option>Dine-In</option>
           </Select>
 
-          <Select required label="Table" {...formik.getFieldProps("tableId")} meta={formik.getFieldMeta("tableId")} disabled={formik.values.deliveryType == "Takeaway"} value={formik.values.tableId || ""}>
+          <Select required label="Table" {...formik.getFieldProps("tableId")} meta={formik.getFieldMeta("tableId")} disabled={formik.values.type == "Takeaway"} value={formik.values.tableId || ""}>
             <option></option>
             {tables.map((table) => (
               <option key={table.id} value={table.id}>
