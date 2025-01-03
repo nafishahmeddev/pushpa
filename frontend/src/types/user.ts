@@ -1,10 +1,15 @@
 import { IRestaurant } from "./restaurant"
 
+export enum UserDesignation {
+    Admin = "Admin",
+    Biller = "Biller"
+}
+
 export type IUser = {
     id: string,
     email: string,
     phone: string,
-    designation: string,
+    designation: UserDesignation,
     password: string,
     name: string,
     permissions: Array<string>,

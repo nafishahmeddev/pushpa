@@ -6,50 +6,74 @@ import { useAppSelector } from "@app/store";
 import { MainNav } from "./MainNav";
 import AccountButton from "./AccountButton";
 import SplashPage from "@app/pages/SplashPage";
+import { IUser, UserDesignation } from "@app/types/user";
 
-const menu = [
-  {
-    label: "Dashboard",
-    icon: "mage:dashboard-3",
-    route: "/",
-  },
-  {
-    label: "POS",
-    icon: "ep:postcard",
-    route: "/pos",
-  },
-  {
-    label: "Orders",
-    icon: "ep:fork-spoon",
-    route: "/orders",
-  },
-  {
-    label: "Invoices",
-    icon: "basil:invoice-outline",
-    route: "/invoices",
-  },
+const getMenu = (user: IUser) => {
+  if (user.designation == UserDesignation.Biller) {
+    return [
+      {
+        label: "Dashboard",
+        icon: "mage:dashboard-3",
+        route: "/",
+      },
+      {
+        label: "POS",
+        icon: "ep:postcard",
+        route: "/pos",
+      },
+      {
+        label: "Orders",
+        icon: "ep:fork-spoon",
+        route: "/orders",
+      },
+      {
+        label: "Invoices",
+        icon: "basil:invoice-outline",
+        route: "/invoices",
+      },
+    ];
+  }
 
-  // {
-  //   label: "Kitchen",
-  //   icon: "solar:chef-hat-minimalistic-outline",
-  //   route: "/invoices",
-  // },
-  // {
-  //   label: "Table",
-  //   icon: "hugeicons:floor-plan",
-  //   route: "/location-scout",
-  // },
-  {
-    label: "Users",
-    icon: "heroicons:users",
-    route: "/users",
-  },
-  {
-    label: "Settings",
-    icon: "stash:screw-nut",
-    route: "/settings",
-  },
-];
+  return [
+    {
+      label: "Dashboard",
+      icon: "mage:dashboard-3",
+      route: "/",
+    },
+    {
+      label: "POS",
+      icon: "ep:postcard",
+      route: "/pos",
+    },
+    {
+      label: "Orders",
+      icon: "ep:fork-spoon",
+      route: "/orders",
+    },
+    {
+      label: "Invoices",
+      icon: "basil:invoice-outline",
+      route: "/invoices",
+    },
+
+    // {
+    //   label: "Kitchen",
+    //   icon: "solar:chef-hat-minimalistic-outline",
+    //   route: "/invoices",
+    // },
+    {
+      label: "Users",
+      icon: "heroicons:users",
+      route: "/users",
+    },
+    {
+      label: "Settings",
+      icon: "stash:screw-nut",
+      route: "/settings",
+    },
+  ];
+};
+
 const LoggedOutSection = () => {
   return (
     <div className="h-dvh w-dvw flex items-center justify-center">
@@ -79,7 +103,7 @@ export default function MainLayout() {
       <div className="border-b h-full">
         <div className="flex  gap-4 h-full">
           <div className="logo italic flex h-full font-bold text-xl text-lime-800 px-4 py-3 items-center font-mono">{auth.user.restaurant?.name}</div>
-          <MainNav items={menu} />
+          <MainNav items={getMenu(auth.user)} />
           <AccountButton />
         </div>
       </div>
