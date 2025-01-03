@@ -16,6 +16,7 @@ import { Table } from "../restaurant/table";
 import { Invoice } from "../invoice/invoice";
 import { Sequence } from "../sequence";
 import { Kot } from "./kot";
+import { User } from "../user/user";
 
 export enum OrderStatus {
     Draft = "Draft",
@@ -41,6 +42,7 @@ class Order extends Model<
     declare tableId: ForeignKey<Table["id"]>;
     declare invoiceId: ForeignKey<Invoice["id"]>;
 
+    declare createdBy: ForeignKey<User["id"]>;
     declare createdAt: CreationOptional<Date>;
     declare updatedAt: CreationOptional<Date>;
 
@@ -78,6 +80,7 @@ Order.init(
             values: Object.values(DeliverType),
             defaultValue: DeliverType.Takeaway
         },
+        createdBy: DataTypes.UUID,
         createdAt: DataTypes.DATE,
         updatedAt: DataTypes.DATE,
     },

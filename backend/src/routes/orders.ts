@@ -116,6 +116,7 @@ OrdersRouter.post("/", async (req: IRequest, res: IResponse) => {
     try {
         const order = await Order.create({
             restaurantId: req.auth?.restaurantId,
+            createdBy: req.auth?.userId,
             tableId,
             deliveryType
         }, { transaction });
