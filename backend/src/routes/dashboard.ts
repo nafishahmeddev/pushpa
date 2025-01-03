@@ -68,7 +68,7 @@ DashboardRouter.post("/stats", async (req: IRequest, res: IResponse) => {
         group: ['productId', 'product.name'], // Include product name in the group for aggregation
         order: [[Sequelize.literal('total_quantity'), 'DESC']],
         subQuery: false, // Ensures Sequelize doesn’t wrap in unnecessary subqueries
-        limit: 9
+        limit: 5
     });
 
 
