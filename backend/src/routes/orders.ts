@@ -1,6 +1,6 @@
 
 import { sequelize } from "@app/db/conn";
-import { Product, Order, OrderItem, Invoice, InvoiceItem, Kot, Table, Restaurant } from "@app/db/models";
+import { Product, Order, OrderItem, Invoice, InvoiceItem, Kot, Table, Restaurant, User } from "@app/db/models";
 import { DeliverType, OrderStatus } from "@app/db/models/order/order";
 import { OrderItemStatus } from "@app/db/models/order/order-item";
 import { IRequest, IResponse } from "@app/interfaces/vendors/express";
@@ -32,7 +32,7 @@ OrdersRouter.post("/paginate", async (req: IRequest, res: IResponse) => {
         limit: limit,
         offset: (page - 1) * limit,
         where: where,
-        include: [{model: Table, as:"table"}]
+        include: [{model: Table, as:"table"}, {model: User, as:"user"}]
     });
 
     const kots = await Kot.findAll({ where: { orderId: paginatedOrders.rows.map(e => e.id) } });
@@ -116,7 +116,7 @@ OrdersRouter.post("/", async (req: IRequest, res: IResponse) => {
     try {
         const order = await Order.create({
             restaurantId: req.auth?.restaurantId,
-            createdBy: req.auth?.userId,
+            userId: req.auth?.userId,
             tableId,
             deliveryType
         }, { transaction });

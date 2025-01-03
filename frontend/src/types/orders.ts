@@ -2,6 +2,7 @@ import { IInvoice } from "./invoice";
 import { IProduct } from "./product";
 import { IRestaurant } from "./restaurant";
 import { ITable } from "./table";
+import { IUser } from "./user";
 
 
 export enum OrderStatus {
@@ -30,6 +31,8 @@ export type IOrder = {
     status: OrderStatus,
     restaurantId: string;
     restaurant?: unknown;
+    userId: string;
+    user?: IUser,
     tableId?: string,
     table?: ITable,
     invoiceId?:string,

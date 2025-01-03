@@ -117,6 +117,7 @@ export default function OrdersPage() {
                 <TableCell>Status</TableCell>
                 <TableCell>Type</TableCell>
                 <TableCell>Table</TableCell>
+                <TableCell>User</TableCell>
                 <TableCell className="text-end w-0">Kot</TableCell>
                 <TableCell className="text-end w-0">Created</TableCell>
               </TableRow>
@@ -148,6 +149,7 @@ export default function OrdersPage() {
                  
                     <TableCell className="text-nowrap">{order.deliveryType}</TableCell>
                     <TableCell className="text-nowrap">{order.table?.name}</TableCell>
+                    <TableCell className="text-nowrap">{order.user?.name}</TableCell>
                     <TableCell className="text-nowrap text-end">
                       {order.status != OrderStatus.Cancelled && (
                         <>

@@ -1,5 +1,4 @@
 import {
-    Association,
     DataTypes,
     Model,
     InferAttributes,
@@ -41,23 +40,17 @@ class Order extends Model<
     declare restaurantId: ForeignKey<Restaurant["id"]>;
     declare tableId: ForeignKey<Table["id"]>;
     declare invoiceId: ForeignKey<Invoice["id"]>;
+    declare userId: ForeignKey<User["id"]>;
 
-    declare createdBy: ForeignKey<User["id"]>;
     declare createdAt: CreationOptional<Date>;
     declare updatedAt: CreationOptional<Date>;
 
     declare restaurant?: NonAttribute<Restaurant>;
+    declare user?: NonAttribute<User>;
     declare table?: NonAttribute<Table>;
     declare invoice?: NonAttribute<Invoice>;
     declare items?: NonAttribute<OrderItem[]>;
     declare kotList?: NonAttribute<Kot[]>;
-
-    declare static associations: {
-        restaurant: Association<Order, Restaurant>;
-        table: Association<Order, Table>;
-        items: Association<Order, OrderItem>
-        kotList: Association<Order, Kot>
-    };
 }
 
 Order.init(
@@ -80,7 +73,6 @@ Order.init(
             values: Object.values(DeliverType),
             defaultValue: DeliverType.Takeaway
         },
-        createdBy: DataTypes.UUID,
         createdAt: DataTypes.DATE,
         updatedAt: DataTypes.DATE,
     },

@@ -69,6 +69,11 @@ Order.belongsTo(Restaurant, {
   as: "restaurant"
 })
 
+Order.belongsTo(User, {
+  foreignKey: "userId",
+  as: "user"
+})
+
 Order.belongsTo(Table, {
   foreignKey: "tableId",
   as: "table"
