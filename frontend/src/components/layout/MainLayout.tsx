@@ -41,7 +41,7 @@ const menu = [
   // },
   {
     label: "Users",
-    icon: "mynaui:users-group",
+    icon: "heroicons:users",
     route: "/users",
   },
   {
