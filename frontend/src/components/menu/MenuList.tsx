@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import _ from "lodash";
 import { ICategory, IProduct } from "../../types/product";
 import ScrollView from "../ui/ScrollView";
 import { Icon } from "@iconify/react";
@@ -7,12 +6,13 @@ import Spinner from "../ui/Spinner";
 import Formatter from "@app/lib/formatter";
 import { useQuery } from "@tanstack/react-query";
 import MenuApi from "@app/services/menu";
+import { cloneDeep } from "lodash";
 
 type MenuListProps = React.ComponentProps<"div"> & {
   onItemPress?: (item: IProduct) => Promise<void>;
 };
 export default function MenuList({ onItemPress, ...props }: MenuListProps) {
-  const { data: categories = [], isLoading, error } = useQuery<Array<ICategory>>({ queryKey: ["todos"], queryFn: MenuApi.menu });
+  const { data: categories = [], isLoading, error } = useQuery<Array<ICategory>>({ queryKey: ["menu-list"], queryFn: MenuApi.menu });
 
   const [keyword, setKeyword] = useState("");
   const [itemPressLoading, setItemPressLoading] = useState(false);
@@ -29,7 +29,7 @@ export default function MenuList({ onItemPress, ...props }: MenuListProps) {
     return <>Ops! something went wrong...</>;
   }
 
-  const filtered: typeof categories = (_.cloneDeep(categories) as typeof categories)
+  const filtered: typeof categories = (cloneDeep(categories || []) as Array<ICategory>)
     .map((category) => ({
       ...category,
       products: category.products?.filter((product) => product.name.toLowerCase().includes(keyword.toLowerCase())),

@@ -1,9 +1,10 @@
-import { NavLink, Outlet } from "react-router";
-import { MainNav } from "./MainNav";
-import AccountButton from "./AccountButton";
-import SplashPage from "@app/pages/SplashPage";
+import { MainNav } from "./partials/MainNav";
+import AccountButton from "./partials/AccountButton";
+import SplashPage from "@app/components/Splash";
 import { IUser, UserDesignation } from "@app/types/user";
 import { AuthStateLoggedIn, useAuthStore } from "@app/store/auth";
+import { Link, Outlet, useNavigate } from "@tanstack/react-router";
+import { useEffect } from "react";
 
 const getMenu = (user: IUser) => {
   if (user.designation == UserDesignation.Biller) {
@@ -76,16 +77,23 @@ const LoggedOutSection = () => {
     <div className="h-dvh w-dvw flex items-center justify-center">
       <p>
         Session expired please{" "}
-        <NavLink to="/" className=" underline text-lime-600">
+        <Link to="/auth/login" className=" underline text-lime-600">
           click here
-        </NavLink>{" "}
+        </Link>{" "}
         to login
       </p>
     </div>
   );
 };
 export default function MainLayout() {
+  const navigate = useNavigate();
   const [auth] = useAuthStore<AuthStateLoggedIn>();
+
+  useEffect(() => {
+    if (!auth.loading && !auth.loggedIn) {
+      navigate({ to: "/auth/login" });
+    }
+  }, [auth]);
 
   if (auth.loading) {
     return <SplashPage />;
