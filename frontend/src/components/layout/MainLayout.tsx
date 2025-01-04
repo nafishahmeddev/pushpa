@@ -1,12 +1,9 @@
 import { NavLink, Outlet } from "react-router";
-
-import { AuthStateLoggedIn } from "@app/store/slices/auth";
-import { useAppSelector } from "@app/store";
-
 import { MainNav } from "./MainNav";
 import AccountButton from "./AccountButton";
 import SplashPage from "@app/pages/SplashPage";
 import { IUser, UserDesignation } from "@app/types/user";
+import { AuthStateLoggedIn, useAuthStore } from "@app/store/auth";
 
 const getMenu = (user: IUser) => {
   if (user.designation == UserDesignation.Biller) {
@@ -88,7 +85,7 @@ const LoggedOutSection = () => {
   );
 };
 export default function MainLayout() {
-  const auth: AuthStateLoggedIn = useAppSelector((state) => state.auth as AuthStateLoggedIn);
+  const [auth] = useAuthStore<AuthStateLoggedIn>();
 
   if (auth.loading) {
     return <SplashPage />;

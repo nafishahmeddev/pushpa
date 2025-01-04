@@ -1,13 +1,11 @@
-import { store } from "@app/store";
-import { AuthStateLoggedIn } from "@app/store/slices/auth";
+import AuthStore, { AuthStateLoggedIn } from "@app/store/auth";
 import { CountryCode, parsePhoneNumberWithError } from "libphonenumber-js";
 import moment from "moment";
 
 
 export default class Formatter {
     static get country(): string {
-        const state = store.getState();
-        const auth = state.auth as AuthStateLoggedIn;
+        const auth = AuthStore.state as AuthStateLoggedIn;
         if (auth.loggedIn && auth.user.restaurant?.country) {
             return auth.user.restaurant?.country as CountryCode;
         }
@@ -15,8 +13,7 @@ export default class Formatter {
     }
 
     static get currency(): string {
-        const state = store.getState();
-        const auth = state.auth as AuthStateLoggedIn;
+        const auth = AuthStore.state as AuthStateLoggedIn;
         if (auth.loggedIn && auth.user.restaurant?.country) {
             return auth.user.restaurant?.currency;
         }
@@ -44,8 +41,7 @@ export default class Formatter {
 
     static phone(number: string, country: CountryCode = "IN"): string {
         try {
-            const state = store.getState();
-            const auth = state.auth as AuthStateLoggedIn;
+            const auth = AuthStore.state as AuthStateLoggedIn;
             if (auth.loggedIn && auth.user.restaurant?.country) {
                 country = auth.user.restaurant?.country as CountryCode;
             }

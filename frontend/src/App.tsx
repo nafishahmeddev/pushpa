@@ -1,4 +1,3 @@
-import { useAppSelector } from "@app/store";
 import { BrowserRouter, Route, Routes } from "react-router";
 import { lazy, Suspense, useEffect } from "react";
 import MainLayout from "@app/components/layout/MainLayout";
@@ -6,6 +5,7 @@ import { Toaster } from "react-hot-toast";
 import AuthApi from "@app/services/auth";
 import SplashPage from "@app/pages/SplashPage";
 import { NotFoundPage } from "./pages/NotFoundPage";
+import { AuthState, useAuthStore } from "./store/auth";
 const LocationsPage = lazy(() => import("./pages/settings/locations/LocationsPage"));
 const TablesPage = lazy(() => import("./pages/settings/tables/TablesPage"));
 const UsersPage = lazy(() => import("./pages/users/UsersPage"));
@@ -20,7 +20,7 @@ const InvoicesPage = lazy(() => import("@app/pages/invoices/InvoicesPage"));
 const OrdersPage = lazy(() => import("@app/pages/orders/OrdersPage"));
 
 function App() {
-  const auth = useAppSelector((state) => state.auth);
+  const [auth] = useAuthStore<AuthState>()
   useEffect(() => {
     AuthApi.verify();
   }, []);

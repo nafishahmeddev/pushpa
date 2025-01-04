@@ -1,5 +1,4 @@
-import { store } from '@app/store';
-import { AuthActions } from '@app/store/slices/auth';
+import AuthStore from '@app/store/auth';
 import axios, { AxiosError } from 'axios';
 const ApiRequest = axios.create({
     baseURL: import.meta.env.VITE_BASE_URL,
@@ -18,7 +17,7 @@ ApiRequest.interceptors.response.use((response,) => {
     return response;
 }, (error: AxiosError) => {
     if (error.status == 401) {
-        store.dispatch(AuthActions.logout());
+        AuthStore.logout();
         localStorage.removeItem("accessToken");
         localStorage.removeItem("refreshToken");
     }

@@ -1,6 +1,7 @@
 export type ICategory = {
     id: string,
     name: string,
+    products?: Array<IProduct>,
     createdAt: Date,
     updatedAt: Date,
 }

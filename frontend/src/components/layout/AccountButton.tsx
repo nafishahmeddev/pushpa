@@ -1,16 +1,13 @@
 import { Icon } from "@iconify/react";
 import AuthApi from "@app/services/auth";
 import { useNavigate } from "react-router";
-import { useAppSelector } from "@app/store";
-import { AuthStateLoggedIn } from "@app/store/slices/auth";
 import { useState } from "react";
+import { AuthStateLoggedIn, useAuthStore } from "@app/store/auth";
 
 export default function AccountButton() {
   const [show, setShow] = useState(false);
   const navigate = useNavigate();
-  const auth: AuthStateLoggedIn = useAppSelector(
-    (state) => state.auth as AuthStateLoggedIn
-  );
+  const [auth] = useAuthStore<AuthStateLoggedIn>()
   return (
     <div className="px-2 h-full py-2 relative">
       <div className="bg-gray-200 rounded-full items-center flex p-0.5 gap-2 w-full h-full">

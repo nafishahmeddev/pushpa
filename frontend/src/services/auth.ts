@@ -1,6 +1,5 @@
 import { ApiRequest } from "@app/lib/axios"
-import { store } from "@app/store";
-import { AuthActions } from "@app/store/slices/auth";
+import AuthStore from "@app/store/auth";
 import { IUser } from "@app/types/user";
 export default class AuthApi {
     static login = (payload: { email: string, pass: string }) => ApiRequest.post("/auth/login", payload).then(res => {
@@ -11,11 +10,11 @@ export default class AuthApi {
         }
         localStorage.setItem("accessToken", response.accessToken);
         localStorage.setItem("refreshToken", response.refreshToken);
-        store.dispatch(AuthActions.login({
+        AuthStore.login({
             ...response,
             loggedIn: true,
             loading: false
-        }));
+        });
         return response;
     });
     static tokens = (accessToken: string, refreshToken: string) => ApiRequest.post("/auth/tokens", { refreshToken, accessToken }).then(res => res.data.result as {
@@ -25,7 +24,7 @@ export default class AuthApi {
     });
     static verify = () => {
         if (!localStorage.getItem("accessToken")) {
-            store.dispatch(AuthActions.logout());
+            AuthStore.logout();
             localStorage.removeItem("accessToken");
             localStorage.removeItem("refreshToken");
             return;
@@ -34,15 +33,15 @@ export default class AuthApi {
             const response = res.data.result as {
                 user: IUser
             }
-            store.dispatch(AuthActions.login({
+            AuthStore.login({
                 accessToken: localStorage.getItem("accessToken") as string,
                 refreshToken: localStorage.getItem("refreshToken") as string,
                 ...response,
                 loggedIn: true,
                 loading: false
-            }));
+            });
             return response;
-        }).catch(e=>{
+        }).catch(e => {
             AuthApi.logout();
             throw e;
         });
@@ -51,6 +50,6 @@ export default class AuthApi {
     static logout = async () => {
         localStorage.removeItem("accessToken");
         localStorage.removeItem("refreshToken");
-        store.dispatch(AuthActions.logout());
+        AuthStore.logout();
     };
 }

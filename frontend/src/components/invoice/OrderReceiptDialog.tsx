@@ -4,8 +4,7 @@ import moment from "moment";
 import React from "react";
 import { Icon } from "@iconify/react";
 import Dialog from "../ui/Dialog";
-import { useAppSelector } from "@app/store";
-import { AuthStateLoggedIn } from "@app/store/slices/auth";
+import { AuthStateLoggedIn, useAuthStore } from "@app/store/auth";
 type OrderReceiptDialogOpenProps = {
   open: true;
   invoice: IInvoice;
@@ -16,15 +15,9 @@ type OrderReceiptDialogCloseProps = {
   invoice?: IInvoice;
   onClose?: () => void;
 };
-export type OrderReceiptDialogProps =
-  | OrderReceiptDialogOpenProps
-  | OrderReceiptDialogCloseProps;
-export function OrderReceiptDialog({
-  invoice,
-  open,
-  onClose,
-}: OrderReceiptDialogProps) {
-  const auth = useAppSelector(state=>state.auth as AuthStateLoggedIn);
+export type OrderReceiptDialogProps = OrderReceiptDialogOpenProps | OrderReceiptDialogCloseProps;
+export function OrderReceiptDialog({ invoice, open, onClose }: OrderReceiptDialogProps) {
+  const [auth] = useAuthStore<AuthStateLoggedIn>();
   return (
     <Dialog
       open={open}
@@ -34,10 +27,7 @@ export function OrderReceiptDialog({
       }}
     >
       <div className="p-6">
-        <button
-          onClick={onClose && onClose}
-          className="h-7 aspect-square rounded-2xl border absolute top-3 right-3 text-gray-500 flex items-center justify-center"
-        >
+        <button onClick={onClose && onClose} className="h-7 aspect-square rounded-2xl border absolute top-3 right-3 text-gray-500 flex items-center justify-center">
           <Icon icon="ic:round-close" height={20} width={20} />
         </button>
         {invoice && (
@@ -68,13 +58,9 @@ export function OrderReceiptDialog({
                     <React.Fragment key={`invoice-item-${item.id}`}>
                       <tr>
                         <td className="px-1 py-1 ps-0">{item.name}</td>
-                        <td className="px-1 py-1 text-end">
-                          {Formatter.money(item.price)}
-                        </td>
+                        <td className="px-1 py-1 text-end">{Formatter.money(item.price)}</td>
                         <td className="px-1 py-1">{item.quantity}</td>
-                        <td className="px-1 py-1 pe-0 text-end">
-                          {Formatter.money(item.amount)}
-                        </td>
+                        <td className="px-1 py-1 pe-0 text-end">{Formatter.money(item.amount)}</td>
                       </tr>
                     </React.Fragment>
                   ))}
@@ -84,16 +70,12 @@ export function OrderReceiptDialog({
               <table className=" w-full text-xs font-bold">
                 <tr>
                   <td>Subtotal(excl. Tax):</td>
-                  <td className="text-end">
-                    {Formatter.money(invoice.amount - (invoice.tax))}
-                  </td>
+                  <td className="text-end">{Formatter.money(invoice.amount - invoice.tax)}</td>
                 </tr>
 
                 <tr>
                   <td>Tax:</td>
-                  <td className="text-end">
-                    {Formatter.money(invoice.tax)}
-                  </td>
+                  <td className="text-end">{Formatter.money(invoice.tax)}</td>
                 </tr>
 
                 <tr>
