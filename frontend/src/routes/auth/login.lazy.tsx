@@ -9,7 +9,7 @@ import { useEffect } from "react";
 import toast from "react-hot-toast";
 
 export const Route = createLazyFileRoute("/auth/login")({
-  component: RouteComponent,
+  component: RouteComponent
 });
 
 function RouteComponent() {

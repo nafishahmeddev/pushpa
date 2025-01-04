@@ -1,6 +1,6 @@
 import { MainNav } from "./partials/MainNav";
 import AccountButton from "./partials/AccountButton";
-import SplashPage from "@app/components/Splash";
+import SplashPage from "@app/components/PendingComponent";
 import { IUser, UserDesignation } from "@app/types/user";
 import { AuthStateLoggedIn, useAuthStore } from "@app/store/auth";
 import { Link, Outlet, useNavigate } from "@tanstack/react-router";

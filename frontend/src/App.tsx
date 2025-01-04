@@ -1,24 +1,24 @@
-import React, { useEffect } from "react";
-import { Toaster } from "react-hot-toast";
+import { Suspense, useEffect } from "react";
 import AuthApi from "@app/services/auth";
-import { RouterProvider, createRouter } from "@tanstack/react-router";
-import { routeTree } from "./routeTree.gen";
-// Create a new router instance
-const router = createRouter({ routeTree });
-declare module "@tanstack/react-router" {
-  interface Register {
-    router: typeof router;
-  }
-}
+import { RouterProvider } from "@tanstack/react-router";
+import { Toaster } from "react-hot-toast";
+import router from "./router";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { ReactQueryDevtools, TanStackRouterDevtools } from "./devtools";
+const client = new QueryClient();
 function App() {
   useEffect(() => {
     AuthApi.verify();
   }, []);
   return (
-    <React.Fragment>
+    <QueryClientProvider client={client}>
       <RouterProvider router={router} />
       <Toaster />
-    </React.Fragment>
+      <Suspense>
+        <ReactQueryDevtools initialIsOpen={false} />
+        <TanStackRouterDevtools router={router} />
+      </Suspense>
+    </QueryClientProvider>
   );
 }
 

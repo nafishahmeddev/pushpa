@@ -5,5 +5,7 @@ export const Route = createLazyFileRoute('/pos/')({
 })
 
 function RouteComponent() {
-  return <div>Please create new order!</div>
+  return<>
+
+  </> 
 }
