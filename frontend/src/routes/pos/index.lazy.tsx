@@ -5,7 +5,5 @@ export const Route = createLazyFileRoute('/pos/')({
 })
 
 function RouteComponent() {
-  return<>
-
-  </> 
+  return <></>
 }
