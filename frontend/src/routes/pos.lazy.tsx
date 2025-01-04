@@ -3,14 +3,14 @@ import { OrderType, IOrder } from '@app/types/orders'
 import React, { useEffect, useState } from 'react'
 import { Icon } from '@iconify/react'
 import {
-  createFileRoute,
+  createLazyFileRoute,
   Link,
   Outlet,
   useLocation,
 } from '@tanstack/react-router'
 import OrderFormDialog from '@app/components/form-dialogs/OrderFormDialog'
 
-export const Route = createFileRoute('/pos')({
+export const Route = createLazyFileRoute('/pos')({
   component: RootComponent,
 })
 

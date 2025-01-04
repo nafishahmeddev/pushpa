@@ -1,13 +1,13 @@
 import { SideMenuList } from '@app/components/SideMenuList'
 import {
-  createFileRoute,
+  createLazyFileRoute,
   Outlet,
   useLocation,
   useNavigate,
 } from '@tanstack/react-router'
 import { useEffect } from 'react'
 
-export const Route = createFileRoute('/settings')({
+export const Route = createLazyFileRoute('/settings')({
   component: RouteComponent,
 })
 

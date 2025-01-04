@@ -2,13 +2,13 @@ import Button from "@app/components/ui/form/button";
 import Input from "@app/components/ui/form/input";
 import AuthApi from "@app/services/auth";
 import { AuthState, useAuthStore } from "@app/store/auth";
-import { createFileRoute, useNavigate } from "@tanstack/react-router";
+import { createLazyFileRoute, useNavigate } from "@tanstack/react-router";
 import { AxiosError } from "axios";
 import { useFormik } from "formik";
 import { useEffect } from "react";
 import toast from "react-hot-toast";
 
-export const Route = createFileRoute("/auth/login")({
+export const Route = createLazyFileRoute("/auth/login")({
   component: RouteComponent,
 });
 

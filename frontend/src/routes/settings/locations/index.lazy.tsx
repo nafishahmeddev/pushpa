@@ -1,10 +1,6 @@
 import ScrollView from '@app/components/ui/ScrollView'
-import { IProduct } from '@app/types/product'
 import { useEffect, useState } from 'react'
 import { Icon } from '@iconify/react'
-import ProductsApi from '@app/services/products'
-import Formatter from '@app/lib/formatter'
-import ProductFormDialog from '../../../components/form-dialogs/ProductFormDialog'
 import Table, {
   TableCell,
   TableHead,
@@ -13,7 +9,10 @@ import Table, {
 import { useFormik } from 'formik'
 import Pagination from '@app/components/ui/Pagination'
 import Input from '@app/components/ui/form/input'
-import { createFileRoute } from '@tanstack/react-router'
+import { ILocation } from '@app/types/location'
+import LocationsApi from '@app/services/locations'
+import LocationFormDialog from '../../../components/form-dialogs/LocationFormDialog'
+import { createLazyFileRoute } from '@tanstack/react-router'
 
 type FormType = {
   filter: {
@@ -22,15 +21,15 @@ type FormType = {
   query: { page: number; limit: number }
 }
 
-export const Route = createFileRoute('/settings/products/')({
+export const Route = createLazyFileRoute('/settings/locations/')({
   component: RouteComponent,
 })
 
-function RouteComponent() {
+export default function RouteComponent() {
   const [result, setResult] = useState<{
     pages: number
     page: number
-    records: Array<IProduct>
+    records: Array<ILocation>
   }>({
     pages: 1,
     page: 0,
@@ -44,7 +43,7 @@ function RouteComponent() {
       query: { page: 1, limit: 20 },
     },
     onSubmit: async (values, helper) =>
-      ProductsApi.paginate(
+      LocationsApi.paginate(
         { page: values.query.page, limit: values.query.limit },
         values.filter,
       ).then((res) => {
@@ -53,14 +52,14 @@ function RouteComponent() {
       }),
   })
 
-  const [productForm, setProductForm] = useState<{
+  const [locationForm, setTableForm] = useState<{
     open: boolean
-    product?: IProduct
+    table?: ILocation
   }>({ open: false })
 
-  const handleOnDelete = (product: IProduct) => {
+  const handleOnDelete = (table: ILocation) => {
     if (confirm('Are you sure?')) {
-      ProductsApi.delete(product.id).then(formik.submitForm)
+      LocationsApi.delete(table.id).then(formik.submitForm)
     }
   }
 
@@ -70,17 +69,17 @@ function RouteComponent() {
 
   return (
     <div className="h-full p-4 grid grid-rows-[60px_1fr_35px] gap-5">
-      <ProductFormDialog
-        {...productForm}
-        onReset={() => setProductForm({ open: false, product: undefined })}
+      <LocationFormDialog
+        {...locationForm}
+        onReset={() => setTableForm({ open: false, table: undefined })}
         onSave={async () => {
-          setProductForm({ open: false, product: undefined })
+          setTableForm({ open: false, table: undefined })
           formik.submitForm()
         }}
       />
       <div className="py-4 flex gap-4 items-center h-full">
         <div>
-          <h2 className="text-2xl">Products</h2>
+          <h2 className="text-2xl">Locations</h2>
         </div>
         <div className="flex-1" />
         <form
@@ -115,7 +114,7 @@ function RouteComponent() {
             <button
               className="rounded-xl px-3 bg-gray-300 hover:opacity-50 flex items-center justify-center gap-0.5"
               type="button"
-              onClick={() => setProductForm({ open: true, product: undefined })}
+              onClick={() => setTableForm({ open: true, table: undefined })}
             >
               <Icon icon="ic:baseline-add" /> New
             </button>
@@ -131,41 +130,25 @@ function RouteComponent() {
             >
               <TableCell className="w-0">#</TableCell>
               <TableCell>Name</TableCell>
-              <TableCell>Description</TableCell>
-              <TableCell>Category</TableCell>
-              <TableCell className="w-0 text-nowrap">Net Price</TableCell>
-              <TableCell className="w-0">Tax</TableCell>
-              <TableCell className="w-0">Pice</TableCell>
-              <TableCell></TableCell>
+              <TableCell className="w-0"></TableCell>
             </TableRow>
           </TableHead>
           <tbody>
-            {result.records.map((product, index: number) => (
-              <TableRow key={`product-${product.id}`}>
+            {result.records.map((table, index: number) => (
+              <TableRow key={`table-${table.id}`}>
                 <TableCell>{index + 1}</TableCell>
-                <TableCell>{product.name}</TableCell>
-                <TableCell>{product.description}</TableCell>
-                <TableCell>{product.category?.name}</TableCell>
-                <TableCell className="font-mono">
-                  {Formatter.money(product.netPrice)}
-                </TableCell>
-                <TableCell className="font-mono">{product.tax}%</TableCell>
-                <TableCell className="font-mono">
-                  {Formatter.money(product.price)}
-                </TableCell>
+                <TableCell>{table.name}</TableCell>
                 <TableCell>
                   <div className="flex flex-nowrap gap-2 text-gray-600">
                     <button
-                      onClick={() =>
-                        setProductForm({ product: product, open: true })
-                      }
+                      onClick={() => setTableForm({ table: table, open: true })}
                       className="hover:opacity-70"
                     >
                       <Icon icon="mynaui:edit" height={20} width={20} />
                     </button>
 
                     <button
-                      onClick={() => handleOnDelete(product)}
+                      onClick={() => handleOnDelete(table)}
                       className="hover:opacity-70 text-red-700"
                     >
                       <Icon icon="proicons:delete" height={20} width={20} />

@@ -5,14 +5,13 @@ import NotFoundComponent from "@app/components/NotFoundComponent";
 
 export const Route = createRootRoute({
   component: RootComponent,
-  notFoundComponent: NotFoundComponent
+  notFoundComponent: NotFoundComponent,
 });
 
 function RootComponent() {
   const {pathname} = useLocation();
   return (
     <React.Fragment>
-      
       {pathname.startsWith("/auth") ? <Outlet/> : <MainLayout/> }
     </React.Fragment>
   );

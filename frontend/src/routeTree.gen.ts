@@ -8,102 +8,124 @@
 // You should NOT make any changes in this file as it will be overwritten.
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
+import { createFileRoute } from '@tanstack/react-router'
+
 // Import Routes
 
 import { Route as rootRoute } from './routes/__root'
-import { Route as SettingsImport } from './routes/settings'
-import { Route as PosImport } from './routes/pos'
-import { Route as IndexImport } from './routes/index'
-import { Route as UsersIndexImport } from './routes/users/index'
-import { Route as PosIndexImport } from './routes/pos/index'
-import { Route as OrdersIndexImport } from './routes/orders/index'
-import { Route as InvoicesIndexImport } from './routes/invoices/index'
-import { Route as PosOrderIdImport } from './routes/pos/$orderId'
-import { Route as AuthLoginImport } from './routes/auth/login'
-import { Route as SettingsTablesIndexImport } from './routes/settings/tables/index'
-import { Route as SettingsProductsIndexImport } from './routes/settings/products/index'
-import { Route as SettingsLocationsIndexImport } from './routes/settings/locations/index'
-import { Route as SettingsCategoriesIndexImport } from './routes/settings/categories/index'
+
+// Create Virtual Routes
+
+const SettingsLazyImport = createFileRoute('/settings')()
+const PosLazyImport = createFileRoute('/pos')()
+const IndexLazyImport = createFileRoute('/')()
+const UsersIndexLazyImport = createFileRoute('/users/')()
+const PosIndexLazyImport = createFileRoute('/pos/')()
+const OrdersIndexLazyImport = createFileRoute('/orders/')()
+const InvoicesIndexLazyImport = createFileRoute('/invoices/')()
+const PosOrderIdLazyImport = createFileRoute('/pos/$orderId')()
+const AuthLoginLazyImport = createFileRoute('/auth/login')()
+const SettingsTablesIndexLazyImport = createFileRoute('/settings/tables/')()
+const SettingsProductsIndexLazyImport = createFileRoute('/settings/products/')()
+const SettingsLocationsIndexLazyImport = createFileRoute(
+  '/settings/locations/',
+)()
+const SettingsCategoriesIndexLazyImport = createFileRoute(
+  '/settings/categories/',
+)()
 
 // Create/Update Routes
 
-const SettingsRoute = SettingsImport.update({
+const SettingsLazyRoute = SettingsLazyImport.update({
   id: '/settings',
   path: '/settings',
   getParentRoute: () => rootRoute,
-} as any)
+} as any).lazy(() => import('./routes/settings.lazy').then((d) => d.Route))
 
-const PosRoute = PosImport.update({
+const PosLazyRoute = PosLazyImport.update({
   id: '/pos',
   path: '/pos',
   getParentRoute: () => rootRoute,
-} as any)
+} as any).lazy(() => import('./routes/pos.lazy').then((d) => d.Route))
 
-const IndexRoute = IndexImport.update({
+const IndexLazyRoute = IndexLazyImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRoute,
-} as any)
+} as any).lazy(() => import('./routes/index.lazy').then((d) => d.Route))
 
-const UsersIndexRoute = UsersIndexImport.update({
+const UsersIndexLazyRoute = UsersIndexLazyImport.update({
   id: '/users/',
   path: '/users/',
   getParentRoute: () => rootRoute,
-} as any)
+} as any).lazy(() => import('./routes/users/index.lazy').then((d) => d.Route))
 
-const PosIndexRoute = PosIndexImport.update({
+const PosIndexLazyRoute = PosIndexLazyImport.update({
   id: '/',
   path: '/',
-  getParentRoute: () => PosRoute,
-} as any)
+  getParentRoute: () => PosLazyRoute,
+} as any).lazy(() => import('./routes/pos/index.lazy').then((d) => d.Route))
 
-const OrdersIndexRoute = OrdersIndexImport.update({
+const OrdersIndexLazyRoute = OrdersIndexLazyImport.update({
   id: '/orders/',
   path: '/orders/',
   getParentRoute: () => rootRoute,
-} as any)
+} as any).lazy(() => import('./routes/orders/index.lazy').then((d) => d.Route))
 
-const InvoicesIndexRoute = InvoicesIndexImport.update({
+const InvoicesIndexLazyRoute = InvoicesIndexLazyImport.update({
   id: '/invoices/',
   path: '/invoices/',
   getParentRoute: () => rootRoute,
-} as any)
+} as any).lazy(() =>
+  import('./routes/invoices/index.lazy').then((d) => d.Route),
+)
 
-const PosOrderIdRoute = PosOrderIdImport.update({
+const PosOrderIdLazyRoute = PosOrderIdLazyImport.update({
   id: '/$orderId',
   path: '/$orderId',
-  getParentRoute: () => PosRoute,
-} as any)
+  getParentRoute: () => PosLazyRoute,
+} as any).lazy(() => import('./routes/pos/$orderId.lazy').then((d) => d.Route))
 
-const AuthLoginRoute = AuthLoginImport.update({
+const AuthLoginLazyRoute = AuthLoginLazyImport.update({
   id: '/auth/login',
   path: '/auth/login',
   getParentRoute: () => rootRoute,
-} as any)
+} as any).lazy(() => import('./routes/auth/login.lazy').then((d) => d.Route))
 
-const SettingsTablesIndexRoute = SettingsTablesIndexImport.update({
+const SettingsTablesIndexLazyRoute = SettingsTablesIndexLazyImport.update({
   id: '/tables/',
   path: '/tables/',
-  getParentRoute: () => SettingsRoute,
-} as any)
+  getParentRoute: () => SettingsLazyRoute,
+} as any).lazy(() =>
+  import('./routes/settings/tables/index.lazy').then((d) => d.Route),
+)
 
-const SettingsProductsIndexRoute = SettingsProductsIndexImport.update({
+const SettingsProductsIndexLazyRoute = SettingsProductsIndexLazyImport.update({
   id: '/products/',
   path: '/products/',
-  getParentRoute: () => SettingsRoute,
-} as any)
+  getParentRoute: () => SettingsLazyRoute,
+} as any).lazy(() =>
+  import('./routes/settings/products/index.lazy').then((d) => d.Route),
+)
 
-const SettingsLocationsIndexRoute = SettingsLocationsIndexImport.update({
-  id: '/locations/',
-  path: '/locations/',
-  getParentRoute: () => SettingsRoute,
-} as any)
+const SettingsLocationsIndexLazyRoute = SettingsLocationsIndexLazyImport.update(
+  {
+    id: '/locations/',
+    path: '/locations/',
+    getParentRoute: () => SettingsLazyRoute,
+  } as any,
+).lazy(() =>
+  import('./routes/settings/locations/index.lazy').then((d) => d.Route),
+)
 
-const SettingsCategoriesIndexRoute = SettingsCategoriesIndexImport.update({
-  id: '/categories/',
-  path: '/categories/',
-  getParentRoute: () => SettingsRoute,
-} as any)
+const SettingsCategoriesIndexLazyRoute =
+  SettingsCategoriesIndexLazyImport.update({
+    id: '/categories/',
+    path: '/categories/',
+    getParentRoute: () => SettingsLazyRoute,
+  } as any).lazy(() =>
+    import('./routes/settings/categories/index.lazy').then((d) => d.Route),
+  )
 
 // Populate the FileRoutesByPath interface
 
@@ -113,174 +135,175 @@ declare module '@tanstack/react-router' {
       id: '/'
       path: '/'
       fullPath: '/'
-      preLoaderRoute: typeof IndexImport
+      preLoaderRoute: typeof IndexLazyImport
       parentRoute: typeof rootRoute
     }
     '/pos': {
       id: '/pos'
       path: '/pos'
       fullPath: '/pos'
-      preLoaderRoute: typeof PosImport
+      preLoaderRoute: typeof PosLazyImport
       parentRoute: typeof rootRoute
     }
     '/settings': {
       id: '/settings'
       path: '/settings'
       fullPath: '/settings'
-      preLoaderRoute: typeof SettingsImport
+      preLoaderRoute: typeof SettingsLazyImport
       parentRoute: typeof rootRoute
     }
     '/auth/login': {
       id: '/auth/login'
       path: '/auth/login'
       fullPath: '/auth/login'
-      preLoaderRoute: typeof AuthLoginImport
+      preLoaderRoute: typeof AuthLoginLazyImport
       parentRoute: typeof rootRoute
     }
     '/pos/$orderId': {
       id: '/pos/$orderId'
       path: '/$orderId'
       fullPath: '/pos/$orderId'
-      preLoaderRoute: typeof PosOrderIdImport
-      parentRoute: typeof PosImport
+      preLoaderRoute: typeof PosOrderIdLazyImport
+      parentRoute: typeof PosLazyImport
     }
     '/invoices/': {
       id: '/invoices/'
       path: '/invoices'
       fullPath: '/invoices'
-      preLoaderRoute: typeof InvoicesIndexImport
+      preLoaderRoute: typeof InvoicesIndexLazyImport
       parentRoute: typeof rootRoute
     }
     '/orders/': {
       id: '/orders/'
       path: '/orders'
       fullPath: '/orders'
-      preLoaderRoute: typeof OrdersIndexImport
+      preLoaderRoute: typeof OrdersIndexLazyImport
       parentRoute: typeof rootRoute
     }
     '/pos/': {
       id: '/pos/'
       path: '/'
       fullPath: '/pos/'
-      preLoaderRoute: typeof PosIndexImport
-      parentRoute: typeof PosImport
+      preLoaderRoute: typeof PosIndexLazyImport
+      parentRoute: typeof PosLazyImport
     }
     '/users/': {
       id: '/users/'
       path: '/users'
       fullPath: '/users'
-      preLoaderRoute: typeof UsersIndexImport
+      preLoaderRoute: typeof UsersIndexLazyImport
       parentRoute: typeof rootRoute
     }
     '/settings/categories/': {
       id: '/settings/categories/'
       path: '/categories'
       fullPath: '/settings/categories'
-      preLoaderRoute: typeof SettingsCategoriesIndexImport
-      parentRoute: typeof SettingsImport
+      preLoaderRoute: typeof SettingsCategoriesIndexLazyImport
+      parentRoute: typeof SettingsLazyImport
     }
     '/settings/locations/': {
       id: '/settings/locations/'
       path: '/locations'
       fullPath: '/settings/locations'
-      preLoaderRoute: typeof SettingsLocationsIndexImport
-      parentRoute: typeof SettingsImport
+      preLoaderRoute: typeof SettingsLocationsIndexLazyImport
+      parentRoute: typeof SettingsLazyImport
     }
     '/settings/products/': {
       id: '/settings/products/'
       path: '/products'
       fullPath: '/settings/products'
-      preLoaderRoute: typeof SettingsProductsIndexImport
-      parentRoute: typeof SettingsImport
+      preLoaderRoute: typeof SettingsProductsIndexLazyImport
+      parentRoute: typeof SettingsLazyImport
     }
     '/settings/tables/': {
       id: '/settings/tables/'
       path: '/tables'
       fullPath: '/settings/tables'
-      preLoaderRoute: typeof SettingsTablesIndexImport
-      parentRoute: typeof SettingsImport
+      preLoaderRoute: typeof SettingsTablesIndexLazyImport
+      parentRoute: typeof SettingsLazyImport
     }
   }
 }
 
 // Create and export the route tree
 
-interface PosRouteChildren {
-  PosOrderIdRoute: typeof PosOrderIdRoute
-  PosIndexRoute: typeof PosIndexRoute
+interface PosLazyRouteChildren {
+  PosOrderIdLazyRoute: typeof PosOrderIdLazyRoute
+  PosIndexLazyRoute: typeof PosIndexLazyRoute
 }
 
-const PosRouteChildren: PosRouteChildren = {
-  PosOrderIdRoute: PosOrderIdRoute,
-  PosIndexRoute: PosIndexRoute,
+const PosLazyRouteChildren: PosLazyRouteChildren = {
+  PosOrderIdLazyRoute: PosOrderIdLazyRoute,
+  PosIndexLazyRoute: PosIndexLazyRoute,
 }
 
-const PosRouteWithChildren = PosRoute._addFileChildren(PosRouteChildren)
+const PosLazyRouteWithChildren =
+  PosLazyRoute._addFileChildren(PosLazyRouteChildren)
 
-interface SettingsRouteChildren {
-  SettingsCategoriesIndexRoute: typeof SettingsCategoriesIndexRoute
-  SettingsLocationsIndexRoute: typeof SettingsLocationsIndexRoute
-  SettingsProductsIndexRoute: typeof SettingsProductsIndexRoute
-  SettingsTablesIndexRoute: typeof SettingsTablesIndexRoute
+interface SettingsLazyRouteChildren {
+  SettingsCategoriesIndexLazyRoute: typeof SettingsCategoriesIndexLazyRoute
+  SettingsLocationsIndexLazyRoute: typeof SettingsLocationsIndexLazyRoute
+  SettingsProductsIndexLazyRoute: typeof SettingsProductsIndexLazyRoute
+  SettingsTablesIndexLazyRoute: typeof SettingsTablesIndexLazyRoute
 }
 
-const SettingsRouteChildren: SettingsRouteChildren = {
-  SettingsCategoriesIndexRoute: SettingsCategoriesIndexRoute,
-  SettingsLocationsIndexRoute: SettingsLocationsIndexRoute,
-  SettingsProductsIndexRoute: SettingsProductsIndexRoute,
-  SettingsTablesIndexRoute: SettingsTablesIndexRoute,
+const SettingsLazyRouteChildren: SettingsLazyRouteChildren = {
+  SettingsCategoriesIndexLazyRoute: SettingsCategoriesIndexLazyRoute,
+  SettingsLocationsIndexLazyRoute: SettingsLocationsIndexLazyRoute,
+  SettingsProductsIndexLazyRoute: SettingsProductsIndexLazyRoute,
+  SettingsTablesIndexLazyRoute: SettingsTablesIndexLazyRoute,
 }
 
-const SettingsRouteWithChildren = SettingsRoute._addFileChildren(
-  SettingsRouteChildren,
+const SettingsLazyRouteWithChildren = SettingsLazyRoute._addFileChildren(
+  SettingsLazyRouteChildren,
 )
 
 export interface FileRoutesByFullPath {
-  '/': typeof IndexRoute
-  '/pos': typeof PosRouteWithChildren
-  '/settings': typeof SettingsRouteWithChildren
-  '/auth/login': typeof AuthLoginRoute
-  '/pos/$orderId': typeof PosOrderIdRoute
-  '/invoices': typeof InvoicesIndexRoute
-  '/orders': typeof OrdersIndexRoute
-  '/pos/': typeof PosIndexRoute
-  '/users': typeof UsersIndexRoute
-  '/settings/categories': typeof SettingsCategoriesIndexRoute
-  '/settings/locations': typeof SettingsLocationsIndexRoute
-  '/settings/products': typeof SettingsProductsIndexRoute
-  '/settings/tables': typeof SettingsTablesIndexRoute
+  '/': typeof IndexLazyRoute
+  '/pos': typeof PosLazyRouteWithChildren
+  '/settings': typeof SettingsLazyRouteWithChildren
+  '/auth/login': typeof AuthLoginLazyRoute
+  '/pos/$orderId': typeof PosOrderIdLazyRoute
+  '/invoices': typeof InvoicesIndexLazyRoute
+  '/orders': typeof OrdersIndexLazyRoute
+  '/pos/': typeof PosIndexLazyRoute
+  '/users': typeof UsersIndexLazyRoute
+  '/settings/categories': typeof SettingsCategoriesIndexLazyRoute
+  '/settings/locations': typeof SettingsLocationsIndexLazyRoute
+  '/settings/products': typeof SettingsProductsIndexLazyRoute
+  '/settings/tables': typeof SettingsTablesIndexLazyRoute
 }
 
 export interface FileRoutesByTo {
-  '/': typeof IndexRoute
-  '/settings': typeof SettingsRouteWithChildren
-  '/auth/login': typeof AuthLoginRoute
-  '/pos/$orderId': typeof PosOrderIdRoute
-  '/invoices': typeof InvoicesIndexRoute
-  '/orders': typeof OrdersIndexRoute
-  '/pos': typeof PosIndexRoute
-  '/users': typeof UsersIndexRoute
-  '/settings/categories': typeof SettingsCategoriesIndexRoute
-  '/settings/locations': typeof SettingsLocationsIndexRoute
-  '/settings/products': typeof SettingsProductsIndexRoute
-  '/settings/tables': typeof SettingsTablesIndexRoute
+  '/': typeof IndexLazyRoute
+  '/settings': typeof SettingsLazyRouteWithChildren
+  '/auth/login': typeof AuthLoginLazyRoute
+  '/pos/$orderId': typeof PosOrderIdLazyRoute
+  '/invoices': typeof InvoicesIndexLazyRoute
+  '/orders': typeof OrdersIndexLazyRoute
+  '/pos': typeof PosIndexLazyRoute
+  '/users': typeof UsersIndexLazyRoute
+  '/settings/categories': typeof SettingsCategoriesIndexLazyRoute
+  '/settings/locations': typeof SettingsLocationsIndexLazyRoute
+  '/settings/products': typeof SettingsProductsIndexLazyRoute
+  '/settings/tables': typeof SettingsTablesIndexLazyRoute
 }
 
 export interface FileRoutesById {
   __root__: typeof rootRoute
-  '/': typeof IndexRoute
-  '/pos': typeof PosRouteWithChildren
-  '/settings': typeof SettingsRouteWithChildren
-  '/auth/login': typeof AuthLoginRoute
-  '/pos/$orderId': typeof PosOrderIdRoute
-  '/invoices/': typeof InvoicesIndexRoute
-  '/orders/': typeof OrdersIndexRoute
-  '/pos/': typeof PosIndexRoute
-  '/users/': typeof UsersIndexRoute
-  '/settings/categories/': typeof SettingsCategoriesIndexRoute
-  '/settings/locations/': typeof SettingsLocationsIndexRoute
-  '/settings/products/': typeof SettingsProductsIndexRoute
-  '/settings/tables/': typeof SettingsTablesIndexRoute
+  '/': typeof IndexLazyRoute
+  '/pos': typeof PosLazyRouteWithChildren
+  '/settings': typeof SettingsLazyRouteWithChildren
+  '/auth/login': typeof AuthLoginLazyRoute
+  '/pos/$orderId': typeof PosOrderIdLazyRoute
+  '/invoices/': typeof InvoicesIndexLazyRoute
+  '/orders/': typeof OrdersIndexLazyRoute
+  '/pos/': typeof PosIndexLazyRoute
+  '/users/': typeof UsersIndexLazyRoute
+  '/settings/categories/': typeof SettingsCategoriesIndexLazyRoute
+  '/settings/locations/': typeof SettingsLocationsIndexLazyRoute
+  '/settings/products/': typeof SettingsProductsIndexLazyRoute
+  '/settings/tables/': typeof SettingsTablesIndexLazyRoute
 }
 
 export interface FileRouteTypes {
@@ -332,23 +355,23 @@ export interface FileRouteTypes {
 }
 
 export interface RootRouteChildren {
-  IndexRoute: typeof IndexRoute
-  PosRoute: typeof PosRouteWithChildren
-  SettingsRoute: typeof SettingsRouteWithChildren
-  AuthLoginRoute: typeof AuthLoginRoute
-  InvoicesIndexRoute: typeof InvoicesIndexRoute
-  OrdersIndexRoute: typeof OrdersIndexRoute
-  UsersIndexRoute: typeof UsersIndexRoute
+  IndexLazyRoute: typeof IndexLazyRoute
+  PosLazyRoute: typeof PosLazyRouteWithChildren
+  SettingsLazyRoute: typeof SettingsLazyRouteWithChildren
+  AuthLoginLazyRoute: typeof AuthLoginLazyRoute
+  InvoicesIndexLazyRoute: typeof InvoicesIndexLazyRoute
+  OrdersIndexLazyRoute: typeof OrdersIndexLazyRoute
+  UsersIndexLazyRoute: typeof UsersIndexLazyRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
-  IndexRoute: IndexRoute,
-  PosRoute: PosRouteWithChildren,
-  SettingsRoute: SettingsRouteWithChildren,
-  AuthLoginRoute: AuthLoginRoute,
-  InvoicesIndexRoute: InvoicesIndexRoute,
-  OrdersIndexRoute: OrdersIndexRoute,
-  UsersIndexRoute: UsersIndexRoute,
+  IndexLazyRoute: IndexLazyRoute,
+  PosLazyRoute: PosLazyRouteWithChildren,
+  SettingsLazyRoute: SettingsLazyRouteWithChildren,
+  AuthLoginLazyRoute: AuthLoginLazyRoute,
+  InvoicesIndexLazyRoute: InvoicesIndexLazyRoute,
+  OrdersIndexLazyRoute: OrdersIndexLazyRoute,
+  UsersIndexLazyRoute: UsersIndexLazyRoute,
 }
 
 export const routeTree = rootRoute
@@ -371,17 +394,17 @@ export const routeTree = rootRoute
       ]
     },
     "/": {
-      "filePath": "index.tsx"
+      "filePath": "index.lazy.tsx"
     },
     "/pos": {
-      "filePath": "pos.tsx",
+      "filePath": "pos.lazy.tsx",
       "children": [
         "/pos/$orderId",
         "/pos/"
       ]
     },
     "/settings": {
-      "filePath": "settings.tsx",
+      "filePath": "settings.lazy.tsx",
       "children": [
         "/settings/categories/",
         "/settings/locations/",
@@ -390,39 +413,39 @@ export const routeTree = rootRoute
       ]
     },
     "/auth/login": {
-      "filePath": "auth/login.tsx"
+      "filePath": "auth/login.lazy.tsx"
     },
     "/pos/$orderId": {
-      "filePath": "pos/$orderId.tsx",
+      "filePath": "pos/$orderId.lazy.tsx",
       "parent": "/pos"
     },
     "/invoices/": {
-      "filePath": "invoices/index.tsx"
+      "filePath": "invoices/index.lazy.tsx"
     },
     "/orders/": {
-      "filePath": "orders/index.tsx"
+      "filePath": "orders/index.lazy.tsx"
     },
     "/pos/": {
-      "filePath": "pos/index.tsx",
+      "filePath": "pos/index.lazy.tsx",
       "parent": "/pos"
     },
     "/users/": {
-      "filePath": "users/index.tsx"
+      "filePath": "users/index.lazy.tsx"
     },
     "/settings/categories/": {
-      "filePath": "settings/categories/index.tsx",
+      "filePath": "settings/categories/index.lazy.tsx",
       "parent": "/settings"
     },
     "/settings/locations/": {
-      "filePath": "settings/locations/index.tsx",
+      "filePath": "settings/locations/index.lazy.tsx",
       "parent": "/settings"
     },
     "/settings/products/": {
-      "filePath": "settings/products/index.tsx",
+      "filePath": "settings/products/index.lazy.tsx",
       "parent": "/settings"
     },
     "/settings/tables/": {
-      "filePath": "settings/tables/index.tsx",
+      "filePath": "settings/tables/index.lazy.tsx",
       "parent": "/settings"
     }
   }

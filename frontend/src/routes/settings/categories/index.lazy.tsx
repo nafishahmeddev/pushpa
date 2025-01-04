@@ -1,40 +1,45 @@
-import ScrollView from "@app/components/ui/ScrollView";
-import CategoriesApi from "@app/services/categories";
-import { ICategory } from "@app/types/product";
-import { useEffect, useState } from "react";
-import CategoryFormDialog from "../../../components/form-dialogs/CategoryFormDialog";
-import { Icon } from "@iconify/react";
-import Table, { TableBody, TableCell, TableHead, TableRow } from "@app/components/ui/table/Table";
-import { createFileRoute } from "@tanstack/react-router";
-export const Route = createFileRoute("/settings/categories/")({
+import ScrollView from '@app/components/ui/ScrollView'
+import CategoriesApi from '@app/services/categories'
+import { ICategory } from '@app/types/product'
+import { useEffect, useState } from 'react'
+import CategoryFormDialog from '../../../components/form-dialogs/CategoryFormDialog'
+import { Icon } from '@iconify/react'
+import Table, {
+  TableBody,
+  TableCell,
+  TableHead,
+  TableRow,
+} from '@app/components/ui/table/Table'
+import { createLazyFileRoute } from '@tanstack/react-router'
+export const Route = createLazyFileRoute('/settings/categories/')({
   component: RouteComponent,
-});
+})
 function RouteComponent() {
-  const [categories, setCategories] = useState<Array<ICategory>>([]);
-  const refresh = () => CategoriesApi.all().then(setCategories);
+  const [categories, setCategories] = useState<Array<ICategory>>([])
+  const refresh = () => CategoriesApi.all().then(setCategories)
 
   const [categoryForm, setCategoryForm] = useState<{
-    category: ICategory | undefined;
-    open: boolean;
-  }>({ category: undefined, open: false });
+    category: ICategory | undefined
+    open: boolean
+  }>({ category: undefined, open: false })
 
   const handleOnDelete = (category: ICategory) => {
-    if (confirm("Are you sure?")) {
-      CategoriesApi.delete(category.id).then(refresh);
+    if (confirm('Are you sure?')) {
+      CategoriesApi.delete(category.id).then(refresh)
     }
-  };
+  }
 
   useEffect(() => {
-    refresh();
-  }, []);
+    refresh()
+  }, [])
   return (
     <div className="h-full  p-4 grid grid-rows-[60px_1fr] gap-5">
       <CategoryFormDialog
         {...categoryForm}
         onReset={() => setCategoryForm({ category: undefined, open: false })}
         onSave={async () => {
-          setCategoryForm({ category: undefined, open: false });
-          refresh();
+          setCategoryForm({ category: undefined, open: false })
+          refresh()
         }}
       />
 
@@ -60,9 +65,7 @@ function RouteComponent() {
             {categories.map((category, index: number) => (
               <TableRow key={`category-${category.id}`}>
                 <TableCell className="w-0">{index + 1}</TableCell>
-                <TableCell>
-                  {category.name}
-                </TableCell>
+                <TableCell>{category.name}</TableCell>
                 <TableCell className="w-0">
                   <div className="flex flex-nowrap gap-2 text-gray-600">
                     <button
@@ -88,5 +91,5 @@ function RouteComponent() {
         </Table>
       </ScrollView>
     </div>
-  );
+  )
 }
