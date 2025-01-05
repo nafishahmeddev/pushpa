@@ -126,6 +126,7 @@ OrdersRouter.post("/", async (req: IRequest, res: IResponse) => {
             res.status(400).json({
                 message: "An order already exist for same table."
             });
+            return;
         }
     }
 
