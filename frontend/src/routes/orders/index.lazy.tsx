@@ -187,11 +187,11 @@ function RouteComponent() {
               {result.records.map((order, index: number) => {
                 return (
                   <TableRow key={`product-${order.id}`}>
-                    <TableCell className="px-3 py-2 w-0">
+                    <TableCell className="w-0">
                       {(query.page - 1) * query.limit + index + 1}
                     </TableCell>
-                    <TableCell className="px-0 py-2 w-0 sticky left-0 bg-white">
-                      <div className="inline-flex flex-nowrap gap-2 text-gray-600 px-2">
+                    <TableCell className="w-0 sticky left-0 bg-white">
+                      <div className="inline-flex flex-nowrap gap-2 text-gray-600">
                         {order.invoiceId && (
                           <button
                             className={`hover:opacity-50`}
