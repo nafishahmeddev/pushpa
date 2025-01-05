@@ -4,8 +4,7 @@ import Input from "@app/components/ui/form/input";
 import Select from "@app/components/ui/form/select";
 import UsersApi from "@app/services/users";
 import { IUser } from "@app/types/user";
-import { AxiosError } from "axios";
-import { useFormik } from "formik";
+import { useForm } from "@tanstack/react-form";
 import { useEffect } from "react";
 import toast from "react-hot-toast";
 
@@ -22,78 +21,160 @@ type ValueType = {
   designation: string;
   password: string;
 };
-export default function UserForm({ open = false, user, onReset, onSave }: UserFormProps) {
-  const formik = useFormik<ValueType>({
-    initialValues: {
+export default function UserForm({
+  open = false,
+  user,
+  onReset,
+  onSave,
+}: UserFormProps) {
+  const form = useForm<ValueType>({
+    defaultValues: {
       name: "",
       email: "",
       phone: "",
       designation: "",
       password: "",
     },
-    onSubmit: handleOnSubmit,
+    onSubmit: async ({ value }) => {
+      const promise = user
+        ? UsersApi.update(user.id, value)
+        : UsersApi.create(value);
+      return promise
+        .then(() => {
+          onSave(value);
+        })
+        .catch((err) => {
+          toast.error(err.message);
+        });
+    },
   });
 
-  async function handleOnSubmit(values: ValueType) {
-    const promise = user ? UsersApi.update(user.id, values) : UsersApi.create(values);
-
-    toast.promise(promise, {
-      success: "Successfully saved",
-      loading: "please wait...",
-      error: "Error while saving category.",
-    });
-    return promise
-      .then(() => {
-        formik.resetForm();
-        onSave(values);
-      })
-      .catch((err: AxiosError<{ message: string }>) => {
-        if (err.response?.data) {
-          alert(err.response?.data.message);
-        } else {
-          alert(err.message);
-        }
-      });
-  }
   useEffect(() => {
+    form.reset();
     if (user) {
-      formik.setValues({
-        ...user,
-      });
-    } else {
-      formik.resetForm();
+      form.setFieldValue("name", user.name);
+      form.setFieldValue("email", user.email);
+      form.setFieldValue("phone", user.phone);
+      form.setFieldValue("designation", user.designation);
+      form.setFieldValue("password", "");
     }
   }, [user]);
 
   return (
     <Dialog open={open} onClose={onReset}>
-      <form className="p-6" onSubmit={formik.handleSubmit}>
+      <form className="p-6" onSubmit={form.handleSubmit}>
         <h3 className="text-xl">{user ? "Update" : "Create"} User</h3>
-        <fieldset disabled={formik.isSubmitting} className="block w-full">
+        <fieldset className="block w-full">
           <div className="flex flex-col gap-2 w-full py-4">
-            <Input label="Name" required type="text" {...formik.getFieldProps("name")} meta={formik.getFieldMeta("name")} />
+            <form.Field
+              name="name"
+              children={({ state, handleBlur, handleChange, name }) => (
+                <Input
+                  label="Name"
+                  required
+                  type="text"
+                  value={state.value}
+                  onChange={(e) => handleChange(e.target.value)}
+                  onBlur={handleBlur}
+                  name={name}
+                  error={state.meta.errors.join(" ")}
+                  touched={state.meta.isTouched}
+                />
+              )}
+            />
 
-            <Input label="Email" required type="email" {...formik.getFieldProps("email")} meta={formik.getFieldMeta("email")} />
+            <form.Field
+              name="email"
+              children={({ state, handleBlur, handleChange, name }) => (
+                <Input
+                  label="Email"
+                  required
+                  type="email"
+                  value={state.value}
+                  onChange={(e) => handleChange(e.target.value)}
+                  onBlur={handleBlur}
+                  name={name}
+                  error={state.meta.errors.join(" ")}
+                  touched={state.meta.isTouched}
+                />
+              )}
+            />
 
-            <Input label="Phone" required type="text" {...formik.getFieldProps("phone")} meta={formik.getFieldMeta("phone")} />
+            <form.Field
+              name="phone"
+              children={({ state, handleBlur, handleChange, name }) => (
+                <Input
+                  label="Phone"
+                  required
+                  type="text"
+                  value={state.value}
+                  onChange={(e) => handleChange(e.target.value)}
+                  onBlur={handleBlur}
+                  name={name}
+                  error={state.meta.errors.join(" ")}
+                  touched={state.meta.isTouched}
+                />
+              )}
+            />
 
-            <Select label="Designation" required {...formik.getFieldProps("designation")} meta={formik.getFieldMeta("designation")}>
-              <option value=""></option>
-              <option>Admin</option>
-              <option>Biller</option>
-              <option>Service</option>
-            </Select>
+            <form.Field
+              name="designation"
+              children={({ state, handleBlur, handleChange, name }) => (
+                <Select
+                  label="Designation"
+                  required
+                  value={state.value}
+                  onChange={(e) => handleChange(e.target.value)}
+                  onBlur={handleBlur}
+                  name={name}
+                  error={state.meta.errors.join(" ")}
+                  touched={state.meta.isTouched}
+                >
+                  <option value=""></option>
+                  <option>Admin</option>
+                  <option>Biller</option>
+                  <option>Service</option>
+                </Select>
+              )}
+            />
 
-            <Input label="Password" type="password" {...formik.getFieldProps("password")} meta={formik.getFieldMeta("password")} />
+            <form.Field
+              name="password"
+              children={({ state, handleBlur, handleChange, name }) => (
+                <Input
+                  label="Password"
+                  type="password"
+                  value={state.value}
+                  onChange={(e) => handleChange(e.target.value)}
+                  onBlur={handleBlur}
+                  name={name}
+                  error={state.meta.errors.join(" ")}
+                  touched={state.meta.isTouched}
+                />
+              )}
+            />
           </div>
-          <div className="flex gap-2 justify-end">
-            <Button className="bg-gray-300" onClick={onReset} type="button">
-              Cancel
-            </Button>
-            <Button className="bg-lime-600 text-white" type="submit">
-              {user ? "Update" : "Create"}
-            </Button>
-          </div>
+          <form.Subscribe
+            children={({ isSubmitting, canSubmit }) => (
+              <div className="flex gap-2 justify-end">
+                <Button
+                  className=" bg-gray-300"
+                  onClick={onReset}
+                  type="button"
+                >
+                  Cancel
+                </Button>
+                <Button
+                  className=" bg-lime-600 text-white"
+                  type="submit"
+                  disabled={!canSubmit}
+                  loading={isSubmitting}
+                >
+                  {user ? "Update" : "Create"}
+                </Button>
+              </div>
+            )}
+          />
         </fieldset>
       </form>
     </Dialog>

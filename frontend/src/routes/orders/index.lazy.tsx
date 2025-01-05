@@ -1,111 +1,107 @@
-import ScrollView from '@app/components/ui/ScrollView'
-import React, { useEffect, useState } from 'react'
-import { Icon } from '@iconify/react'
-import Formatter from '@app/lib/formatter'
-import OrdersApi from '@app/services/orders'
-import { useFormik } from 'formik'
-import Spinner from '@app/components/ui/Spinner'
+import ScrollView from "@app/components/ui/ScrollView";
+import React, { useEffect, useState } from "react";
+import { Icon } from "@iconify/react";
+import Formatter from "@app/lib/formatter";
+import OrdersApi from "@app/services/orders";
 import {
   OrderReceiptDialog,
   OrderReceiptDialogProps,
-} from '@app/components/invoice/OrderReceiptDialog'
+} from "@app/components/invoice/OrderReceiptDialog";
 import Table, {
   TableBody,
   TableCell,
   TableHead,
   TableRow,
-} from '@app/components/ui/table/Table'
-import Pagination from '@app/components/ui/Pagination'
-import Input from '@app/components/ui/form/input'
-import { IOrder, OrderStatus } from '@app/types/orders'
-import { createLazyFileRoute, Link } from '@tanstack/react-router'
+} from "@app/components/ui/table/Table";
+import Pagination from "@app/components/ui/Pagination";
+import Input from "@app/components/ui/form/input";
+import { IOrder, OrderStatus } from "@app/types/orders";
+import { createLazyFileRoute, Link } from "@tanstack/react-router";
+import { useForm } from "@tanstack/react-form";
 
-export const Route = createLazyFileRoute('/orders/')({
+export const Route = createLazyFileRoute("/orders/")({
   component: RouteComponent,
-})
+});
 
 const OrderStatusLabel = ({ order }: { order: IOrder }) => {
-  const classNames = ['border px-1 py-0 text-sm rounded-lg']
+  const classNames = ["border px-1 py-0 text-sm rounded-lg"];
   switch (order.status) {
     case OrderStatus.Ongoing: {
-      classNames.push('border-orange-600/50 text-orange-600 bg-orange-50')
-      break
+      classNames.push("border-orange-600/50 text-orange-600 bg-orange-50");
+      break;
     }
     case OrderStatus.Draft: {
-      classNames.push('border-yellow-600/50 text-yellow-600  bg-yellow-50')
-      break
+      classNames.push("border-yellow-600/50 text-yellow-600  bg-yellow-50");
+      break;
     }
     case OrderStatus.Cancelled: {
-      classNames.push('border-gray-600/50 text-gray-600  bg-gray-50')
-      break
+      classNames.push("border-gray-600/50 text-gray-600  bg-gray-50");
+      break;
     }
     case OrderStatus.Paid: {
-      classNames.push('border-blue-600/50 text-blue-600  bg-blue-50')
-      break
+      classNames.push("border-blue-600/50 text-blue-600  bg-blue-50");
+      break;
     }
     case OrderStatus.Completed: {
-      classNames.push('border-green-600/50 text-green-600  bg-green-50')
-      break
+      classNames.push("border-green-600/50 text-green-600  bg-green-50");
+      break;
     }
   }
 
-  return <label className={classNames.join(' ')}>{order.status}</label>
-}
+  return <label className={classNames.join(" ")}>{order.status}</label>;
+};
 
 function RouteComponent() {
-  const form = useFormik({
-    initialValues: {
-      createdAt: ['', ''],
+  const form = useForm({
+    defaultValues: {
+      createdAt: ["", ""],
     },
-    onSubmit: paginate,
-  })
-  const [query, setQuery] = useState({ page: 1, limit: 20 })
+    onSubmit: ({ value }) =>
+      OrdersApi.paginate({ page: query.page, limit: query.limit }, value).then(
+        (res) => {
+          setResult(res);
+          setQuery({ page: res.page, limit: query.limit });
+        },
+      ),
+  });
+  const [query, setQuery] = useState({ page: 1, limit: 20 });
   const [result, setResult] = useState<{
-    pages: number
-    page: number
-    records: Array<IOrder>
+    pages: number;
+    page: number;
+    records: Array<IOrder>;
   }>({
     pages: 1,
     page: 0,
     records: [],
-  })
+  });
   const [oderDetailsDialog, setOderDetailsDialog] =
     useState<OrderReceiptDialogProps>({
       open: false,
-    })
+    });
 
-  function paginate(values: { [key: string]: unknown }) {
-    return OrdersApi.paginate(
-      { page: query.page, limit: query.limit },
-      values,
-    ).then((res) => {
-      setResult(res)
-      setQuery({ page: res.page, limit: query.limit })
-    })
-  }
   const handleOnDetails = (invoiceId: string, print: boolean = false) => {
     const w = window.open(
       import.meta.env.VITE_BASE_URL +
-        `/invoices/${invoiceId}/receipt?authorization=${localStorage.getItem('accessToken')}`,
-      '_blank',
-      'location=yes,height=600,width=350,scrollbars=yes,status=yes',
-    )
+        `/invoices/${invoiceId}/receipt?authorization=${localStorage.getItem("accessToken")}`,
+      "_blank",
+      "location=yes,height=600,width=350,scrollbars=yes,status=yes",
+    );
 
     if (w && print) {
       setTimeout(function () {
-        w.document.close()
-        w.focus()
-        w.print()
-        w.close()
-      }, 1000)
+        w.document.close();
+        w.focus();
+        w.print();
+        w.close();
+      }, 1000);
     }
-  }
+  };
 
   useEffect(() => {
     if (query.page != result.page) {
-      form.submitForm()
+      form.handleSubmit();
     }
-  }, [query])
+  }, [query]);
   return (
     <React.Fragment>
       <OrderReceiptDialog
@@ -119,36 +115,56 @@ function RouteComponent() {
           </div>
 
           <form
-            onSubmit={form.handleSubmit}
-            onReset={form.handleReset}
-            className="h-9"
+            onSubmit={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              form.handleSubmit();
+            }}
+            onReset={form.reset}
+            className="h-9 flex gap-3"
           >
-            <fieldset
-              className="flex gap-3 h-full"
-              disabled={form.isSubmitting}
+            <form.Field
+              name="createdAt[0]"
+              children={({ state, handleBlur, handleChange, name }) => (
+                <Input
+                  className="border rounded-xl px-3"
+                  placeholder="Date from"
+                  type="date"
+                  value={state.value}
+                  onChange={(e) => handleChange(e.target.value)}
+                  onBlur={handleBlur}
+                  name={name}
+                  error={state.meta.errors.join(" ")}
+                  touched={state.meta.isTouched}
+                />
+              )}
+            />
+
+            <form.Field
+              name="createdAt[1]"
+              children={({ state, handleBlur, handleChange, name }) => (
+                <Input
+                  className="border rounded-xl px-3"
+                  placeholder="Date to"
+                  type="date"
+                  value={state.value}
+                  onChange={(e) => handleChange(e.target.value)}
+                  onBlur={handleBlur}
+                  name={name}
+                  error={state.meta.errors.join(" ")}
+                  touched={state.meta.isTouched}
+                />
+              )}
+            />
+            <button className="rounded-xl px-3 bg-lime-500 text-white hover:opacity-50">
+              Search
+            </button>
+            <button
+              className="rounded-xl px-3 bg-gray-300 hover:opacity-50"
+              type="reset"
             >
-              <Input
-                className="border rounded-xl px-3"
-                placeholder="Date from"
-                type="date"
-                {...form.getFieldProps('createdAt.0')}
-              />
-              <Input
-                className="border rounded-xl px-3"
-                placeholder="Date to"
-                type="date"
-                {...form.getFieldProps('createdAt.1')}
-              />
-              <button className="rounded-xl px-3 bg-lime-500 text-white hover:opacity-50">
-                Search
-              </button>
-              <button
-                className="rounded-xl px-3 bg-gray-300 hover:opacity-50"
-                type="reset"
-              >
-                Reset
-              </button>
-            </fieldset>
+              Reset
+            </button>
           </form>
         </div>
 
@@ -192,7 +208,7 @@ function RouteComponent() {
                         ) && (
                           <Link
                             className={`hover:opacity-50`}
-                            to={'/pos/' + order.id}
+                            to={"/pos/" + order.id}
                             title="Go to billing"
                           >
                             <Icon
@@ -234,16 +250,10 @@ function RouteComponent() {
                       {Formatter.datetime(order.createdAt)}
                     </TableCell>
                   </TableRow>
-                )
+                );
               })}
             </TableBody>
           </Table>
-
-          {form.isSubmitting && (
-            <div className="absolute top-0 left-0 w-full h-full p-10 flex items-center justify-center bg-white/10 backdrop-blur-sm">
-              <Spinner />
-            </div>
-          )}
         </ScrollView>
         <Pagination
           page={query.page}
@@ -252,5 +262,5 @@ function RouteComponent() {
         />
       </div>
     </React.Fragment>
-  )
+  );
 }

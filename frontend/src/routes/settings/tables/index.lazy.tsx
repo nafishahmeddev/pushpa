@@ -1,71 +1,71 @@
-import ScrollView from '@app/components/ui/ScrollView'
-import { ITable } from '@app/types/table'
-import { useEffect, useState } from 'react'
-import { Icon } from '@iconify/react'
-import TablesApi from '@app/services/tables'
+import ScrollView from "@app/components/ui/ScrollView";
+import { ITable } from "@app/types/table";
+import { useEffect, useState } from "react";
+import { Icon } from "@iconify/react";
+import TablesApi from "@app/services/tables";
 import Table, {
   TableCell,
   TableHead,
   TableRow,
-} from '@app/components/ui/table/Table'
-import { useFormik } from 'formik'
-import Pagination from '@app/components/ui/Pagination'
-import Input from '@app/components/ui/form/input'
-import TableFormDialog from '../../../components/form-dialogs/TableFormDialog'
-import { createLazyFileRoute } from '@tanstack/react-router'
+} from "@app/components/ui/table/Table";
+import Pagination from "@app/components/ui/Pagination";
+import Input from "@app/components/ui/form/input";
+import TableFormDialog from "../../../components/form-dialogs/TableFormDialog";
+import { createLazyFileRoute } from "@tanstack/react-router";
+import { useForm } from "@tanstack/react-form";
 
 type FormType = {
   filter: {
-    name: string
-  }
-  query: { page: number; limit: number }
-}
+    name: string;
+  };
+  query: { page: number; limit: number };
+};
 
-export const Route = createLazyFileRoute('/settings/tables/')({
+export const Route = createLazyFileRoute("/settings/tables/")({
   component: RouteComponent,
-})
+});
 
 function RouteComponent() {
   const [result, setResult] = useState<{
-    pages: number
-    page: number
-    records: Array<ITable>
+    pages: number;
+    page: number;
+    records: Array<ITable>;
   }>({
     pages: 1,
     page: 0,
     records: [],
-  })
-  const formik = useFormik<FormType>({
-    initialValues: {
+  });
+  const form = useForm<FormType>({
+    defaultValues: {
       filter: {
-        name: '',
+        name: "",
       },
       query: { page: 1, limit: 20 },
     },
-    onSubmit: async (values, helper) =>
+    onSubmit: async ({ value, formApi }) =>
       TablesApi.paginate(
-        { page: values.query.page, limit: values.query.limit },
-        values.filter,
+        { page: value.query.page, limit: value.query.limit },
+        value.filter,
       ).then((res) => {
-        setResult(res)
-        helper.setFieldValue('query.page', res.page)
+        setResult(res);
+        formApi.setFieldValue("query.page", res.page);
       }),
-  })
+  });
 
   const [tableForm, setTableForm] = useState<{
-    open: boolean
-    table?: ITable
-  }>({ open: false })
+    open: boolean;
+    table?: ITable;
+  }>({ open: false });
 
   const handleOnDelete = (table: ITable) => {
-    if (confirm('Are you sure?')) {
-      TablesApi.delete(table.id).then(formik.submitForm)
+    if (confirm("Are you sure?")) {
+      TablesApi.delete(table.id).then(form.handleSubmit);
     }
-  }
+  };
 
   useEffect(() => {
-    formik.submitForm()
-  }, [])
+    form.handleSubmit();
+  }, []);
 
   return (
     <div className="h-full p-4 grid grid-rows-[60px_1fr_35px] gap-5">
@@ -73,8 +73,8 @@ function RouteComponent() {
         {...tableForm}
         onReset={() => setTableForm({ open: false, table: undefined })}
         onSave={async () => {
-          setTableForm({ open: false, table: undefined })
-          formik.submitForm()
+          setTableForm({ open: false, table: undefined });
+          form.handleSubmit();
         }}
       />
       <div className="py-4 flex gap-4 items-center h-full">
@@ -83,42 +83,50 @@ function RouteComponent() {
         </div>
         <div className="flex-1" />
         <form
-          onSubmit={formik.handleSubmit}
-          onReset={formik.handleReset}
-          className="h-9"
+          onSubmit={(e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            form.handleSubmit();
+          }}
+          onReset={form.reset}
+          className="h-9 flex gap-3 "
         >
-          <fieldset
-            className="flex gap-3 h-full"
-            disabled={formik.isSubmitting}
-            onBlur={() => formik.setFieldValue('query.page', 1)}
-          >
-            <Input
-              className="border rounded-xl px-3"
-              placeholder="Name"
-              type="text"
-              {...formik.getFieldProps('filter.name')}
-            />
+          <form.Field
+            name="filter.name"
+            children={({ state, handleBlur, handleChange, name }) => (
+              <Input
+                className="border rounded-xl px-3"
+                placeholder="Name"
+                type="text"
+                value={state.value}
+                onChange={(e) => handleChange(e.target.value)}
+                onBlur={handleBlur}
+                name={name}
+                error={state.meta.errors.join(" ")}
+                touched={state.meta.isTouched}
+              />
+            )}
+          />
 
-            <button
-              className="rounded-xl px-3 bg-lime-500 text-white hover:opacity-50"
-              type="submit"
-            >
-              Search
-            </button>
-            <button
-              className="rounded-xl px-3 bg-gray-300 hover:opacity-50"
-              type="reset"
-            >
-              Reset
-            </button>
-            <button
-              className="rounded-xl px-3 bg-gray-300 hover:opacity-50 flex items-center justify-center gap-0.5"
-              type="button"
-              onClick={() => setTableForm({ open: true, table: undefined })}
-            >
-              <Icon icon="ic:baseline-add" /> New
-            </button>
-          </fieldset>
+          <button
+            className="rounded-xl px-3 bg-lime-500 text-white hover:opacity-50"
+            type="submit"
+          >
+            Search
+          </button>
+          <button
+            className="rounded-xl px-3 bg-gray-300 hover:opacity-50"
+            type="reset"
+          >
+            Reset
+          </button>
+          <button
+            className="rounded-xl px-3 bg-gray-300 hover:opacity-50 flex items-center justify-center gap-0.5"
+            type="button"
+            onClick={() => setTableForm({ open: true, table: undefined })}
+          >
+            <Icon icon="ic:baseline-add" /> New
+          </button>
         </form>
       </div>
       <ScrollView className="h-full bg-white border rounded-xl overflow-hidden">
@@ -166,13 +174,18 @@ function RouteComponent() {
           </tbody>
         </Table>
       </ScrollView>
-      <Pagination
-        page={formik.values.query.page}
-        pages={result.pages}
-        onChange={(e) => {
-          formik.setFieldValue('query.page', e.page).then(formik.submitForm)
-        }}
+      <form.Subscribe
+        children={({ values }) => (
+          <Pagination
+            page={values.query.page}
+            pages={result.pages}
+            onChange={(e) => {
+              form.setFieldValue("query.page", e.page);
+              form.handleSubmit();
+            }}
+          />
+        )}
       />
     </div>
-  )
+  );
 }

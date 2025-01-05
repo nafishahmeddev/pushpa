@@ -1,83 +1,79 @@
-import ScrollView from '@app/components/ui/ScrollView'
-import React, { useEffect, useState } from 'react'
-import { Icon } from '@iconify/react'
-import Formatter from '@app/lib/formatter'
-import OrdersApi from '@app/services/invoices'
-import { IInvoice } from '@app/types/invoice'
-import { useFormik } from 'formik'
-import Spinner from '@app/components/ui/Spinner'
+import ScrollView from "@app/components/ui/ScrollView";
+import React, { useEffect, useState } from "react";
+import { Icon } from "@iconify/react";
+import Formatter from "@app/lib/formatter";
+import OrdersApi from "@app/services/invoices";
+import { IInvoice } from "@app/types/invoice";
 import {
   OrderReceiptDialog,
   OrderReceiptDialogProps,
-} from '@app/components/invoice/OrderReceiptDialog'
+} from "@app/components/invoice/OrderReceiptDialog";
 import Table, {
   TableBody,
   TableCell,
   TableHead,
   TableRow,
-} from '@app/components/ui/table/Table'
-import Pagination from '@app/components/ui/Pagination'
-import Input from '@app/components/ui/form/input'
-import { createLazyFileRoute } from '@tanstack/react-router'
+} from "@app/components/ui/table/Table";
+import Pagination from "@app/components/ui/Pagination";
+import Input from "@app/components/ui/form/input";
+import { createLazyFileRoute } from "@tanstack/react-router";
+import { useForm } from "@tanstack/react-form";
 
-export const Route = createLazyFileRoute('/invoices/')({
+export const Route = createLazyFileRoute("/invoices/")({
   component: RouteComponent,
-})
+});
 
 function RouteComponent() {
-  const form = useFormik({
-    initialValues: {
-      createdAt: ['', ''],
+  const form = useForm({
+    defaultValues: {
+      createdAt: ["", ""],
     },
-    onSubmit: paginate,
-  })
-  const [query, setQuery] = useState({ page: 1, limit: 20 })
+    onSubmit: ({ value }) =>
+      OrdersApi.paginate({ page: query.page, limit: query.limit }, value).then(
+        (res) => {
+          setResult(res);
+          setQuery({ page: res.page, limit: query.limit });
+        },
+      ),
+  });
+  const [query, setQuery] = useState({ page: 1, limit: 20 });
   const [result, setResult] = useState<{
-    pages: number
-    page: number
-    records: Array<IInvoice>
+    pages: number;
+    page: number;
+    records: Array<IInvoice>;
   }>({
     pages: 1,
     page: 0,
     records: [],
-  })
+  });
   const [oderDetailsDialog, setOderDetailsDialog] =
     useState<OrderReceiptDialogProps>({
       open: false,
-    })
+    });
 
-  function paginate(values: { [key: string]: unknown }) {
-    return OrdersApi.paginate(
-      { page: query.page, limit: query.limit },
-      values,
-    ).then((res) => {
-      setResult(res)
-      setQuery({ page: res.page, limit: query.limit })
-    })
-  }
   const handleOnDetails = (invoiceId: string, print: boolean = false) => {
     const w = window.open(
       import.meta.env.VITE_BASE_URL +
-        `/invoices/${invoiceId}/receipt?authorization=${localStorage.getItem('accessToken')}`,
-      '_blank',
-      'location=yes,height=600,width=350,scrollbars=yes,status=yes',
-    )
+        `/invoices/${invoiceId}/receipt?authorization=${localStorage.getItem("accessToken")}`,
+      "_blank",
+      "location=yes,height=600,width=350,scrollbars=yes,status=yes",
+    );
 
     if (w && print) {
       setTimeout(function () {
-        w.document.close()
-        w.focus()
-        w.print()
-        w.close()
-      }, 1000)
+        w.document.close();
+        w.focus();
+        w.print();
+        w.close();
+      }, 1000);
     }
-  }
+  };
 
   useEffect(() => {
     if (query.page != result.page) {
-      form.submitForm()
+      form.handleSubmit();
     }
-  }, [query])
+  }, [query]);
   return (
     <React.Fragment>
       <OrderReceiptDialog
@@ -92,36 +88,57 @@ function RouteComponent() {
           </div>
 
           <form
-            onSubmit={form.handleSubmit}
-            onReset={form.handleReset}
-            className="h-9"
+            onSubmit={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              form.handleSubmit();
+            }}
+            onReset={form.reset}
+            className="h-9 flex gap-3"
           >
-            <fieldset
-              className="flex gap-3 h-full"
-              disabled={form.isSubmitting}
+            <form.Field
+              name="createdAt[0]"
+              children={({ state, handleBlur, handleChange, name }) => (
+                <Input
+                  className="border rounded-xl px-3"
+                  placeholder="Date from"
+                  type="date"
+                  value={state.value}
+                  onChange={(e) => handleChange(e.target.value)}
+                  onBlur={handleBlur}
+                  name={name}
+                  error={state.meta.errors.join(" ")}
+                  touched={state.meta.isTouched}
+                />
+              )}
+            />
+
+            <form.Field
+              name="createdAt[1]"
+              children={({ state, handleBlur, handleChange, name }) => (
+                <Input
+                  className="border rounded-xl px-3"
+                  placeholder="Date to"
+                  type="date"
+                  value={state.value}
+                  onChange={(e) => handleChange(e.target.value)}
+                  onBlur={handleBlur}
+                  name={name}
+                  error={state.meta.errors.join(" ")}
+                  touched={state.meta.isTouched}
+                />
+              )}
+            />
+
+            <button className="rounded-xl px-3 bg-lime-500 text-white hover:opacity-50">
+              Search
+            </button>
+            <button
+              className="rounded-xl px-3 bg-gray-300 hover:opacity-50"
+              type="reset"
             >
-              <Input
-                className="border rounded-xl px-3"
-                placeholder="Date from"
-                type="date"
-                {...form.getFieldProps('createdAt.0')}
-              />
-              <Input
-                className="border rounded-xl px-3"
-                placeholder="Date to"
-                type="date"
-                {...form.getFieldProps('createdAt.1')}
-              />
-              <button className="rounded-xl px-3 bg-lime-500 text-white hover:opacity-50">
-                Search
-              </button>
-              <button
-                className="rounded-xl px-3 bg-gray-300 hover:opacity-50"
-                type="reset"
-              >
-                Reset
-              </button>
-            </fieldset>
+              Reset
+            </button>
           </form>
         </div>
 
@@ -178,12 +195,6 @@ function RouteComponent() {
               ))}
             </TableBody>
           </Table>
-
-          {form.isSubmitting && (
-            <div className="absolute top-0 left-0 w-full h-full p-10 flex items-center justify-center bg-white/10 backdrop-blur-sm">
-              <Spinner />
-            </div>
-          )}
         </ScrollView>
         <Pagination
           page={query.page}
@@ -192,5 +203,5 @@ function RouteComponent() {
         />
       </div>
     </React.Fragment>
-  )
+  );
 }

@@ -1,76 +1,72 @@
-import ScrollView from '@app/components/ui/ScrollView'
-import { useEffect, useState } from 'react'
-import { Icon } from '@iconify/react'
-import UsersFormDialog from '../../components/form-dialogs/UsersFormDialog'
-import { IUser } from '@app/types/user'
-import UsersApi from '@app/services/users'
-import { useFormik } from 'formik'
+import ScrollView from "@app/components/ui/ScrollView";
+import { useEffect, useState } from "react";
+import { Icon } from "@iconify/react";
+import UsersFormDialog from "../../components/form-dialogs/UsersFormDialog";
+import { IUser } from "@app/types/user";
+import UsersApi from "@app/services/users";
 import Table, {
   TableBody,
   TableCell,
   TableHead,
   TableRow,
-} from '@app/components/ui/table/Table'
-import Formatter from '@app/lib/formatter'
-import Pagination from '@app/components/ui/Pagination'
-import { createLazyFileRoute } from '@tanstack/react-router'
+} from "@app/components/ui/table/Table";
+import Formatter from "@app/lib/formatter";
+import Pagination from "@app/components/ui/Pagination";
+import { createLazyFileRoute } from "@tanstack/react-router";
+import { useForm } from "@tanstack/react-form";
 
-export const Route = createLazyFileRoute('/users/')({
+export const Route = createLazyFileRoute("/users/")({
   component: RouteComponent,
-})
+});
 
 export default function RouteComponent() {
-  const form = useFormik({
-    initialValues: {
-      createdAt: ['', ''],
+  const form = useForm({
+    defaultValues: {
+      createdAt: ["", ""],
     },
-    onSubmit: paginate,
-  })
-  const [query, setQuery] = useState({ page: 1, limit: 20 })
+    onSubmit: ({ value }) =>
+      UsersApi.paginate({ page: query.page, limit: query.limit }, value).then(
+        (res) => {
+          setResult(res);
+          setQuery({ page: res.page, limit: query.limit });
+        },
+      ),
+  });
+  const [query, setQuery] = useState({ page: 1, limit: 20 });
   const [result, setResult] = useState<{
-    pages: number
-    page: number
-    records: Array<IUser>
+    pages: number;
+    page: number;
+    records: Array<IUser>;
   }>({
     pages: 1,
     page: 0,
     records: [],
-  })
+  });
 
   const [userForm, setUserForm] = useState<{
-    open: boolean
-    user?: IUser
-  }>({ open: false })
-
-  function paginate(values: { [key: string]: unknown }) {
-    return UsersApi.paginate(
-      { page: query.page, limit: query.limit },
-      values,
-    ).then((res) => {
-      setResult(res)
-      setQuery({ page: res.page, limit: query.limit })
-    })
-  }
+    open: boolean;
+    user?: IUser;
+  }>({ open: false });
 
   const handleOnDelete = (product: IUser) => {
-    if (confirm('Are you sure?')) {
-      UsersApi.delete(product.id).then(form.submitForm)
+    if (confirm("Are you sure?")) {
+      UsersApi.delete(product.id).then(form.handleSubmit);
     }
-  }
+  };
 
   useEffect(() => {
     if (query.page != result.page) {
-      form.submitForm()
+      form.handleSubmit();
     }
-  }, [query])
+  }, [query]);
   return (
     <div className="h-full  p-4 grid grid-rows-[60px_1fr_35px] gap-5">
       <UsersFormDialog
         {...userForm}
         onReset={() => setUserForm({ open: false, user: undefined })}
         onSave={async () => {
-          setUserForm({ open: false, user: undefined })
-          form.submitForm()
+          setUserForm({ open: false, user: undefined });
+          form.handleSubmit();
         }}
       />
 
@@ -137,5 +133,5 @@ export default function RouteComponent() {
         onChange={(e) => setQuery({ ...query, ...e })}
       />
     </div>
-  )
+  );
 }

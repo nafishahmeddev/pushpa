@@ -1,15 +1,13 @@
-import { FieldMetaProps } from "formik";
 import { Icon } from "@iconify/react";
 
 export interface SelectProps extends React.ComponentProps<"select"> {
   label?: string;
   hint?: string;
-  meta?: FieldMetaProps<"select">;
+  error?: string;
+  touched?: boolean;
   containerProps?: React.ComponentProps<"div">;
 }
-export default function Select({ label, hint = "", meta, containerProps = {}, ...props }: SelectProps) {
-  const touched: boolean = meta?.touched ?? false;
-  const error: string = meta?.error ?? "";
+export default function Select({ label, hint = "", touched, error, containerProps = {}, ...props }: SelectProps) {
   props.id = props.id ?? `select-${Math.random() * 999999}-${Math.random() * 999999}-item`;
 
   return (

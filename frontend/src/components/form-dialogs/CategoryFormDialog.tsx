@@ -3,10 +3,11 @@ import Button from "@app/components/ui/form/button";
 import Input from "@app/components/ui/form/input";
 import CategoriesApi from "@app/services/categories";
 import { ICategory } from "@app/types/product";
+import { useForm } from "@tanstack/react-form";
 import { AxiosError } from "axios";
-import { useFormik } from "formik";
 import { useEffect } from "react";
 import toast from "react-hot-toast";
+import { z } from "zod";
 
 type CategoryFormProps = {
   open: boolean;
@@ -23,67 +24,92 @@ export default function CategoryFormDialog({
   onReset,
   onSave,
 }: CategoryFormProps) {
-  const formik = useFormik<ValueType>({
-    initialValues: {
+  const form = useForm<ValueType>({
+    defaultValues: {
       name: "",
     },
-    onSubmit: handleOnSubmit,
+    validators: {
+      onChange: z.object({
+        name: z.string().min(1, "Name is required"),
+      }) as never,
+    },
+    onSubmit: async function handleOnSubmit({ value, formApi }) {
+      const promise = category
+        ? CategoriesApi.update(category.id, value)
+        : CategoriesApi.create(value);
+      toast.promise(promise, {
+        success: "Successfully saved",
+        loading: "please wait...",
+        error: "Error while saving category.",
+      });
+      return promise
+        .then(() => {
+          formApi.reset();
+          onSave(value);
+        })
+        .catch((err: AxiosError<{ message: string }>) => {
+          if (err.response?.data) {
+            alert(err.response?.data.message);
+          } else {
+            alert(err.message);
+          }
+        });
+    },
   });
 
-  async function handleOnSubmit(values: ValueType) {
-    const promise = category
-      ? CategoriesApi.update(category.id, values)
-      : CategoriesApi.create(values);
-    toast.promise(promise, {
-      success: "Successfully saved",
-      loading: "please wait...",
-      error: "Error while saving category.",
-    });
-    return promise
-      .then(() => {
-        formik.resetForm();
-        onSave(values);
-      })
-      .catch((err: AxiosError<{ message: string }>) => {
-        if (err.response?.data) {
-          alert(err.response?.data.message);
-        } else {
-          alert(err.message);
-        }
-      });
-  }
   useEffect(() => {
     if (category) {
-      formik.setValues({
-        name: category.name,
-      });
+      form.setFieldValue("name", category.name);
     } else {
-      formik.resetForm();
+      form.reset();
     }
   }, [category]);
   return (
     <Dialog open={open} onClose={onReset}>
-      <form className="p-6" onSubmit={formik.handleSubmit}>
+      <form
+        className="p-6"
+        onSubmit={(e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          form.handleSubmit();
+        }}
+      >
         <h3 className="text-xl">{category ? "Update" : "Create"} Category</h3>
-        <fieldset disabled={formik.isSubmitting}>
-          <div className="flex flex-col gap-4 py-4">
-            <Input
-              type="text"
-              required
-              label="Name"
-              {...formik.getFieldProps("name")}
-            />
-          </div>
+        <div className="flex flex-col gap-4 py-4">
+          <form.Field
+            name="name"
+            children={({ state, handleBlur, handleChange, name }) => (
+              <Input
+                type="text"
+                label="Name"
+                value={state.value}
+                onChange={(e) => handleChange(e.target.value)}
+                onBlur={handleBlur}
+                name={name}
+                error={state.meta.errors.join(" ")}
+                touched={state.meta.isTouched}
+              />
+            )}
+          />
+        </div>
 
-          <div className="flex gap-2 justify-end">
-            <Button className=" bg-gray-300" onClick={onReset} type="button">
-              Cancel
-            </Button>
-            <Button className=" bg-lime-600 text-white" type="submit">
-              {category ? "Update" : "Create"}
-            </Button>
-          </div>
-        </fieldset>
+        <form.Subscribe
+          children={({ isSubmitting, canSubmit }) => (
+            <div className="flex gap-2 justify-end">
+              <Button className=" bg-gray-300" onClick={onReset} type="button">
+                Cancel
+              </Button>
+              <Button
+                className=" bg-lime-600 text-white"
+                type="submit"
+                disabled={!canSubmit}
+                loading={isSubmitting}
+              >
+                {category ? "Update" : "Create"}
+              </Button>
+            </div>
+          )}
+        />
       </form>
     </Dialog>
   );

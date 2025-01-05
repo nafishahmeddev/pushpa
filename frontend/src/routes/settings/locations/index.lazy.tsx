@@ -1,80 +1,80 @@
-import ScrollView from '@app/components/ui/ScrollView'
-import { useEffect, useState } from 'react'
-import { Icon } from '@iconify/react'
+import ScrollView from "@app/components/ui/ScrollView";
+import { useEffect, useState } from "react";
+import { Icon } from "@iconify/react";
 import Table, {
   TableCell,
   TableHead,
   TableRow,
-} from '@app/components/ui/table/Table'
-import { useFormik } from 'formik'
-import Pagination from '@app/components/ui/Pagination'
-import Input from '@app/components/ui/form/input'
-import { ILocation } from '@app/types/location'
-import LocationsApi from '@app/services/locations'
-import LocationFormDialog from '../../../components/form-dialogs/LocationFormDialog'
-import { createLazyFileRoute } from '@tanstack/react-router'
+} from "@app/components/ui/table/Table";
+import Pagination from "@app/components/ui/Pagination";
+import Input from "@app/components/ui/form/input";
+import { ILocation } from "@app/types/location";
+import LocationsApi from "@app/services/locations";
+import LocationFormDialog from "../../../components/form-dialogs/LocationFormDialog";
+import { createLazyFileRoute } from "@tanstack/react-router";
+import { useForm } from "@tanstack/react-form";
 
 type FormType = {
   filter: {
-    name: string
-  }
-  query: { page: number; limit: number }
-}
+    name: string;
+  };
+  query: { page: number; limit: number };
+};
 
-export const Route = createLazyFileRoute('/settings/locations/')({
+export const Route = createLazyFileRoute("/settings/locations/")({
   component: RouteComponent,
-})
+});
 
 export default function RouteComponent() {
   const [result, setResult] = useState<{
-    pages: number
-    page: number
-    records: Array<ILocation>
+    pages: number;
+    page: number;
+    records: Array<ILocation>;
   }>({
     pages: 1,
     page: 0,
     records: [],
-  })
-  const formik = useFormik<FormType>({
-    initialValues: {
+  });
+  const form = useForm<FormType>({
+    defaultValues: {
       filter: {
-        name: '',
+        name: "",
       },
       query: { page: 1, limit: 20 },
     },
-    onSubmit: async (values, helper) =>
+    onSubmit: async ({ value, formApi }) =>
       LocationsApi.paginate(
-        { page: values.query.page, limit: values.query.limit },
-        values.filter,
+        { page: value.query.page, limit: value.query.limit },
+        value.filter,
       ).then((res) => {
-        setResult(res)
-        helper.setFieldValue('query.page', res.page)
+        setResult(res);
+        formApi.setFieldValue("query.page", res.page);
       }),
-  })
+  });
 
-  const [locationForm, setTableForm] = useState<{
-    open: boolean
-    table?: ILocation
-  }>({ open: false })
+  const [locationForm, setLocationForm] = useState<{
+    open: boolean;
+    location?: ILocation;
+  }>({ open: false });
 
-  const handleOnDelete = (table: ILocation) => {
-    if (confirm('Are you sure?')) {
-      LocationsApi.delete(table.id).then(formik.submitForm)
+  const handleOnDelete = (location: ILocation) => {
+    if (confirm("Are you sure?")) {
+      LocationsApi.delete(location.id).then(form.handleSubmit);
     }
-  }
+  };
 
   useEffect(() => {
-    formik.submitForm()
-  }, [])
+    form.handleSubmit();
+  }, []);
 
   return (
     <div className="h-full p-4 grid grid-rows-[60px_1fr_35px] gap-5">
       <LocationFormDialog
         {...locationForm}
-        onReset={() => setTableForm({ open: false, table: undefined })}
+        onReset={() => setLocationForm({ open: false, location: undefined })}
         onSave={async () => {
-          setTableForm({ open: false, table: undefined })
-          formik.submitForm()
+          setLocationForm({ open: false, location: undefined });
+          form.handleSubmit();
         }}
       />
       <div className="py-4 flex gap-4 items-center h-full">
@@ -83,20 +83,34 @@ export default function RouteComponent() {
         </div>
         <div className="flex-1" />
         <form
-          onSubmit={formik.handleSubmit}
-          onReset={formik.handleReset}
+          onSubmit={(e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            form.handleSubmit();
+          }}
+          onReset={form.reset}
           className="h-9"
         >
           <fieldset
             className="flex gap-3 h-full"
-            disabled={formik.isSubmitting}
-            onBlur={() => formik.setFieldValue('query.page', 1)}
+            disabled={form.state.isSubmitting}
+            onBlur={() => form.setFieldValue("query.page", 1)}
           >
-            <Input
-              className="border rounded-xl px-3"
-              placeholder="Name"
-              type="text"
-              {...formik.getFieldProps('filter.name')}
+            <form.Field
+              name="filter.name"
+              children={({ state, handleBlur, handleChange, name }) => (
+                <Input
+                  className="border rounded-xl px-3"
+                  placeholder="Name"
+                  type="text"
+                  value={state.value}
+                  onChange={(e) => handleChange(e.target.value)}
+                  onBlur={handleBlur}
+                  name={name}
+                  error={state.meta.errors.join(" ")}
+                  touched={state.meta.isTouched}
+                />
+              )}
             />
 
             <button
@@ -114,7 +128,9 @@ export default function RouteComponent() {
             <button
               className="rounded-xl px-3 bg-gray-300 hover:opacity-50 flex items-center justify-center gap-0.5"
               type="button"
-              onClick={() => setTableForm({ open: true, table: undefined })}
+              onClick={() =>
+                setLocationForm({ open: true, location: undefined })
+              }
             >
               <Icon icon="ic:baseline-add" /> New
             </button>
@@ -134,21 +150,23 @@ export default function RouteComponent() {
             </TableRow>
           </TableHead>
           <tbody>
-            {result.records.map((table, index: number) => (
-              <TableRow key={`table-${table.id}`}>
+            {result.records.map((location, index: number) => (
+              <TableRow key={`location-${location.id}`}>
                 <TableCell>{index + 1}</TableCell>
-                <TableCell>{table.name}</TableCell>
+                <TableCell>{location.name}</TableCell>
                 <TableCell>
                   <div className="flex flex-nowrap gap-2 text-gray-600">
                     <button
-                      onClick={() => setTableForm({ table: table, open: true })}
+                      onClick={() =>
+                        setLocationForm({ location: location, open: true })
+                      }
                       className="hover:opacity-70"
                     >
                       <Icon icon="mynaui:edit" height={20} width={20} />
                     </button>
 
                     <button
-                      onClick={() => handleOnDelete(table)}
+                      onClick={() => handleOnDelete(location)}
                       className="hover:opacity-70 text-red-700"
                     >
                       <Icon icon="proicons:delete" height={20} width={20} />
@@ -160,13 +178,18 @@ export default function RouteComponent() {
           </tbody>
         </Table>
       </ScrollView>
-      <Pagination
-        page={formik.values.query.page}
-        pages={result.pages}
-        onChange={(e) => {
-          formik.setFieldValue('query.page', e.page).then(formik.submitForm)
-        }}
+      <form.Subscribe
+        children={({ values }) => (
+          <Pagination
+            page={values.query.page}
+            pages={result.pages}
+            onChange={(e) => {
+              form.setFieldValue("query.page", e.page);
+              form.handleSubmit();
+            }}
+          />
+        )}
       />
     </div>
-  )
+  );
 }

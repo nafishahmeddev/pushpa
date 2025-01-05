@@ -1,21 +1,20 @@
-import { FieldMetaProps } from "formik";
 import { Icon } from "@iconify/react";
 import { useState } from "react";
 export interface InputProps extends React.ComponentProps<"input"> {
   label?: string;
   hint?: string;
-  meta?: FieldMetaProps<"input">;
+  error?: string;
+  touched?: boolean;
   containerProps?: React.ComponentProps<"div">;
 }
 export default function Input({
   label,
   hint = "",
-  meta,
+  error = "",
+  touched = false,
   containerProps = {},
   ...props
 }: InputProps) {
-  const touched: boolean = meta?.touched ?? false;
-  const error: string = meta?.error ?? "";
   const [showPassword, setShowPassword] = useState(false);
 
   return (
