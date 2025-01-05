@@ -44,21 +44,18 @@ function RouteComponent() {
           <form.Field
             name="email"
             children={({ state, handleBlur, handleChange, name }) => (
-              <>
-                <Input
-                  type="email"
-                  placeholder="Please enter your email"
-                  label="Email"
-                  required
-                  value={state.value}
-                  onChange={(e) => handleChange(e.target.value)}
-                  onBlur={handleBlur}
-                  name={name}
-                  error={state.meta.errors.join(" ")}
-                  touched={state.meta.isTouched}
-                />
-                {JSON.stringify(state)}
-              </>
+              <Input
+                type="email"
+                placeholder="Please enter your email"
+                label="Email"
+                required
+                value={state.value}
+                onChange={(e) => handleChange(e.target.value)}
+                onBlur={handleBlur}
+                name={name}
+                error={state.meta.errors.join(" ")}
+                touched={state.meta.isTouched}
+              />
             )}
           />
 
