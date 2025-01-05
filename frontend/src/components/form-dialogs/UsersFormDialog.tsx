@@ -62,7 +62,11 @@ export default function UserForm({
 
   return (
     <Dialog open={open} onClose={onReset}>
-      <form className="p-6" onSubmit={form.handleSubmit}>
+      <form className="p-6" onSubmit={(e)=>{
+          e.preventDefault();
+          e.stopPropagation();
+          form.handleSubmit();
+      }}>
         <h3 className="text-xl">{user ? "Update" : "Create"} User</h3>
         <fieldset className="block w-full">
           <div className="flex flex-col gap-2 w-full py-4">
