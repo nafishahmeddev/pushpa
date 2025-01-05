@@ -1,4 +1,3 @@
-import ScrollView from "@app/components/ui/ScrollView";
 import { ITable } from "@app/types/table";
 import { useEffect, useState } from "react";
 import { Icon } from "@iconify/react";
@@ -13,6 +12,7 @@ import Input from "@app/components/ui/form/input";
 import TableFormDialog from "../../../components/form-dialogs/TableFormDialog";
 import { createLazyFileRoute } from "@tanstack/react-router";
 import { useForm } from "@tanstack/react-form";
+import Button from "@app/components/ui/form/button";
 
 type FormType = {
   filter: {
@@ -68,7 +68,7 @@ function RouteComponent() {
   }, []);
 
   return (
-    <div className="h-full p-4 grid grid-rows-[60px_1fr_35px] gap-5">
+    <div className=" p-4 flex flex-col gap-5">
       <TableFormDialog
         {...tableForm}
         onReset={() => setTableForm({ open: false, table: undefined })}
@@ -95,7 +95,6 @@ function RouteComponent() {
             name="filter.name"
             children={({ state, handleBlur, handleChange, name }) => (
               <Input
-                className="border rounded-xl px-3"
                 placeholder="Name"
                 type="text"
                 value={state.value}
@@ -108,28 +107,28 @@ function RouteComponent() {
             )}
           />
 
-          <button
-            className="rounded-xl px-3 bg-lime-500 text-white hover:opacity-50"
+          <Button
+            className="bg-lime-500 text-white"
             type="submit"
           >
             Search
-          </button>
-          <button
-            className="rounded-xl px-3 bg-gray-300 hover:opacity-50"
+          </Button>
+          <Button
+            className="bg-gray-300"
             type="reset"
           >
             Reset
-          </button>
-          <button
-            className="rounded-xl px-3 bg-gray-300 hover:opacity-50 flex items-center justify-center gap-0.5"
+          </Button>
+          <Button
+            className="bg-gray-300"
             type="button"
             onClick={() => setTableForm({ open: true, table: undefined })}
           >
             <Icon icon="ic:baseline-add" /> New
-          </button>
+          </Button>
         </form>
       </div>
-      <ScrollView className="h-full bg-white border rounded-xl overflow-hidden">
+      <div className="bg-white border rounded-xl overflow-hidden">
         <Table bordered>
           <TableHead>
             <TableRow
@@ -173,7 +172,7 @@ function RouteComponent() {
             ))}
           </tbody>
         </Table>
-      </ScrollView>
+      </div>
       <form.Subscribe
         children={({ values }) => (
           <Pagination

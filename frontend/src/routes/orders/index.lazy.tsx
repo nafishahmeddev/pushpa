@@ -1,4 +1,3 @@
-import ScrollView from "@app/components/ui/ScrollView";
 import React, { useEffect, useState } from "react";
 import { Icon } from "@iconify/react";
 import Formatter from "@app/lib/formatter";
@@ -18,6 +17,7 @@ import Input from "@app/components/ui/form/input";
 import { IOrder, OrderStatus } from "@app/types/orders";
 import { createLazyFileRoute, Link } from "@tanstack/react-router";
 import { useForm } from "@tanstack/react-form";
+import Button from "@app/components/ui/form/button";
 
 export const Route = createLazyFileRoute("/orders/")({
   component: RouteComponent,
@@ -108,7 +108,7 @@ function RouteComponent() {
         {...oderDetailsDialog}
         onClose={() => setOderDetailsDialog({ open: false })}
       />
-      <div className="h-full  p-4 grid grid-rows-[55px_1fr_35px] gap-6">
+      <div className=" p-4 flex flex-col gap-5">
         <div className=" flex gap-4 items-center">
           <div className="flex-1 flex flex-col items-start justify-center">
             <h2 className="text-2xl">Orders</h2>
@@ -127,7 +127,6 @@ function RouteComponent() {
               name="createdAt[0]"
               children={({ state, handleBlur, handleChange, name }) => (
                 <Input
-                  className="border rounded-xl px-3"
                   placeholder="Date from"
                   type="date"
                   value={state.value}
@@ -144,7 +143,6 @@ function RouteComponent() {
               name="createdAt[1]"
               children={({ state, handleBlur, handleChange, name }) => (
                 <Input
-                  className="border rounded-xl px-3"
                   placeholder="Date to"
                   type="date"
                   value={state.value}
@@ -156,19 +154,14 @@ function RouteComponent() {
                 />
               )}
             />
-            <button className="rounded-xl px-3 bg-lime-500 text-white hover:opacity-50">
-              Search
-            </button>
-            <button
-              className="rounded-xl px-3 bg-gray-300 hover:opacity-50"
-              type="reset"
-            >
+            <Button className="bg-lime-500 text-white">Search</Button>
+            <Button className="bg-gray-300" type="reset">
               Reset
-            </button>
+            </Button>
           </form>
         </div>
 
-        <ScrollView className="h-full bg-white border rounded-xl overflow-hidden relative">
+        <div className="bg-white border rounded-xl overflow-hidden relative">
           <Table bordered>
             <TableHead>
               <TableRow className="sticky top-0 left-0 z-10" header>
@@ -237,7 +230,7 @@ function RouteComponent() {
                         <>
                           {order.kotList?.map((e) => (
                             <button
-                              className="inline-flex mx-0.5 bg-lime-600 rounded-lg h-5 px-1 min-w-5 items-center justify-center text-white text-xs"
+                              className="inline-flex mx-0.5 bg-lime-600 rounded-md h-5 px-1 min-w-5 items-center justify-center text-white text-xs"
                               key={e.id}
                             >
                               {e.tokenNo}
@@ -254,7 +247,7 @@ function RouteComponent() {
               })}
             </TableBody>
           </Table>
-        </ScrollView>
+        </div>
         <Pagination
           page={query.page}
           pages={result.pages}

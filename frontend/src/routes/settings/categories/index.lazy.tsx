@@ -1,4 +1,3 @@
-import ScrollView from '@app/components/ui/ScrollView'
 import CategoriesApi from '@app/services/categories'
 import { ICategory } from '@app/types/product'
 import { useEffect, useState } from 'react'
@@ -11,6 +10,7 @@ import Table, {
   TableRow,
 } from '@app/components/ui/table/Table'
 import { createLazyFileRoute } from '@tanstack/react-router'
+import Button from '@app/components/ui/form/button'
 export const Route = createLazyFileRoute('/settings/categories/')({
   component: RouteComponent,
 })
@@ -33,7 +33,7 @@ function RouteComponent() {
     refresh()
   }, [])
   return (
-    <div className="h-full  p-4 grid grid-rows-[60px_1fr] gap-5">
+    <div className=" p-4 flex flex-col gap-5">
       <CategoryFormDialog
         {...categoryForm}
         onReset={() => setCategoryForm({ category: undefined, open: false })}
@@ -45,14 +45,14 @@ function RouteComponent() {
 
       <div className="py-4 flex gap-4 items-center">
         <h2 className="text-2xl">Categories</h2>
-        <button
-          className="border px-2 py-1 rounded-xl bg-gray-50"
+        <Button
+          className="bg-gray-200"
           onClick={() => setCategoryForm({ open: true, category: undefined })}
         >
           + New
-        </button>
+        </Button>
       </div>
-      <ScrollView className="h-full bg-white border rounded-xl overflow-hidden">
+      <div className="bg-white border rounded-xl overflow-hidden">
         <Table bordered>
           <TableHead>
             <TableRow className="sticky top-0 left-0 bg-gray-100">
@@ -89,7 +89,7 @@ function RouteComponent() {
             ))}
           </TableBody>
         </Table>
-      </ScrollView>
+      </div>
     </div>
   )
 }

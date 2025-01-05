@@ -1,4 +1,3 @@
-import ScrollView from "@app/components/ui/ScrollView";
 import { useEffect, useState } from "react";
 import { Icon } from "@iconify/react";
 import Table, {
@@ -13,6 +12,7 @@ import LocationsApi from "@app/services/locations";
 import LocationFormDialog from "../../../components/form-dialogs/LocationFormDialog";
 import { createLazyFileRoute } from "@tanstack/react-router";
 import { useForm } from "@tanstack/react-form";
+import Button from "@app/components/ui/form/button";
 
 type FormType = {
   filter: {
@@ -68,7 +68,7 @@ export default function RouteComponent() {
   }, []);
 
   return (
-    <div className="h-full p-4 grid grid-rows-[60px_1fr_35px] gap-5">
+    <div className=" p-4 flex flex-col gap-5">
       <LocationFormDialog
         {...locationForm}
         onReset={() => setLocationForm({ open: false, location: undefined })}
@@ -100,7 +100,6 @@ export default function RouteComponent() {
               name="filter.name"
               children={({ state, handleBlur, handleChange, name }) => (
                 <Input
-                  className="border rounded-xl px-3"
                   placeholder="Name"
                   type="text"
                   value={state.value}
@@ -113,31 +112,25 @@ export default function RouteComponent() {
               )}
             />
 
-            <button
-              className="rounded-xl px-3 bg-lime-500 text-white hover:opacity-50"
-              type="submit"
-            >
+            <Button className="bg-lime-500 text-white" type="submit">
               Search
-            </button>
-            <button
-              className="rounded-xl px-3 bg-gray-300 hover:opacity-50"
-              type="reset"
-            >
+            </Button>
+            <Button className="bg-gray-300" type="reset">
               Reset
-            </button>
-            <button
-              className="rounded-xl px-3 bg-gray-300 hover:opacity-50 flex items-center justify-center gap-0.5"
+            </Button>
+            <Button
+              className="bg-gray-300"
               type="button"
               onClick={() =>
                 setLocationForm({ open: true, location: undefined })
               }
             >
               <Icon icon="ic:baseline-add" /> New
-            </button>
+            </Button>
           </fieldset>
         </form>
       </div>
-      <ScrollView className="h-full bg-white border rounded-xl overflow-hidden">
+      <div className="bg-white border rounded-xl overflow-hidden">
         <Table bordered>
           <TableHead>
             <TableRow
@@ -177,7 +170,7 @@ export default function RouteComponent() {
             ))}
           </tbody>
         </Table>
-      </ScrollView>
+      </div>
       <form.Subscribe
         children={({ values }) => (
           <Pagination

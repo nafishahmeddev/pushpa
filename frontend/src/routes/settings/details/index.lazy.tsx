@@ -2,7 +2,6 @@ import Button from "@app/components/ui/form/button";
 import Input from "@app/components/ui/form/input";
 import Select from "@app/components/ui/form/select";
 import Textarea from "@app/components/ui/form/textarea";
-import ScrollView from "@app/components/ui/ScrollView";
 import AccountApi from "@app/services/account";
 import { AuthStateLoggedIn, useAuthStore } from "@app/store/auth";
 import { IRestaurant } from "@app/types/restaurant";
@@ -34,13 +33,12 @@ function RouteComponent() {
         form.handleSubmit();
       }}
     >
-      <div className="grid grid-rows-[auto_1fr] gap-5 h-full bg-white overflow-auto">
+      <div className="flex flex-col gap-5 bg-white overflow-auto">
         <div className="flex gap-3 items-center px-6 pt-6">
           <h2 className="text-2xl">Store details</h2>
         </div>
 
         <div className="h-full overflow-auto">
-          <ScrollView>
             <div className="flex flex-col gap-5 px-6 pb-6">
               <form.Field
                 name="name"
@@ -158,7 +156,6 @@ function RouteComponent() {
                 )}
               />
             </div>
-          </ScrollView>
         </div>
       </div>
 

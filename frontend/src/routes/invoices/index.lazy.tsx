@@ -1,4 +1,3 @@
-import ScrollView from "@app/components/ui/ScrollView";
 import React, { useEffect, useState } from "react";
 import { Icon } from "@iconify/react";
 import Formatter from "@app/lib/formatter";
@@ -81,11 +80,10 @@ function RouteComponent() {
         {...oderDetailsDialog}
         onClose={() => setOderDetailsDialog({ open: false })}
       />
-      <div className="h-full  p-4 grid grid-rows-[55px_1fr_35px] gap-6">
+      <div className=" p-4 flex flex-col gap-5">
         <div className=" flex gap-4 items-center">
           <div className="flex-1 flex flex-col items-start justify-center">
             <h2 className="text-2xl">Invoices</h2>
-            <p>Showing Invoices for Today</p>
           </div>
 
           <form
@@ -101,7 +99,6 @@ function RouteComponent() {
               name="createdAt[0]"
               children={({ state, handleBlur, handleChange, name }) => (
                 <Input
-                  className="border rounded-xl px-3"
                   placeholder="Date from"
                   type="date"
                   value={state.value}
@@ -118,7 +115,6 @@ function RouteComponent() {
               name="createdAt[1]"
               children={({ state, handleBlur, handleChange, name }) => (
                 <Input
-                  className="border rounded-xl px-3"
                   placeholder="Date to"
                   type="date"
                   value={state.value}
@@ -131,19 +127,14 @@ function RouteComponent() {
               )}
             />
 
-            <Button className="rounded-xl px-3 bg-lime-500 text-white hover:opacity-50">
-              Search
-            </Button>
-            <Button
-              className="rounded-xl px-3 bg-gray-300 hover:opacity-50"
-              type="reset"
-            >
+            <Button className="bg-lime-500 text-white">Search</Button>
+            <Button className="bg-gray-300" type="reset">
               Reset
             </Button>
           </form>
         </div>
 
-        <ScrollView className="h-full bg-white border rounded-xl overflow-hidden relative">
+        <div className="bg-white border rounded-xl overflow-hidden relative">
           <Table bordered>
             <TableHead>
               <TableRow className="sticky top-0 left-0 z-10" header>
@@ -158,11 +149,11 @@ function RouteComponent() {
             <TableBody>
               {result.records.map((invoice, index: number) => (
                 <TableRow key={`product-${invoice.id}`}>
-                  <TableCell className="px-3 py-2 w-0">
+                  <TableCell className="w-0">
                     {(query.page - 1) * query.limit + index + 1}
                   </TableCell>
-                  <TableCell className="px-0 py-2 w-0 sticky left-0 bg-white">
-                    <div className="inline-flex flex-nowrap gap-2 text-gray-600 px-2">
+                  <TableCell className="w-0 sticky left-0 bg-white">
+                    <div className="inline-flex flex-nowrap gap-2 text-gray-600 items-center h-full align-middle">
                       <button
                         className={`hover:opacity-50`}
                         onClick={() => handleOnDetails(invoice.id)}
@@ -186,17 +177,17 @@ function RouteComponent() {
                   <TableCell className="text-nowrap">
                     {Formatter.datetime(invoice.createdAt)}
                   </TableCell>
-                  <TableCell className="text-end">
+                  <TableCell className="text-end font-mono">
                     {Formatter.money(invoice.tax)}
                   </TableCell>
-                  <TableCell className="text-end">
+                  <TableCell className="text-end font-mono">
                     {Formatter.money(invoice.amount)}
                   </TableCell>
                 </TableRow>
               ))}
             </TableBody>
           </Table>
-        </ScrollView>
+        </div>
         <Pagination
           page={query.page}
           pages={result.pages}

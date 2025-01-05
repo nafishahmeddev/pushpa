@@ -23,7 +23,7 @@ export function TableRow({
   const tableTheme = useContext(TableContext);
   const classNames = [props.className];
   if (tableTheme.bordered) {
-    classNames.push("border-b border-dashed");
+    classNames.push("border-b");
   }
   if (header) {
     classNames.push("bg-gray-100");

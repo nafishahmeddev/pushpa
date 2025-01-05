@@ -1,4 +1,3 @@
-import ScrollView from "@app/components/ui/ScrollView";
 import { useEffect, useState } from "react";
 import { Icon } from "@iconify/react";
 import UsersFormDialog from "../../components/form-dialogs/UsersFormDialog";
@@ -14,6 +13,7 @@ import Formatter from "@app/lib/formatter";
 import Pagination from "@app/components/ui/Pagination";
 import { createLazyFileRoute } from "@tanstack/react-router";
 import { useForm } from "@tanstack/react-form";
+import Button from "@app/components/ui/form/button";
 
 export const Route = createLazyFileRoute("/users/")({
   component: RouteComponent,
@@ -60,7 +60,7 @@ export default function RouteComponent() {
     }
   }, [query]);
   return (
-    <div className="h-full  p-4 grid grid-rows-[60px_1fr_35px] gap-5">
+    <div className=" p-4 flex flex-col gap-5">
       <UsersFormDialog
         {...userForm}
         onReset={() => setUserForm({ open: false, user: undefined })}
@@ -72,15 +72,15 @@ export default function RouteComponent() {
 
       <div className="py-4 flex gap-4 items-center h-full">
         <h2 className="text-2xl">Users</h2>
-        <button
-          className="border px-2 py-1 rounded-xl bg-gray-50"
+        <Button
+          className=" bg-gray-300"
           onClick={() => setUserForm({ open: true, user: undefined })}
         >
           + New
-        </button>
+        </Button>
       </div>
 
-      <ScrollView className="h-full bg-white border rounded-xl overflow-hidden">
+      <div className="h-full bg-white border rounded-xl overflow-hidden">
         <Table bordered>
           <TableHead>
             <TableRow
@@ -126,7 +126,7 @@ export default function RouteComponent() {
             ))}
           </TableBody>
         </Table>
-      </ScrollView>
+      </div>
       <Pagination
         page={query.page}
         pages={result.pages}
