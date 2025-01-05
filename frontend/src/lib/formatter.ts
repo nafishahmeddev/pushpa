@@ -20,7 +20,7 @@ export default class Formatter {
         return "INR";
     }
     static money(amount: number, currency?: string) {
-        const formatter = new Intl.NumberFormat("en-IN", {
+        const formatter = new Intl.NumberFormat("en-GB", {
             style: "currency",
             currency: currency ?? Formatter.currency(),
         });
