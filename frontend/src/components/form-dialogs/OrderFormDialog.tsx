@@ -52,12 +52,13 @@ export default function OrderFormDialog({
     TablesApi.all().then((res) => {
       setTables(res);
     });
-    form.reset();
     if (order) {
       form.setFieldValue("tableId", order.tableId);
       form.setFieldValue("type", order.type);
+    } else {
+      form.reset();
     }
-  }, [order]);
+  }, [order, open]);
 
   return (
     <Dialog open={open} onClose={onReset}>
@@ -113,7 +114,7 @@ export default function OrderFormDialog({
               >
                 <option></option>
                 {tables.map((table) => (
-                  <option key={table.id} value={table.id}>
+                  <option key={table.id} value={table.id} selected={state.value == table.id}>
                     {table.name}
                   </option>
                 ))}

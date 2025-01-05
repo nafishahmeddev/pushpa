@@ -50,15 +50,16 @@ export default function UserForm({
   });
 
   useEffect(() => {
-    form.reset();
     if (user) {
       form.setFieldValue("name", user.name);
       form.setFieldValue("email", user.email);
       form.setFieldValue("phone", user.phone);
       form.setFieldValue("designation", user.designation);
       form.setFieldValue("password", "");
+    } else {
+      form.reset();
     }
-  }, [user]);
+  }, [user, open]);
 
   return (
     <Dialog open={open} onClose={onReset}>

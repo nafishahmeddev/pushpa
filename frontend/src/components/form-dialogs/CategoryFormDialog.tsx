@@ -57,7 +57,7 @@ export default function CategoryFormDialog({
     } else {
       form.reset();
     }
-  }, [category]);
+  }, [category, open]);
   return (
     <Dialog open={open} onClose={onReset}>
       <form

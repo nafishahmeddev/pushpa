@@ -53,14 +53,15 @@ export default function TableFormDialog({
 
   useEffect(() => {
     LocationsApi.all().then(setLocations);
-    form.reset();
     if (table) {
       form.setFieldValue("name", table.name);
       form.setFieldValue("capacity", table.capacity);
       form.setFieldValue("status", table.status);
       form.setFieldValue("locationId", table.locationId);
+    } else {
+      form.reset();
     }
-  }, [table]);
+  }, [table, open]);
 
   return (
     <Dialog open={open} onClose={() => onReset()}>

@@ -56,17 +56,17 @@ export default function ProductFormDialog({
   });
 
   useEffect(() => {
-    form.reset();
     if (product) {
-      form.reset();
       form.setFieldValue("name", product.name);
       form.setFieldValue("categoryId", product.categoryId);
       form.setFieldValue("description", product.description);
       form.setFieldValue("tax", product.tax);
       form.setFieldValue("netPrice", product.netPrice);
       form.setFieldValue("price", product.price);
+    } else {
+      form.reset();
     }
-  }, [product]);
+  }, [product, open]);
 
   useEffect(() => {
     CategoriesApi.all().then(setCategories);

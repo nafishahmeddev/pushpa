@@ -43,11 +43,12 @@ export default function LocationFormDialog({
   });
 
   useEffect(() => {
-    form.reset();
     if (location) {
       form.setFieldValue("name", location.name);
+    } else {
+      form.reset();
     }
-  }, [location]);
+  }, [location, open]);
 
   return (
     <Dialog open={open} onClose={() => onReset()}>
