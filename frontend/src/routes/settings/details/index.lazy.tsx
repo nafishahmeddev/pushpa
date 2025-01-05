@@ -19,9 +19,11 @@ function RouteComponent() {
   const form = useForm({
     defaultValues: auth.user.restaurant as IRestaurant,
     onSubmit: async ({ value }) =>
-      AccountApi.updateRestaurant(value).catch((err) =>
-        toast.error(err.message),
-      ),
+      AccountApi.updateRestaurant(value)
+        .then(() => {
+          toast.success("Restaurant details has been updated..");
+        })
+        .catch((err) => toast.error(err.message)),
   });
   return (
     <form
@@ -161,7 +163,7 @@ function RouteComponent() {
       </div>
 
       <div className="flex items-center justify-center p-10">
-        <img src="/scene.png" className="w-full"/>
+        <img src="/scene.png" className="w-full" />
       </div>
     </form>
   );
