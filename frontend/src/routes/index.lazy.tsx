@@ -29,7 +29,7 @@ function RouteComponent() {
     fetchStats()
   }, [])
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 p-4 py-6 bg-white">
+    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 p-4 py-6 ">
       <div className="border bg-white rounded-2xl h-60 flex flex-col gap-2 w-full row-span-2 py-6">
         <p className="px-5 font-bold">Top Selling Items</p>
         <div className="px-5 flex-1 ">
