@@ -10,9 +10,9 @@ export default function Button({
 }: ButtonProps) {
   if (props.onClick && ask) {
     const oldClick = props.onClick;
-    props.onClick = (...seg) => {
+    props.onClick = (...args) => {
       if (confirm(typeof ask == "string" ? ask : "Are you sure?")) {
-        oldClick(...seg);
+        oldClick(...args);
       }
     };
   }
