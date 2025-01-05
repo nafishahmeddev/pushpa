@@ -22,6 +22,7 @@ import TablesRouter from "@app/routes/tables";
 import DashboardRouter from "@app/routes/dashboard";
 import LocationsRouter from "@app/routes/locations";
 import OrdersRouter from "@app/routes/orders";
+import AccountRouter from "./routes/account";
 
 const app: Application = express();
 const port = process.env.PORT || 3000;
@@ -40,10 +41,10 @@ app.locals.moment = moment;
 
 
 async function main() {
-  consola.info("[DB]","Booting the database")
+  consola.info("[DB]", "Booting the database")
   await sequelize.sync({ alter: true });
 
-  consola.info("[HTTP]","Attaching the routers")
+  consola.info("[HTTP]", "Attaching the routers")
   app.use("/api/v1/menu", AuthMiddleware, MenuRouter);
   app.use("/api/v1/dashboard", AuthMiddleware, DashboardRouter);
   app.use("/api/v1/invoices", AuthMiddleware, InvoicesRouter);
@@ -53,15 +54,17 @@ async function main() {
   app.use("/api/v1/users", AuthMiddleware, UsersRouter);
   app.use("/api/v1/locations", AuthMiddleware, LocationsRouter);
   app.use("/api/v1/tables", AuthMiddleware, TablesRouter);
+  app.use("/api/v1/account", AuthMiddleware, AccountRouter);
   app.use("/api/v1/auth", AuthRouter);
+
 
   //frontend route
   app.use(express.static(path.resolve(process.env.FRONTEND_PATH || "")))
   app.use("*", express.static(path.resolve(path.join(process.env.FRONTEND_PATH || "", "index.html"))))
 
   //start the server
-  consola.info("[HTTP]","Starting http server")
-  app.listen({port: port, hostname:"localhost"}, () => {
+  consola.info("[HTTP]", "Starting http server")
+  app.listen({ port: port, hostname: "localhost" }, () => {
     consola.info("[HTTP]", `Server is running on ${port}`);
   });
 }

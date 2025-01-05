@@ -17,7 +17,7 @@ export default function RouteComponent() {
 
   useEffect(() => {
     if (pathname == '/settings') {
-      navigate({ to: '/settings/categories' })
+      navigate({ to: '/settings/details' })
     }
   }, [pathname])
   return (
@@ -25,6 +25,11 @@ export default function RouteComponent() {
       <div className="bg-white border-e w-[200px]">
         <SideMenuList
           items={[
+            {
+              label: 'Details',
+              icon: 'solar:info-square-linear',
+              route: '/settings/details',
+            },
             {
               label: 'Categories',
               icon: 'clarity:file-group-line',

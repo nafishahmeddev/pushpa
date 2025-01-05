@@ -30,6 +30,7 @@ const SettingsProductsIndexLazyImport = createFileRoute('/settings/products/')()
 const SettingsLocationsIndexLazyImport = createFileRoute(
   '/settings/locations/',
 )()
+const SettingsDetailsIndexLazyImport = createFileRoute('/settings/details/')()
 const SettingsCategoriesIndexLazyImport = createFileRoute(
   '/settings/categories/',
 )()
@@ -118,6 +119,14 @@ const SettingsLocationsIndexLazyRoute = SettingsLocationsIndexLazyImport.update(
   import('./routes/settings/locations/index.lazy').then((d) => d.Route),
 )
 
+const SettingsDetailsIndexLazyRoute = SettingsDetailsIndexLazyImport.update({
+  id: '/details/',
+  path: '/details/',
+  getParentRoute: () => SettingsLazyRoute,
+} as any).lazy(() =>
+  import('./routes/settings/details/index.lazy').then((d) => d.Route),
+)
+
 const SettingsCategoriesIndexLazyRoute =
   SettingsCategoriesIndexLazyImport.update({
     id: '/categories/',
@@ -201,6 +210,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SettingsCategoriesIndexLazyImport
       parentRoute: typeof SettingsLazyImport
     }
+    '/settings/details/': {
+      id: '/settings/details/'
+      path: '/details'
+      fullPath: '/settings/details'
+      preLoaderRoute: typeof SettingsDetailsIndexLazyImport
+      parentRoute: typeof SettingsLazyImport
+    }
     '/settings/locations/': {
       id: '/settings/locations/'
       path: '/locations'
@@ -242,6 +258,7 @@ const PosLazyRouteWithChildren =
 
 interface SettingsLazyRouteChildren {
   SettingsCategoriesIndexLazyRoute: typeof SettingsCategoriesIndexLazyRoute
+  SettingsDetailsIndexLazyRoute: typeof SettingsDetailsIndexLazyRoute
   SettingsLocationsIndexLazyRoute: typeof SettingsLocationsIndexLazyRoute
   SettingsProductsIndexLazyRoute: typeof SettingsProductsIndexLazyRoute
   SettingsTablesIndexLazyRoute: typeof SettingsTablesIndexLazyRoute
@@ -249,6 +266,7 @@ interface SettingsLazyRouteChildren {
 
 const SettingsLazyRouteChildren: SettingsLazyRouteChildren = {
   SettingsCategoriesIndexLazyRoute: SettingsCategoriesIndexLazyRoute,
+  SettingsDetailsIndexLazyRoute: SettingsDetailsIndexLazyRoute,
   SettingsLocationsIndexLazyRoute: SettingsLocationsIndexLazyRoute,
   SettingsProductsIndexLazyRoute: SettingsProductsIndexLazyRoute,
   SettingsTablesIndexLazyRoute: SettingsTablesIndexLazyRoute,
@@ -269,6 +287,7 @@ export interface FileRoutesByFullPath {
   '/pos/': typeof PosIndexLazyRoute
   '/users': typeof UsersIndexLazyRoute
   '/settings/categories': typeof SettingsCategoriesIndexLazyRoute
+  '/settings/details': typeof SettingsDetailsIndexLazyRoute
   '/settings/locations': typeof SettingsLocationsIndexLazyRoute
   '/settings/products': typeof SettingsProductsIndexLazyRoute
   '/settings/tables': typeof SettingsTablesIndexLazyRoute
@@ -284,6 +303,7 @@ export interface FileRoutesByTo {
   '/pos': typeof PosIndexLazyRoute
   '/users': typeof UsersIndexLazyRoute
   '/settings/categories': typeof SettingsCategoriesIndexLazyRoute
+  '/settings/details': typeof SettingsDetailsIndexLazyRoute
   '/settings/locations': typeof SettingsLocationsIndexLazyRoute
   '/settings/products': typeof SettingsProductsIndexLazyRoute
   '/settings/tables': typeof SettingsTablesIndexLazyRoute
@@ -301,6 +321,7 @@ export interface FileRoutesById {
   '/pos/': typeof PosIndexLazyRoute
   '/users/': typeof UsersIndexLazyRoute
   '/settings/categories/': typeof SettingsCategoriesIndexLazyRoute
+  '/settings/details/': typeof SettingsDetailsIndexLazyRoute
   '/settings/locations/': typeof SettingsLocationsIndexLazyRoute
   '/settings/products/': typeof SettingsProductsIndexLazyRoute
   '/settings/tables/': typeof SettingsTablesIndexLazyRoute
@@ -319,6 +340,7 @@ export interface FileRouteTypes {
     | '/pos/'
     | '/users'
     | '/settings/categories'
+    | '/settings/details'
     | '/settings/locations'
     | '/settings/products'
     | '/settings/tables'
@@ -333,6 +355,7 @@ export interface FileRouteTypes {
     | '/pos'
     | '/users'
     | '/settings/categories'
+    | '/settings/details'
     | '/settings/locations'
     | '/settings/products'
     | '/settings/tables'
@@ -348,6 +371,7 @@ export interface FileRouteTypes {
     | '/pos/'
     | '/users/'
     | '/settings/categories/'
+    | '/settings/details/'
     | '/settings/locations/'
     | '/settings/products/'
     | '/settings/tables/'
@@ -407,6 +431,7 @@ export const routeTree = rootRoute
       "filePath": "settings.lazy.tsx",
       "children": [
         "/settings/categories/",
+        "/settings/details/",
         "/settings/locations/",
         "/settings/products/",
         "/settings/tables/"
@@ -434,6 +459,10 @@ export const routeTree = rootRoute
     },
     "/settings/categories/": {
       "filePath": "settings/categories/index.lazy.tsx",
+      "parent": "/settings"
+    },
+    "/settings/details/": {
+      "filePath": "settings/details/index.lazy.tsx",
       "parent": "/settings"
     },
     "/settings/locations/": {
