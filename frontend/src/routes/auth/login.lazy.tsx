@@ -6,8 +6,6 @@ import { createLazyFileRoute, useNavigate } from "@tanstack/react-router";
 import { useForm } from "@tanstack/react-form";
 import { useEffect } from "react";
 import toast from "react-hot-toast";
-import { z } from "zod";
-
 export const Route = createLazyFileRoute("/auth/login")({
   component: RouteComponent,
 });
@@ -15,10 +13,6 @@ export const Route = createLazyFileRoute("/auth/login")({
 function RouteComponent() {
   const navigate = useNavigate();
   const [auth] = useAuthStore<AuthState>();
-  const schema = z.object({
-    email: z.string().email("Please enter valid email"),
-    pass: z.string().min(3, "Please enter valid password"),
-  });
   const form = useForm({
     defaultValues: {
       email: "",
@@ -27,9 +21,6 @@ function RouteComponent() {
     onSubmit: ({ value }) => {
       const promise = AuthApi.login(value);
       return promise.catch((err) => toast.error(err.message));
-    },
-    validators: {
-      onChange: schema as never,
     },
   });
 
@@ -53,18 +44,21 @@ function RouteComponent() {
           <form.Field
             name="email"
             children={({ state, handleBlur, handleChange, name }) => (
-              <Input
-                type="email"
-                placeholder="Please enter your email"
-                required
-                label="Email"
-                defaultValue={state.value}
-                onChange={(e) => handleChange(e.target.value)}
-                onBlur={handleBlur}
-                name={name}
-                error={state.meta.errors.join(" ")}
-                touched={state.meta.isTouched}
-              />
+              <>
+                <Input
+                  type="email"
+                  placeholder="Please enter your email"
+                  label="Email"
+                  required
+                  value={state.value}
+                  onChange={(e) => handleChange(e.target.value)}
+                  onBlur={handleBlur}
+                  name={name}
+                  error={state.meta.errors.join(" ")}
+                  touched={state.meta.isTouched}
+                />
+                {JSON.stringify(state)}
+              </>
             )}
           />
 
@@ -74,9 +68,9 @@ function RouteComponent() {
               <Input
                 type="password"
                 placeholder="Please enter your password"
-                required
                 label="Password"
-                defaultValue={state.value}
+                required
+                value={state.value}
                 onChange={(e) => handleChange(e.target.value)}
                 onBlur={handleBlur}
                 name={name}

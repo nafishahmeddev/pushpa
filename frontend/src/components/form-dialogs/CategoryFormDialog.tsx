@@ -7,7 +7,6 @@ import { useForm } from "@tanstack/react-form";
 import { AxiosError } from "axios";
 import { useEffect } from "react";
 import toast from "react-hot-toast";
-import { z } from "zod";
 
 type CategoryFormProps = {
   open: boolean;
@@ -27,11 +26,6 @@ export default function CategoryFormDialog({
   const form = useForm<ValueType>({
     defaultValues: {
       name: "",
-    },
-    validators: {
-      onChange: z.object({
-        name: z.string().min(1, "Name is required"),
-      }) as never,
     },
     onSubmit: async function handleOnSubmit({ value, formApi }) {
       const promise = category
@@ -82,6 +76,7 @@ export default function CategoryFormDialog({
               <Input
                 type="text"
                 label="Name"
+                required
                 value={state.value}
                 onChange={(e) => handleChange(e.target.value)}
                 onBlur={handleBlur}

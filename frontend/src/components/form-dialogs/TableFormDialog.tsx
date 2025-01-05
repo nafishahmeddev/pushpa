@@ -9,7 +9,6 @@ import { ITable } from "@app/types/table";
 import { useForm } from "@tanstack/react-form";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
-import { z } from "zod";
 
 type TableFormProps = {
   open: boolean;
@@ -36,11 +35,6 @@ export default function TableFormDialog({
       capacity: 0,
       status: "Available",
       locationId: "",
-    },
-    validators: {
-      onChange: z.object({
-        capacity: z.number().min(1, "Capacity is required"),
-      }) as never,
     },
     onSubmit: async ({ value, formApi }) => {
       const promise = table

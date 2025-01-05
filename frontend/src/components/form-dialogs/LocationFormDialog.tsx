@@ -6,7 +6,6 @@ import { ILocation } from "@app/types/location";
 import { useForm } from "@tanstack/react-form";
 import { useEffect } from "react";
 import toast from "react-hot-toast";
-import { z } from "zod";
 
 type TableFormProps = {
   open: boolean;
@@ -26,11 +25,6 @@ export default function LocationFormDialog({
   const form = useForm<ValueType>({
     defaultValues: {
       name: "",
-    },
-    validators: {
-      onChange: z.object({
-        name: z.string().min(1, "Name is required"),
-      }) as never,
     },
     onSubmit: async function ({ value }) {
       const promise = location
