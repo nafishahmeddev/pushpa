@@ -24,7 +24,7 @@ const store = new Store<AuthState>({
     loading: true
 });
 export default class AuthStore {
-    static state = store.state;
+    static get state() { return store.state };
     static login = (payload: AuthStateLoggedIn) => store.setState(() => (payload));
     static update = (payload: { [key: string]: unknown }) => store.setState((state) => ({ ...state, ...payload }));
     static logout = () => store.setState(() => ({ loggedIn: false, loading: false }));
