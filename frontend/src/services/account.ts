@@ -1,5 +1,5 @@
 import { ApiRequest } from "@app/lib/axios"
-import AuthStore from "@app/store/auth";
+import AuthStore, { AuthStateLoggedIn } from "@app/store/auth";
 import { IRestaurant } from "@app/types/restaurant";
 export default class AccountApi {
     static updateRestaurant = (data: { [key: string]: string }) => {
@@ -8,8 +8,11 @@ export default class AccountApi {
             const response = res.data.result as {
                 restaurant: IRestaurant
             }
-
-            AuthStore.update({ restaurant: response.restaurant })
+            console.log(response);
+            AuthStore.update({ user: {
+                ...AuthStore.getState<AuthStateLoggedIn>().user,
+                ...response,
+            } })
             return response;
         })
     }

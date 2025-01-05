@@ -4,16 +4,16 @@ import moment from "moment";
 
 
 export default class Formatter {
-    static get country(): string {
-        const auth = AuthStore.state as AuthStateLoggedIn;
+    static country(): string {
+        const auth = AuthStore.getState<AuthStateLoggedIn>();
         if (auth.loggedIn && auth.user.restaurant?.country) {
             return auth.user.restaurant?.country as CountryCode;
         }
         return "IN";
     }
 
-    static get currency(): string {
-        const auth = AuthStore.state as AuthStateLoggedIn;
+    static currency(): string {
+        const auth = AuthStore.getState<AuthStateLoggedIn>();
         if (auth.loggedIn && auth.user.restaurant?.country) {
             return auth.user.restaurant?.currency;
         }
@@ -22,7 +22,7 @@ export default class Formatter {
     static money(amount: number, currency?: string) {
         const formatter = new Intl.NumberFormat("en-IN", {
             style: "currency",
-            currency: currency ?? Formatter.currency,
+            currency: currency ?? Formatter.currency(),
         });
         return formatter.format(amount);
     }
@@ -41,11 +41,7 @@ export default class Formatter {
 
     static phone(number: string, country: CountryCode = "IN"): string {
         try {
-            const auth = AuthStore.state as AuthStateLoggedIn;
-            if (auth.loggedIn && auth.user.restaurant?.country) {
-                country = auth.user.restaurant?.country as CountryCode;
-            }
-            const parsed = parsePhoneNumberWithError(number, country);
+            const parsed = parsePhoneNumberWithError(number, country ?? Formatter.country());
             const formatted = parsed.format("INTERNATIONAL");
             return formatted;
         } catch {
