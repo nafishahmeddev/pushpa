@@ -30,7 +30,7 @@ export default function OrderFormDialog({
   const [tables, setTables] = useState<Array<ITable>>([]);
   const form = useForm<ValueType>({
     defaultValues: {
-      tableId: "",
+      tableId: undefined,
       type: "Takeaway",
     },
     onSubmit: async ({ value }) => {
@@ -81,7 +81,7 @@ export default function OrderFormDialog({
                 onChange={(e) => {
                   handleChange(e.target.value);
                   if (e.target.value == "Takeaway") {
-                    form.setFieldValue("tableId", "");
+                    form.setFieldValue("tableId", undefined);
                   }
                 }}
                 onBlur={handleBlur}
