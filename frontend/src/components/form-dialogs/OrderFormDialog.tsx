@@ -96,7 +96,10 @@ export default function OrderFormDialog({
           />
           <form.Field
             name="tableId"
-            children={({ state, handleBlur, handleChange, name }) => (
+            validators={{
+              onChangeListenTo: ["type"],
+            }}
+            children={({ state, handleBlur, handleChange, name, form }) => (
               <Select
                 label="Table"
                 value={state.value}
