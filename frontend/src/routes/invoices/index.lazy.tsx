@@ -18,6 +18,7 @@ import Pagination from "@app/components/ui/Pagination";
 import Input from "@app/components/ui/form/input";
 import { createLazyFileRoute } from "@tanstack/react-router";
 import { useForm } from "@tanstack/react-form";
+import Button from "@app/components/ui/form/button";
 
 export const Route = createLazyFileRoute("/invoices/")({
   component: RouteComponent,
@@ -130,15 +131,15 @@ function RouteComponent() {
               )}
             />
 
-            <button className="rounded-xl px-3 bg-lime-500 text-white hover:opacity-50">
+            <Button className="rounded-xl px-3 bg-lime-500 text-white hover:opacity-50">
               Search
-            </button>
-            <button
+            </Button>
+            <Button
               className="rounded-xl px-3 bg-gray-300 hover:opacity-50"
               type="reset"
             >
               Reset
-            </button>
+            </Button>
           </form>
         </div>
 
