@@ -70,7 +70,7 @@ export default function UserForm({
       }}>
         <h3 className="text-xl">{user ? "Update" : "Create"} User</h3>
         <fieldset className="block w-full">
-          <div className="flex flex-col gap-2 w-full py-4">
+          <div className="flex flex-col gap-4 w-full py-4">
             <form.Field
               name="name"
               children={({ state, handleBlur, handleChange, name }) => (
