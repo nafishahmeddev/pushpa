@@ -32,7 +32,7 @@ OrdersRouter.post("/paginate", async (req: IRequest, res: IResponse) => {
         limit: limit,
         offset: (page - 1) * limit,
         where: where,
-        include: [{model: Table, as:"table"}, {model: User, as:"user"}]
+        include: [{ model: Table, as: "table" }, { model: User, as: "user" }]
     });
 
     const kots = await Kot.findAll({ where: { orderId: paginatedOrders.rows.map(e => e.id) } });
@@ -112,6 +112,23 @@ OrdersRouter.get("/:orderId", async (req: IRequest, res: IResponse) => {
 OrdersRouter.post("/", async (req: IRequest, res: IResponse) => {
     const type: OrderType = req.body.type;
     const tableId: string | undefined = req.body.tableId;
+
+
+    if (type == OrderType.DineIn) {
+        const order = await Order.findOne({
+            where: {
+                status: [OrderStatus.Draft, OrderStatus.Ongoing],
+                tableId: tableId
+            }
+        });
+
+        if (order) {
+            res.status(400).json({
+                message: "An order already exist for same table."
+            });
+        }
+    }
+
     const transaction = await sequelize.transaction();
     try {
         const order = await Order.create({
