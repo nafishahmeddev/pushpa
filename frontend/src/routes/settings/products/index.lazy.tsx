@@ -107,16 +107,10 @@ function RouteComponent() {
               />
             )}
           />
-          <Button
-            className="bg-lime-500 text-white"
-            type="submit"
-          >
+          <Button className="bg-lime-500 text-white" type="submit">
             Search
           </Button>
-          <Button
-            className="bg-gray-300"
-            type="reset"
-          >
+          <Button className="bg-gray-300" type="reset">
             Reset
           </Button>
           <Button
@@ -137,7 +131,6 @@ function RouteComponent() {
             >
               <TableCell className="w-0">#</TableCell>
               <TableCell>Name</TableCell>
-              <TableCell>Description</TableCell>
               <TableCell>Category</TableCell>
               <TableCell className="w-0 text-nowrap">Net Price</TableCell>
               <TableCell className="w-0">Tax</TableCell>
@@ -149,9 +142,15 @@ function RouteComponent() {
             {result.records.map((product, index: number) => (
               <TableRow key={`product-${product.id}`}>
                 <TableCell>{index + 1}</TableCell>
-                <TableCell>{product.name}</TableCell>
-                <TableCell>{product.description}</TableCell>
-                <TableCell>{product.category?.name}</TableCell>
+                <TableCell>
+                  {product.name}
+                  <br />
+                  <small className="text-gray-600">{product.description}</small>
+                </TableCell>
+
+                <TableCell className="text-nowrap">
+                  {product.category?.name}
+                </TableCell>
                 <TableCell className="font-mono">
                   {Formatter.money(product.netPrice)}
                 </TableCell>
