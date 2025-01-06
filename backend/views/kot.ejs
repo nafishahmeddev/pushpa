@@ -5,29 +5,33 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap"
         rel="stylesheet">
-    <title>Order: #<%= kot.receiptNo %>
+    <title>Token: #<%= kot.tokenNo %>
     </title>
     <style>
+        *{
+            margin: 0;
+            padding: 0
+        }
         :root {
             font-family: "Nunito", sans-serif;
             box-sizing: border-box;
-            font-size: 14px;
+            font-size: 12px;
+         
         }
-
         table {
             border-collapse: collapse;
         }
 
         th {
-            padding: 8px 5px;
+            padding: 5px 2px;
             text-align: left;
-            font-size: 12px;
+            font-size: 10px;
         }
 
         td {
-            padding: 3px 5px;
+            padding: 2px 2px;
             text-align: left;
-            font-size: 12px;
+            font-size: 10px;
         }
 
         th:nth-child(1),
@@ -45,14 +49,11 @@
 </head>
 
 <body>
-    <div style="padding:15px">
+    <div style="padding:5px">
         <div style="text-align: center;">
             <h3 style="margin:0;">
                 <%= kot.restaurant.name %>
             </h3>
-            <p style="margin:0;  margin-top: 10px">
-                <%= kot.restaurant.address %>
-            </p>
         </div>
         <table style="font-weight: bold; width: 100%; margin-top: 15px; ">
             <tr>
@@ -67,7 +68,7 @@
                 <thead>
                     <tr style="border-bottom: 1px dashed #000; border-top: 1px dashed #000;">
                         <th>Description</th>
-                        <th style="text-align: right;">Quantity</th>
+                        <th style="text-align: right;"></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -80,15 +81,15 @@
                                 <%= item?.product?.name %>
                             </td>
                             <td style="text-align: right; width: 0;">
-                                <%= item.quantity %>
+                                x<%= item.quantity %>
                             </td>
                         </tr>
                     <%}%>
                 </tbody>
             </table>
-            <div style="margin: 20px 0;border-top: 1px dashed #000; "></div>
+            <div style="margin: 8px 0;border-top: 1px dashed #000; "></div>
 
-            <div style="text-align: center; font-weight: bold; font-size: 20px;">
+            <div style="text-align: center; font-weight: bold; font-size: 14px;">
                 Token No: #<%= kot.tokenNo %>
             </div>
         </div>

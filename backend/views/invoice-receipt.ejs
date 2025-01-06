@@ -8,15 +8,16 @@
     <title>Order: #<%= invoice.receiptNo %>
     </title>
     <style>
-        *{
+        * {
             margin: 0;
             padding: 0
         }
+
         :root {
             font-family: "Nunito", sans-serif;
             box-sizing: border-box;
             font-size: 12px;
-         
+
         }
 
         body,
@@ -62,8 +63,9 @@
             <h3 style="margin:0;">
                 <%= invoice.restaurant.name %>
             </h3>
-            <p style="margin:0;  margin-top: 3px">
-                <%= invoice.restaurant.address %>
+            <p style="margin:0;  margin-top: 0px">
+                <%= invoice.restaurant.address %><br />
+                    Mob: <%= invoice.restaurant.phone %>
             </p>
         </div>
         <table style="font-weight: bold; width: 100%; margin-top: 8px; ">
@@ -109,7 +111,7 @@
             <div style="margin: 10px 0;border-top: 1px dashed #000; "></div>
 
             <table style="width: 100%; font-weight: bold;">
-                <tr>
+                <!-- <tr>
                     <td>Subtotal(excl. Tax):</td>
                     <td style="text-align: right;">
                         <%= formatter.format((invoice.amount -( invoice.tax)))%>
@@ -121,7 +123,7 @@
                     <td style="text-align: right;">
                         <%= formatter.format(invoice.tax)%>
                     </td>
-                </tr>
+                </tr> -->
 
                 <tr>
                     <td>Total:</td>
