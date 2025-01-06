@@ -3,18 +3,23 @@
 <head>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap" rel="stylesheet">
-    <title>Order: #<%= invoice.receiptNo %></title>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap"
+        rel="stylesheet">
+    <title>Order: #<%= invoice.receiptNo %>
+    </title>
     <style>
         :root {
             font-family: "Nunito", sans-serif;
             box-sizing: border-box;
-            font-size: 14px;
+            font-size: 13px;
         }
-body, html{
-    margin: 0;
-    padding: 0;
-}
+
+        body,
+        html {
+            margin: 0;
+            padding: 0;
+        }
+
         table {
             border-collapse: collapse;
         }
@@ -41,10 +46,8 @@ body, html{
             margin: 0;
         }
     </style>
-    <% 
-    const formatter=new Intl.NumberFormat("en-IN", { style: "currency" , currency: invoice.restaurant.currency || "INR" }); 
-    const moment=locals.moment; 
-    %>
+    <% const formatter=new Intl.NumberFormat("en-IN", { style: "currency" , currency: invoice.restaurant.currency
+        || "INR" }); const moment=locals.moment; %>
 </head>
 
 <body>
@@ -53,11 +56,11 @@ body, html{
             <h3 style="margin:0;">
                 <%= invoice.restaurant.name %>
             </h3>
-            <p style="margin:0;  margin-top: 10px">
+            <p style="margin:0;  margin-top: 3px">
                 <%= invoice.restaurant.address %>
             </p>
         </div>
-        <table style="font-weight: bold; width: 100%; margin-top: 15px; ">
+        <table style="font-weight: bold; width: 100%; margin-top: 8px; ">
             <tr>
                 <td>Receipt No: #<%= invoice.receiptNo %>
                 </td>
@@ -97,7 +100,7 @@ body, html{
                 </tbody>
             </table>
 
-            <div style="margin: 20px 0;border-top: 1px dashed #000; "></div>
+            <div style="margin: 10px 0;border-top: 1px dashed #000; "></div>
 
             <table style="width: 100%; font-weight: bold;">
                 <tr>
@@ -122,12 +125,12 @@ body, html{
                 </tr>
             </table>
         </div>
-        <div style="margin: 20px 0; text-align: center;">
+        <div style="margin: 8px 0; text-align: center;">
             <span>
                 Kot: <%= order.kotList.map(kot=>kot.tokenNo).join(",") %>
             </span>
         </div>
-        <div style="margin: 20px 0; text-align: center;">
+        <div style="margin: 8px 0; text-align: center;">
             <span>
                 ☺ Thank you visit again!
             </span>
