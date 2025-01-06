@@ -11,19 +11,22 @@
             box-sizing: border-box;
             font-size: 14px;
         }
-
+body, html{
+    margin: 0;
+    padding: 0;
+}
         table {
             border-collapse: collapse;
         }
 
         th {
-            padding: 8px 5px;
+            padding: 5px 2px;
             text-align: left;
             font-size: 12px;
         }
 
         td {
-            padding: 3px 5px;
+            padding: 2px 2px;
             text-align: left;
             font-size: 12px;
         }
@@ -67,8 +70,7 @@
                 <thead>
                     <tr style="border-bottom: 1px dashed #000; border-top: 1px dashed #000;">
                         <th>Description</th>
-                        <th style="text-align: right;">Price</th>
-                        <th style="text-align: right;">Qtd.</th>
+                        <th style="text-align: right;"></th>
                         <th style="text-align: right;">Total</th>
                     </tr>
                 </thead>
@@ -83,11 +85,8 @@
                                     <%= item.name %>
                                 </td>
 
-                                <td style="text-align: right; width: 0;">
-                                    <%= item.price %>
-                                </td>
-                                <td style="text-align: right; width: 0;">
-                                    <%= item.quantity %>
+                                <td style="text-align: right; width: 0; white-space: nowrap;">
+                                    <%= item.price %> x <%= item.quantity %>
                                 </td>
                                 <td style="text-align: right; width: 0;">
                                     <%= item.amount %>
