@@ -8,10 +8,15 @@
     <title>Order: #<%= invoice.receiptNo %>
     </title>
     <style>
+        *{
+            margin: 0;
+            padding: 0
+        }
         :root {
             font-family: "Nunito", sans-serif;
             box-sizing: border-box;
-            font-size: 13px;
+            font-size: 12px;
+         
         }
 
         body,
@@ -36,6 +41,7 @@
             font-size: 10px;
         }
 
+
         th:nth-child(1),
         td:nth-child(1) {
             padding-left: 0;
@@ -51,7 +57,7 @@
 </head>
 
 <body>
-    <div style="padding:15px">
+    <div style="padding:0px">
         <div style="text-align: center;">
             <h3 style="margin:0;">
                 <%= invoice.restaurant.name %>
