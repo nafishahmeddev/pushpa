@@ -199,12 +199,16 @@ export default function RouteComponent() {
     return list;
   };
 
-  if(isLoading){
-    return <div className="col-span-2"><PendingComponent/></div>
+  if (isLoading) {
+    return (
+      <div className="col-span-2">
+        <PendingComponent />
+      </div>
+    );
   }
 
-  if(error){
-    return <div className="col-span-2">{error.message}</div>
+  if (error) {
+    return <div className="col-span-2">{error.message}</div>;
   }
 
   return (
