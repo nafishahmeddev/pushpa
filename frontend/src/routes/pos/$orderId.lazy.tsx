@@ -1,197 +1,211 @@
-import Formatter from '@app/lib/formatter'
-import React, { useEffect, useState } from 'react'
+import Formatter from "@app/lib/formatter";
+import React, { useState } from "react";
 
-import OrdersApi from '@app/services/orders'
-import CartUtil from '@app/lib/cart-util'
-import MenuList from '@app/components/menu/MenuList'
-import ScrollView from '@app/components/ui/ScrollView'
-import { beep } from '@app/lib/notify'
-import { Icon } from '@iconify/react'
-import Button from '@app/components/ui/form/button'
-import { IInvoice } from '@app/types/invoice'
-import toast from 'react-hot-toast'
-import { ICartItem } from '@app/types/cart'
+import OrdersApi from "@app/services/orders";
+import CartUtil from "@app/lib/cart-util";
+import MenuList from "@app/components/menu/MenuList";
+import ScrollView from "@app/components/ui/ScrollView";
+import { beep } from "@app/lib/notify";
+import { Icon } from "@iconify/react";
+import Button from "@app/components/ui/form/button";
+import { IInvoice } from "@app/types/invoice";
+import toast from "react-hot-toast";
+import { ICartItem } from "@app/types/cart";
 import {
   IKot,
   IOrder,
   IOrderItem,
   OrderItemStatus,
   OrderStatus,
-} from '@app/types/orders'
-import { cloneDeep } from 'lodash'
-import { createLazyFileRoute } from '@tanstack/react-router'
-import QuantityButton from '@app/components/QuantityButton'
-export const Route = createLazyFileRoute('/pos/$orderId')({
+} from "@app/types/orders";
+import { cloneDeep } from "lodash";
+import { createLazyFileRoute } from "@tanstack/react-router";
+import QuantityButton from "@app/components/QuantityButton";
+import { useQuery } from "@tanstack/react-query";
+import PendingComponent from "@app/components/PendingComponent";
+export const Route = createLazyFileRoute("/pos/$orderId")({
   component: RouteComponent,
-})
+});
 export default function RouteComponent() {
-  const [loading, setLoading] = useState(false)
-  const { orderId } = Route.useParams()
-  const navigate = Route.useNavigate()
-  const [order, setOrder] = useState<IOrder>()
-  const [placedItems, setPlacedItems] = useState<Array<IOrderItem>>([])
-  const [items, setItems] = useState<Array<ICartItem>>([])
+  const [loading, setLoading] = useState(false);
+  const { orderId } = Route.useParams();
+  const navigate = Route.useNavigate();
+  const [placedItems, setPlacedItems] = useState<Array<IOrderItem>>([]);
+  const [items, setItems] = useState<Array<ICartItem>>([]);
+
+  const {
+    data: order,
+    isLoading,
+    error,
+    refetch,
+  } = useQuery<IOrder>({
+    queryKey: ["order", orderId],
+    queryFn: () =>
+      OrdersApi.getOrder(orderId).then((res) => {
+        setItems((res.items ?? []).filter((e) => !e.kotId));
+        setPlacedItems((res.items ?? []).filter((e) => !!e.kotId));
+        return res;
+      }),
+  });
 
   const cartUtil = new CartUtil([
     ...items,
     ...placedItems.filter((e) => e.status != OrderItemStatus.Cancelled),
-  ])
+  ]);
 
-  const init = () =>
-    OrdersApi.getOrder(orderId as string).then((res) => {
-      setOrder(res)
-      setItems((res.items ?? []).filter((e) => !e.kotId))
-      setPlacedItems((res.items ?? []).filter((e) => !!e.kotId))
-    })
   const onModify = async (item: ICartItem, increment: boolean = false) => {
-    const _items = cloneDeep(items)
-    const itm = _items.find((e) => e.productId == item.productId)
+    const _items = cloneDeep(items);
+    const itm = _items.find((e) => e.productId == item.productId);
     item.quantity = increment
       ? (itm?.quantity ?? 0) + item.quantity
-      : item.quantity
-    const _toast = toast.loading('Please wait..')
+      : item.quantity;
+    const _toast = toast.loading("Please wait..");
     OrdersApi.modifyItem(orderId as string, item)
       .then(() => {
-        beep()
+        beep();
         if (_items.some((i) => i.productId == item.productId)) {
           _items.map((itm) => {
             if (itm.productId == item.productId) {
-              itm.quantity = item.quantity
+              itm.quantity = item.quantity;
             }
-            return itm
-          })
+            return itm;
+          });
         } else {
-          _items.push(item)
+          _items.push(item);
         }
-        setItems(_items)
+        setItems(_items);
       })
       .finally(() => {
-        toast.dismiss(_toast)
-      })
-  }
+        toast.dismiss(_toast);
+      });
+  };
 
   const onCancelItem = async (item: IOrderItem) =>
     OrdersApi.cancelItem(orderId as string, item.id).then(() => {
-      beep()
+      beep();
       setPlacedItems((items) => {
         return items.map((_item) => {
           if (_item.id == item.id) {
-            _item.status = OrderItemStatus.Cancelled
+            _item.status = OrderItemStatus.Cancelled;
           }
-          return _item
-        })
-      })
-    })
+          return _item;
+        });
+      });
+    });
 
   const onDeleteItem = async (item: ICartItem) =>
     OrdersApi.deleteItem(orderId as string, item.productId).then(() => {
       setItems((_items: Array<ICartItem>) => {
-        return _items.filter((e) => e.productId != item.productId)
-      })
-      beep()
-    })
+        return _items.filter((e) => e.productId != item.productId);
+      });
+      beep();
+    });
 
   const onCancel = () => {
     const promise = OrdersApi.cancelOrder(orderId as string).then(() => {
-      navigate({ to: '/pos' })
-    })
+      navigate({ to: "/pos" });
+    });
     toast.promise(promise, {
-      loading: 'please wait..',
-      success: 'Order cancelled',
+      loading: "please wait..",
+      success: "Order cancelled",
       error: (err) => err.message,
-    })
-    return promise
-  }
+    });
+    return promise;
+  };
 
   const onDelete = () => {
     const promise = OrdersApi.deleteOrder(orderId as string).then(() => {
-      navigate({ to: '/pos' })
-    })
+      navigate({ to: "/pos" });
+    });
     toast.promise(promise, {
-      loading: 'please wait..',
-      success: 'Order cancelled',
+      loading: "please wait..",
+      success: "Order cancelled",
       error: (err) => err.message,
-    })
-    return promise
-  }
+    });
+    return promise;
+  };
 
   const onPlaceOrder = () => {
-    setLoading(true)
+    setLoading(true);
     const promise = OrdersApi.completeOrder(orderId as string)
       .then((invoice: IInvoice) => {
         const w = window.open(
           import.meta.env.VITE_BASE_URL +
-            `/invoices/${invoice.id}/receipt?authorization=${localStorage.getItem('accessToken')}`,
-          '_blank',
-          'location=yes,height=600,width=350,scrollbars=yes,status=yes',
-        )
+            `/invoices/${invoice.id}/receipt?authorization=${localStorage.getItem("accessToken")}`,
+          "_blank",
+          "location=yes,height=600,width=350,scrollbars=yes,status=yes",
+        );
         if (w) {
           setTimeout(function () {
-            w.document.close()
-            w.focus()
-            w.print()
-            w.close()
-          }, 1000)
+            w.document.close();
+            w.focus();
+            w.print();
+            w.close();
+          }, 1000);
         }
-        navigate({ to: '/pos' })
+        navigate({ to: "/pos" });
       })
       .finally(() => {
-        setLoading(false)
-      })
+        setLoading(false);
+      });
     toast.promise(promise, {
-      loading: 'Please wait',
-      success: 'Order placed',
-      error: 'Error while placing order',
-    })
-  }
+      loading: "Please wait",
+      success: "Order placed",
+      error: "Error while placing order",
+    });
+  };
 
   const printKot = (kot: IKot) => {
     const w = window.open(
       import.meta.env.VITE_BASE_URL +
-        `/orders/${orderId}/kots/${kot.id}/print?authorization=${localStorage.getItem('accessToken')}`,
-      '_blank',
-      'location=yes,height=600,width=350,scrollbars=yes,status=yes',
-    )
+        `/orders/${orderId}/kots/${kot.id}/print?authorization=${localStorage.getItem("accessToken")}`,
+      "_blank",
+      "location=yes,height=600,width=350,scrollbars=yes,status=yes",
+    );
     if (w) {
       setTimeout(function () {
-        w.document.close()
-        w.focus()
-        w.print()
-        w.close()
-      }, 1000)
+        w.document.close();
+        w.focus();
+        w.print();
+        w.close();
+      }, 1000);
     }
-  }
+  };
 
   const onCreateKot = () => {
-    setLoading(true)
+    setLoading(true);
     const promise = OrdersApi.createKot(orderId as string)
       .then((kot: IKot) => {
-        printKot(kot)
-        init()
+        printKot(kot);
+        refetch();
       })
       .finally(() => {
-        setLoading(false)
-      })
+        setLoading(false);
+      });
     toast.promise(promise, {
-      loading: 'Please wait',
-      success: 'Order placed',
-      error: 'Error while placing order',
-    })
-  }
+      loading: "Please wait",
+      success: "Order placed",
+      error: "Error while placing order",
+    });
+  };
 
   const getKots = () => {
     const list = (order?.kotList ?? [])
-      .map((kot) => {
-        kot.items = placedItems.filter((item) => item.kotId == kot.id)
-        return kot
+      .map((kot: IKot) => {
+        kot.items = placedItems.filter((item) => item.kotId == kot.id);
+        return kot;
       })
-      .sort((a, b) => (a.tokenNo < b.tokenNo ? -1 : 0))
-    return list
+      .sort((a: IKot, b: IKot) => (a.tokenNo < b.tokenNo ? -1 : 0));
+    return list;
+  };
+
+  if(isLoading){
+    return <div className="col-span-2"><PendingComponent/></div>
   }
 
-  useEffect(() => {
-    init()
-  }, [orderId, navigate])
+  if(error){
+    return <div className="col-span-2">{error.message}</div>
+  }
 
   return (
     <React.Fragment>
@@ -240,7 +254,7 @@ export default function RouteComponent() {
             onClick={onCreateKot}
             disabled={items.length == 0 || loading}
           >
-            <Icon icon="hugeicons:kitchen-utensils" height={18} width={18} />{' '}
+            <Icon icon="hugeicons:kitchen-utensils" height={18} width={18} />{" "}
             Send to kitchen
           </Button>
           <Button
@@ -284,7 +298,7 @@ export default function RouteComponent() {
                   </tr>
                   {(kot.items ?? []).map((item, index) => (
                     <tr
-                      className={`border-b border-dashed ${item.status == OrderItemStatus.Cancelled ? 'bg-red-50 line-through text-gray-500' : ''}`}
+                      className={`border-b border-dashed ${item.status == OrderItemStatus.Cancelled ? "bg-red-50 line-through text-gray-500" : ""}`}
                       key={`item-${index}`}
                     >
                       <td className="px-2 py-1 text-start">
@@ -295,7 +309,7 @@ export default function RouteComponent() {
                       </td>
                       <td className="px-4 py-0.5 text-center w-0 text-nowrap">
                         <div
-                          className={`grid grid-cols-[20px_30px_20px] gap-[4px] justify-center items-center ${loading ? 'animate-pulse' : ''}`}
+                          className={`grid grid-cols-[20px_30px_20px] gap-[4px] justify-center items-center ${loading ? "animate-pulse" : ""}`}
                         >
                           <div></div>
                           <input
@@ -376,5 +390,5 @@ export default function RouteComponent() {
         </div>
       </div>
     </React.Fragment>
-  )
+  );
 }
