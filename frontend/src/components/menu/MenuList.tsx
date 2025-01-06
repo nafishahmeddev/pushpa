@@ -65,7 +65,7 @@ export default function MenuList({ onItemPress, ...props }: MenuListProps) {
                     onClick={() => !itemPressLoading && handleOnItemPress(product)}
                   >
                     <div className="px-1 py-1 ps-2 flex-1">{product.name}</div>
-                    <div className="px-1 py-1 text-end font-mono pe-2">{Formatter.money(product.price)}</div>
+                    <div className="px-1 py-1 text-end font-mono pe-2 text-lime-700">{Formatter.money(product.price)}</div>
                   </div>
                 ))}
               </div>
