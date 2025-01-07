@@ -34,6 +34,7 @@ ProductCategory.belongsTo(Restaurant, {
 ProductCategory.hasMany(Product, {
   foreignKey: "categoryId",
   as: "products",
+  onDelete: "CASCADE"
 });
 
 //
@@ -41,7 +42,7 @@ Product.belongsTo(ProductCategory, {
   targetKey: "id",
   foreignKey: "categoryId",
   as: "category",
-  onDelete:"CASCADE"
+  onDelete: "CASCADE"
 });
 
 //location
@@ -54,6 +55,7 @@ Location.belongsTo(Restaurant, {
 Location.hasMany(Table, {
   foreignKey: "locationId",
   as: "tables",
+  onDelete: "CASCADE"
 });
 
 //table
@@ -61,7 +63,7 @@ Table.belongsTo(Location, {
   targetKey: "id",
   foreignKey: "locationId",
   as: "location",
-  onDelete:"CASCADE"
+  onDelete: "CASCADE"
 });
 
 //Order
@@ -93,8 +95,8 @@ Order.hasMany(OrderItem, {
 });
 
 Order.hasMany(Kot, {
-  foreignKey:"orderId",
-  as:"kotList"
+  foreignKey: "orderId",
+  as: "kotList"
 })
 
 Kot.belongsTo(Restaurant, {
