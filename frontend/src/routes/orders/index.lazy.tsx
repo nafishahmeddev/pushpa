@@ -172,7 +172,9 @@ function RouteComponent() {
                 <TableCell>Type</TableCell>
                 <TableCell>Table</TableCell>
                 <TableCell>User</TableCell>
+              
                 <TableCell className="text-end w-0">Kot</TableCell>
+                <TableCell className="w-0 text-end">Discount</TableCell>
                 <TableCell className="text-end w-0">Created</TableCell>
               </TableRow>
             </TableHead>
@@ -225,6 +227,7 @@ function RouteComponent() {
                     <TableCell className="text-nowrap">
                       {order.user?.name}
                     </TableCell>
+
                     <TableCell className="text-nowrap text-end">
                       {order.status != OrderStatus.Cancelled && (
                         <>
@@ -238,6 +241,10 @@ function RouteComponent() {
                           ))}
                         </>
                       )}
+                    </TableCell>
+
+                    <TableCell className="text-nowrap font-mono text-end">
+                      {Formatter.money(order.discount)}
                     </TableCell>
                     <TableCell className="text-nowrap">
                       {Formatter.datetime(order.createdAt)}

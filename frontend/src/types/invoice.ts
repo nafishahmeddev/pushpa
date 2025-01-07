@@ -2,7 +2,9 @@ export type IInvoice = {
     id: string,
     receiptNo:number,
     amount: number,
+    subTotal: number,
     tax: number,
+    discount: number,
     items?: Array<IInvoiceItem>
     createdAt: Date,
     updatedAt: Date,

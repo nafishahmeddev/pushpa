@@ -142,7 +142,9 @@ function RouteComponent() {
                 <TableCell />
                 <TableCell>Receipt No</TableCell>
                 <TableCell>Date</TableCell>
+                <TableCell className="text-end w-0">Subtotal</TableCell>
                 <TableCell className="text-end w-0">Tax</TableCell>
+                <TableCell className="text-end w-0">Discount</TableCell>
                 <TableCell className="text-end w-0">Amount</TableCell>
               </TableRow>
             </TableHead>
@@ -178,7 +180,13 @@ function RouteComponent() {
                     {Formatter.datetime(invoice.createdAt)}
                   </TableCell>
                   <TableCell className="text-end font-mono">
+                    {Formatter.money(invoice.subTotal)}
+                  </TableCell>
+                  <TableCell className="text-end font-mono">
                     {Formatter.money(invoice.tax)}
+                  </TableCell>
+                  <TableCell className="text-end font-mono">
+                    {Formatter.money(invoice.discount)}
                   </TableCell>
                   <TableCell className="text-end font-mono">
                     {Formatter.money(invoice.amount)}
