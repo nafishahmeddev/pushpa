@@ -28,7 +28,8 @@ UsersRouter.post("/paginate", async (req: IRequest, res: IResponse) => {
 
     //build filter
     const where: WhereOptions<InferAttributes<User, {}>> = {
-        id: { [Op.ne]: req.auth?.userId }
+        id: { [Op.ne]: req.auth?.userId },
+        restaurantId: req.auth?.restaurantId
     };
     const paginated = await User.findAndCountAll({
         order: [["createdAt", "asc"]],
