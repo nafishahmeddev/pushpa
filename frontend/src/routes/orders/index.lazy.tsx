@@ -233,7 +233,7 @@ function RouteComponent() {
                         <>
                           {order.kotList?.map((e) => (
                             <button
-                              className="inline-flex mx-0.5 bg-lime-600 rounded-md h-5 px-1 min-w-5 items-center justify-center text-white text-xs"
+                              className="inline-flex mx-0.5 bg-lime-600 rounded-xl px-1 p-0.5 items-center justify-center text-white text-xs"
                               key={e.id}
                             >
                               {e.tokenNo}

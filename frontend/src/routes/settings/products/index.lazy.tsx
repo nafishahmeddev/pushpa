@@ -124,7 +124,7 @@ function RouteComponent() {
           </Button>
         </form>
       </div>
-      <div className="h-full bg-white border rounded-xl overflow-hidden">
+      <div className="h-full bg-white border rounded-xl">
         <Table bordered>
           <TableHead>
             <TableRow
@@ -133,7 +133,7 @@ function RouteComponent() {
             >
               <TableCell className="w-0">#</TableCell>
               <TableCell className="w-0">Image</TableCell>
-              <TableCell>Name</TableCell>
+              <TableCell className="min-w-96">Name</TableCell>
               <TableCell>Category</TableCell>
               <TableCell className="w-0">Tax</TableCell>
               <TableCell className="w-0">Pice</TableCell>
