@@ -30,7 +30,7 @@ function RouteComponent() {
   }, [])
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 p-4 py-6 ">
-      <div className="border bg-white rounded-2xl h-60 flex flex-col gap-2 w-full row-span-2 py-6">
+      <div className="border bg-white rounded-2xl h-60 flex flex-col gap-2 w-full row-span-2 py-6  dash-card">
         <p className="px-5 font-bold">Top Selling Items</p>
         <div className="px-5 flex-1 ">
           <table className="w-full">
@@ -38,7 +38,7 @@ function RouteComponent() {
               {result.topSellingItems.map((item, i) => (
                 <tr key={i}>
                   <td className="py-1">{item.name}</td>
-                  <td className="w-0 text-lime-700 py-1 font-mono">
+                  <td className="w-0 text-gray-700 py-1 ">
                     {item.count}
                   </td>
                 </tr>
@@ -48,33 +48,33 @@ function RouteComponent() {
         </div>
       </div>
 
-      <div className="border bg-white rounded-2xl h-28 p-5 flex flex-col gap-2 w-full">
+      <div className="border bg-white rounded-2xl h-28 p-5 flex flex-col gap-2 w-full dash-card">
         <p className="font-bold">Orders</p>
-        <span className="text-4xl font-mono">{result.orders}</span>
+        <span className="text-4xl  text-gray-700">{result.orders}</span>
       </div>
 
-      <div className="border bg-white rounded-2xl h-28 p-5 flex flex-col gap-2 w-full">
+      <div className="border bg-white rounded-2xl h-28 p-5 flex flex-col gap-2 w-full dash-card">
         <p className="font-bold">Avg. Order Value</p>
-        <span className="text-4xl font-mono">
+        <span className="text-4xl  text-gray-700">
           {Formatter.money(result.averageOrder)}
         </span>
       </div>
 
-      <div className="border bg-white rounded-2xl h-28 p-5 flex flex-col gap-2 w-full">
+      <div className="border bg-white rounded-2xl h-28 p-5 flex flex-col gap-2 w-full dash-card">
         <p className="font-bold">Revenue</p>
-        <span className="text-4xl font-mono">
+        <span className="text-4xl  text-gray-700">
           {Formatter.money(result.revenue)}
         </span>
       </div>
-      <div className="border bg-white rounded-2xl h-28 p-5 flex flex-col gap-2 w-full">
+      <div className="border bg-white rounded-2xl h-28 p-5 flex flex-col gap-2 w-full dash-card">
         <p className="font-bold">Tax</p>
-        <span className="text-4xl font-mono">
+        <span className="text-4xl  text-gray-700">
           {Formatter.money(result.tax)}
         </span>
       </div>
-      <div className="border bg-white rounded-2xl h-28 p-5 flex flex-col gap-2 w-full">
+      <div className="border bg-white rounded-2xl h-28 p-5 flex flex-col gap-2 w-full dash-card">
         <p className="font-bold">Net Sales</p>
-        <span className="text-4xl">
+        <span className="text-4xl  text-gray-700">
           {Formatter.money(result.netSales)}
         </span>
       </div>
