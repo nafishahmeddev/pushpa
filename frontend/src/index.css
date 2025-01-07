@@ -8,11 +8,11 @@
 }
 
 .dash-card::after{
+    @apply bg-lime-600/20;
     position: absolute;
     content: "";
     height: 150px;
     width: 150px;
-    background-color: #90d10538;
     top: 0;
     right: 0;
     border-radius: 100%;
@@ -20,11 +20,11 @@
 }
 
 .dash-card::before{
+    @apply bg-lime-600/20;
     position: absolute;
     content: "";
     height: 100px;
     width: 100px;
-    background-color: #90d10538;
     top: 0;
     right: 0;
     border-radius: 100%;
