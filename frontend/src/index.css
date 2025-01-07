@@ -13,6 +13,8 @@
   @apply top-0;
   @apply right-0;
   @apply rounded-full;
+  @apply pointer-events-none;
+  @apply -z-0;
   content: "";
   height: 150px;
   width: 150px;
@@ -25,6 +27,8 @@
   @apply top-0;
   @apply right-0;
   @apply rounded-full;
+  @apply pointer-events-none;
+  @apply -z-0;
   content: "";
   height: 100px;
   width: 100px;
