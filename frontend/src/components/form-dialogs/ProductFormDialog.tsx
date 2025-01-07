@@ -12,7 +12,7 @@ import toast from "react-hot-toast";
 import { Icon } from "@iconify/react";
 import { uploadUrl } from "@app/lib/upload";
 import Image from "rc-image";
-import imageCompression from 'browser-image-compression';
+import imageCompression from "browser-image-compression";
 
 type ProductFormProps = {
   open: boolean;
@@ -42,8 +42,8 @@ export default function ProductFormDialog({
       image: "",
       description: "",
       categoryId: "",
-      tax: NaN,
-      price: NaN,
+      tax: 0,
+      price: 0,
     },
     onSubmit: async ({ value, formApi }) => {
       const fd = new FormData();
@@ -73,7 +73,7 @@ export default function ProductFormDialog({
       maxSizeMB: 1,
       maxWidthOrHeight: 300,
       useWebWorker: true,
-    }
+    };
     try {
       const compressedFile = await imageCompression(file, options);
       setSelectedImage(compressedFile);
@@ -90,7 +90,17 @@ export default function ProductFormDialog({
     if (selectedImage) {
       setSelectedImage(undefined);
     }
-  }, [open]);
+    if (product) {
+      form.setFieldValue("name", product.name);
+      form.setFieldValue("image", product.image);
+      form.setFieldValue("categoryId", product.categoryId);
+      form.setFieldValue("description", product.description);
+      form.setFieldValue("tax", product.tax);
+      form.setFieldValue("price", product.price);
+    } else {
+      form.reset();
+    }
+  }, [open, product]);
   return (
     <Dialog open={open} onClose={() => onReset()}>
       <form
@@ -185,7 +195,7 @@ export default function ProductFormDialog({
                 <Select
                   label="Category"
                   required
-                  value={state.value}
+                  value={state.value || ""}
                   onChange={(e) => handleChange(e.target.value)}
                   onBlur={handleBlur}
                   name={name}
@@ -210,7 +220,7 @@ export default function ProductFormDialog({
                     label="Price"
                     required
                     type="number"
-                    value={state.value || ""}
+                    value={state.value || 0}
                     onChange={(e) => handleChange(Number(e.target.value))}
                     onBlur={handleBlur}
                     name={name}
