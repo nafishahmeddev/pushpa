@@ -165,6 +165,7 @@ export default function ProductFormDialog({
                   label="Name"
                   required
                   type="text"
+                  placeholder="Enter product name"
                   value={state.value}
                   onChange={(e) => handleChange(e.target.value)}
                   onBlur={handleBlur}
@@ -180,6 +181,7 @@ export default function ProductFormDialog({
               children={({ state, handleBlur, handleChange, name }) => (
                 <Textarea
                   label="Description"
+                  placeholder="Enter product description"
                   value={state.value}
                   onChange={(e) => handleChange(e.target.value)}
                   onBlur={handleBlur}
@@ -202,7 +204,7 @@ export default function ProductFormDialog({
                   error={state.meta.errors.join(" ")}
                   touched={state.meta.isTouched}
                 >
-                  <option value="" />
+                  <option value="" >Select Category</option>
                   {categories.map((category) => (
                     <option value={category.id} key={category.id}>
                       {category.name}
@@ -220,6 +222,7 @@ export default function ProductFormDialog({
                     label="Price"
                     required
                     type="number"
+                    placeholder="Enter gross price"
                     value={state.value || 0}
                     onChange={(e) => handleChange(Number(e.target.value))}
                     onBlur={handleBlur}
@@ -237,6 +240,7 @@ export default function ProductFormDialog({
                     // required
                     type="number"
                     className="flex-1"
+                    placeholder="Enter tax percentage"
                     value={state.value || ""}
                     onChange={(e) => handleChange(Number(e.target.value))}
                     onBlur={handleBlur}
