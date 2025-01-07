@@ -11,8 +11,7 @@ import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { Icon } from "@iconify/react";
 import { uploadUrl } from "@app/lib/upload";
-import Image from 'rc-image';
-
+import Image from "rc-image";
 
 type ProductFormProps = {
   open: boolean;
@@ -48,7 +47,14 @@ export default function ProductFormDialog({
     onSubmit: async ({ value, formApi }) => {
       const fd = new FormData();
       Object.entries(value).forEach(([key, value]) => {
-        fd.append(key, value ? value.toString() : "");
+        fd.append(
+          key,
+          value
+            ? value.toString()
+            : typeof value == "number"
+              ? (value || 0).toString()
+              : value,
+        );
       });
       if (selectedImage) {
         fd.append("image", selectedImage);
