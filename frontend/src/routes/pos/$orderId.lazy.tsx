@@ -69,17 +69,20 @@ export default function RouteComponent() {
     return OrdersApi.modifyItem(orderId as string, item)
       .then(() => {
         beep();
-        if (_items.some((i) => i.productId == item.productId)) {
-          _items.map((itm) => {
-            if (itm.productId == item.productId) {
-              itm.quantity = item.quantity;
-            }
-            return itm;
-          });
-        } else {
-          _items.push(item);
-        }
-        setItems(_items);
+        setItems((_items) => {
+          _items = cloneDeep(items);
+          if (_items.some((i) => i.productId == item.productId)) {
+            _items.map((itm) => {
+              if (itm.productId == item.productId) {
+                itm.quantity = item.quantity;
+              }
+              return itm;
+            });
+          } else {
+            _items.push(item);
+          }
+          return _items;
+        });
       })
       .finally(() => {
         toast.dismiss(_toast);
