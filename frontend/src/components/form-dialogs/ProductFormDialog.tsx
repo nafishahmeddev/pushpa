@@ -53,7 +53,9 @@ export default function ProductFormDialog({
             ? value.toString()
             : typeof value == "number"
               ? (value || 0).toString()
-              : value,
+              : value
+                ? value
+                : "",
         );
       });
       if (selectedImage) {
