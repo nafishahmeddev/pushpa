@@ -117,7 +117,10 @@ ProductsRouter.put("/:productId", UploadMiddleware().single("image"), async (req
     }
     const transaction = await sequelize.transaction();
     try {
-        const body = req.body;
+        const body = Object.entries(req.body).reduce((result, [key, value]) => {
+            result[key] = value === "" ? null : value;
+            return result;
+        }, {} as Record<string, unknown>);
         if (req.file) {
             fs.renameSync(req.file.path, uploadPath(req.file.filename));
             body.image = req.file.filename;
