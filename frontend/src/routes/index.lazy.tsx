@@ -30,13 +30,13 @@ function RouteComponent() {
 
   return (
     <div className="grid grid-rows-[auto_1fr] gap-6 p-4">
-      <div className="bg-white inline-flex w-min rounded-xl border">
+      <div className="bg-white inline-flex w-min rounded-xl border overflow-hidden p-0.5">
         {Object.values(TimeFrame).map((value) => (
           <button
             key={value}
             value={value}
             onClick={() => setTimeFrame(value)}
-            className={`px-4 py-2 rounded-xl text-sm ${timeFrame == value ? "bg-lime-500 text-white" : "text-gray-600"}`}
+            className={`px-4 py-1.5 rounded-lg text-sm ${timeFrame == value ? "bg-lime-300/40 text-lime-900" : "text-gray-600"}`}
           >
             {value}
           </button>
