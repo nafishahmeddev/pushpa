@@ -7,7 +7,7 @@ export default class ProductsApi {
         page: number,
         records: Array<IProduct>
     });
-    static create = (data: { name: string }) => ApiRequest.post("/products", data).then(res => res.data.result as IProduct);
-    static update = (id: string, data: { name: string }) => ApiRequest.put(`/products/${id}`, data).then(res => res.data.result as IProduct);
+    static create = (data: FormData) => ApiRequest.post("/products", data).then(res => res.data.result as IProduct);
+    static update = (id: string, data: FormData) => ApiRequest.put(`/products/${id}`, data).then(res => res.data.result as IProduct);
     static delete = (id: string) => ApiRequest.delete(`/products/${id}`).then(res => res.data.message as string);
 }

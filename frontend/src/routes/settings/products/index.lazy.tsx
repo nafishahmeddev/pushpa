@@ -14,6 +14,8 @@ import Input from "@app/components/ui/form/input";
 import { createLazyFileRoute } from "@tanstack/react-router";
 import { useForm } from "@tanstack/react-form";
 import Button from "@app/components/ui/form/button";
+import Image from 'rc-image';
+import { uploadUrl } from "@app/lib/upload";
 
 type FormType = {
   filter: {
@@ -132,7 +134,6 @@ function RouteComponent() {
               <TableCell className="w-0">#</TableCell>
               <TableCell>Name</TableCell>
               <TableCell>Category</TableCell>
-              <TableCell className="w-0 text-nowrap">Net Price</TableCell>
               <TableCell className="w-0">Tax</TableCell>
               <TableCell className="w-0">Pice</TableCell>
               <TableCell className="w-0"></TableCell>
@@ -143,16 +144,19 @@ function RouteComponent() {
               <TableRow key={`product-${product.id}`}>
                 <TableCell>{index + 1}</TableCell>
                 <TableCell>
+                <Image
+                      src={uploadUrl(product.image)}
+                      fallback="/placeholder-category.png"
+                      className="w-16 rounded-xl border aspect-square  object-cover bg-gray-100"
+                    />
+                </TableCell>
+                <TableCell>
                   {product.name}
                   <br />
                   <small className="text-gray-600">{product.description}</small>
                 </TableCell>
-
                 <TableCell className="text-nowrap">
                   {product.category?.name}
-                </TableCell>
-                <TableCell className="font-mono">
-                  {Formatter.money(product.netPrice)}
                 </TableCell>
                 <TableCell className="font-mono">{product.tax}%</TableCell>
                 <TableCell className="font-mono">

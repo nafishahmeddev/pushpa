@@ -23,6 +23,7 @@ import DashboardRouter from "@app/routes/dashboard";
 import LocationsRouter from "@app/routes/locations";
 import OrdersRouter from "@app/routes/orders";
 import AccountRouter from "./routes/account";
+import { uploadPath } from "./helpers/dirs";
 
 const app: Application = express();
 const port = process.env.PORT || 3000;
@@ -57,6 +58,7 @@ async function main() {
   app.use("/api/v1/account", AuthMiddleware, AccountRouter);
   app.use("/api/v1/auth", AuthRouter);
 
+  app.use("/public/uploads", express.static(uploadPath()))
 
   //frontend route
   app.use(express.static(path.resolve(process.env.FRONTEND_PATH || "")))

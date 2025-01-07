@@ -20,10 +20,10 @@ class Product extends Model<
 > {
   declare id: CreationOptional<string>;
   declare name: string;
+  declare image: CreationOptional<string>;
   declare description: CreationOptional<string>;
   declare categoryId: ForeignKey<ProductCategory["id"]>;
   declare status: ProductStatus;
-  declare netPrice: number;
   declare price: number;
   declare tax: number;
 
@@ -51,10 +51,6 @@ Product.init(
       values: ["Active", "Inactive"],
       defaultValue: "Active",
     },
-    netPrice: {
-      type: DataTypes.DOUBLE,
-      defaultValue: 0
-    },
     price: {
       type: DataTypes.DOUBLE,
       defaultValue: 0
@@ -67,6 +63,7 @@ Product.init(
       type: DataTypes.STRING,
       allowNull: false,
     },
+    image: DataTypes.STRING,
     description: DataTypes.STRING,
     createdAt: DataTypes.DATE,
     updatedAt: DataTypes.DATE,

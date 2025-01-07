@@ -9,8 +9,8 @@ export type ICategory = {
 export type IProduct = {
     id: string,
     name: string,
+    image: string,
     description: string,
-    netPrice: number,
     price: number,
     tax: number,
     categoryId: string,

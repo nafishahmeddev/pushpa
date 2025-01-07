@@ -9,6 +9,10 @@ import { ICategory, IProduct } from "@app/types/product";
 import { useForm } from "@tanstack/react-form";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
+import { Icon } from "@iconify/react";
+import { uploadUrl } from "@app/lib/upload";
+import Image from 'rc-image';
+
 
 type ProductFormProps = {
   open: boolean;
@@ -18,10 +22,10 @@ type ProductFormProps = {
 };
 type ValueType = {
   name: string;
+  image: string;
   categoryId: string;
   description: string;
   tax: number;
-  netPrice: number;
   price: number;
 };
 export default function ProductFormDialog({
@@ -31,19 +35,27 @@ export default function ProductFormDialog({
   onSave,
 }: ProductFormProps) {
   const [categories, setCategories] = useState<Array<ICategory>>([]);
+  const [selectedImage, setSelectedImage] = useState<File>();
   const form = useForm<ValueType>({
-    defaultValues: {
+    defaultValues: product ?? {
       name: "",
+      image: "",
       description: "",
       categoryId: "",
       tax: NaN,
-      netPrice: NaN,
       price: NaN,
     },
     onSubmit: async ({ value, formApi }) => {
+      const fd = new FormData();
+      Object.entries(value).forEach(([key, value]) => {
+        fd.append(key, value ? value.toString() : "");
+      });
+      if (selectedImage) {
+        fd.append("image", selectedImage);
+      }
       const promise = product
-        ? ProductsApi.update(product.id, value)
-        : ProductsApi.create(value);
+        ? ProductsApi.update(product.id, fd)
+        : ProductsApi.create(fd);
       return promise
         .then(() => {
           formApi.reset();
@@ -56,21 +68,14 @@ export default function ProductFormDialog({
   });
 
   useEffect(() => {
-    if (product) {
-      form.setFieldValue("name", product.name);
-      form.setFieldValue("categoryId", product.categoryId);
-      form.setFieldValue("description", product.description);
-      form.setFieldValue("tax", product.tax);
-      form.setFieldValue("netPrice", product.netPrice);
-      form.setFieldValue("price", product.price);
-    } else {
-      form.reset();
-    }
-  }, [product, open]);
-
-  useEffect(() => {
     CategoriesApi.all().then(setCategories);
   }, []);
+
+  useEffect(() => {
+    if (selectedImage) {
+      setSelectedImage(undefined);
+    }
+  }, [open]);
   return (
     <Dialog open={open} onClose={() => onReset()}>
       <form
@@ -83,7 +88,50 @@ export default function ProductFormDialog({
       >
         <h3 className="text-xl">{product ? "Update" : "Create"} Product</h3>
         <fieldset className="block w-full">
-          <div className="flex flex-col gap-2 w-full py-4">
+          <div className="flex flex-col gap-4 w-full py-4">
+            <form.Subscribe
+              selector={({ values }) => values.image}
+              children={(image) => (
+                <div className="relative w-28 inline-flex">
+                  <label
+                    htmlFor="image"
+                    className="w-full aspect-square object-cover rounded-xl border overflow-hidden cursor-pointer"
+                  >
+                    <Image
+                      src={
+                        selectedImage
+                          ? URL.createObjectURL(selectedImage)
+                          : image
+                            ? uploadUrl(image)
+                            : undefined
+                      }
+                      fallback="/placeholder-category.png"
+                      className="w-full aspect-square  object-cover bg-gray-100"
+                    />
+                    <input
+                      type="file"
+                      className="hidden"
+                      id="image"
+                      name="image"
+                      onChange={(e) => {
+                        setSelectedImage(e.target.files?.[0]);
+                        e.target.type = "text";
+                        e.target.type = "file";
+                      }}
+                    />
+                  </label>
+                  {selectedImage && (
+                    <a
+                      className="absolute top-1 right-1 pointer cursor-pointer aspect-square bg-white/20 rounded-full backdrop-blur-sm"
+                      onClick={() => setSelectedImage(undefined)}
+                    >
+                      <Icon icon="material-symbols:close-rounded" />
+                    </a>
+                  )}
+                </div>
+              )}
+            />
+
             <form.Field
               name="name"
               children={({ state, handleBlur, handleChange, name }) => (
@@ -137,31 +185,15 @@ export default function ProductFormDialog({
                 </Select>
               )}
             />
-            <form.Field
-              name="price"
-              children={({ state, handleBlur, handleChange, name }) => (
-                <Input
-                  label="Price"
-                  required
-                  type="number"
-                  value={state.value}
-                  onChange={(e) => handleChange(Number(e.target.value))}
-                  onBlur={handleBlur}
-                  name={name}
-                  error={state.meta.errors.join(" ")}
-                  touched={state.meta.isTouched}
-                />
-              )}
-            />
+
             <div className="flex gap-2">
               <form.Field
-                name="tax"
+                name="price"
                 children={({ state, handleBlur, handleChange, name }) => (
                   <Input
-                    label="Tax"
+                    label="Price"
                     required
                     type="number"
-                    className="flex-1"
                     value={state.value}
                     onChange={(e) => handleChange(Number(e.target.value))}
                     onBlur={handleBlur}
@@ -172,10 +204,10 @@ export default function ProductFormDialog({
                 )}
               />
               <form.Field
-                name="netPrice"
+                name="tax"
                 children={({ state, handleBlur, handleChange, name }) => (
                   <Input
-                    label="Net Price"
+                    label="Tax(%)"
                     required
                     type="number"
                     className="flex-1"

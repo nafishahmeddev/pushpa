@@ -1,8 +1,11 @@
 
 import { Product, ProductCategory } from "@app/db/models";
 import { IRequest, IResponse } from "@app/interfaces/vendors/express";
+import UploadMiddleware from "@app/middleware/multer";
 import { Router } from "express";
 import { InferAttributes, Op, WhereOptions } from "sequelize";
+import fs from "fs";
+import { uploadPath } from "@app/helpers/dirs";
 
 const ProductsRouter = Router();
 
@@ -78,9 +81,12 @@ ProductsRouter.post("/paginate", async (req: IRequest, res: IResponse) => {
     })
 })
 
-
-ProductsRouter.post("/", async (req: IRequest, res: IResponse) => {
+ProductsRouter.post("/", UploadMiddleware().single("image"), async (req: IRequest, res: IResponse) => {
     const body = req.body;
+    if (req.file) {
+        fs.renameSync(req.file.path, uploadPath(req.file.filename));
+        body.image = uploadPath(req.file.filename);
+    }
     const category = await Product.create({
         ...body
     });
@@ -90,7 +96,7 @@ ProductsRouter.post("/", async (req: IRequest, res: IResponse) => {
     })
 })
 
-ProductsRouter.put("/:productId", async (req: IRequest, res: IResponse) => {
+ProductsRouter.put("/:productId", UploadMiddleware().single("image"), async (req: IRequest, res: IResponse) => {
     const productId = req.params.productId;
 
     const product = await Product.findByPk(productId);
@@ -100,8 +106,13 @@ ProductsRouter.put("/:productId", async (req: IRequest, res: IResponse) => {
         })
         return;
     }
+    const body = req.body;
+    if (req.file) {
+        fs.renameSync(req.file.path, uploadPath(req.file.originalname));
+        body.image = req.file.originalname;
+    }
 
-    await product.update({ ...req.body });
+    await product.update({ ...body });
     res.json({
         result: product,
         message: "Successful"
