@@ -244,95 +244,6 @@ OrdersRouter.delete("/:orderId", async (req: IRequest, res: IResponse) => {
     }
 });
 
-OrdersRouter.post("/:orderId/place", async (req: IRequest, res: IResponse) => {
-    const orderId = req.params.orderId;
-    const transaction = await sequelize.transaction();
-    try {
-        let order = await Order.findOne({
-            where: {
-                id: orderId,
-                status: {
-                    [Op.notIn]: ["Paid", "Completed"]
-                }
-            },
-            include: [
-                {
-                    model: OrderItem,
-                    as: "items",
-                    include: [
-                        {
-                            model: Product,
-                            as: "product"
-                        }
-                    ]
-                }
-            ],
-            transaction
-        },);
-        if (!order) {
-            res.status(404).json({
-                message: "Order not found"
-            })
-            return;
-        }
-
-
-        const invoice = await Invoice.create({
-            restaurantId: order.restaurantId,
-            amount: 0,
-            tax: 0
-        }, {
-            transaction
-        });
-        await Promise.all((order.items ?? []).map(async (item) => {
-            const price = item?.product?.price ?? 0;
-            const tax = item?.product?.tax ?? 0;
-            const basePrice = price / (1 + (tax / 100));
-            const amount = price * item.quantity;
-            const orderItem = new InvoiceItem({
-                invoiceId: invoice.id,
-                quantity: item.quantity,
-                name: item.product?.name ?? "",
-                price: price,
-                amount: amount,
-                tax: (basePrice * (tax / 100)) * item.quantity
-            });
-
-            invoice.tax += orderItem.tax;
-            invoice.amount += orderItem.amount;
-            await orderItem.save({ transaction: transaction });
-            return orderItem;
-        }));
-
-        await invoice.save({ transaction: transaction });
-
-        await OrderItem.update({ status: OrderItemStatus.Delivered }, { where: { orderId: order.id }, transaction });
-        await order.update({ status: OrderStatus.Completed, invoiceId: invoice.id }, { transaction: transaction });
-
-
-        const createdInvoice = await Invoice.findOne({
-            where: { id: invoice.id },
-            include: [{
-                model: InvoiceItem,
-                as: "items",
-            }],
-            transaction
-        })
-
-        transaction.commit();
-        res.json({
-            result: createdInvoice,
-            message: "Successful"
-        })
-    } catch (error) {
-        console.log(error);
-        transaction.rollback();
-        res.status(400).json({
-            message: "Something went wrong..."
-        })
-    }
-});
-
 OrdersRouter.post("/:orderId/kot-create", async (req: IRequest, res: IResponse) => {
     const orderId = req.params.orderId;
 
@@ -484,6 +395,8 @@ OrdersRouter.post("/:orderId/complete", async (req: IRequest, res: IResponse) =>
 
         const invoice = await Invoice.create({
             restaurantId: order.restaurantId,
+            subTotal: 0,
+            discount: 0,
             amount: 0,
             tax: 0
         }, {
@@ -506,11 +419,13 @@ OrdersRouter.post("/:orderId/complete", async (req: IRequest, res: IResponse) =>
                 tax: (basePrice * (tax / 100)) * item.quantity
             });
 
+            invoice.subTotal += invoiceItem.amount - invoiceItem.tax;
             invoice.tax += invoiceItem.tax;
-            invoice.amount += invoiceItem.amount;
             await invoiceItem.save({ transaction: transaction });
             return invoiceItem;
         }));
+        invoice.discount = order.discount;
+        invoice.amount = (invoice.subTotal + invoice.tax) - invoice.discount;
 
         await invoice.save({ transaction: transaction });
 

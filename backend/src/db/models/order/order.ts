@@ -37,6 +37,8 @@ class Order extends Model<
     declare orderNo: CreationOptional<number>;
     declare status: CreationOptional<OrderStatus>;
     declare type: CreationOptional<OrderType>;
+    declare discount:  CreationOptional<number>;
+
     declare restaurantId: ForeignKey<Restaurant["id"]>;
     declare tableId: ForeignKey<Table["id"]>;
     declare invoiceId: ForeignKey<Invoice["id"]>;
@@ -73,6 +75,7 @@ Order.init(
             values: Object.values(OrderType),
             defaultValue: OrderType.Takeaway
         },
+        discount: DataTypes.DOUBLE,
         createdAt: DataTypes.DATE,
         updatedAt: DataTypes.DATE,
     },

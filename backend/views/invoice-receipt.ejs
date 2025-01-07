@@ -111,19 +111,33 @@
             <div style="margin: 10px 0;border-top: 1px dashed #000; "></div>
 
             <table style="width: 100%; font-weight: bold;">
-                <!-- <tr>
-                    <td>Subtotal(excl. Tax):</td>
+                
+                <% if(invoice.tax || invoice.discount){ %>
+                <tr>
+                    <td>Subtotal:</td>
                     <td style="text-align: right;">
-                        <%= formatter.format((invoice.amount -( invoice.tax)))%>
+                        <%= formatter.format(invoice.subTotal)%>
                     </td>
                 </tr>
+                <% } %>
 
+                <% if(invoice.tax){ %>
                 <tr>
                     <td>Tax:</td>
                     <td style="text-align: right;">
                         <%= formatter.format(invoice.tax)%>
                     </td>
-                </tr> -->
+                </tr>
+                <% } %>
+
+                <% if(invoice.discount){ %>
+                <tr>
+                    <td>Discount:</td>
+                    <td style="text-align: right;">
+                        <%= formatter.format(invoice.discount)%>
+                    </td>
+                </tr>
+                <% } %>
 
                 <tr>
                     <td>Total:</td>

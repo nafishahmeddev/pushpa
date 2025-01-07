@@ -29,6 +29,7 @@ export type IOrder = {
     id: string,
     orderNo: number,
     status: OrderStatus,
+    discount:number,
     restaurantId: string;
     restaurant?: unknown;
     userId: string;

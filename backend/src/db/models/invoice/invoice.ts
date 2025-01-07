@@ -20,8 +20,13 @@ class Invoice extends Model<
 > {
   declare id: CreationOptional<string>;
   declare receiptNo: CreationOptional<number>;
+  //discount
+  declare discount: CreationOptional<number>;
+
+  declare subTotal: number;
   declare amount: number;
   declare tax: number;
+
   declare restaurantId: ForeignKey<Restaurant["id"]>;
   declare tableId: ForeignKey<Table["id"]>
 
@@ -47,6 +52,8 @@ Invoice.init(
       defaultValue: UUIDV4,
     },
     receiptNo: DataTypes.BIGINT,
+    subTotal: DataTypes.DOUBLE,
+    discount: DataTypes.INTEGER,
     amount: DataTypes.DOUBLE,
     tax: DataTypes.DOUBLE,
     createdAt: DataTypes.DATE,

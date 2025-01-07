@@ -23,6 +23,7 @@ import { createLazyFileRoute } from "@tanstack/react-router";
 import QuantityButton from "@app/components/QuantityButton";
 import { useQuery } from "@tanstack/react-query";
 import PendingComponent from "@app/components/PendingComponent";
+import DiscountFormDialog from "@app/components/form-dialogs/DiscountFormDialog";
 export const Route = createLazyFileRoute("/pos/$orderId")({
   component: RouteComponent,
 });
@@ -32,6 +33,10 @@ export default function RouteComponent() {
   const navigate = Route.useNavigate();
   const [placedItems, setPlacedItems] = useState<Array<IOrderItem>>([]);
   const [items, setItems] = useState<Array<ICartItem>>([]);
+  const [discountFormDialog, setFormDiscountDialog] = useState<{
+    open: boolean;
+    order?: IOrder;
+  }>({ open: false });
 
   const {
     data: order,
@@ -211,8 +216,22 @@ export default function RouteComponent() {
     return <div className="col-span-2">{error.message}</div>;
   }
 
+  if (!order) {
+    return <div className="col-span-2">Order not found!</div>;
+  }
+
   return (
     <React.Fragment>
+      <DiscountFormDialog
+        {...discountFormDialog}
+        onSave={({ discount = 0 }) => {
+          OrdersApi.updateOrder(order.id, { discount: discount }).then(() => {
+            refetch();
+            setFormDiscountDialog({ open: false });
+          });
+        }}
+        onReset={() => setFormDiscountDialog({ open: false })}
+      />
       <div className="h-full overflow-auto">
         <MenuList
           className="border rounded-xl"
@@ -380,13 +399,32 @@ export default function RouteComponent() {
               </tr>
             </tfoot>
           </table>
+
+          <table>
+            <tfoot>
+              <tr>
+                <td className="px-2 py-2 text-end">Discount:</td>
+                <td className="px-2 py-2 text-end font-mono font-bold">
+                  {Formatter.money(order.discount)}
+                  <button
+                    className="align-middle ml-2 text-lime-700 hover:opacity-50"
+                    onClick={() =>
+                      setFormDiscountDialog({ open: true, order: order })
+                    }
+                  >
+                    <Icon icon="cuida:edit-outline" />
+                  </button>
+                </td>
+              </tr>
+            </tfoot>
+          </table>
           <div className="flex-1"></div>
           <table>
             <tfoot>
               <tr>
                 <td className="px-2 py-1 text-end">Total:</td>
                 <td className="px-2 py-1 text-end font-mono font-bold">
-                  {Formatter.money(cartUtil.total)}
+                  {Formatter.money(cartUtil.total - order.discount)}
                 </td>
               </tr>
             </tfoot>
