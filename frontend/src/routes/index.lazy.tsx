@@ -29,7 +29,7 @@ function RouteComponent() {
   });
 
   return (
-    <div className="grid grid-rows-[auto_1fr] gap-6 p-4">
+    <div className="grid grid-rows-[auto_1fr] gap-6 p-4 h-full">
       <div className="bg-white inline-flex w-min rounded-xl border overflow-hidden p-0.5">
         {Object.values(TimeFrame).map((value) => (
           <button
