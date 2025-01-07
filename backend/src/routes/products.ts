@@ -6,6 +6,7 @@ import { Router } from "express";
 import { InferAttributes, Op, WhereOptions } from "sequelize";
 import fs from "fs";
 import { uploadPath } from "@app/helpers/dirs";
+import { sequelize } from "@app/db/conn";
 
 const ProductsRouter = Router();
 
@@ -82,23 +83,31 @@ ProductsRouter.post("/paginate", async (req: IRequest, res: IResponse) => {
 })
 
 ProductsRouter.post("/", UploadMiddleware().single("image"), async (req: IRequest, res: IResponse) => {
-    const body = req.body;
-    if (req.file) {
-        fs.renameSync(req.file.path, uploadPath(req.file.filename));
-        body.image = uploadPath(req.file.filename);
+    const transaction = await sequelize.transaction();
+    try {
+        const body = req.body;
+        if (req.file) {
+            fs.renameSync(req.file.path, uploadPath(req.file.filename));
+            body.image = uploadPath(req.file.filename);
+        }
+        const product = await Product.create({
+            ...body
+        }, { transaction });
+        await transaction.commit();
+        res.json({
+            result: product,
+            message: "Successful"
+        })
+    } catch (e) {
+        await transaction.rollback();
+        res.status(500).json({
+            message: "Error while saving product"
+        })
     }
-    const category = await Product.create({
-        ...body
-    });
-    res.json({
-        result: category,
-        message: "Successful"
-    })
 })
 
 ProductsRouter.put("/:productId", UploadMiddleware().single("image"), async (req: IRequest, res: IResponse) => {
     const productId = req.params.productId;
-
     const product = await Product.findByPk(productId);
     if (!product) {
         res.status(404).json({
@@ -106,17 +115,34 @@ ProductsRouter.put("/:productId", UploadMiddleware().single("image"), async (req
         })
         return;
     }
-    const body = req.body;
-    if (req.file) {
-        fs.renameSync(req.file.path, uploadPath(req.file.originalname));
-        body.image = req.file.originalname;
-    }
+    const transaction = await sequelize.transaction();
+    try {
+        const body = req.body;
+        if (req.file) {
+            fs.renameSync(req.file.path, uploadPath(req.file.filename));
+            body.image = req.file.filename;
+        }
+        const oldImage = product.image;
+        await product.update({ ...body }, { transaction: transaction });
+        await transaction.commit();
 
-    await product.update({ ...body });
-    res.json({
-        result: product,
-        message: "Successful"
-    })
+        await product.reload();
+
+        try {
+            fs.rmSync(uploadPath(oldImage))
+        } catch {
+
+        }
+        res.json({
+            result: product,
+            message: "Successful"
+        })
+    } catch (e) {
+        await transaction.rollback();
+        res.status(500).json({
+            message: "Error while saving product"
+        })
+    }
 });
 
 ProductsRouter.delete("/:productId", async (req: IRequest, res: IResponse) => {
