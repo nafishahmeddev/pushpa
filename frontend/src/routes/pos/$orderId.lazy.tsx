@@ -60,10 +60,9 @@ export default function RouteComponent() {
   ]);
 
   const onModify = async (item: ICartItem, increment: boolean = false) => {
-    const _items = cloneDeep(items);
-    const itm = _items.find((e) => e.productId == item.productId);
+    const existingItem = items.find((e) => e.productId == item.productId);
     item.quantity = increment
-      ? (itm?.quantity ?? 0) + item.quantity
+      ? (existingItem?.quantity ?? 0) + item.quantity
       : item.quantity;
     const _toast = toast.loading("Please wait..");
     return OrdersApi.modifyItem(orderId as string, item)
@@ -378,7 +377,7 @@ export default function RouteComponent() {
                   <td className="px-4 py-0.5 text-center w-0">
                     <QuantityButton
                       quantity={item.quantity}
-                      onUpdate={(quantity) => onModify({ ...item, quantity })}
+                      onUpdate={(quantity) => onModify({ ...item, quantity }, false)}
                       onDelete={() => onDeleteItem(item)}
                     />
                   </td>
