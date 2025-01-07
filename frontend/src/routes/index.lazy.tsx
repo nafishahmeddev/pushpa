@@ -36,7 +36,7 @@ function RouteComponent() {
             key={value}
             value={value}
             onClick={() => setTimeFrame(value)}
-            className={`px-4 py-1.5 rounded-xl ${timeFrame == value && "bg-lime-500 text-white"}`}
+            className={`px-4 py-2 rounded-xl text-sm ${timeFrame == value ? "bg-lime-500 text-white":"text-gray-600"}`}
           >
             {value}
           </button>
