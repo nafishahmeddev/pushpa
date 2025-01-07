@@ -7,11 +7,33 @@ import { Op, Sequelize } from "sequelize";
 
 const DashboardRouter = Router();
 
+enum TimeFrame {
+    Daily = "Daily",
+    Weekly = "Weekly",
+    Monthly = "Monthly",
+    Yearly = "Yearly"
+}
+
 DashboardRouter.post("/stats", async (req: IRequest, res: IResponse) => {
     const restaurantId: string = req.auth?.restaurantId as string;
+    const timeFrame: TimeFrame = req.body.timeFrame || TimeFrame.Daily;
 
-    const start = moment().startOf("D");
-    const end = moment().endOf("D");
+    let start = moment().startOf("D");
+    let end = moment().endOf("D");
+
+    if (timeFrame == TimeFrame.Daily) {
+        start = moment().startOf("D");
+        end = moment().endOf("D");
+    } else if (timeFrame == TimeFrame.Weekly) {
+        start = moment().startOf("week");
+        end = moment().endOf("week");
+    } else if (timeFrame == TimeFrame.Monthly) {
+        start = moment().startOf("month");
+        end = moment().endOf("month");
+    } else if (timeFrame == TimeFrame.Yearly) {
+        start = moment().startOf("year");
+        end = moment().endOf("year");
+    }
 
     const result: {
         tax: number,
