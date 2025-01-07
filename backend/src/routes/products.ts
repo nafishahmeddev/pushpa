@@ -85,7 +85,7 @@ ProductsRouter.post("/paginate", async (req: IRequest, res: IResponse) => {
 ProductsRouter.post("/", UploadMiddleware().single("image"), async (req: IRequest, res: IResponse) => {
     const transaction = await sequelize.transaction();
     try {
-        const body = req.body;
+        const body = JSON.parse(req.body.values);
         if (req.file) {
             fs.renameSync(req.file.path, uploadPath(req.file.filename));
             body.image = uploadPath(req.file.filename);
@@ -117,10 +117,7 @@ ProductsRouter.put("/:productId", UploadMiddleware().single("image"), async (req
     }
     const transaction = await sequelize.transaction();
     try {
-        const body = Object.entries(req.body).reduce((result, [key, value]) => {
-            result[key] = value === "" ? null : value;
-            return result;
-        }, {} as Record<string, unknown>);
+        const body = JSON.parse(req.body.values);
         if (req.file) {
             fs.renameSync(req.file.path, uploadPath(req.file.filename));
             body.image = req.file.filename;

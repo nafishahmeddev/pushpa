@@ -12,6 +12,7 @@ import toast from "react-hot-toast";
 import { Icon } from "@iconify/react";
 import { uploadUrl } from "@app/lib/upload";
 import Image from "rc-image";
+import imageCompression from 'browser-image-compression';
 
 type ProductFormProps = {
   open: boolean;
@@ -46,18 +47,7 @@ export default function ProductFormDialog({
     },
     onSubmit: async ({ value, formApi }) => {
       const fd = new FormData();
-      Object.entries(value).forEach(([key, value]) => {
-        fd.append(
-          key,
-          value
-            ? value.toString()
-            : typeof value == "number"
-              ? (value || 0).toString()
-              : value
-                ? value
-                : "",
-        );
-      });
+      fd.append("values", JSON.stringify(value));
       if (selectedImage) {
         fd.append("image", selectedImage);
       }
@@ -74,6 +64,23 @@ export default function ProductFormDialog({
         });
     },
   });
+
+  const handleOnImagePic = async (file: File | undefined) => {
+    if (!file) {
+      return;
+    }
+    const options = {
+      maxSizeMB: 1,
+      maxWidthOrHeight: 300,
+      useWebWorker: true,
+    }
+    try {
+      const compressedFile = await imageCompression(file, options);
+      setSelectedImage(compressedFile);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   useEffect(() => {
     CategoriesApi.all().then(setCategories);
@@ -121,8 +128,9 @@ export default function ProductFormDialog({
                       className="hidden"
                       id="image"
                       name="image"
+                      accept="image/*"
                       onChange={(e) => {
-                        setSelectedImage(e.target.files?.[0]);
+                        handleOnImagePic(e.target.files?.[0]);
                         e.target.type = "text";
                         e.target.type = "file";
                       }}
@@ -202,7 +210,7 @@ export default function ProductFormDialog({
                     label="Price"
                     required
                     type="number"
-                    value={state.value}
+                    value={state.value || ""}
                     onChange={(e) => handleChange(Number(e.target.value))}
                     onBlur={handleBlur}
                     name={name}
@@ -219,7 +227,7 @@ export default function ProductFormDialog({
                     required
                     type="number"
                     className="flex-1"
-                    value={state.value}
+                    value={state.value || ""}
                     onChange={(e) => handleChange(Number(e.target.value))}
                     onBlur={handleBlur}
                     name={name}
