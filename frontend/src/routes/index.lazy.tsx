@@ -1,33 +1,37 @@
-import Formatter from '@app/lib/formatter'
-import DashboardApi from '@app/services/dashboard'
-import { createLazyFileRoute } from '@tanstack/react-router'
-import { useEffect, useState } from 'react'
-export const Route = createLazyFileRoute('/')({ component: RouteComponent })
+import PendingComponent from "@app/components/PendingComponent";
+import Formatter from "@app/lib/formatter";
+import DashboardApi from "@app/services/dashboard";
+import { useQuery } from "@tanstack/react-query";
+import { createLazyFileRoute } from "@tanstack/react-router";
+export const Route = createLazyFileRoute("/")({ component: RouteComponent });
 
 function RouteComponent() {
-  const [result, setResult] = useState<{
-    tax: number
-    netSales: number
-    revenue: number
-    averageOrder: number
-    orders: number
+  const {
+    data: result,
+    isLoading,
+    error,
+  } = useQuery<{
+    tax: number;
+    netSales: number;
+    revenue: number;
+    averageOrder: number;
+    orders: number;
     topSellingItems: Array<{
-      name: string
-      count: number
-    }>
+      name: string;
+      count: number;
+    }>;
   }>({
-    tax: 0,
-    netSales: 0,
-    revenue: 0,
-    averageOrder: 0,
-    orders: 0,
-    topSellingItems: [],
-  })
+    queryKey: ["dashboard"],
+    queryFn: DashboardApi.stats,
+  });
 
-  const fetchStats = () => DashboardApi.stats().then(setResult)
-  useEffect(() => {
-    fetchStats()
-  }, [])
+  if (isLoading) {
+    return <PendingComponent />;
+  }
+  if (error) return <>{error.message}</>;
+
+  if (!result) return "";
+
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 p-4 py-6 ">
       <div className="border bg-white rounded-2xl h-60 flex flex-col gap-2 w-full row-span-2 py-6  dash-card">
@@ -38,9 +42,7 @@ function RouteComponent() {
               {result.topSellingItems.map((item, i) => (
                 <tr key={i}>
                   <td className="py-1">{item.name}</td>
-                  <td className="w-0 text-gray-700 py-1 ">
-                    {item.count}
-                  </td>
+                  <td className="w-0 text-gray-700 py-1 ">{item.count}</td>
                 </tr>
               ))}
             </tbody>
@@ -79,5 +81,5 @@ function RouteComponent() {
         </span>
       </div>
     </div>
-  )
+  );
 }
