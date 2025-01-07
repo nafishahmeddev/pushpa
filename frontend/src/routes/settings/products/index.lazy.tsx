@@ -132,6 +132,7 @@ function RouteComponent() {
               header
             >
               <TableCell className="w-0">#</TableCell>
+              <TableCell className="w-0">Image</TableCell>
               <TableCell>Name</TableCell>
               <TableCell>Category</TableCell>
               <TableCell className="w-0">Tax</TableCell>
@@ -143,11 +144,11 @@ function RouteComponent() {
             {result.records.map((product, index: number) => (
               <TableRow key={`product-${product.id}`}>
                 <TableCell>{index + 1}</TableCell>
-                <TableCell>
+                <TableCell className="w-0">
                 <Image
                       src={uploadUrl(product.image)}
                       fallback="/placeholder-category.png"
-                      className="w-16 rounded-xl border aspect-square  object-cover bg-gray-100"
+                      className="w-16 h-16 min-h-16 min-w-16 max-w-16 max-h-16 rounded-xl border aspect-square  object-cover bg-gray-100"
                     />
                 </TableCell>
                 <TableCell>
