@@ -35,8 +35,8 @@ export default function OrderFormDialog({
     },
     onSubmit: async ({ value }) => {
       const promise = order
-        ? OrdersApi.updateOrder(order.id, value)
-        : OrdersApi.createOrder(value);
+        ? OrdersApi.updateOrder(order.id, value as Partial<IOrder>)
+        : OrdersApi.createOrder(value as Partial<IOrder>);
       return promise
         .then((res: IOrder) => {
           form.reset();
@@ -114,7 +114,11 @@ export default function OrderFormDialog({
               >
                 <option></option>
                 {tables.map((table) => (
-                  <option key={table.id} value={table.id} selected={state.value == table.id}>
+                  <option
+                    key={table.id}
+                    value={table.id}
+                    selected={state.value == table.id}
+                  >
                     {table.name}
                   </option>
                 ))}
