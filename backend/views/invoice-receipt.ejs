@@ -147,11 +147,13 @@
                 </tr>
             </table>
         </div>
+        <% if(order.kotList.length){%>
         <div style="margin: 8px 0; text-align: center;">
             <span>
                 Kot: <%= order.kotList.map(kot=>kot.tokenNo).join(",") %>
             </span>
         </div>
+        <% } %>
         <div style="margin: 8px 0; text-align: center;">
             <span>
                 ☺ Thank you visit again!
