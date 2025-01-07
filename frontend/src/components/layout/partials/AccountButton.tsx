@@ -9,7 +9,7 @@ export default function AccountButton() {
   const navigate = useNavigate();
   const [auth] = useAuthStore<AuthStateLoggedIn>()
   return (
-    <div className="px-2 h-full py-2 relative">
+    <div className="px-2 h-full aspect-square py-2 relative">
       <div className="bg-gray-200 rounded-full items-center flex p-0.5 gap-2 w-full h-full">
         <button
           className={`h-full aspect-square rounded-full bg-white border flex items-center justify-center `}

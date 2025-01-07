@@ -104,18 +104,18 @@ export default function MainLayout() {
   }
 
   return (
-    <div className="grid h-dvh grid-rows-[60px_1fr] bg-gray-100 ">
+    <div className="grid h-full w-full grid-rows-[60px_1fr] bg-gray-100">
       <div className="border-b h-full bg-white">
-        <div className="flex  gap-4 h-full">
-          <div className="logo italic flex h-full font-bold text-xl text-lime-800 px-4 py-3 items-center font-mono">{auth.user.restaurant?.name}</div>
+        <div className="flex  gap-4 h-full w-full">
+          <div className="logo italic flex h-full font-bold text-xl text-lime-800 px-4 py-3 items-center font-mono">
+            {auth.user.restaurant?.name}
+          </div>
           <MainNav items={getMenu(auth.user)} />
           <AccountButton />
         </div>
       </div>
-      <div className="h-full overflow-auto ">
-        <div className="h-full">
-          <Outlet />
-        </div>
+      <div className="h-full overflow-auto w-full">
+        <Outlet />
       </div>
     </div>
   );
