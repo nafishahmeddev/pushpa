@@ -36,6 +36,7 @@ export default function RouteComponent() {
   const [discountFormDialog, setFormDiscountDialog] = useState<{
     open: boolean;
     order?: IOrder;
+    cart?:CartUtil
   }>({ open: false });
 
   const {
@@ -409,7 +410,7 @@ export default function RouteComponent() {
                   <button
                     className="align-middle ml-2 text-lime-700 hover:opacity-50"
                     onClick={() =>
-                      setFormDiscountDialog({ open: true, order: order })
+                      setFormDiscountDialog({ open: true, order: order, cart: cartUtil })
                     }
                   >
                     <Icon icon="cuida:edit-outline" />
