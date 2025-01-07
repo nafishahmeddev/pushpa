@@ -283,7 +283,7 @@ export default function RouteComponent() {
           <Button
             className="bg-lime-500 border border-transparent text-white disabled:opacity-50 text-sm !px-2.5 h-full"
             onClick={onPlaceOrder}
-            disabled={[...placedItems, ...items].length == 0 || loading}
+            disabled={[...placedItems, ...items].length == 0 || loading || cartUtil.total < order.discount}
           >
             <Icon icon="fluent:money-16-regular" height={18} width={18} /> Pay &
             Complete
