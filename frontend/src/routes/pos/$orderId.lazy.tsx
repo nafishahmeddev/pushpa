@@ -36,7 +36,7 @@ export default function RouteComponent() {
   const [discountFormDialog, setFormDiscountDialog] = useState<{
     open: boolean;
     order?: IOrder;
-    cart?:CartUtil
+    cart?: CartUtil;
   }>({ open: false });
 
   const {
@@ -66,7 +66,7 @@ export default function RouteComponent() {
       ? (itm?.quantity ?? 0) + item.quantity
       : item.quantity;
     const _toast = toast.loading("Please wait..");
-    OrdersApi.modifyItem(orderId as string, item)
+    return OrdersApi.modifyItem(orderId as string, item)
       .then(() => {
         beep();
         if (_items.some((i) => i.productId == item.productId)) {
@@ -284,7 +284,11 @@ export default function RouteComponent() {
           <Button
             className="bg-lime-500 border border-transparent text-white disabled:opacity-50 text-sm !px-2.5 h-full"
             onClick={onPlaceOrder}
-            disabled={[...placedItems, ...items].length == 0 || loading || cartUtil.total < order.discount}
+            disabled={
+              [...placedItems, ...items].length == 0 ||
+              loading ||
+              cartUtil.total < order.discount
+            }
           >
             <Icon icon="fluent:money-16-regular" height={18} width={18} /> Pay &
             Complete
@@ -410,7 +414,11 @@ export default function RouteComponent() {
                   <button
                     className="align-middle ml-2 text-lime-700 hover:opacity-50"
                     onClick={() =>
-                      setFormDiscountDialog({ open: true, order: order, cart: cartUtil })
+                      setFormDiscountDialog({
+                        open: true,
+                        order: order,
+                        cart: cartUtil,
+                      })
                     }
                   >
                     <Icon icon="cuida:edit-outline" />
