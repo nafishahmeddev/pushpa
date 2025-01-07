@@ -224,7 +224,7 @@ export default function ProductFormDialog({
                 children={({ state, handleBlur, handleChange, name }) => (
                   <Input
                     label="Tax(%)"
-                    required
+                    // required
                     type="number"
                     className="flex-1"
                     value={state.value || ""}
