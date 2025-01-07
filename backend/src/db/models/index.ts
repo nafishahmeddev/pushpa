@@ -41,6 +41,7 @@ Product.belongsTo(ProductCategory, {
   targetKey: "id",
   foreignKey: "categoryId",
   as: "category",
+  onDelete:"CASCADE"
 });
 
 //location
@@ -60,6 +61,7 @@ Table.belongsTo(Location, {
   targetKey: "id",
   foreignKey: "locationId",
   as: "location",
+  onDelete:"CASCADE"
 });
 
 //Order

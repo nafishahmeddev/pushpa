@@ -54,6 +54,7 @@ Restaurant.init(
   {
     sequelize:sequelize,
     tableName: "Restaurants",
+    paranoid: true,
   }
 );
 

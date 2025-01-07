@@ -60,6 +60,7 @@ Table.init(
     {
         sequelize: sequelize,
         tableName: "Tables",
+        paranoid: true,
     }
 );
 

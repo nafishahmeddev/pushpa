@@ -52,6 +52,7 @@ Location.init(
     {
         sequelize: sequelize,
         tableName: "Locations",
+        paranoid: true,
     }
 );
 
