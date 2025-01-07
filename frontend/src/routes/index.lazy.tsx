@@ -36,7 +36,7 @@ function RouteComponent() {
             key={value}
             value={value}
             onClick={() => setTimeFrame(value)}
-            className={`px-4 py-2 rounded-xl text-sm ${timeFrame == value ? "bg-lime-500 text-white":"text-gray-600"}`}
+            className={`px-4 py-2 rounded-xl text-sm ${timeFrame == value ? "bg-lime-500 text-white" : "text-gray-600"}`}
           >
             {value}
           </button>
@@ -54,14 +54,23 @@ function RouteComponent() {
               <div className="px-5 flex-1 ">
                 <table className="w-full">
                   <tbody>
-                    {result.topSellingItems.map((item, i) => (
-                      <tr key={i}>
-                        <td className="py-1">{item.name}</td>
-                        <td className="w-0 text-gray-700 py-1 ">
-                          {item.count}
+                    {result.topSellingItems.length ? (
+                      result.topSellingItems.map((item, i) => (
+                        <tr key={i}>
+                          <td className="py-1">{item.name}</td>
+                          <td className="w-0 text-gray-700 py-1 ">
+                            {item.count}
+                          </td>
+                        </tr>
+                      ))
+                    ) : (
+                      <tr>
+                        <td className="py-1">
+                          No orders yet, but every great journey starts with a
+                          single step. Let’s make it happen! 🌟
                         </td>
                       </tr>
-                    ))}
+                    )}
                   </tbody>
                 </table>
               </div>
