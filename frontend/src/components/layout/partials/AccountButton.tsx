@@ -21,11 +21,9 @@ export default function AccountButton() {
         <div
           className={`${
             show
-              ? "visible opacity-100 top-0"
-              : "collapse opacity-60 top-[60px]"
-          } absolute top-full right-2 w-52 z-50 transition-all`}
-          onBlur={() => setShow(false)}
-          onMouseLeave={() => setShow(false)}
+              ? "visible top-full opacity-100"
+              : "collapse top-[70px] opacity-0"
+          } absolute right-2 w-52 z-50 transition-all`}
         >
           <div
             className={`border rounded-xl py-4 flex flex-col gap-3 bg-white mt-3`}
@@ -58,7 +56,7 @@ export default function AccountButton() {
         </div>
 
         <div
-          className={`fixed top-0 left-0  h-full w-full z-10 transition-all ${show ? "visible" : "collapse"}`}
+          className={`fixed top-0 left-0  h-full w-full z-40  ${show ? "visible" : "collapse"}`}
           onClick={() => setShow(false)}
         ></div>
       </div>
