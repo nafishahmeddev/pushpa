@@ -5,6 +5,7 @@ import { IUser, UserDesignation } from "@app/types/user";
 import { AuthStateLoggedIn, useAuthStore } from "@app/store/auth";
 import { Link, Outlet, useNavigate } from "@tanstack/react-router";
 import { useEffect } from "react";
+import NavButton from "./partials/NavButton";
 
 const getMenu = (user: IUser) => {
   if (user.designation == UserDesignation.Biller) {
@@ -107,6 +108,7 @@ export default function MainLayout() {
     <div className="grid h-full w-full grid-rows-[60px_1fr] bg-gray-100">
       <div className="border-b h-full bg-white">
         <div className="flex  gap-4 h-full w-full">
+          <NavButton/>
           <div className="logo italic flex h-full font-bold text-xl text-lime-800 px-4 py-3 items-center font-mono flex-1">
             {auth.user.restaurant?.name}
           </div>
