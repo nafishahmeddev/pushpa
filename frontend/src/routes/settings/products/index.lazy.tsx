@@ -124,7 +124,7 @@ function RouteComponent() {
           </Button>
         </form>
       </div>
-      <div className="h-full bg-white border  overflow-x-auto overflow-hidden">
+      <div className="h-full bg-white border rounded-xl overflow-x-auto overflow-hidden">
         <Table bordered>
           <TableHead>
             <TableRow
@@ -143,7 +143,11 @@ function RouteComponent() {
           <tbody>
             {result.records.map((product, index: number) => (
               <TableRow key={`product-${product.id}`}>
-                <TableCell>{index + 1}</TableCell>
+                <TableCell>
+                  {(result.page - 1) * form.state.values.query.limit +
+                    index +
+                    1}
+                </TableCell>
                 <TableCell className="w-0">
                   <Image
                     src={uploadUrl(product.image)}
@@ -163,7 +167,7 @@ function RouteComponent() {
                 <TableCell className="font-mono">
                   {Formatter.money(product.price)}
                 </TableCell>
-                <TableCell>
+                <TableCell className="bg-white sticky right-0">
                   <div className="flex flex-nowrap gap-2 text-gray-600">
                     <button
                       onClick={() =>
