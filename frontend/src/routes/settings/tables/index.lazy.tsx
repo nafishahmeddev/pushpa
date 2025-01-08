@@ -107,16 +107,10 @@ function RouteComponent() {
             )}
           />
 
-          <Button
-            className="bg-lime-500 text-white"
-            type="submit"
-          >
+          <Button className="bg-lime-500 text-white" type="submit">
             Search
           </Button>
-          <Button
-            className="bg-gray-300"
-            type="reset"
-          >
+          <Button className="bg-gray-300" type="reset">
             Reset
           </Button>
           <Button
@@ -128,7 +122,7 @@ function RouteComponent() {
           </Button>
         </form>
       </div>
-      <div className="bg-white border rounded-xl overflow-hidden">
+      <div className="bg-white border rounded-xl overflow-x-auto overflow-hidden">
         <Table bordered>
           <TableHead>
             <TableRow

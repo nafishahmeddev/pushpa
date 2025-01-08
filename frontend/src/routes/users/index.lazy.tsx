@@ -80,7 +80,7 @@ export default function RouteComponent() {
         </Button>
       </div>
 
-      <div className="h-full bg-white border rounded-xl overflow-hidden">
+      <div className="h-full bg-white border rounded-xl  overflow-x-auto overflow-hidden">
         <Table bordered>
           <TableHead>
             <TableRow

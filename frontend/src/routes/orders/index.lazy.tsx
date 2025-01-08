@@ -161,7 +161,7 @@ function RouteComponent() {
           </form>
         </div>
 
-        <div className="bg-white border rounded-xl overflow-hidden relative">
+        <div className="bg-white border rounded-xl  overflow-x-auto overflow-hidden relative">
           <Table bordered>
             <TableHead>
               <TableRow className="sticky top-0 left-0 z-10" header>
@@ -172,7 +172,7 @@ function RouteComponent() {
                 <TableCell>Type</TableCell>
                 <TableCell>Table</TableCell>
                 <TableCell>User</TableCell>
-              
+
                 <TableCell className="text-end w-0">Kot</TableCell>
                 <TableCell className="w-0 text-end">Discount</TableCell>
                 <TableCell className="text-end w-0">Created</TableCell>

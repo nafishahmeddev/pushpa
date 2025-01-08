@@ -1,45 +1,45 @@
-import CategoriesApi from '@app/services/categories'
-import { ICategory } from '@app/types/product'
-import { useEffect, useState } from 'react'
-import CategoryFormDialog from '../../../components/form-dialogs/CategoryFormDialog'
-import { Icon } from '@iconify/react'
+import CategoriesApi from "@app/services/categories";
+import { ICategory } from "@app/types/product";
+import { useEffect, useState } from "react";
+import CategoryFormDialog from "../../../components/form-dialogs/CategoryFormDialog";
+import { Icon } from "@iconify/react";
 import Table, {
   TableBody,
   TableCell,
   TableHead,
   TableRow,
-} from '@app/components/ui/table/Table'
-import { createLazyFileRoute } from '@tanstack/react-router'
-import Button from '@app/components/ui/form/button'
-export const Route = createLazyFileRoute('/settings/categories/')({
+} from "@app/components/ui/table/Table";
+import { createLazyFileRoute } from "@tanstack/react-router";
+import Button from "@app/components/ui/form/button";
+export const Route = createLazyFileRoute("/settings/categories/")({
   component: RouteComponent,
-})
+});
 function RouteComponent() {
-  const [categories, setCategories] = useState<Array<ICategory>>([])
-  const refresh = () => CategoriesApi.all().then(setCategories)
+  const [categories, setCategories] = useState<Array<ICategory>>([]);
+  const refresh = () => CategoriesApi.all().then(setCategories);
 
   const [categoryForm, setCategoryForm] = useState<{
-    category: ICategory | undefined
-    open: boolean
-  }>({ category: undefined, open: false })
+    category: ICategory | undefined;
+    open: boolean;
+  }>({ category: undefined, open: false });
 
   const handleOnDelete = (category: ICategory) => {
-    if (confirm('Are you sure?')) {
-      CategoriesApi.delete(category.id).then(refresh)
+    if (confirm("Are you sure?")) {
+      CategoriesApi.delete(category.id).then(refresh);
     }
-  }
+  };
 
   useEffect(() => {
-    refresh()
-  }, [])
+    refresh();
+  }, []);
   return (
     <div className=" p-4 flex flex-col gap-5">
       <CategoryFormDialog
         {...categoryForm}
         onReset={() => setCategoryForm({ category: undefined, open: false })}
         onSave={async () => {
-          setCategoryForm({ category: undefined, open: false })
-          refresh()
+          setCategoryForm({ category: undefined, open: false });
+          refresh();
         }}
       />
 
@@ -52,7 +52,7 @@ function RouteComponent() {
           + New
         </Button>
       </div>
-      <div className="bg-white border rounded-xl overflow-hidden">
+      <div className="bg-white border rounded-xl  overflow-x-auto overflow-hidden">
         <Table bordered>
           <TableHead>
             <TableRow className="sticky top-0 left-0 bg-gray-100">
@@ -91,5 +91,5 @@ function RouteComponent() {
         </Table>
       </div>
     </div>
-  )
+  );
 }

@@ -14,7 +14,7 @@ import Input from "@app/components/ui/form/input";
 import { createLazyFileRoute } from "@tanstack/react-router";
 import { useForm } from "@tanstack/react-form";
 import Button from "@app/components/ui/form/button";
-import Image from 'rc-image';
+import Image from "rc-image";
 import { uploadUrl } from "@app/lib/upload";
 
 type FormType = {
@@ -124,7 +124,7 @@ function RouteComponent() {
           </Button>
         </form>
       </div>
-      <div className="h-full bg-white border rounded-xl">
+      <div className="h-full bg-white border  overflow-x-auto overflow-hidden">
         <Table bordered>
           <TableHead>
             <TableRow
@@ -145,11 +145,11 @@ function RouteComponent() {
               <TableRow key={`product-${product.id}`}>
                 <TableCell>{index + 1}</TableCell>
                 <TableCell className="w-0">
-                <Image
-                      src={uploadUrl(product.image)}
-                      fallback="/placeholder-category.png"
-                      className="w-16 h-16 min-h-16 min-w-16 max-w-16 max-h-16 rounded-xl border aspect-square  object-cover bg-gray-100"
-                    />
+                  <Image
+                    src={uploadUrl(product.image)}
+                    fallback="/placeholder-category.png"
+                    className="w-16 h-16 min-h-16 min-w-16 max-w-16 max-h-16 rounded-xl border aspect-square  object-cover bg-gray-100"
+                  />
                 </TableCell>
                 <TableCell>
                   {product.name}
