@@ -61,8 +61,8 @@ export function RootComponent() {
         onSave={handleOnNew}
         onReset={() => setNewOrderModal({ open: false })}
       />
-      <div className="h-full grid md:grid-cols-[120px_1fr] m-auto p-4 gap-4">
-        <div className="flex md:flex-col h-full gap-2 ">
+      <div className="h-full grid grid-cols-[120px_1fr] m-auto p-4 gap-4">
+        <div className="flex flex-col h-full gap-2 ">
           {orders.map((order) => (
             <div key={`order-item-${order.id}`} className="relative">
               <Link
@@ -101,7 +101,7 @@ export function RootComponent() {
             <Icon icon="gala:add" /> New Order
           </button>
         </div>
-        <div className="h-full grid md:grid-cols-[auto_1fr] md:grid-rows-[1fr] grid-rows-[1fr_1fr]  m-auto w-full overflow-auto gap-4 select-none">
+        <div className="h-full grid grid-cols-[auto_1fr]  m-auto w-full overflow-auto gap-4 select-none">
           <Outlet />
         </div>
       </div>

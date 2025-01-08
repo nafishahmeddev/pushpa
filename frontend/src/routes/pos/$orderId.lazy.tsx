@@ -251,51 +251,7 @@ export default function RouteComponent() {
           }
         />
       </div>
-      <div className="h-full overflow-auto grid grid-rows-[auto_1fr_auto] w-full ">
-        <div className="flex gap-1 pb-2 h-10 items-stretch">
-          <div className="flex-1"></div>
-          {placedItems.length > 0 && (
-            <Button
-              className="bg-white border text-red-600  disabled:opacity-50 text-sm !px-2.5 h-full"
-              onClick={onCancel}
-              disabled={loading}
-              ask
-            >
-              <Icon icon="ep:remove" height={18} width={18} /> Cancel Order
-            </Button>
-          )}
-
-          {order?.status == OrderStatus.Draft && !items.length && (
-            <Button
-              className="bg-white border text-red-600  disabled:opacity-50 text-sm !px-2.5 h-full"
-              onClick={onDelete}
-              disabled={loading}
-              ask
-            >
-              <Icon icon="ep:remove" height={18} width={18} /> Delete Order
-            </Button>
-          )}
-          <Button
-            className="bg-white border text-gray-600 disabled:opacity-50 text-sm !px-2.5 h-full"
-            onClick={onCreateKot}
-            disabled={items.length == 0 || loading}
-          >
-            <Icon icon="hugeicons:kitchen-utensils" height={18} width={18} />{" "}
-            Send to kitchen
-          </Button>
-          <Button
-            className="bg-lime-500 border border-transparent text-white disabled:opacity-50 text-sm !px-2.5 h-full"
-            onClick={onPlaceOrder}
-            disabled={
-              [...placedItems, ...items].length == 0 ||
-              loading ||
-              cartUtil.total < order.discount
-            }
-          >
-            <Icon icon="fluent:money-16-regular" height={18} width={18} /> Pay &
-            Complete
-          </Button>
-        </div>
+      <div className="h-full overflow-auto grid grid-rows-[1fr_auto_auto] w-full ">
         <ScrollView className="h-full w-full overflow-auto rounded-t-xl border border-b-0 bg-white">
           <table className="w-full ">
             <thead>
@@ -440,6 +396,50 @@ export default function RouteComponent() {
               </tr>
             </tfoot>
           </table>
+        </div>
+        <div className="flex gap-1 pt-2 h-10 items-stretch">
+          <div className="flex-1"></div>
+          {placedItems.length > 0 && (
+            <Button
+              className="bg-white border text-red-600  disabled:opacity-50 text-sm !px-2.5 h-full"
+              onClick={onCancel}
+              disabled={loading}
+              ask
+            >
+              <Icon icon="ep:remove" height={18} width={18} /> Cancel Order
+            </Button>
+          )}
+
+          {order?.status == OrderStatus.Draft && !items.length && (
+            <Button
+              className="bg-white border text-red-600  disabled:opacity-50 text-sm !px-2.5 h-full"
+              onClick={onDelete}
+              disabled={loading}
+              ask
+            >
+              <Icon icon="ep:remove" height={18} width={18} /> Delete Order
+            </Button>
+          )}
+          <Button
+            className="bg-white border text-gray-600 disabled:opacity-50 text-sm !px-2.5 h-full"
+            onClick={onCreateKot}
+            disabled={items.length == 0 || loading}
+          >
+            <Icon icon="hugeicons:kitchen-utensils" height={18} width={18} />{" "}
+            Send to kitchen
+          </Button>
+          <Button
+            className="bg-lime-500 border border-transparent text-white disabled:opacity-50 text-sm !px-2.5 h-full"
+            onClick={onPlaceOrder}
+            disabled={
+              [...placedItems, ...items].length == 0 ||
+              loading ||
+              cartUtil.total < order.discount
+            }
+          >
+            <Icon icon="fluent:money-16-regular" height={18} width={18} /> Pay &
+            Complete
+          </Button>
         </div>
       </div>
     </React.Fragment>
