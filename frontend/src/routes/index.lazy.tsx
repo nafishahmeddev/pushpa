@@ -1,4 +1,3 @@
-import PendingComponent from "@app/components/PendingComponent";
 import Formatter from "@app/lib/formatter";
 import DashboardApi from "@app/services/dashboard";
 import { TimeFrame } from "@app/types/enums";
@@ -42,7 +41,18 @@ function RouteComponent() {
           </button>
         ))}
       </div>
-      {isLoading && <PendingComponent />}
+      {isLoading && (
+        <div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+            <div className="border bg-white rounded-2xl h-60 flex flex-col gap-2 w-full row-span-2 py-6 dash-card shimmer" />
+            <div className="border bg-white rounded-2xl h-28 p-5 flex flex-col gap-2 w-full dash-card shimmer" />
+            <div className="border bg-white rounded-2xl h-28 p-5 flex flex-col gap-2 w-full dash-card shimmer" />
+            <div className="border bg-white rounded-2xl h-28 p-5 flex flex-col gap-2 w-full dash-card shimmer" />
+            <div className="border bg-white rounded-2xl h-28 p-5 flex flex-col gap-2 w-full dash-card shimmer" />
+            <div className="border bg-white rounded-2xl h-28 p-5 flex flex-col gap-2 w-full dash-card shimmer" />
+          </div>
+        </div>
+      )}
 
       {!isLoading && !!error && <>{error.message}</>}
 
