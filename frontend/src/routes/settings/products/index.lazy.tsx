@@ -58,7 +58,7 @@ function SortButton({ field, order, onPress, children }: SortButtonProps) {
       onClick={() => onPress(nextSort as SortType)}
     >
       {children}
-      <Icon icon={icon} height={22} width={22} className={color} />
+      <Icon icon={icon} height={20} width={20} className={color} />
     </button>
   );
 }
