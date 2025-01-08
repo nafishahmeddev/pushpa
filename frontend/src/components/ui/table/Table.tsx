@@ -75,7 +75,7 @@ export default function Table({
 }) {
   return (
     <TableContext.Provider value={{ size, bordered }}>
-      <table {...props} className={["w-full", props.className].join(" ")} />
+      <table {...props} className={["min-w-full", props.className].join(" ")} />
     </TableContext.Provider>
   );
 }

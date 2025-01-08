@@ -26,7 +26,7 @@ function RouteComponent() {
   });
   return (
     <form
-      className="h-full grid grid-cols-[400px_1fr] gap-6 overflow-auto"
+      className="h-full grid md:grid-cols-[400px_1fr] gap-6 overflow-auto"
       onSubmit={(e) => {
         e.preventDefault();
         e.stopPropagation();
@@ -38,128 +38,128 @@ function RouteComponent() {
           <h2 className="text-2xl">Store details</h2>
         </div>
 
-        <div className="h-full overflow-auto">
-            <div className="flex flex-col gap-5 px-6 pb-6">
-              <form.Field
-                name="name"
-                children={({ state, handleBlur, handleChange, name }) => (
-                  <Input
-                    label="Store name"
-                    type="text"
-                    value={state.value}
-                    onChange={(e) => handleChange(e.target.value)}
-                    onBlur={handleBlur}
-                    name={name}
-                    error={state.meta.errors.join(" ")}
-                    touched={state.meta.isTouched}
-                  />
-                )}
-              />
-
-              <form.Field
-                name="address"
-                children={({ state, handleBlur, handleChange, name }) => (
-                  <Textarea
-                    label="Store Address"
-                    value={state.value}
-                    onChange={(e) => handleChange(e.target.value)}
-                    onBlur={handleBlur}
-                    name={name}
-                    error={state.meta.errors.join(" ")}
-                    touched={state.meta.isTouched}
-                  />
-                )}
-              />
-
-              <form.Field
-                name="phone"
-                children={({ state, handleBlur, handleChange, name }) => (
-                  <Input
-                    label="Phone"
-                    type="text"
-                    value={state.value}
-                    onChange={(e) => handleChange(e.target.value)}
-                    onBlur={handleBlur}
-                    name={name}
-                    error={state.meta.errors.join(" ")}
-                    touched={state.meta.isTouched}
-                  />
-                )}
-              />
-
-              <form.Field
-                name="email"
-                children={({ state, handleBlur, handleChange, name }) => (
-                  <Input
-                    label="Email"
-                    type="email"
-                    value={state.value}
-                    onChange={(e) => handleChange(e.target.value)}
-                    onBlur={handleBlur}
-                    name={name}
-                    error={state.meta.errors.join(" ")}
-                    touched={state.meta.isTouched}
-                  />
-                )}
-              />
-
-              <div className=" gap-6 grid grid-cols-2">
-                <form.Field
-                  name="country"
-                  children={({ state, handleBlur, handleChange, name }) => (
-                    <Select
-                      label="Country"
-                      value={state.value}
-                      onChange={(e) => handleChange(e.target.value)}
-                      onBlur={handleBlur}
-                      name={name}
-                      error={state.meta.errors.join(" ")}
-                      touched={state.meta.isTouched}
-                    >
-                      <option value="IN">India</option>
-                      <option value="US">United States</option>
-                      <option value="UK">United Kingdom</option>
-                    </Select>
-                  )}
+        <div className="">
+          <div className="flex flex-col gap-5 px-6 pb-6">
+            <form.Field
+              name="name"
+              children={({ state, handleBlur, handleChange, name }) => (
+                <Input
+                  label="Store name"
+                  type="text"
+                  value={state.value}
+                  onChange={(e) => handleChange(e.target.value)}
+                  onBlur={handleBlur}
+                  name={name}
+                  error={state.meta.errors.join(" ")}
+                  touched={state.meta.isTouched}
                 />
+              )}
+            />
 
-                <form.Field
-                  name="currency"
-                  children={({ state, handleBlur, handleChange, name }) => (
-                    <Select
-                      label="Currency"
-                      value={state.value}
-                      onChange={(e) => handleChange(e.target.value)}
-                      onBlur={handleBlur}
-                      name={name}
-                      error={state.meta.errors.join(" ")}
-                      touched={state.meta.isTouched}
-                    >
-                      <option value="INR">Indian Rupee</option>
-                      <option value="USD">US Dollar</option>
-                      <option value="GBP">Pound</option>
-                    </Select>
-                  )}
+            <form.Field
+              name="address"
+              children={({ state, handleBlur, handleChange, name }) => (
+                <Textarea
+                  label="Store Address"
+                  value={state.value}
+                  onChange={(e) => handleChange(e.target.value)}
+                  onBlur={handleBlur}
+                  name={name}
+                  error={state.meta.errors.join(" ")}
+                  touched={state.meta.isTouched}
                 />
-              </div>
-              <form.Subscribe
-                children={({ isSubmitting, canSubmit }) => (
-                  <div className="flex justify-end mt-3">
-                    <Button
-                      className="bg-lime-600 text-white"
-                      disabled={!canSubmit}
-                      loading={isSubmitting}
-                    >
-                      Save Details
-                    </Button>
-                  </div>
+              )}
+            />
+
+            <form.Field
+              name="phone"
+              children={({ state, handleBlur, handleChange, name }) => (
+                <Input
+                  label="Phone"
+                  type="text"
+                  value={state.value}
+                  onChange={(e) => handleChange(e.target.value)}
+                  onBlur={handleBlur}
+                  name={name}
+                  error={state.meta.errors.join(" ")}
+                  touched={state.meta.isTouched}
+                />
+              )}
+            />
+
+            <form.Field
+              name="email"
+              children={({ state, handleBlur, handleChange, name }) => (
+                <Input
+                  label="Email"
+                  type="email"
+                  value={state.value}
+                  onChange={(e) => handleChange(e.target.value)}
+                  onBlur={handleBlur}
+                  name={name}
+                  error={state.meta.errors.join(" ")}
+                  touched={state.meta.isTouched}
+                />
+              )}
+            />
+
+            <div className=" gap-6 grid grid-cols-2">
+              <form.Field
+                name="country"
+                children={({ state, handleBlur, handleChange, name }) => (
+                  <Select
+                    label="Country"
+                    value={state.value}
+                    onChange={(e) => handleChange(e.target.value)}
+                    onBlur={handleBlur}
+                    name={name}
+                    error={state.meta.errors.join(" ")}
+                    touched={state.meta.isTouched}
+                  >
+                    <option value="IN">India</option>
+                    <option value="US">United States</option>
+                    <option value="UK">United Kingdom</option>
+                  </Select>
+                )}
+              />
+
+              <form.Field
+                name="currency"
+                children={({ state, handleBlur, handleChange, name }) => (
+                  <Select
+                    label="Currency"
+                    value={state.value}
+                    onChange={(e) => handleChange(e.target.value)}
+                    onBlur={handleBlur}
+                    name={name}
+                    error={state.meta.errors.join(" ")}
+                    touched={state.meta.isTouched}
+                  >
+                    <option value="INR">Indian Rupee</option>
+                    <option value="USD">US Dollar</option>
+                    <option value="GBP">Pound</option>
+                  </Select>
                 )}
               />
             </div>
+            <form.Subscribe
+              children={({ isSubmitting, canSubmit }) => (
+                <div className="flex justify-end mt-3">
+                  <Button
+                    className="bg-lime-600 text-white"
+                    disabled={!canSubmit}
+                    loading={isSubmitting}
+                  >
+                    Save Details
+                  </Button>
+                </div>
+              )}
+            />
+          </div>
         </div>
       </div>
 
-      <div className="flex items-center justify-center p-10">
+      <div className="items-center justify-center p-10 md:flex hidden">
         <img src="/scene.png" className="w-full" />
       </div>
     </form>
