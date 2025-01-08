@@ -78,7 +78,7 @@ function RouteComponent() {
         name: "",
       },
       query: { page: 1, limit: 20 },
-      order: ["name", "DESC"],
+      order: ["name", "ASC"],
     },
     onSubmit: async ({ value, formApi }) => {
       return ProductsApi.paginate(
