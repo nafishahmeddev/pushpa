@@ -17,6 +17,13 @@ Restaurant.hasMany(ProductCategory, {
   as: "categories",
 });
 
+//restaurant associations
+Restaurant.belongsTo(User, {
+  targetKey: "id",
+  foreignKey: "ownerId",
+  as: "admin",
+});
+
 Sequence.belongsTo(Restaurant, {
   targetKey: "id",
   foreignKey: "restaurantId",

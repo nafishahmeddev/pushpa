@@ -1,8 +1,10 @@
 import { IRestaurant } from "./restaurant"
 
 export enum UserDesignation {
+    Owner = "Owner",
     Admin = "Admin",
-    Biller = "Biller"
+    Biller = "Biller",
+    Service = "Service"
 }
 
 export type IUser = {

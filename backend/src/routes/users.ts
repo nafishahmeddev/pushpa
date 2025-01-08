@@ -1,24 +1,11 @@
 
-import { User } from "@app/db/models";
+import { Restaurant, User } from "@app/db/models";
 import { IRequest, IResponse } from "@app/interfaces/vendors/express";
 import { Router } from "express";
 import { WhereOptions, InferAttributes, Op } from "sequelize";
 import bcrypt from "bcrypt";
 const UsersRouter = Router();
 
-UsersRouter.get("/", async (req: IRequest, res: IResponse) => {
-    const user = await User.findOne({ where: { email: "nafish.ahmed.dev@gmail.com" } });
-    if (!user) {
-        await User.create({
-            name: "Nafish Ahmed",
-            email: "nafish.ahmed.dev@gmail.com",
-            password: bcrypt.hashSync("12345678", 12)
-        })
-    }
-    res.json({
-        message: "Successful"
-    })
-})
 
 UsersRouter.post("/paginate", async (req: IRequest, res: IResponse) => {
     const page: number = Number(req.query.page || 1);
@@ -102,6 +89,13 @@ UsersRouter.put("/:userId", async (req: IRequest, res: IResponse) => {
 
 UsersRouter.delete("/:userId", async (req: IRequest, res: IResponse) => {
     const userId = req.params.userId;
+
+    if (await Restaurant.findOne({ where: { ownerId: userId } })) {
+        res.status(404).json({
+            message: "Restaurant owner cannot be deleted."
+        });
+        return;
+    }
     const user = await User.destroy({
         where: {
             id: userId
@@ -109,7 +103,7 @@ UsersRouter.delete("/:userId", async (req: IRequest, res: IResponse) => {
     });
     if (!user) {
         res.status(404).json({
-            message: "Category not found..."
+            message: "User not found..."
         });
         return;
     }

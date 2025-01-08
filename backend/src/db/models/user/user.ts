@@ -12,6 +12,13 @@ import {
 import { Restaurant } from "@app/db/models/restaurant/restaurant";
 import { sequelize } from "@app/db/conn";
 
+enum UserDesignation {
+    Owner = "Owner",
+    Admin = "Admin",
+    Biller = "Biller",
+    Service = "Service"
+}
+
 class User extends Model<
     InferAttributes<User, { omit: "restaurant" }>,
     InferCreationAttributes<User, { omit: "restaurant" }>
@@ -20,7 +27,7 @@ class User extends Model<
     declare name: string;
     declare email: string;
     declare phone: CreationOptional<string>;
-    declare designation: CreationOptional<string>;
+    declare designation: UserDesignation;
     declare password: string;
     declare restaurantId: ForeignKey<Restaurant["id"]>;
     declare permissions: CreationOptional<Array<string>>;
@@ -47,7 +54,10 @@ User.init(
         },
         email: DataTypes.STRING,
         phone: DataTypes.STRING,
-        designation: DataTypes.STRING,
+        designation: {
+            type: DataTypes.ENUM,
+            values: Object.values(UserDesignation),
+        },
         password: DataTypes.STRING,
         name: DataTypes.STRING,
         permissions: {

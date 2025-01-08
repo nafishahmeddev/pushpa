@@ -1,5 +1,4 @@
 import {
-  Association,
   DataTypes,
   Model,
   InferAttributes,
@@ -7,9 +6,11 @@ import {
   CreationOptional,
   NonAttribute,
   UUIDV4,
+  ForeignKey,
 } from "sequelize";
 import { ProductCategory } from "../product/product-category";
 import { sequelize } from "@app/db/conn";
+import { User } from "../user/user";
 
 class Restaurant extends Model<
   InferAttributes<Restaurant, { omit: "categories" }>,
@@ -22,15 +23,14 @@ class Restaurant extends Model<
   declare email: string;
   declare currency: string;
   declare country: string;
+  declare ownerId: ForeignKey<User["id"]>;
 
   declare createdAt: CreationOptional<Date>;
   declare updatedAt: CreationOptional<Date>;
 
   declare categories?: NonAttribute<ProductCategory[]>;
+  declare admin?: NonAttribute<User>;
 
-  declare static associations: {
-    categories: Association<Restaurant, ProductCategory>;
-  };
 }
 
 Restaurant.init(
@@ -52,7 +52,7 @@ Restaurant.init(
     updatedAt: DataTypes.DATE,
   },
   {
-    sequelize:sequelize,
+    sequelize: sequelize,
     tableName: "Restaurants",
     paranoid: true,
   }

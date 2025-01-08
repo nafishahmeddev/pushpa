@@ -3,7 +3,7 @@ import Button from "@app/components/ui/form/button";
 import Input from "@app/components/ui/form/input";
 import Select from "@app/components/ui/form/select";
 import UsersApi from "@app/services/users";
-import { IUser } from "@app/types/user";
+import { IUser, UserDesignation } from "@app/types/user";
 import { useForm } from "@tanstack/react-form";
 import { useEffect } from "react";
 import toast from "react-hot-toast";
@@ -63,11 +63,14 @@ export default function UserForm({
 
   return (
     <Dialog open={open} onClose={onReset}>
-      <form className="p-6" onSubmit={(e)=>{
+      <form
+        className="p-6"
+        onSubmit={(e) => {
           e.preventDefault();
           e.stopPropagation();
           form.handleSubmit();
-      }}>
+        }}
+      >
         <h3 className="text-xl">{user ? "Update" : "Create"} User</h3>
         <fieldset className="block w-full">
           <div className="flex flex-col gap-4 w-full py-4">
@@ -134,11 +137,17 @@ export default function UserForm({
                   name={name}
                   error={state.meta.errors.join(" ")}
                   touched={state.meta.isTouched}
+                  disabled={state.value == UserDesignation.Owner}
                 >
                   <option value=""></option>
-                  <option>Admin</option>
-                  <option>Biller</option>
-                  <option>Service</option>
+                  {Object.values(UserDesignation).map((designation) => (
+                    <option
+                      key={designation}
+                      disabled={designation == UserDesignation.Owner}
+                    >
+                      {designation}
+                    </option>
+                  ))}
                 </Select>
               )}
             />
