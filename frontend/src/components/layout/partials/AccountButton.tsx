@@ -7,7 +7,7 @@ import { useNavigate } from "@tanstack/react-router";
 export default function AccountButton() {
   const [show, setShow] = useState(false);
   const navigate = useNavigate();
-  const [auth] = useAuthStore<AuthStateLoggedIn>()
+  const [auth] = useAuthStore<AuthStateLoggedIn>();
   return (
     <div className="px-2 h-full aspect-square py-2 relative">
       <div className="bg-gray-200 rounded-full items-center flex p-0.5 gap-2 w-full h-full">
@@ -20,8 +20,10 @@ export default function AccountButton() {
 
         <div
           className={`${
-            show ? "visible" : "collapse"
-          } absolute top-full right-2 w-52 z-50 `}
+            show
+              ? "visible opacity-100 top-0"
+              : "collapse opacity-60 top-[60px]"
+          } absolute top-full right-2 w-52 z-50 transition-all`}
           onBlur={() => setShow(false)}
           onMouseLeave={() => setShow(false)}
         >
@@ -44,7 +46,7 @@ export default function AccountButton() {
                 className=" text-red-700  hover:opacity-50 px-3 py-2 flex gap-2 items-center"
                 onClick={() => {
                   AuthApi.logout().then(() => {
-                    navigate({to:"/"});
+                    navigate({ to: "/" });
                   });
                 }}
               >
@@ -54,6 +56,11 @@ export default function AccountButton() {
             </div>
           </div>
         </div>
+
+        <div
+          className={`fixed top-0 left-0  h-full w-full z-10 transition-all ${show ? "visible" : "collapse"}`}
+          onClick={() => setShow(false)}
+        ></div>
       </div>
     </div>
   );
