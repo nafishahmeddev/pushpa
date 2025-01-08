@@ -63,7 +63,7 @@ export default function RouteComponent() {
   }, [pathname]);
   return (
     <div className="h-full grid grid-cols-[1fr] grid-rows-[auto_1fr] md:grid-cols-[auto_1fr] md:grid-rows-[1fr]">
-      <div className="bg-white border-b  md:w-[200px] overflow-x-auto md:overflow-x-visible md:border-0 md:border-e">
+      <div className="bg-white border-b  md:w-[200px] overflow-x-auto md:overflow-x-visible md:border-0 md:border-e no-scrollbar">
         <div className="flex-1 items-end">
           <ul className=" flex md:py-2 md:flex-col md:gap-1">
             {items.map((item, index) => (
