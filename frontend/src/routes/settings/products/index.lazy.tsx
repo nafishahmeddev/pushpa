@@ -38,7 +38,7 @@ interface SortButtonProps extends React.ComponentProps<"button"> {
 function SortButton({ field, order, onPress, children }: SortButtonProps) {
   const [sortField, sort] = order;
   let icon = "typcn:arrow-sorted-up";
-  const classNames = ["align-middle flex items-center gap-2"];
+  const classNames = ["align-middle flex items-center justify-between gap-3"];
   let color = "";
   let nextSort = "ASC";
   if (field == sortField) {
