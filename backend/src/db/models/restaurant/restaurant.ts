@@ -23,7 +23,6 @@ class Restaurant extends Model<
   declare email: string;
   declare currency: string;
   declare country: string;
-  declare ownerId: ForeignKey<User["id"]>;
 
   declare createdAt: CreationOptional<Date>;
   declare updatedAt: CreationOptional<Date>;

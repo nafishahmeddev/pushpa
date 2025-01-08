@@ -4,6 +4,7 @@ import { IRequest, IResponse } from "@app/interfaces/vendors/express";
 import { Router } from "express";
 import { WhereOptions, InferAttributes, Op } from "sequelize";
 import bcrypt from "bcrypt";
+import { UserDesignation } from "@app/db/models/user/user";
 const UsersRouter = Router();
 
 
@@ -89,16 +90,10 @@ UsersRouter.put("/:userId", async (req: IRequest, res: IResponse) => {
 
 UsersRouter.delete("/:userId", async (req: IRequest, res: IResponse) => {
     const userId = req.params.userId;
-
-    if (await Restaurant.findOne({ where: { ownerId: userId } })) {
-        res.status(404).json({
-            message: "Restaurant owner cannot be deleted."
-        });
-        return;
-    }
     const user = await User.destroy({
         where: {
-            id: userId
+            id: userId,
+            designation: { [Op.ne]: UserDesignation.Owner }
         }
     });
     if (!user) {

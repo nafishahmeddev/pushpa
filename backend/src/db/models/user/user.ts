@@ -12,7 +12,7 @@ import {
 import { Restaurant } from "@app/db/models/restaurant/restaurant";
 import { sequelize } from "@app/db/conn";
 
-enum UserDesignation {
+export enum UserDesignation {
     Owner = "Owner",
     Admin = "Admin",
     Biller = "Biller",
