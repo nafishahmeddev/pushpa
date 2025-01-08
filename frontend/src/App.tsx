@@ -13,7 +13,10 @@ function App() {
   }, []);
   return (
     <QueryClientProvider client={client}>
-      <RouterProvider router={router} defaultPendingComponent={PendingComponent} />
+      <RouterProvider
+        router={router}
+        defaultPendingComponent={PendingComponent}
+      />
       <Toaster />
       <Suspense>
         <ReactQueryDevtools initialIsOpen={false} />
