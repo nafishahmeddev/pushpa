@@ -68,7 +68,7 @@ function RouteComponent() {
                       result.topSellingItems.map((item, i) => (
                         <tr key={i}>
                           <td className="py-1">{item.name}</td>
-                          <td className="w-0 text-gray-700 py-1 ">
+                          <td className="w-0 text-gray-700 py-1 font-semibold">
                             {item.count}
                           </td>
                         </tr>
