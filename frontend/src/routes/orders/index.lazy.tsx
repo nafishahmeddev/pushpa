@@ -2,10 +2,6 @@ import React, { useEffect, useState } from "react";
 import { Icon } from "@iconify/react";
 import Formatter from "@app/lib/formatter";
 import OrdersApi from "@app/services/orders";
-import {
-  OrderReceiptDialog,
-  OrderReceiptDialogProps,
-} from "@app/components/invoice/OrderReceiptDialog";
 import Table, {
   TableBody,
   TableCell,
@@ -74,10 +70,6 @@ function RouteComponent() {
     page: 0,
     records: [],
   });
-  const [oderDetailsDialog, setOderDetailsDialog] =
-    useState<OrderReceiptDialogProps>({
-      open: false,
-    });
 
   const handleOnDetails = (invoiceId: string, print: boolean = false) => {
     const w = window.open(
@@ -104,10 +96,6 @@ function RouteComponent() {
   }, [query]);
   return (
     <React.Fragment>
-      <OrderReceiptDialog
-        {...oderDetailsDialog}
-        onClose={() => setOderDetailsDialog({ open: false })}
-      />
       <div className=" p-4 flex flex-col gap-5">
         <div className=" flex gap-4 items-center">
           <div className="flex-1 flex flex-col items-start justify-center">

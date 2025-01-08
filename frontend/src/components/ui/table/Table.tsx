@@ -57,7 +57,12 @@ export function TableCell({ ...props }: React.ComponentProps<"td" | "th">) {
   return (
     <React.Fragment>
       {tableRowTheme.header ? (
-        <th {...props} className={[...classNames, props.className].join(" ")} />
+        <th
+          {...props}
+          className={[...classNames, props.className, "font-semibold"].join(
+            " ",
+          )}
+        />
       ) : (
         <td {...props} className={[...classNames, props.className].join(" ")} />
       )}
