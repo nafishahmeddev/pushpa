@@ -1,5 +1,5 @@
 import { IProduct } from "@app/types/product";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Icon } from "@iconify/react";
 import ProductsApi from "@app/services/products";
 import Formatter from "@app/lib/formatter";
@@ -22,12 +22,46 @@ type FormType = {
     name: string;
   };
   query: { page: number; limit: number };
+  order: [field: string, sort: SortType];
 };
 
 export const Route = createLazyFileRoute("/settings/products/")({
   component: RouteComponent,
 });
+type SortType = "ASC" | "DESC";
+interface SortButtonProps extends React.ComponentProps<"button"> {
+  field: string;
+  order: [field: string, sort: SortType];
+  onPress: (sort: SortType) => void;
+}
 
+function SortButton({ field, order, onPress, children }: SortButtonProps) {
+  const [sortField, sort] = order;
+  let icon = "typcn:arrow-sorted-up";
+  const classNames = ["align-middle flex items-center gap-2"];
+  let color = "";
+  let nextSort = "ASC";
+  if (field == sortField) {
+    if (sort == "ASC") {
+      icon = "typcn:arrow-sorted-up";
+      nextSort = "DESC";
+    } else {
+      icon = "typcn:arrow-sorted-down";
+      nextSort = "ASC";
+    }
+  } else {
+    color = "text-gray-300";
+  }
+  return (
+    <button
+      className={classNames.join(" ")}
+      onClick={() => onPress(nextSort as SortType)}
+    >
+      {children}
+      <Icon icon={icon} height={22} width={22} className={color} />
+    </button>
+  );
+}
 function RouteComponent() {
   const [result, setResult] = useState<{
     pages: number;
@@ -44,15 +78,18 @@ function RouteComponent() {
         name: "",
       },
       query: { page: 1, limit: 20 },
+      order: ["name", "DESC"],
     },
-    onSubmit: async ({ value, formApi }) =>
-      ProductsApi.paginate(
+    onSubmit: async ({ value, formApi }) => {
+      return ProductsApi.paginate(
         { page: value.query.page, limit: value.query.limit },
         value.filter,
+        value.order,
       ).then((res) => {
         setResult(res);
         formApi.setFieldValue("query.page", res.page);
-      }),
+      });
+    },
   });
 
   const [productForm, setProductForm] = useState<{
@@ -127,18 +164,56 @@ function RouteComponent() {
       <div className="h-full bg-white border rounded-xl overflow-x-auto overflow-hidden">
         <Table bordered>
           <TableHead>
-            <TableRow
-              className="sticky top-0 left-0 bg-gray-100 z-10 rounded-t-xl"
-              header
-            >
-              <TableCell className="w-0">#</TableCell>
-              <TableCell className="w-0">Image</TableCell>
-              <TableCell className="min-w-96">Name</TableCell>
-              <TableCell>Category</TableCell>
-              <TableCell className="w-0">Tax</TableCell>
-              <TableCell className="w-0">Pice</TableCell>
-              <TableCell className="w-0"></TableCell>
-            </TableRow>
+            <form.Subscribe
+              selector={(e) => e.values.order}
+              children={(order) => (
+                <TableRow
+                  className="sticky top-0 left-0 bg-gray-100 z-10 rounded-t-xl"
+                  header
+                >
+                  <TableCell className="w-0">#</TableCell>
+                  <TableCell className="w-0">Image</TableCell>
+                  <TableCell className="min-w-96 text-nowrap">
+                    <SortButton
+                      order={order}
+                      field="name"
+                      onPress={(order) => {
+                        form.setFieldValue("order", ["name", order]);
+                        form.handleSubmit();
+                      }}
+                    >
+                      Name
+                    </SortButton>
+                  </TableCell>
+                  <TableCell>Category</TableCell>
+                  <TableCell className="w-0 text-nowrap">
+                    <SortButton
+                      order={order}
+                      field="tax"
+                      onPress={(order) => {
+                        form.setFieldValue("order", ["tax", order]);
+                        form.handleSubmit();
+                      }}
+                    >
+                      Tax
+                    </SortButton>
+                  </TableCell>
+                  <TableCell className="w-0 text-nowrap">
+                    <SortButton
+                      order={order}
+                      field="price"
+                      onPress={(order) => {
+                        form.setFieldValue("order", ["price", order]);
+                        form.handleSubmit();
+                      }}
+                    >
+                      Pice
+                    </SortButton>
+                  </TableCell>
+                  <TableCell className="w-0"></TableCell>
+                </TableRow>
+              )}
+            />
           </TableHead>
           <tbody>
             {result.records.map((product, index: number) => (

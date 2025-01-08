@@ -37,6 +37,8 @@ ProductsRouter.post("/paginate", async (req: IRequest, res: IResponse) => {
         categoryId?: string
     } = req.body.filter;
 
+    const order = req.body.order;
+
     //build filter
     const where: WhereOptions<InferAttributes<Product, {}>> = {};
     if (filter.createdAt && filter.createdAt[0] && filter.createdAt[1]) {
@@ -54,17 +56,17 @@ ProductsRouter.post("/paginate", async (req: IRequest, res: IResponse) => {
     }
 
     const paginatedOrders = await Product.findAndCountAll({
-        order: [["name", "asc"]],
+        order: [order],
         limit: limit,
         offset: (page - 1) * limit,
         include: [
             {
                 model: ProductCategory,
                 as: "category",
-                order: [["name", "asc"]],
                 where: {
                     restaurantId: req.auth?.restaurantId
-                }
+                },
+                required: true
             }
         ],
         where: where,
