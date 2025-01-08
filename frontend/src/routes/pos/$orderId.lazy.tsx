@@ -411,7 +411,7 @@ export default function RouteComponent() {
             <tfoot>
               <tr>
                 <td className="px-2 py-2 text-end">Discount:</td>
-                <td className="px-2 py-2 text-end font-mono font-bold">
+                <td className="px-2 py-2 text-end font-mono font-bold text-nowrap">
                   {Formatter.money(order.discount)}
                   <button
                     className="align-middle ml-2 text-lime-700 hover:opacity-50"
