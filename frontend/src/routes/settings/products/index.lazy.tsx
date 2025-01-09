@@ -1,5 +1,5 @@
 import { ICategory, IProduct } from "@app/types/product";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Icon } from "@iconify/react";
 import ProductsApi from "@app/services/products";
 import ProductFormDialog from "../../../components/form-dialogs/ProductFormDialog";
@@ -9,7 +9,7 @@ import { useForm } from "@tanstack/react-form";
 import Button from "@app/components/ui/form/button";
 import Image from "rc-image";
 import { uploadUrl } from "@app/lib/upload";
-import DataTable from "@app/components/ui/DataTable";
+import DataTable, { Column } from "@app/components/ui/DataTable";
 
 type FormType = {
   filter: {
@@ -25,6 +25,82 @@ export const Route = createLazyFileRoute("/settings/products/")({
 type SortType = "ASC" | "DESC";
 
 function RouteComponent() {
+  const columns = useMemo<Array<Column<IProduct>>>(
+    () => [
+      {
+        key: "image",
+        label: "Image",
+        width: 0,
+        renderColumn: (value) => (
+          <Image
+            src={uploadUrl(value as string)}
+            fallback="/placeholder-category.png"
+            className="w-16 h-16 min-h-16 min-w-16 max-w-16 max-h-16 rounded-xl border aspect-square  object-cover bg-gray-100"
+          />
+        ),
+      },
+      {
+        key: "name",
+        label: "Name",
+        sortable: true,
+        renderColumn: (value, { record }) => (
+          <div>
+            {value as string}
+            <br />
+            <small className="text-gray-600">
+              {record.description as string}
+            </small>
+          </div>
+        ),
+      },
+
+      {
+        key: "category",
+        label: "Category",
+        nowrap: true,
+        renderColumn: (category: ICategory) => category?.name as string,
+      },
+
+      {
+        key: "tax",
+        label: "Tax(%)",
+        sortable: true,
+        width: 0,
+        type: "amount",
+      },
+
+      {
+        key: "price",
+        label: "Price",
+        sortable: true,
+        width: 0,
+        type: "amount",
+      },
+      {
+        key: "id",
+        label: "",
+        width: 0,
+        renderColumn: (_, { record: product }) => (
+          <div className="flex flex-nowrap gap-2 text-gray-600">
+            <button
+              onClick={() => setProductForm({ product: product, open: true })}
+              className="hover:opacity-70"
+            >
+              <Icon icon="mynaui:edit" height={20} width={20} />
+            </button>
+
+            <button
+              onClick={() => handleOnDelete(product)}
+              className="hover:opacity-70 text-red-700"
+            >
+              <Icon icon="proicons:delete" height={20} width={20} />
+            </button>
+          </div>
+        ),
+      },
+    ],
+    [],
+  );
   const [result, setResult] = useState<{
     pages: number;
     page: number;
@@ -126,81 +202,7 @@ function RouteComponent() {
 
       <DataTable
         serial
-        columns={[
-          {
-            key: "image",
-            label: "Image",
-            width: 0,
-            renderColumn: (value) => (
-              <Image
-                src={uploadUrl(value as string)}
-                fallback="/placeholder-category.png"
-                className="w-16 h-16 min-h-16 min-w-16 max-w-16 max-h-16 rounded-xl border aspect-square  object-cover bg-gray-100"
-              />
-            ),
-          },
-          {
-            key: "name",
-            label: "Name",
-            sortable: true,
-            renderColumn: (value, { record }) => (
-              <div>
-                {value as string}
-                <br />
-                <small className="text-gray-600">
-                  {record.description as string}
-                </small>
-              </div>
-            ),
-          },
-
-          {
-            key: "category",
-            label: "Category",
-            nowrap: true,
-            renderColumn: (category: ICategory) => category?.name as string,
-          },
-
-          {
-            key: "tax",
-            label: "Tax(%)",
-            sortable: true,
-            width: 0,
-            type: "amount",
-          },
-
-          {
-            key: "price",
-            label: "Price",
-            sortable: true,
-            width: 0,
-            type: "amount",
-          },
-          {
-            key: "id",
-            label: "",
-            width: 0,
-            renderColumn: (_, { record: product }) => (
-              <div className="flex flex-nowrap gap-2 text-gray-600">
-                <button
-                  onClick={() =>
-                    setProductForm({ product: product, open: true })
-                  }
-                  className="hover:opacity-70"
-                >
-                  <Icon icon="mynaui:edit" height={20} width={20} />
-                </button>
-
-                <button
-                  onClick={() => handleOnDelete(product)}
-                  className="hover:opacity-70 text-red-700"
-                >
-                  <Icon icon="proicons:delete" height={20} width={20} />
-                </button>
-              </div>
-            ),
-          },
-        ]}
+        columns={columns}
         getId={(record) => record.id as string}
         records={result.records}
         recordsCount={result.pages * form.state.values.query.limit}

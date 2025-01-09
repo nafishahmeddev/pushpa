@@ -39,11 +39,11 @@ export type DataTableProps<IRecord> = {
   records: Array<IRecord>;
   recordsCount: number;
   getId: (record: IRecord) => string;
-  sortState: {
+  sortState?: {
     field: keyof IRecord;
     order: SortType;
   };
-  sortStateChange: (sortState: {
+  sortStateChange?: (sortState: {
     field: keyof IRecord;
     order: SortType;
   }) => void | Promise<void>;
@@ -107,7 +107,7 @@ export default function DataTable<IRecord>({
                 >
                   <div className="inline-flex items-center gap-3">
                     {column.label}
-                    {column.sortable && (
+                    {column.sortable && sortState && sortStateChange && (
                       <button
                         className="inline-flex gap-4"
                         onClick={() =>
