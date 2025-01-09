@@ -1,5 +1,5 @@
 import { ICategory, IProduct } from "@app/types/product";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Icon } from "@iconify/react";
 import ProductsApi from "@app/services/products";
 import ProductFormDialog from "../../../components/form-dialogs/ProductFormDialog";
