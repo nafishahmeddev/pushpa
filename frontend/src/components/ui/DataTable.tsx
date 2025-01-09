@@ -8,6 +8,7 @@ import Table, {
 } from "./table/Table";
 import Pagination from "./Pagination";
 import Formatter from "@app/lib/formatter";
+import Spinner from "./Spinner";
 
 type ValueTypes = never;
 export type ColumnType =
@@ -55,6 +56,7 @@ export type DataTableProps<IRecord> = {
     limit: number;
   }) => void | Promise<void>;
   serial?: boolean;
+  loading?: boolean;
 };
 
 function defaultRenderer<IRecord>(
@@ -85,10 +87,11 @@ export default function DataTable<IRecord>({
   sortStateChange,
   paginationStateChange,
   serial,
+  loading,
 }: DataTableProps<IRecord>) {
   return (
     <div className="flex flex-col gap-5">
-      <div className="h-full bg-white border rounded-xl overflow-x-auto overflow-hidden">
+      <div className="h-full bg-white border rounded-xl overflow-x-auto overflow-hidden min-h-60 relative">
         <Table>
           <TableHead>
             <TableRow header>
@@ -138,7 +141,7 @@ export default function DataTable<IRecord>({
               <TableRow key={`data-table-row-${i}`}>
                 {serial && (
                   <TableCell className="w-0">
-                    {(paginationState.page - 1) * paginationState.limit + i+1}
+                    {(paginationState.page - 1) * paginationState.limit + i + 1}
                   </TableCell>
                 )}
                 {columns.map((column) => (
@@ -163,6 +166,17 @@ export default function DataTable<IRecord>({
             ))}
           </TableBody>
         </Table>
+
+        {!records.length && !loading && (
+          <div className="p-5 flex items-center justify-center h-full min-h-60">
+            <p>Records are empty!</p>
+          </div>
+        )}
+        {loading && (
+          <div className="p-5 flex items-center justify-center min-h-60 absolute h-full w-full left-0 top-[40px] bg-white/80">
+            <Spinner />
+          </div>
+        )}
       </div>
       <Pagination
         page={paginationState.page}

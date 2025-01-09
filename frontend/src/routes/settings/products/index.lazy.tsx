@@ -223,6 +223,7 @@ function RouteComponent() {
           form.setFieldValue("query.limit", limit);
           form.handleSubmit();
         }}
+        loading={form.state.isSubmitting}
       />
     </div>
   );
