@@ -70,9 +70,9 @@
         </div>
         <table style="font-weight: bold; width: 100%; margin-top: 8px; ">
             <tr>
-                <td>Receipt No: #<%= invoice.receiptNo %>
+                <td>RECEIPT NO: #<%= invoice.receiptNo %>
                 </td>
-                <td style="text-align: right;">Date: <%= moment(invoice.createdAt).format("DD/MM/YYYY") %>
+                <td style="text-align: right;">DATE: <%= moment(invoice.createdAt).format("DD/MM/YYYY") %>
                 </td>
             </tr>
         </table>
@@ -80,9 +80,9 @@
             <table style="border-collapse: collapse; margin: 10px 0; width:100%; font-size: 14px;">
                 <thead>
                     <tr style="border-bottom: 1px dashed #000; border-top: 1px dashed #000;">
-                        <th>Description</th>
+                        <th>DESCRIPTION</th>
                         <th style="text-align: right;"></th>
-                        <th style="text-align: right;">Total</th>
+                        <th style="text-align: right;">TOTAL</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -111,54 +111,54 @@
             <div style="margin: 10px 0;border-top: 1px dashed #000; "></div>
 
             <table style="width: 100%; font-weight: bold;">
-                
+
                 <% if(invoice.tax || invoice.discount){ %>
-                <tr>
-                    <td>Subtotal:</td>
-                    <td style="text-align: right;">
-                        <%= formatter.format(invoice.subTotal)%>
-                    </td>
-                </tr>
-                <% } %>
+                    <tr>
+                        <td>SUBTOTAL:</td>
+                        <td style="text-align: right;">
+                            <%= formatter.format(invoice.subTotal)%>
+                        </td>
+                    </tr>
+                    <% } %>
 
-                <% if(invoice.tax){ %>
-                <tr>
-                    <td>Tax:</td>
-                    <td style="text-align: right;">
-                        <%= formatter.format(invoice.tax)%>
-                    </td>
-                </tr>
-                <% } %>
+                        <% if(invoice.tax){ %>
+                            <tr>
+                                <td>TAX:</td>
+                                <td style="text-align: right;">
+                                    <%= formatter.format(invoice.tax)%>
+                                </td>
+                            </tr>
+                            <% } %>
 
-                <% if(invoice.discount){ %>
-                <tr>
-                    <td>Discount:</td>
-                    <td style="text-align: right;">
-                        <%= formatter.format(invoice.discount)%>
-                    </td>
-                </tr>
-                <% } %>
+                                <% if(invoice.discount){ %>
+                                    <tr>
+                                        <td>DISCOUNT:</td>
+                                        <td style="text-align: right;">
+                                            <%= formatter.format(invoice.discount)%>
+                                        </td>
+                                    </tr>
+                                    <% } %>
 
-                <tr>
-                    <td>Total:</td>
-                    <td style="text-align: right;">
-                        <%= formatter.format(invoice.amount)%>
-                    </td>
-                </tr>
+                                        <tr>
+                                            <td>TOTAL:</td>
+                                            <td style="text-align: right;">
+                                                <%= formatter.format(invoice.amount)%>
+                                            </td>
+                                        </tr>
             </table>
         </div>
         <% if(order.kotList.length){%>
-        <div style="margin: 8px 0; text-align: center;">
-            <span>
-                Kot: <%= order.kotList.map(kot=>kot.tokenNo).join(",") %>
-            </span>
-        </div>
-        <% } %>
-        <div style="margin: 8px 0; text-align: center;">
-            <span>
-                ☺ Thank you visit again!
-            </span>
-        </div>
+            <div style="margin: 8px 0; text-align: center;">
+                <span>
+                    KOT: <%= order.kotList.map(kot=>kot.tokenNo).join(",") %>
+                </span>
+            </div>
+            <% } %>
+                <div style="margin: 8px 0; text-align: center;">
+                    <span>
+                        ☺ THANK YOU VISIT AGAIN!
+                    </span>
+                </div>
     </div>
 </body>
 
