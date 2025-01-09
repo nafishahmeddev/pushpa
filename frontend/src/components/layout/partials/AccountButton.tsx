@@ -23,7 +23,7 @@ export default function AccountButton() {
             show
               ? "visible top-full opacity-100"
               : "collapse top-[70px] opacity-0"
-          } absolute right-2 w-52 z-50 transition-all`}
+          } absolute right-2 min-w-52 z-50 transition-all`}
         >
           <div
             className={`border rounded-xl py-4 flex flex-col gap-3 bg-white mt-3`}
@@ -34,7 +34,7 @@ export default function AccountButton() {
               >
                 <Icon icon="prime:user" height={24} width={24} />
               </div>
-              <div>
+              <div className="text-nowrap">
                 <span className="block">{auth.user.name}</span>
                 <small className="block">{auth.user.designation}</small>
               </div>
