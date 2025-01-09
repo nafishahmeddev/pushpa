@@ -5,7 +5,7 @@ import {
   useLocation,
   useNavigate,
 } from "@tanstack/react-router";
-import React, { useEffect, useRef } from "react";
+import { useEffect, useRef } from "react";
 import { Icon } from "@iconify/react";
 
 export const Route = createLazyFileRoute("/settings")({
