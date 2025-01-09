@@ -5,7 +5,7 @@ import {
   useLocation,
   useNavigate,
 } from "@tanstack/react-router";
-import { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import { Icon } from "@iconify/react";
 
 export const Route = createLazyFileRoute("/settings")({
@@ -46,19 +46,19 @@ const items = [
 export default function RouteComponent() {
   const { pathname } = useLocation();
   const navigate = useNavigate();
+  const refs = useRef<{ [key: string]: HTMLLIElement | undefined }>({});
 
   useEffect(() => {
     if (pathname == "/settings") {
       navigate({ to: "/settings/details" });
     }
-    const el = document.getElementById("settings-menu" + pathname);
-    if (el) {
-      el.scrollIntoView({
-        behavior: "smooth",
-        block: "center",
-        inline: "center",
-      });
-    }
+
+    refs.current[pathname]?.scrollIntoView({
+      behavior: "smooth",
+      block: "center",
+      inline: "center",
+    });
+    
   }, [pathname]);
   return (
     <div className="h-full grid grid-cols-[1fr] grid-rows-[auto_1fr] md:grid-cols-[auto_1fr] md:grid-rows-[1fr]">
@@ -70,6 +70,12 @@ export default function RouteComponent() {
                 key={`item-${index}`}
                 className="md:px-2"
                 id={"settings-menu" + item.route}
+                aria-current={pathname == item.route ? "page" : "false"}
+                ref={(el) => {
+                  if (pathname == item.route) {
+                    refs.current[item.route] = el || undefined;
+                  }
+                }}
               >
                 <Link
                   to={item.route}
