@@ -166,16 +166,16 @@ function RouteComponent() {
                   <TableCell className="text-nowrap">
                     {Formatter.datetime(invoice.createdAt)}
                   </TableCell>
-                  <TableCell className="text-end font-mono">
+                  <TableCell className="text-end ">
                     {Formatter.money(invoice.subTotal)}
                   </TableCell>
-                  <TableCell className="text-end font-mono">
+                  <TableCell className="text-end ">
                     {Formatter.money(invoice.tax)}
                   </TableCell>
-                  <TableCell className="text-end font-mono">
+                  <TableCell className="text-end ">
                     {Formatter.money(invoice.discount)}
                   </TableCell>
-                  <TableCell className="text-end font-mono">
+                  <TableCell className="text-end ">
                     {Formatter.money(invoice.amount)}
                   </TableCell>
                 </TableRow>

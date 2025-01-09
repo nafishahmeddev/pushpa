@@ -231,7 +231,7 @@ function RouteComponent() {
                       )}
                     </TableCell>
 
-                    <TableCell className="text-nowrap font-mono text-end">
+                    <TableCell className="text-nowrap text-end">
                       {Formatter.money(order.discount)}
                     </TableCell>
                     <TableCell className="text-nowrap">
