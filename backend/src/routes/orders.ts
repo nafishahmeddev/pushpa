@@ -57,7 +57,10 @@ OrdersRouter.post("/paginate", async (req: IRequest, res: IResponse) => {
 
 OrdersRouter.get("/pending-list", async (req: IRequest, res: IResponse) => {
     const orders = await Order.findAll({
-        where: { status: [OrderStatus.Draft, OrderStatus.Ongoing] },
+        where: {
+            status: [OrderStatus.Draft, OrderStatus.Ongoing],
+            restaurantId: req.auth?.restaurantId
+        },
         include: [
             {
                 model: Table,
