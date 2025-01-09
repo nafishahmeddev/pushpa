@@ -145,10 +145,8 @@ export default function RouteComponent() {
         );
         if (w) {
           setTimeout(function () {
-            w.document.close();
             w.focus();
             w.print();
-            w.close();
           }, 1000);
         }
         navigate({ to: "/pos" });
@@ -172,10 +170,8 @@ export default function RouteComponent() {
     );
     if (w) {
       setTimeout(function () {
-        w.document.close();
         w.focus();
         w.print();
-        w.close();
       }, 1000);
     }
   };

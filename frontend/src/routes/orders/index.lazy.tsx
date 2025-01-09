@@ -81,10 +81,8 @@ function RouteComponent() {
 
     if (w && print) {
       setTimeout(function () {
-        w.document.close();
         w.focus();
         w.print();
-        w.close();
       }, 1000);
     }
   };
