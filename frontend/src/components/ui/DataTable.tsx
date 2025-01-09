@@ -54,6 +54,7 @@ export type DataTableProps<IRecord> = {
     page: number;
     limit: number;
   }) => void | Promise<void>;
+  serial?: boolean;
 };
 
 function defaultRenderer<IRecord>(
@@ -83,6 +84,7 @@ export default function DataTable<IRecord>({
   paginationState,
   sortStateChange,
   paginationStateChange,
+  serial,
 }: DataTableProps<IRecord>) {
   return (
     <div className="flex flex-col gap-5">
@@ -90,6 +92,7 @@ export default function DataTable<IRecord>({
         <Table>
           <TableHead>
             <TableRow header>
+              {serial && <TableCell className="w-0"></TableCell>}
               {columns.map((column) => (
                 <TableCell
                   key={`data-table-column-${column.key as string}`}
@@ -133,6 +136,11 @@ export default function DataTable<IRecord>({
           <TableBody>
             {records.map((record, i) => (
               <TableRow key={`data-table-row-${i}`}>
+                {serial && (
+                  <TableCell className="w-0">
+                    {(paginationState.page - 1) * paginationState.limit + i+1}
+                  </TableCell>
+                )}
                 {columns.map((column) => (
                   <TableCell
                     key={`data-table-column-${column.key as string}`}

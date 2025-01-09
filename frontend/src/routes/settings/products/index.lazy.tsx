@@ -125,6 +125,7 @@ function RouteComponent() {
       </div>
 
       <DataTable
+        serial
         columns={[
           {
             key: "image",
