@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 export interface DialogProps extends React.ComponentProps<"dialog"> {
   paperProps?: React.ComponentProps<"div">;
   onClose?: () => void;
@@ -12,14 +12,8 @@ export default function Dialog({
   onClose,
   ...props
 }: DialogProps) {
-  const ref = React.createRef<HTMLDivElement>();
   paperProps.className = [paperClassName, paperProps.className].join(" ");
 
-  useEffect(() => {
-    if (ref.current) {
-      ref.current.id = "dialog-" + Math.round(Math.random() * 999999999);
-    }
-  }, [ref]);
   return (
     <dialog
       {...props}
@@ -30,7 +24,7 @@ export default function Dialog({
         onClick={onClose && onClose}
       />
 
-      <div {...paperProps} ref={ref} children={children} />
+      <div {...paperProps} children={children} />
     </dialog>
   );
 }

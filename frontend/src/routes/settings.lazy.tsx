@@ -52,7 +52,6 @@ export default function RouteComponent() {
       navigate({ to: "/settings/details" });
     }
     const el = document.getElementById("settings-menu" + pathname);
-    console.log(el);
     if (el) {
       el.scrollIntoView({
         behavior: "smooth",
