@@ -112,168 +112,163 @@ export default function ProductFormDialog({
         }}
       >
         <h3 className="text-xl">{product ? "Update" : "Create"} Product</h3>
-        <fieldset className="block w-full">
-          <div className="flex flex-col gap-4 w-full py-4">
-            <form.Subscribe
-              selector={({ values }) => values.image}
-              children={(image) => (
-                <div className="relative w-28 inline-flex">
-                  <label
-                    htmlFor="image"
-                    className="w-full aspect-square object-cover rounded-xl border overflow-hidden cursor-pointer"
-                  >
-                    <Image
-                      src={
-                        selectedImage
-                          ? URL.createObjectURL(selectedImage)
-                          : image
-                            ? uploadUrl(image)
-                            : undefined
-                      }
-                      fallback="/placeholder-category.png"
-                      className="w-full aspect-square  object-cover bg-gray-100"
-                    />
-                    <input
-                      type="file"
-                      className="hidden"
-                      id="image"
-                      name="image"
-                      accept="image/*"
-                      onChange={(e) => {
-                        handleOnImagePic(e.target.files?.[0]);
-                        e.target.type = "text";
-                        e.target.type = "file";
-                      }}
-                    />
-                  </label>
-                  {selectedImage && (
-                    <a
-                      className="absolute top-1 right-1 pointer cursor-pointer aspect-square bg-white/20 rounded-full backdrop-blur-sm"
-                      onClick={() => setSelectedImage(undefined)}
-                    >
-                      <Icon icon="material-symbols:close-rounded" />
-                    </a>
-                  )}
-                </div>
-              )}
-            />
-
-            <form.Field
-              name="name"
-              children={({ state, handleBlur, handleChange, name }) => (
-                <Input
-                  label="Name"
-                  required
-                  type="text"
-                  placeholder="Enter product name"
-                  value={state.value}
-                  onChange={(e) => handleChange(e.target.value)}
-                  onBlur={handleBlur}
-                  name={name}
-                  error={state.meta.errors.join(" ")}
-                  touched={state.meta.isTouched}
-                />
-              )}
-            />
-
-            <form.Field
-              name="description"
-              children={({ state, handleBlur, handleChange, name }) => (
-                <Textarea
-                  label="Description"
-                  placeholder="Enter product description"
-                  value={state.value}
-                  onChange={(e) => handleChange(e.target.value)}
-                  onBlur={handleBlur}
-                  name={name}
-                  error={state.meta.errors.join(" ")}
-                  touched={state.meta.isTouched}
-                />
-              )}
-            />
-            <form.Field
-              name="categoryId"
-              children={({ state, handleBlur, handleChange, name }) => (
-                <Select
-                  label="Category"
-                  required
-                  value={state.value || ""}
-                  onChange={(e) => handleChange(e.target.value)}
-                  onBlur={handleBlur}
-                  name={name}
-                  error={state.meta.errors.join(" ")}
-                  touched={state.meta.isTouched}
-                >
-                  <option value="" >Select Category</option>
-                  {categories.map((category) => (
-                    <option value={category.id} key={category.id}>
-                      {category.name}
-                    </option>
-                  ))}
-                </Select>
-              )}
-            />
-
-            <div className="flex gap-2">
-              <form.Field
-                name="price"
-                children={({ state, handleBlur, handleChange, name }) => (
-                  <Input
-                    label="Price"
-                    required
-                    type="number"
-                    placeholder="Enter gross price"
-                    value={state.value || 0}
-                    onChange={(e) => handleChange(Number(e.target.value))}
-                    onBlur={handleBlur}
-                    name={name}
-                    error={state.meta.errors.join(" ")}
-                    touched={state.meta.isTouched}
-                  />
-                )}
-              />
-              <form.Field
-                name="tax"
-                children={({ state, handleBlur, handleChange, name }) => (
-                  <Input
-                    label="Tax(%)"
-                    // required
-                    type="number"
-                    className="flex-1"
-                    placeholder="Enter tax percentage"
-                    value={state.value || ""}
-                    onChange={(e) => handleChange(Number(e.target.value))}
-                    onBlur={handleBlur}
-                    name={name}
-                    error={state.meta.errors.join(" ")}
-                    touched={state.meta.isTouched}
-                  />
-                )}
-              />
-            </div>
-          </div>
+        <div className="flex flex-col gap-4 w-full py-4">
           <form.Subscribe
-            children={({ isSubmitting, canSubmit }) => (
-              <div className="flex gap-2 justify-end">
-                <Button
-                  className=" bg-gray-300"
-                  onClick={onReset}
-                  type="button"
+            selector={({ values }) => values.image}
+            children={(image) => (
+              <div className="relative w-28 inline-flex">
+                <label
+                  htmlFor="image"
+                  className="w-full aspect-square object-cover rounded-xl border overflow-hidden cursor-pointer"
                 >
-                  Cancel
-                </Button>
-                <Button
-                  className=" bg-lime-600 text-white"
-                  type="submit"
-                  disabled={!canSubmit}
-                  loading={isSubmitting}
-                >
-                  {product ? "Update" : "Create"}
-                </Button>
+                  <Image
+                    src={
+                      selectedImage
+                        ? URL.createObjectURL(selectedImage)
+                        : image
+                          ? uploadUrl(image)
+                          : undefined
+                    }
+                    fallback="/placeholder-category.png"
+                    className="w-full aspect-square  object-cover bg-gray-100"
+                  />
+                  <input
+                    type="file"
+                    className="hidden"
+                    id="image"
+                    name="image"
+                    accept="image/*"
+                    autoFocus
+                    onChange={(e) => {
+                      handleOnImagePic(e.target.files?.[0]);
+                      e.target.type = "text";
+                      e.target.type = "file";
+                    }}
+                  />
+                </label>
+                {selectedImage && (
+                  <a
+                    className="absolute top-1 right-1 pointer cursor-pointer aspect-square bg-white/20 rounded-full backdrop-blur-sm"
+                    onClick={() => setSelectedImage(undefined)}
+                  >
+                    <Icon icon="material-symbols:close-rounded" />
+                  </a>
+                )}
               </div>
             )}
           />
-        </fieldset>
+
+          <form.Field
+            name="name"
+            children={({ state, handleBlur, handleChange, name }) => (
+              <Input
+                label="Name"
+                required
+                type="text"
+                placeholder="Enter product name"
+                value={state.value}
+                onChange={(e) => handleChange(e.target.value)}
+                onBlur={handleBlur}
+                name={name}
+                error={state.meta.errors.join(" ")}
+                touched={state.meta.isTouched}
+              />
+            )}
+          />
+
+          <form.Field
+            name="description"
+            children={({ state, handleBlur, handleChange, name }) => (
+              <Textarea
+                label="Description"
+                placeholder="Enter product description"
+                value={state.value}
+                onChange={(e) => handleChange(e.target.value)}
+                onBlur={handleBlur}
+                name={name}
+                error={state.meta.errors.join(" ")}
+                touched={state.meta.isTouched}
+              />
+            )}
+          />
+          <form.Field
+            name="categoryId"
+            children={({ state, handleBlur, handleChange, name }) => (
+              <Select
+                label="Category"
+                required
+                value={state.value || ""}
+                onChange={(e) => handleChange(e.target.value)}
+                onBlur={handleBlur}
+                name={name}
+                error={state.meta.errors.join(" ")}
+                touched={state.meta.isTouched}
+              >
+                <option value="">Select Category</option>
+                {categories.map((category) => (
+                  <option value={category.id} key={category.id}>
+                    {category.name}
+                  </option>
+                ))}
+              </Select>
+            )}
+          />
+
+          <div className="flex gap-2">
+            <form.Field
+              name="price"
+              children={({ state, handleBlur, handleChange, name }) => (
+                <Input
+                  label="Price"
+                  required
+                  type="number"
+                  placeholder="Enter gross price"
+                  value={state.value || 0}
+                  onChange={(e) => handleChange(Number(e.target.value))}
+                  onBlur={handleBlur}
+                  name={name}
+                  error={state.meta.errors.join(" ")}
+                  touched={state.meta.isTouched}
+                />
+              )}
+            />
+            <form.Field
+              name="tax"
+              children={({ state, handleBlur, handleChange, name }) => (
+                <Input
+                  label="Tax(%)"
+                  // required
+                  type="number"
+                  className="flex-1"
+                  placeholder="Enter tax percentage"
+                  value={state.value || ""}
+                  onChange={(e) => handleChange(Number(e.target.value))}
+                  onBlur={handleBlur}
+                  name={name}
+                  error={state.meta.errors.join(" ")}
+                  touched={state.meta.isTouched}
+                />
+              )}
+            />
+          </div>
+        </div>
+        <form.Subscribe
+          children={({ isSubmitting, canSubmit }) => (
+            <div className="flex gap-2 justify-end">
+              <Button className=" bg-gray-300" onClick={onReset} type="button">
+                Cancel
+              </Button>
+              <Button
+                className=" bg-lime-600 text-white"
+                type="submit"
+                disabled={!canSubmit}
+                loading={isSubmitting}
+              >
+                {product ? "Update" : "Create"}
+              </Button>
+            </div>
+          )}
+        />
       </form>
     </Dialog>
   );
