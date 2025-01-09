@@ -55,7 +55,7 @@ export default function MenuList({ onItemPress, ...props }: MenuListProps) {
             {filtered.map((category) => (
               <div key={category.name}>
                 <div className="sticky top-0 py-2 px-2">
-                  <div className="py-1 px-4 bg-white/80 text-gray-700 backdrop-blur-sm border flex rounded-xl text-center items-center justify-center font-bold">{category.name}</div>
+                  <div className="py-1 px-4 bg-white/90 text-gray-700 backdrop-blur-sm border flex rounded-xl text-center items-center justify-center font-semibold">{category.name}</div>
                 </div>
                 {category.products?.map((product) => (
                   <div

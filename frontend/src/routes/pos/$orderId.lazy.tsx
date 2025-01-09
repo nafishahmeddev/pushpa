@@ -268,7 +268,7 @@ export default function RouteComponent() {
                   <tr
                     className={`border-b border-dashed bg-lime-600 text-white`}
                   >
-                    <td className="px-2 py-1 text-start font-bold" colSpan={3}>
+                    <td className="px-2 py-1 text-start font-medium" colSpan={3}>
                       Token No: {kot.tokenNo}
                     </td>
                     <td className="text-white text-right px-2 w-0">
