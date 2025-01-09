@@ -38,6 +38,9 @@ export type DataTableProps<IRecord> = {
   columns: Array<Column<IRecord>>;
   records: Array<IRecord>;
   recordsCount: number;
+  serial?: boolean;
+  loading?: boolean;
+  checkbox?: boolean;
   getId: (record: IRecord) => string;
   sortState?: {
     field: keyof IRecord;
@@ -55,8 +58,8 @@ export type DataTableProps<IRecord> = {
     page: number;
     limit: number;
   }) => void | Promise<void>;
-  serial?: boolean;
-  loading?: boolean;
+  selectionState?: Array<string>;
+  selectionStateChange?: (selection: Array<string>) => void;
 };
 
 function defaultRenderer<IRecord>(
@@ -82,12 +85,16 @@ export default function DataTable<IRecord>({
   columns,
   records,
   recordsCount,
+  serial,
+  loading,
+  checkbox,
+  getId,
   sortState,
   paginationState,
   sortStateChange,
   paginationStateChange,
-  serial,
-  loading,
+  selectionState,
+  selectionStateChange,
 }: DataTableProps<IRecord>) {
   return (
     <div className="flex flex-col gap-5">
@@ -95,6 +102,22 @@ export default function DataTable<IRecord>({
         <Table>
           <TableHead>
             <TableRow header>
+              {checkbox && (
+                <TableCell className="w-0">
+                  <input
+                    type="checkbox"
+                    className="accent-lime-500 h-4 w-4 cursor-pointer"
+                    checked={!!selectionState?.length}
+                    onChange={
+                      selectionStateChange &&
+                      ((e) =>
+                        selectionStateChange(
+                          e.target.checked ? records.map((e) => getId(e)) : [],
+                        ))
+                    }
+                  />
+                </TableCell>
+              )}
               {serial && <TableCell className="w-0"></TableCell>}
               {columns.map((column) => (
                 <TableCell
@@ -139,6 +162,28 @@ export default function DataTable<IRecord>({
           <TableBody>
             {records.map((record, i) => (
               <TableRow key={`data-table-row-${i}`}>
+                {checkbox && (
+                  <TableCell className="w-0">
+                    <input
+                      type="checkbox"
+                      className="accent-lime-500 h-4 w-4 cursor-pointer"
+                      checked={!!selectionState?.includes(getId(record))}
+                      onChange={
+                        selectionStateChange &&
+                        ((e) => {
+                          const checked = e.target.checked;
+                          let state = [...(selectionState ?? [])];
+                          if (checked) {
+                            state.push(getId(record));
+                          } else {
+                            state = state.filter((e) => e != getId(record));
+                          }
+                          selectionStateChange(state);
+                        })
+                      }
+                    />
+                  </TableCell>
+                )}
                 {serial && (
                   <TableCell className="w-0">
                     {(paginationState.page - 1) * paginationState.limit + i + 1}

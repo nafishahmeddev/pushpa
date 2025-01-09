@@ -206,6 +206,7 @@ function RouteComponent() {
         getId={(record) => record.id as string}
         records={result.records}
         recordsCount={result.pages * form.state.values.query.limit}
+        loading={form.state.isSubmitting}
         sortState={{
           field: form.state.values.order[0] as keyof IProduct,
           order: form.state.values.order[1],
@@ -225,7 +226,6 @@ function RouteComponent() {
           form.setFieldValue("query.limit", limit);
           form.handleSubmit();
         }}
-        loading={form.state.isSubmitting}
       />
     </div>
   );
