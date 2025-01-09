@@ -1,21 +1,15 @@
-import { IProduct } from "@app/types/product";
+import { ICategory, IProduct } from "@app/types/product";
 import React, { useEffect, useState } from "react";
 import { Icon } from "@iconify/react";
 import ProductsApi from "@app/services/products";
-import Formatter from "@app/lib/formatter";
 import ProductFormDialog from "../../../components/form-dialogs/ProductFormDialog";
-import Table, {
-  TableCell,
-  TableHead,
-  TableRow,
-} from "@app/components/ui/table/Table";
-import Pagination from "@app/components/ui/Pagination";
 import Input from "@app/components/ui/form/input";
 import { createLazyFileRoute } from "@tanstack/react-router";
 import { useForm } from "@tanstack/react-form";
 import Button from "@app/components/ui/form/button";
 import Image from "rc-image";
 import { uploadUrl } from "@app/lib/upload";
+import DataTable from "@app/components/ui/DataTable";
 
 type FormType = {
   filter: {
@@ -29,39 +23,7 @@ export const Route = createLazyFileRoute("/settings/products/")({
   component: RouteComponent,
 });
 type SortType = "ASC" | "DESC";
-interface SortButtonProps extends React.ComponentProps<"button"> {
-  field: string;
-  order: [field: string, sort: SortType];
-  onPress: (sort: SortType) => void;
-}
 
-function SortButton({ field, order, onPress, children }: SortButtonProps) {
-  const [sortField, sort] = order;
-  let icon = "typcn:arrow-sorted-up";
-  const classNames = ["align-middle flex items-center justify-between gap-3"];
-  let color = "";
-  let nextSort = "ASC";
-  if (field == sortField) {
-    if (sort == "ASC") {
-      icon = "typcn:arrow-sorted-up";
-      nextSort = "DESC";
-    } else {
-      icon = "typcn:arrow-sorted-down";
-      nextSort = "ASC";
-    }
-  } else {
-    color = "text-gray-300";
-  }
-  return (
-    <button
-      className={classNames.join(" ")}
-      onClick={() => onPress(nextSort as SortType)}
-    >
-      {children}
-      <Icon icon={icon} height={20} width={20} className={color} />
-    </button>
-  );
-}
 function RouteComponent() {
   const [result, setResult] = useState<{
     pages: number;
@@ -161,123 +123,105 @@ function RouteComponent() {
           </Button>
         </form>
       </div>
-      <div className="h-full bg-white border rounded-xl overflow-x-auto overflow-hidden">
-        <Table bordered>
-          <TableHead>
-            <form.Subscribe
-              selector={(e) => e.values.order}
-              children={(order) => (
-                <TableRow
-                  className="sticky top-0 left-0 bg-gray-100 z-10 rounded-t-xl"
-                  header
+
+      <DataTable
+        columns={[
+          {
+            key: "image",
+            label: "Image",
+            width: 0,
+            renderColumn: (value) => (
+              <Image
+                src={uploadUrl(value as string)}
+                fallback="/placeholder-category.png"
+                className="w-16 h-16 min-h-16 min-w-16 max-w-16 max-h-16 rounded-xl border aspect-square  object-cover bg-gray-100"
+              />
+            ),
+          },
+          {
+            key: "name",
+            label: "Name",
+            sortable: true,
+            renderColumn: (value, { record }) => (
+              <div>
+                {value as string}
+                <br />
+                <small className="text-gray-600">
+                  {record.description as string}
+                </small>
+              </div>
+            ),
+          },
+
+          {
+            key: "category",
+            label: "Category",
+            nowrap: true,
+            renderColumn: (category: ICategory) => category?.name as string,
+          },
+
+          {
+            key: "tax",
+            label: "Tax(%)",
+            sortable: true,
+            width: 0,
+            type: "amount",
+          },
+
+          {
+            key: "price",
+            label: "Price",
+            sortable: true,
+            width: 0,
+            type: "amount",
+          },
+          {
+            key: "id",
+            label: "",
+            width: 0,
+            renderColumn: (_, { record: product }) => (
+              <div className="flex flex-nowrap gap-2 text-gray-600">
+                <button
+                  onClick={() =>
+                    setProductForm({ product: product, open: true })
+                  }
+                  className="hover:opacity-70"
                 >
-                  <TableCell className="w-0">#</TableCell>
-                  <TableCell className="w-0">Image</TableCell>
-                  <TableCell className="min-w-96 text-nowrap">
-                    <SortButton
-                      order={order}
-                      field="name"
-                      onPress={(order) => {
-                        form.setFieldValue("order", ["name", order]);
-                        form.handleSubmit();
-                      }}
-                    >
-                      Name
-                    </SortButton>
-                  </TableCell>
-                  <TableCell>Category</TableCell>
-                  <TableCell className="w-0 text-nowrap">
-                    <SortButton
-                      order={order}
-                      field="tax"
-                      onPress={(order) => {
-                        form.setFieldValue("order", ["tax", order]);
-                        form.handleSubmit();
-                      }}
-                    >
-                      Tax
-                    </SortButton>
-                  </TableCell>
-                  <TableCell className="w-0 text-nowrap">
-                    <SortButton
-                      order={order}
-                      field="price"
-                      onPress={(order) => {
-                        form.setFieldValue("order", ["price", order]);
-                        form.handleSubmit();
-                      }}
-                    >
-                      Pice
-                    </SortButton>
-                  </TableCell>
-                  <TableCell className="w-0"></TableCell>
-                </TableRow>
-              )}
-            />
-          </TableHead>
-          <tbody>
-            {result.records.map((product, index: number) => (
-              <TableRow key={`product-${product.id}`}>
-                <TableCell>
-                  {(result.page - 1) * form.state.values.query.limit +
-                    index +
-                    1}
-                </TableCell>
-                <TableCell className="w-0">
-                  <Image
-                    src={uploadUrl(product.image)}
-                    fallback="/placeholder-category.png"
-                    className="w-16 h-16 min-h-16 min-w-16 max-w-16 max-h-16 rounded-xl border aspect-square  object-cover bg-gray-100"
-                  />
-                </TableCell>
-                <TableCell>
-                  {product.name}
-                  <br />
-                  <small className="text-gray-600">{product.description}</small>
-                </TableCell>
-                <TableCell className="text-nowrap">
-                  {product.category?.name}
-                </TableCell>
-                <TableCell className="font-mono">{product.tax}%</TableCell>
-                <TableCell className="font-mono">
-                  {Formatter.money(product.price)}
-                </TableCell>
-                <TableCell className="bg-white sticky right-0">
-                  <div className="flex flex-nowrap gap-2 text-gray-600">
-                    <button
-                      onClick={() =>
-                        setProductForm({ product: product, open: true })
-                      }
-                      className="hover:opacity-70"
-                    >
-                      <Icon icon="mynaui:edit" height={20} width={20} />
-                    </button>
+                  <Icon icon="mynaui:edit" height={20} width={20} />
+                </button>
 
-                    <button
-                      onClick={() => handleOnDelete(product)}
-                      className="hover:opacity-70 text-red-700"
-                    >
-                      <Icon icon="proicons:delete" height={20} width={20} />
-                    </button>
-                  </div>
-                </TableCell>
-              </TableRow>
-            ))}
-          </tbody>
-        </Table>
-      </div>
-
-      <form.Subscribe
-        children={({ values }) => (
-          <Pagination
-            page={values.query.page}
-            pages={result.pages}
-            onChange={(e) => {
-              form.setFieldValue("query.page", e.page);
-              form.handleSubmit();
-            }}
-          />
-        )}
+                <button
+                  onClick={() => handleOnDelete(product)}
+                  className="hover:opacity-70 text-red-700"
+                >
+                  <Icon icon="proicons:delete" height={20} width={20} />
+                </button>
+              </div>
+            ),
+          },
+        ]}
+        getId={(record) => record.id as string}
+        records={result.records}
+        recordsCount={result.pages * form.state.values.query.limit}
+        sortState={{
+          field: form.state.values.order[0] as keyof IProduct,
+          order: form.state.values.order[1],
+        }}
+        sortStateChange={({ field, order }) => {
+          form.setFieldValue("order[0]", field);
+          form.setFieldValue("order[1]", order);
+          form.setFieldValue("query.page", 1);
+          form.handleSubmit();
+        }}
+        paginationState={{
+          page: result.page,
+          limit: form.state.values.query.limit,
+        }}
+        paginationStateChange={({ page, limit }) => {
+          form.setFieldValue("query.page", page);
+          form.setFieldValue("query.limit", limit);
+          form.handleSubmit();
+        }}
       />
     </div>
   );
