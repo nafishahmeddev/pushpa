@@ -59,7 +59,7 @@ export function TableCell({ ...props }: React.ComponentProps<"td" | "th">) {
       {tableRowTheme.header ? (
         <th
           {...props}
-          className={[...classNames, props.className, "font-semibold"].join(
+          className={[...classNames, props.className, "font-medium"].join(
             " ",
           )}
         />

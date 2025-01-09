@@ -6,10 +6,12 @@ export default {
     "./src/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
-    fontFamily: {
-      'sans': ['Nunito', 'sans-serif'],
-      'serif': ["PT Serif", 'serif'],
-      'mono': ['Fira Mono', 'mono'],
+    extend: {
+      fontFamily: {
+        'sans': ['Fira Sans', 'sans-serif'],
+        // 'serif': ['serif'],
+        'mono': ['Fira Mono', 'mono'],
+      }
     }
   }
 }
