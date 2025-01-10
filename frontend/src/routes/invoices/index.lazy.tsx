@@ -1,47 +1,113 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { Icon } from "@iconify/react";
-import Formatter from "@app/lib/formatter";
-import OrdersApi from "@app/services/invoices";
-import { IInvoice } from "@app/types/invoice";
-import Table, {
-  TableBody,
-  TableCell,
-  TableHead,
-  TableRow,
-} from "@app/components/ui/table/Table";
-import Pagination from "@app/components/ui/Pagination";
+import InvoiceApi from "@app/services/invoices";
 import Input from "@app/components/ui/form/input";
 import { createLazyFileRoute } from "@tanstack/react-router";
 import { useForm } from "@tanstack/react-form";
 import Button from "@app/components/ui/form/button";
+import DataTable, { Column, SortType } from "@app/components/ui/DataTable";
+import { PaginationResponse } from "@app/types/pagination";
+import { IInvoice } from "@app/types/invoice";
 
 export const Route = createLazyFileRoute("/invoices/")({
   component: RouteComponent,
 });
 
+type FormType = {
+  filter: {
+    createdAt: [from: string, to: string];
+  };
+  query: { page: number; limit: number };
+  order: [field: keyof IInvoice, sort: SortType];
+};
+
 function RouteComponent() {
-  const form = useForm({
-    defaultValues: {
-      createdAt: ["", ""],
-    },
-    onSubmit: ({ value }) =>
-      OrdersApi.paginate({ page: query.page, limit: query.limit }, value).then(
-        (res) => {
-          setResult(res);
-          setQuery({ page: res.page, limit: query.limit });
-        },
-      ),
-  });
-  const [query, setQuery] = useState({ page: 1, limit: 20 });
-  const [result, setResult] = useState<{
-    pages: number;
-    page: number;
-    records: Array<IInvoice>;
-  }>({
+  const columns = useMemo<Array<Column<IInvoice>>>(
+    () => [
+      {
+        key: "id",
+        label: "",
+        width: 0,
+        renderColumn: (_, { record: invoice }) => (
+          <div className="inline-flex flex-nowrap gap-2 text-gray-600">
+            {invoice.id && (
+              <button
+                className={`hover:opacity-50`}
+                onClick={() => handleOnDetails(invoice.id as string)}
+              >
+                <Icon icon="ph:receipt" height={20} width={20} />
+              </button>
+            )}
+          </div>
+        ),
+      },
+      {
+        key: "receiptNo",
+        label: "Receipt No",
+      },
+      {
+        key: "createdAt",
+        label: "Dated",
+        sortable: true,
+        nowrap: true,
+        type: "datetime",
+      },
+      {
+        key: "subTotal",
+        label: "Subtotal",
+        type: "amount",
+        width: 0,
+      },
+      {
+        key: "tax",
+        label: "Tax",
+        type: "amount",
+        width: 0,
+      },
+
+      {
+        key: "discount",
+        label: "Discount",
+        type: "amount",
+        width: 0,
+      },
+
+      {
+        key: "amount",
+        label: "Amount",
+        type: "amount",
+        width: 0,
+      },
+    ],
+    [],
+  );
+  const [result, setResult] = useState<PaginationResponse<IInvoice>>({
     pages: 1,
     page: 0,
+    count: 0,
     records: [],
   });
+
+  const form = useForm<FormType>({
+    defaultValues: {
+      filter: {
+        createdAt: ["", ""],
+      },
+      query: { page: 1, limit: 20 },
+      order: ["createdAt", "DESC"],
+    },
+    onSubmit: async ({ value, formApi }) => {
+      return InvoiceApi.paginate(
+        { page: value.query.page, limit: value.query.limit },
+        value.filter,
+        value.order,
+      ).then((res) => {
+        formApi.setFieldValue("query.page", res.page);
+        setResult(res);
+      });
+    },
+  });
+
   const handleOnDetails = (invoiceId: string, print: boolean = false) => {
     const w = window.open(
       import.meta.env.VITE_BASE_URL +
@@ -59,16 +125,14 @@ function RouteComponent() {
   };
 
   useEffect(() => {
-    if (query.page != result.page) {
-      form.handleSubmit();
-    }
-  }, [query]);
+    form.handleSubmit();
+  }, []);
   return (
     <React.Fragment>
       <div className=" p-4 flex flex-col gap-5">
         <div className=" flex gap-4 items-center">
           <div className="flex-1 flex flex-col items-start justify-center">
-            <h2 className="text-2xl">Invoices</h2>
+            <h2 className="text-2xl">Invoice</h2>
           </div>
 
           <form
@@ -81,10 +145,10 @@ function RouteComponent() {
             className="h-9 flex gap-3"
           >
             <form.Field
-              name="createdAt[0]"
+              name="filter.createdAt[0]"
               children={({ state, handleBlur, handleChange, name }) => (
                 <Input
-                  placeholder="Date from"
+                  placeholder="Date From"
                   type="date"
                   value={state.value}
                   onChange={(e) => handleChange(e.target.value)}
@@ -97,7 +161,7 @@ function RouteComponent() {
             />
 
             <form.Field
-              name="createdAt[1]"
+              name="filter.createdAt[1]"
               children={({ state, handleBlur, handleChange, name }) => (
                 <Input
                   placeholder="Date to"
@@ -111,80 +175,41 @@ function RouteComponent() {
                 />
               )}
             />
-
-            <Button className="bg-lime-500 text-white">Search</Button>
+            <Button className="bg-lime-500 text-white" type="submit">
+              Search
+            </Button>
             <Button className="bg-gray-300" type="reset">
               Reset
             </Button>
           </form>
         </div>
 
-        <div className="bg-white border rounded-xl overflow-x-auto overflow-hidden relative">
-          <Table bordered>
-            <TableHead>
-              <TableRow className="sticky top-0 left-0 z-10" header>
-                <TableCell>#</TableCell>
-                <TableCell />
-                <TableCell>Receipt No</TableCell>
-                <TableCell>Date</TableCell>
-                <TableCell className="text-end w-0">Subtotal</TableCell>
-                <TableCell className="text-end w-0">Tax</TableCell>
-                <TableCell className="text-end w-0">Discount</TableCell>
-                <TableCell className="text-end w-0">Amount</TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {result.records.map((invoice, index: number) => (
-                <TableRow key={`product-${invoice.id}`}>
-                  <TableCell className="w-0">
-                    {(query.page - 1) * query.limit + index + 1}
-                  </TableCell>
-                  <TableCell className="w-0 sticky left-0 bg-white">
-                    <div className="inline-flex flex-nowrap gap-2 text-gray-600 items-center h-full align-middle">
-                      <button
-                        className={`hover:opacity-50`}
-                        onClick={() => handleOnDetails(invoice.id)}
-                      >
-                        <Icon icon="ph:receipt" height={20} width={20} />
-                      </button>
-
-                      <button
-                        className={`hover:opacity-50 text-lime-700`}
-                        onClick={() => handleOnDetails(invoice.id, true)}
-                      >
-                        <Icon
-                          icon="lsicon:print-outline"
-                          height={20}
-                          width={20}
-                        />
-                      </button>
-                    </div>
-                  </TableCell>
-                  <TableCell>{invoice.receiptNo}</TableCell>
-                  <TableCell className="text-nowrap">
-                    {Formatter.datetime(invoice.createdAt)}
-                  </TableCell>
-                  <TableCell className="text-end ">
-                    {Formatter.money(invoice.subTotal)}
-                  </TableCell>
-                  <TableCell className="text-end ">
-                    {Formatter.money(invoice.tax)}
-                  </TableCell>
-                  <TableCell className="text-end ">
-                    {Formatter.money(invoice.discount)}
-                  </TableCell>
-                  <TableCell className="text-end ">
-                    {Formatter.money(invoice.amount)}
-                  </TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </div>
-        <Pagination
-          page={query.page}
-          pages={result.pages}
-          onChange={(props) => setQuery({ ...query, ...props })}
+        <DataTable
+          serial
+          columns={columns}
+          getId={(record) => record.id as string}
+          records={result.records}
+          recordsCount={result.count}
+          loading={form.state.isSubmitting}
+          sortState={{
+            field: form.state.values.order[0],
+            order: form.state.values.order[1],
+          }}
+          sortStateChange={({ field, order }) => {
+            form.setFieldValue("order[0]", field);
+            form.setFieldValue("order[1]", order);
+            form.setFieldValue("query.page", 1);
+            form.handleSubmit();
+          }}
+          paginationState={{
+            page: result.page,
+            limit: form.state.values.query.limit,
+          }}
+          paginationStateChange={({ page, limit }) => {
+            form.setFieldValue("query.page", page);
+            form.setFieldValue("query.limit", limit);
+            form.handleSubmit();
+          }}
         />
       </div>
     </React.Fragment>
