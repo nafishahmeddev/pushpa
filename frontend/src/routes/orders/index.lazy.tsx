@@ -1,19 +1,13 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { Icon } from "@iconify/react";
-import Formatter from "@app/lib/formatter";
 import OrdersApi from "@app/services/orders";
-import Table, {
-  TableBody,
-  TableCell,
-  TableHead,
-  TableRow,
-} from "@app/components/ui/table/Table";
-import Pagination from "@app/components/ui/Pagination";
 import Input from "@app/components/ui/form/input";
-import { IOrder, OrderStatus } from "@app/types/orders";
+import { IKot, IOrder, OrderStatus } from "@app/types/orders";
 import { createLazyFileRoute, Link } from "@tanstack/react-router";
 import { useForm } from "@tanstack/react-form";
 import Button from "@app/components/ui/form/button";
+import DataTable, { Column, SortType } from "@app/components/ui/DataTable";
+import { PaginationResponse } from "@app/types/pagination";
 
 export const Route = createLazyFileRoute("/orders/")({
   component: RouteComponent,
@@ -47,28 +41,129 @@ const OrderStatusLabel = ({ order }: { order: IOrder }) => {
   return <label className={classNames.join(" ")}>{order.status}</label>;
 };
 
+type FormType = {
+  filter: {
+    createdAt: [from: string, to: string];
+  };
+  query: { page: number; limit: number };
+  order: [field: keyof IOrder, sort: SortType];
+};
+
 function RouteComponent() {
-  const form = useForm({
-    defaultValues: {
-      createdAt: ["", ""],
-    },
-    onSubmit: ({ value }) =>
-      OrdersApi.paginate({ page: query.page, limit: query.limit }, value).then(
-        (res) => {
-          setResult(res);
-          setQuery({ page: res.page, limit: query.limit });
-        },
-      ),
-  });
-  const [query, setQuery] = useState({ page: 1, limit: 20 });
-  const [result, setResult] = useState<{
-    pages: number;
-    page: number;
-    records: Array<IOrder>;
-  }>({
+  const columns = useMemo<Array<Column<IOrder>>>(
+    () => [
+      {
+        key: "id",
+        label: "",
+        width: 0,
+        renderColumn: (_, { record: order }) => (
+          <div className="inline-flex flex-nowrap gap-2 text-gray-600">
+            {order.invoiceId && (
+              <button
+                className={`hover:opacity-50`}
+                onClick={() => handleOnDetails(order.invoiceId as string)}
+              >
+                <Icon icon="ph:receipt" height={20} width={20} />
+              </button>
+            )}
+
+            {[OrderStatus.Draft, OrderStatus.Ongoing].includes(
+              order.status,
+            ) && (
+              <Link
+                className={`hover:opacity-50`}
+                to={"/pos/" + order.id}
+                title="Go to billing"
+              >
+                <Icon icon="hugeicons:payment-02" height={20} width={20} />
+              </Link>
+            )}
+          </div>
+        ),
+      },
+      {
+        key: "orderNo",
+        label: "Order No",
+      },
+      {
+        key: "status",
+        label: "Status",
+        renderColumn: (_, { record: order }) => (
+          <OrderStatusLabel order={order} />
+        ),
+      },
+
+      {
+        key: "type",
+        label: "Type",
+      },
+      {
+        key: "tableId",
+        label: "Table",
+        renderColumn: (_, { record }) => record.table?.name,
+      },
+      {
+        key: "userId",
+        label: "User",
+        width: 0,
+        renderColumn: (_, { record }) => record.user?.name,
+      },
+
+      {
+        key: "kotList",
+        label: "Kot",
+        renderColumn: (kots: Array<IKot>) => (
+          <>
+            {kots?.map((e) => (
+              <button
+                className="inline-flex mx-0.5 bg-lime-600 rounded-xl px-1 p-0.5 items-center justify-center text-white text-xs"
+                key={e.id}
+              >
+                {e.tokenNo}
+              </button>
+            ))}
+          </>
+        ),
+      },
+      {
+        key: "discount",
+        label: "Discount",
+        type: "amount",
+      },
+      {
+        key: "createdAt",
+        label: "Dated",
+        sortable: true,
+        type: "datetime",
+      },
+    ],
+    [],
+  );
+  const [result, setResult] = useState<PaginationResponse<IOrder>>({
     pages: 1,
     page: 0,
+    count: 0,
     records: [],
+  });
+
+  const form = useForm<FormType>({
+    defaultValues: {
+      filter: {
+        createdAt: ["", ""],
+      },
+      query: { page: 1, limit: 20 },
+      order: ["createdAt", "DESC"],
+    },
+    onSubmit: async ({ value, formApi }) => {
+      return OrdersApi.paginate(
+        { page: value.query.page, limit: value.query.limit },
+        value.filter,
+        value.order,
+      ).then((res) => {
+        formApi.setFieldValue("query.page", res.page);
+        setResult(res);
+      });
+    },
   });
 
   const handleOnDetails = (invoiceId: string, print: boolean = false) => {
@@ -88,10 +183,8 @@ function RouteComponent() {
   };
 
   useEffect(() => {
-    if (query.page != result.page) {
-      form.handleSubmit();
-    }
-  }, [query]);
+    form.handleSubmit();
+  }, []);
   return (
     <React.Fragment>
       <div className=" p-4 flex flex-col gap-5">
@@ -110,10 +203,10 @@ function RouteComponent() {
             className="h-9 flex gap-3"
           >
             <form.Field
-              name="createdAt[0]"
+              name="filter.createdAt[0]"
               children={({ state, handleBlur, handleChange, name }) => (
                 <Input
-                  placeholder="Date from"
+                  placeholder="Date From"
                   type="date"
                   value={state.value}
                   onChange={(e) => handleChange(e.target.value)}
@@ -126,7 +219,7 @@ function RouteComponent() {
             />
 
             <form.Field
-              name="createdAt[1]"
+              name="filter.createdAt[1]"
               children={({ state, handleBlur, handleChange, name }) => (
                 <Input
                   placeholder="Date to"
@@ -140,111 +233,41 @@ function RouteComponent() {
                 />
               )}
             />
-            <Button className="bg-lime-500 text-white">Search</Button>
+            <Button className="bg-lime-500 text-white" type="submit">
+              Search
+            </Button>
             <Button className="bg-gray-300" type="reset">
               Reset
             </Button>
           </form>
         </div>
 
-        <div className="bg-white border rounded-xl  overflow-x-auto overflow-hidden relative">
-          <Table bordered>
-            <TableHead>
-              <TableRow className="sticky top-0 left-0 z-10" header>
-                <TableCell>#</TableCell>
-                <TableCell />
-                <TableCell className="text-nowrap">Order No</TableCell>
-                <TableCell>Status</TableCell>
-                <TableCell>Type</TableCell>
-                <TableCell>Table</TableCell>
-                <TableCell>User</TableCell>
-
-                <TableCell className="text-end w-0">Kot</TableCell>
-                <TableCell className="w-0 text-end">Discount</TableCell>
-                <TableCell className="text-end w-0">Created</TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {result.records.map((order, index: number) => {
-                return (
-                  <TableRow key={`product-${order.id}`}>
-                    <TableCell className="w-0">
-                      {(query.page - 1) * query.limit + index + 1}
-                    </TableCell>
-                    <TableCell className="w-0 sticky left-0 bg-white">
-                      <div className="inline-flex flex-nowrap gap-2 text-gray-600">
-                        {order.invoiceId && (
-                          <button
-                            className={`hover:opacity-50`}
-                            onClick={() =>
-                              handleOnDetails(order.invoiceId as string)
-                            }
-                          >
-                            <Icon icon="ph:receipt" height={20} width={20} />
-                          </button>
-                        )}
-
-                        {[OrderStatus.Draft, OrderStatus.Ongoing].includes(
-                          order.status,
-                        ) && (
-                          <Link
-                            className={`hover:opacity-50`}
-                            to={"/pos/" + order.id}
-                            title="Go to billing"
-                          >
-                            <Icon
-                              icon="hugeicons:payment-02"
-                              height={20}
-                              width={20}
-                            />
-                          </Link>
-                        )}
-                      </div>
-                    </TableCell>
-                    <TableCell className="w-0">{order.orderNo}</TableCell>
-                    <TableCell>
-                      <OrderStatusLabel order={order} />
-                    </TableCell>
-
-                    <TableCell className="text-nowrap">{order.type}</TableCell>
-                    <TableCell className="text-nowrap">
-                      {order.table?.name}
-                    </TableCell>
-                    <TableCell className="text-nowrap">
-                      {order.user?.name}
-                    </TableCell>
-
-                    <TableCell className="text-nowrap text-end">
-                      {order.status != OrderStatus.Cancelled && (
-                        <>
-                          {order.kotList?.map((e) => (
-                            <button
-                              className="inline-flex mx-0.5 bg-lime-600 rounded-xl px-1 p-0.5 items-center justify-center text-white text-xs"
-                              key={e.id}
-                            >
-                              {e.tokenNo}
-                            </button>
-                          ))}
-                        </>
-                      )}
-                    </TableCell>
-
-                    <TableCell className="text-nowrap text-end">
-                      {Formatter.money(order.discount)}
-                    </TableCell>
-                    <TableCell className="text-nowrap">
-                      {Formatter.datetime(order.createdAt)}
-                    </TableCell>
-                  </TableRow>
-                );
-              })}
-            </TableBody>
-          </Table>
-        </div>
-        <Pagination
-          page={query.page}
-          pages={result.pages}
-          onChange={(props) => setQuery({ ...query, ...props })}
+        <DataTable
+          serial
+          columns={columns}
+          getId={(record) => record.id as string}
+          records={result.records}
+          recordsCount={result.count}
+          loading={form.state.isSubmitting}
+          sortState={{
+            field: form.state.values.order[0],
+            order: form.state.values.order[1],
+          }}
+          sortStateChange={({ field, order }) => {
+            form.setFieldValue("order[0]", field);
+            form.setFieldValue("order[1]", order);
+            form.setFieldValue("query.page", 1);
+            form.handleSubmit();
+          }}
+          paginationState={{
+            page: result.page,
+            limit: form.state.values.query.limit,
+          }}
+          paginationStateChange={({ page, limit }) => {
+            form.setFieldValue("query.page", page);
+            form.setFieldValue("query.limit", limit);
+            form.handleSubmit();
+          }}
         />
       </div>
     </React.Fragment>
