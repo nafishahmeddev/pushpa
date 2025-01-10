@@ -218,7 +218,7 @@ export default function DataTable<IRecord>({
           </div>
         )}
         {loading && (
-          <div className={`${records.length ? "h-full" : "min-h-60"} `}>
+          <div className={`${records.length ? "" : "min-h-60"} `}>
             <div className="p-5 flex items-center justify-center absolute h-[calc(100%_-_35px)] w-full left-0 top-[35px] backdrop-blur-sm bg-white/90 transition-all">
               <Spinner />
             </div>
