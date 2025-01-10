@@ -9,6 +9,7 @@ import Table, {
 import Pagination from "./Pagination";
 import Formatter from "@app/lib/formatter";
 import Spinner from "./Spinner";
+import Select from "./form/select";
 
 type ValueTypes = never;
 export type ColumnType =
@@ -96,6 +97,7 @@ export default function DataTable<IRecord>({
   selectionState,
   selectionStateChange,
 }: DataTableProps<IRecord>) {
+  const offset = (paginationState.page - 1) * paginationState.limit;
   return (
     <div className="flex flex-col gap-5">
       <div className="h-full bg-white border rounded-xl overflow-x-auto overflow-hidden min-h-60 relative">
@@ -185,9 +187,7 @@ export default function DataTable<IRecord>({
                   </TableCell>
                 )}
                 {serial && (
-                  <TableCell className="w-0">
-                    {(paginationState.page - 1) * paginationState.limit + i + 1}
-                  </TableCell>
+                  <TableCell className="w-0">{offset + i + 1}</TableCell>
                 )}
                 {columns.map((column) => (
                   <TableCell
@@ -223,13 +223,39 @@ export default function DataTable<IRecord>({
           </div>
         )}
       </div>
-      <Pagination
-        page={paginationState.page}
-        pages={Math.ceil(recordsCount / paginationState.limit)}
-        onChange={({ page }) =>
-          paginationStateChange({ ...paginationState, page })
-        }
-      />
+
+      <div className="flex items-center gap-4">
+        <div className="flex-1">
+          Showing : {offset + 1} - {offset + records.length}
+        </div>
+
+        <div className="flex gap-2 items-center">
+          Records per page:
+          <Select
+            className="h-[35px] border rounded-xl px-2 bg-white w-[60px]"
+            value={paginationState.limit}
+            onChange={(e) =>
+              paginationStateChange({
+                page: 1,
+                limit: Number(e.target.value),
+              })
+            }
+          >
+            <option>20</option>
+            <option>50</option>
+            <option>100</option>
+          </Select>
+        </div>
+        <div>
+          <Pagination
+            page={paginationState.page}
+            pages={Math.ceil(recordsCount / paginationState.limit)}
+            onChange={({ page }) =>
+              paginationStateChange({ ...paginationState, page })
+            }
+          />
+        </div>
+      </div>
     </div>
   );
 }

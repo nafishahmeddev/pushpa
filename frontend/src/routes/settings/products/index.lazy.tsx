@@ -10,6 +10,7 @@ import Button from "@app/components/ui/form/button";
 import Image from "rc-image";
 import { uploadUrl } from "@app/lib/upload";
 import DataTable, { Column } from "@app/components/ui/DataTable";
+import { PaginationResponse } from "@app/types/pagination";
 
 type FormType = {
   filter: {
@@ -101,13 +102,10 @@ function RouteComponent() {
     ],
     [],
   );
-  const [result, setResult] = useState<{
-    pages: number;
-    page: number;
-    records: Array<IProduct>;
-  }>({
+  const [result, setResult] = useState<PaginationResponse<IProduct>>({
     pages: 1,
     page: 0,
+    count: 0,
     records: [],
   });
   const form = useForm<FormType>({
@@ -155,7 +153,7 @@ function RouteComponent() {
           form.handleSubmit();
         }}
       />
-      <div className="py-4 flex gap-4 items-center h-full">
+      <div className="py-4 flex gap-4 items-center h-full py-6">
         <div>
           <h2 className="text-2xl">Products</h2>
         </div>
@@ -205,7 +203,7 @@ function RouteComponent() {
         columns={columns}
         getId={(record) => record.id as string}
         records={result.records}
-        recordsCount={result.pages * form.state.values.query.limit}
+        recordsCount={result.count}
         loading={form.state.isSubmitting}
         sortState={{
           field: form.state.values.order[0] as keyof IProduct,

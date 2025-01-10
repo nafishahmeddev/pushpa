@@ -5,6 +5,7 @@ export default class TablesApi {
     static paginate = ({ page, limit }: { page: number, limit: number }, filter: { name: string }) => ApiRequest.post(`/tables/paginate?page=${page}&limit=${limit}`, { filter },).then(res => res.data.result as {
         pages: number,
         page: number,
+        count: number,
         records: Array<ITable>
     });
     static create = (data: { name: string, locationId: string }) => ApiRequest.post("/tables", data).then(res => res.data.result as ITable);

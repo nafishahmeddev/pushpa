@@ -6,6 +6,7 @@ export default class LocationsApi {
     static paginate = ({ page, limit }: { page: number, limit: number }, filter: { name: string }) => ApiRequest.post(`/locations/paginate?page=${page}&limit=${limit}`, { filter },).then(res => res.data.result as {
         pages: number,
         page: number,
+        count: number,
         records: Array<ILocation>
     });
     static create = (data: { name: string }) => ApiRequest.post("/locations", data).then(res => res.data.result as ILocation);

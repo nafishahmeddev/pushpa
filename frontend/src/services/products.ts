@@ -7,6 +7,7 @@ export default class ProductsApi {
     },).then(res => res.data.result as {
         pages: number,
         page: number,
+        count: number,
         records: Array<IProduct>
     });
     static create = (data: FormData) => ApiRequest.post("/products", data).then(res => res.data.result as IProduct);

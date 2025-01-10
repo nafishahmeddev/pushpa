@@ -3,15 +3,16 @@ import { IKot, IOrder } from "@app/types/orders";
 import { IInvoice } from "@app/types/invoice";
 import { ICartItem } from "@app/types/cart";
 export default class OrdersApi {
-    static paginate = ({ page, limit }: { page: number, limit: number }, filter: {[key: string]: unknown}) => ApiRequest.post(`/orders/paginate?page=${page}&limit=${limit}`, {filter},).then(res => res.data.result as {
+    static paginate = ({ page, limit }: { page: number, limit: number }, filter: { [key: string]: unknown }) => ApiRequest.post(`/orders/paginate?page=${page}&limit=${limit}`, { filter },).then(res => res.data.result as {
         pages: number,
         page: number,
+        count: number,
         records: Array<IOrder>
     });
     static pendingList = () => ApiRequest.get("/orders/pending-list").then(res => res.data.result as Array<IOrder>);
     static getOrder = (orderId: string) => ApiRequest.get(`/orders/${orderId}`).then(res => res.data.result as IOrder);
     static createOrder = (data: Partial<IOrder>) => ApiRequest.post(`/orders/`, data).then(res => res.data.result as IOrder);
-    static updateOrder = (orderId:string,data: Partial<IOrder>) => ApiRequest.put(`/orders/${orderId}`, data).then(res => res.data.result as IOrder);
+    static updateOrder = (orderId: string, data: Partial<IOrder>) => ApiRequest.put(`/orders/${orderId}`, data).then(res => res.data.result as IOrder);
     static deleteOrder = (orderId: string) => ApiRequest.delete(`/orders/${orderId}`).then(res => res.data.message as string);
     static createKot = (orderId: string) => ApiRequest.post(`/orders/${orderId}/kot-create`).then(res => res.data.result as IKot);
     static cancelOrder = (orderId: string,) => ApiRequest.post(`/orders/${orderId}/cancel`).then(res => res.data.result as IInvoice);
