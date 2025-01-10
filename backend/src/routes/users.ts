@@ -31,6 +31,7 @@ UsersRouter.post("/paginate", async (req: IRequest, res: IResponse) => {
         result: {
             page: page,
             pages: pages,
+            count: paginated.count,
             records: paginated.rows.map(e => ({ ...e.toJSON(), password: undefined }))
         },
         message: "Successful"

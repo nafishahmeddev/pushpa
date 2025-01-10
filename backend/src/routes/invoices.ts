@@ -24,19 +24,20 @@ InvoicesRouter.post("/paginate", async (req: IRequest, res: IResponse) => {
         }
     }
 
-    const paginatedOrders = await Invoice.findAndCountAll({
+    const paginated = await Invoice.findAndCountAll({
         order: [["createdAt", "desc"]],
         limit: limit,
         offset: (page - 1) * limit,
         where: where
     });
 
-    const pages = Math.ceil(paginatedOrders.count / limit);
+    const pages = Math.ceil(paginated.count / limit);
     res.json({
         result: {
             page: page,
             pages: pages,
-            records: paginatedOrders.rows
+            count: paginated.count,
+            records: paginated.rows
         },
         message: "Successful"
     })
@@ -88,18 +89,18 @@ InvoicesRouter.get("/:invoiceId/receipt", async (req: IRequest, res: IResponse) 
     }
 
     const order = await Order.findOne({
-        where:{
+        where: {
             invoiceId: invoiceId
         },
-        include:[
+        include: [
             {
                 attributes: ["tokenNo"],
                 model: Kot,
-                as:"kotList"
+                as: "kotList"
             }
         ]
     })
 
-    res.render("invoice-receipt.ejs", { invoice: invoice.toJSON(), order:  order?.toJSON() })
+    res.render("invoice-receipt.ejs", { invoice: invoice.toJSON(), order: order?.toJSON() })
 });
 export default InvoicesRouter;

@@ -60,19 +60,20 @@ LocationsRouter.post("/paginate", async (req: IRequest, res: IResponse) => {
         where.name = { [Op.like]: "%" + filter.name + "%" }
     }
 
-    const paginatedOrders = await Location.findAndCountAll({
+    const paginated = await Location.findAndCountAll({
         order: [["name", "asc"]],
         limit: limit,
         offset: (page - 1) * limit,
         where: where,
     });
 
-    const pages = Math.ceil(paginatedOrders.count / limit);
+    const pages = Math.ceil(paginated.count / limit);
     res.json({
         result: {
             page: page,
             pages: pages,
-            records: paginatedOrders.rows
+            count: paginated.count,
+            records: paginated.rows
         },
         message: "Successful"
     })

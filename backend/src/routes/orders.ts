@@ -27,7 +27,7 @@ OrdersRouter.post("/paginate", async (req: IRequest, res: IResponse) => {
         }
     }
 
-    const paginatedOrders = await Order.findAndCountAll({
+    const paginated = await Order.findAndCountAll({
         order: [["createdAt", "desc"]],
         limit: limit,
         offset: (page - 1) * limit,
@@ -35,21 +35,21 @@ OrdersRouter.post("/paginate", async (req: IRequest, res: IResponse) => {
         include: [{ model: Table, as: "table" }, { model: User, as: "user" }]
     });
 
-    const kots = await Kot.findAll({ where: { orderId: paginatedOrders.rows.map(e => e.id) } });
+    const kots = await Kot.findAll({ where: { orderId: paginated.rows.map(e => e.id) } });
 
-    paginatedOrders.rows = paginatedOrders.rows.map(e => {
+    paginated.rows = paginated.rows.map(e => {
         e = e.toJSON();
         e.kotList = kots.filter(k => k.orderId == e.id);
         return e;
     })
 
-    const pages = Math.ceil(paginatedOrders.count / limit);
+    const pages = Math.ceil(paginated.count / limit);
     res.json({
         result: {
             page: page,
             pages: pages,
-            records: paginatedOrders.rows,
-            c: paginatedOrders.count
+            records: paginated.rows,
+            count: paginated.count
         },
         message: "Successful"
     })

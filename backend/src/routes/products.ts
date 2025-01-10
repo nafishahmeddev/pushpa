@@ -55,7 +55,7 @@ ProductsRouter.post("/paginate", async (req: IRequest, res: IResponse) => {
         where.categoryId = filter.categoryId
     }
 
-    const paginatedOrders = await Product.findAndCountAll({
+    const paginated = await Product.findAndCountAll({
         order: [order],
         limit: limit,
         offset: (page - 1) * limit,
@@ -73,12 +73,13 @@ ProductsRouter.post("/paginate", async (req: IRequest, res: IResponse) => {
 
     });
 
-    const pages = Math.ceil(paginatedOrders.count / limit);
+    const pages = Math.ceil(paginated.count / limit);
     res.json({
         result: {
             page: page,
             pages: pages,
-            records: paginatedOrders.rows
+            count: paginated.count,
+            records: paginated.rows
         },
         message: "Successful"
     })

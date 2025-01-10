@@ -48,15 +48,15 @@ TablesRouter.post("/paginate", async (req: IRequest, res: IResponse) => {
         where.name = { [Op.like]: "%" + filter.name + "%" }
     }
 
-    const paginatedOrders = await Table.findAndCountAll({
+    const paginated = await Table.findAndCountAll({
         order: [["name", "asc"]],
         limit: limit,
         offset: (page - 1) * limit,
         where: where,
         include: [{
             model: Location,
-            as:"location",
-            where:{
+            as: "location",
+            where: {
                 restaurantId: req.auth?.restaurantId
             },
             required: true
@@ -64,12 +64,13 @@ TablesRouter.post("/paginate", async (req: IRequest, res: IResponse) => {
 
     });
 
-    const pages = Math.ceil(paginatedOrders.count / limit);
+    const pages = Math.ceil(paginated.count / limit);
     res.json({
         result: {
             page: page,
             pages: pages,
-            records: paginatedOrders.rows
+            count: paginated.count,
+            records: paginated.rows
         },
         message: "Successful"
     })
