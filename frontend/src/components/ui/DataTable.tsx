@@ -234,7 +234,7 @@ export default function DataTable<IRecord>({
         <div className="flex gap-2 items-center  flex-nowrap">
           Records per page:
           <Select
-            className="h-[35px] border rounded-xl px-2 bg-white w-[60px]"
+            className="h-[35px] border rounded-xl px-2 bg-white min-w-[65px]"
             value={paginationState.limit}
             onChange={(e) =>
               paginationStateChange({
