@@ -25,50 +25,49 @@ const getMenu = (user: IUser) => {
         icon: "ep:fork-spoon",
         route: "/orders",
       },
+    ];
+  } else if (
+    user.designation == UserDesignation.Admin ||
+    user.designation == UserDesignation.Owner
+  ) {
+    return [
+      {
+        label: "Dashboard",
+        icon: "mage:dashboard-3",
+        route: "/",
+      },
+      {
+        label: "POS",
+        icon: "ep:postcard",
+        route: "/pos",
+      },
+      {
+        label: "Orders",
+        icon: "ep:fork-spoon",
+        route: "/orders",
+      },
       {
         label: "Invoices",
         icon: "basil:invoice-outline",
         route: "/invoices",
       },
+      {
+        label: "Users",
+        icon: "heroicons:users",
+        route: "/users",
+      },
+      {
+        label: "Settings",
+        icon: "stash:screw-nut",
+        route: "/settings",
+      },
     ];
   }
-
   return [
     {
       label: "Dashboard",
       icon: "mage:dashboard-3",
       route: "/",
-    },
-    {
-      label: "POS",
-      icon: "ep:postcard",
-      route: "/pos",
-    },
-    {
-      label: "Orders",
-      icon: "ep:fork-spoon",
-      route: "/orders",
-    },
-    {
-      label: "Invoices",
-      icon: "basil:invoice-outline",
-      route: "/invoices",
-    },
-
-    // {
-    //   label: "Kitchen",
-    //   icon: "solar:chef-hat-minimalistic-outline",
-    //   route: "/invoices",
-    // },
-    {
-      label: "Users",
-      icon: "heroicons:users",
-      route: "/users",
-    },
-    {
-      label: "Settings",
-      icon: "stash:screw-nut",
-      route: "/settings",
     },
   ];
 };
@@ -108,7 +107,7 @@ export default function MainLayout() {
     <div className="grid h-full w-full grid-rows-[60px_1fr] bg-gray-100">
       <div className="border-b h-full bg-white">
         <div className="flex  gap-4 h-full w-full">
-          <NavButton/>
+          <NavButton />
           <div className="logo italic flex h-full font-bold text-xl text-lime-800 px-4 py-3 items-center font-mono flex-1">
             {auth.user.restaurant?.name}
           </div>
