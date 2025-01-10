@@ -12,6 +12,7 @@ InvoicesRouter.post("/paginate", async (req: IRequest, res: IResponse) => {
     const filter: {
         createdAt: [from: string, to: string]
     } = req.body.filter;
+    const order = req.body.order || ["createdAt", "DESC"];
 
     //build filter
     const where: WhereOptions<InferAttributes<Invoice, {}>> = {
@@ -25,7 +26,7 @@ InvoicesRouter.post("/paginate", async (req: IRequest, res: IResponse) => {
     }
 
     const paginated = await Invoice.findAndCountAll({
-        order: [["createdAt", "desc"]],
+        order: [order],
         limit: limit,
         offset: (page - 1) * limit,
         where: where
