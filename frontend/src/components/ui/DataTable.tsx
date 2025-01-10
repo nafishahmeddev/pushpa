@@ -227,12 +227,12 @@ export default function DataTable<IRecord>({
       </div>
 
       <div className="flex items-center gap-4 flex-nowrap text-nowrap">
-        <div className="flex-1">
+        <div className="flex-1 hidden md:flex">
           Showing : {offset + 1} - {offset + records.length}
         </div>
 
-        <div className="flex gap-2 items-center  flex-nowrap">
-          Records per page:
+        <div className="hidden md:flex gap-2 items-center  flex-nowrap">
+          Per page:
           <Select
             className="h-[35px] border rounded-xl px-2 bg-white min-w-[65px]"
             value={paginationState.limit}
@@ -249,13 +249,15 @@ export default function DataTable<IRecord>({
           </Select>
         </div>
 
-        <Pagination
-          page={paginationState.page}
-          pages={Math.ceil(recordsCount / paginationState.limit)}
-          onChange={({ page }) =>
-            paginationStateChange({ ...paginationState, page })
-          }
-        />
+        <div className="h-full flex justify-center items-center  flex-1  md:flex-none">
+          <Pagination
+            page={paginationState.page}
+            pages={Math.ceil(recordsCount / paginationState.limit)}
+            onChange={({ page }) =>
+              paginationStateChange({ ...paginationState, page })
+            }
+          />
+        </div>
       </div>
     </div>
   );
