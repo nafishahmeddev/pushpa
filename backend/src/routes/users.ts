@@ -12,6 +12,7 @@ UsersRouter.post("/paginate", async (req: IRequest, res: IResponse) => {
     const page: number = Number(req.query.page || 1);
     const limit: number = Number(req.query.limit || 20);
     const filter: { [key: string]: any } = req.body.filter;
+    const order = req.body.order;
 
 
     //build filter
@@ -19,8 +20,11 @@ UsersRouter.post("/paginate", async (req: IRequest, res: IResponse) => {
         id: { [Op.ne]: req.auth?.userId },
         restaurantId: req.auth?.restaurantId
     };
+    if (filter.name) {
+        where.name = { [Op.like]: "%" + filter.name + "%" }
+    }
     const paginated = await User.findAndCountAll({
-        order: [["createdAt", "asc"]],
+        order: [order],
         limit: limit,
         offset: (page - 1) * limit,
         where: where

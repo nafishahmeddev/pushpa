@@ -100,7 +100,7 @@ export default function DataTable<IRecord>({
   const offset = (paginationState.page - 1) * paginationState.limit;
   return (
     <div className="flex flex-col gap-5">
-      <div className="h-full bg-white border rounded-xl overflow-x-auto overflow-hidden min-h-60 relative">
+      <div className="h-full bg-white border rounded-xl overflow-x-auto overflow-hidden relative">
         <Table>
           <TableHead>
             <TableRow header>
@@ -218,8 +218,10 @@ export default function DataTable<IRecord>({
           </div>
         )}
         {loading && (
-          <div className="p-5 flex items-center justify-center min-h-60 absolute h-full w-full left-0 top-[40px] bg-white/80">
-            <Spinner />
+          <div className={`${records.length ? "h-full" : "min-h-60"} `}>
+            <div className="p-5 flex items-center justify-center absolute h-[calc(100%_-_35px)] w-full left-0 top-[35px] backdrop-blur-sm bg-white/90 transition-all">
+              <Spinner />
+            </div>
           </div>
         )}
       </div>

@@ -1,7 +1,7 @@
 import { ApiRequest } from "@app/lib/axios"
 import { IUser } from "@app/types/user";
 export default class UsersApi {
-    static paginate = ({ page, limit }: { page: number, limit: number }, filter: { [key: string]: unknown }) => ApiRequest.post(`/users/paginate?page=${page}&limit=${limit}`, { filter }).then(res => res.data.result as {
+    static paginate = ({ page, limit }: { page: number, limit: number }, filter: { [key: string]: unknown }, order: [key: string, val: string]) => ApiRequest.post(`/users/paginate?page=${page}&limit=${limit}`, { filter, order }).then(res => res.data.result as {
         pages: number,
         page: number,
         count: number,
