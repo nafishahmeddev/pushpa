@@ -8,6 +8,7 @@ import moment from "moment";
 import { sequelize } from "@app/db/conn";
 
 import cors from "cors";
+import compression from 'compression';
 import MainMiddleware from "@app/middleware/main";
 import LocaleMiddleware from "@app/middleware/locale";
 import AuthMiddleware from '@app/middleware/auth';
@@ -25,9 +26,11 @@ import OrdersRouter from "@app/routes/orders";
 import AccountRouter from "./routes/account";
 import { uploadPath } from "./helpers/dirs";
 
+
 const app: Application = express();
 const port = process.env.PORT || 3000;
 
+app.use(compression());
 app.use(cors({ origin: "*" }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
