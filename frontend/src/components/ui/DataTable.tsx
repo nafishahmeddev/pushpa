@@ -223,7 +223,7 @@ export default function DataTable<IRecord>({
         </Table>
 
         {!records.length && !loading && (
-          <div className="p-5 flex items-center justify-center h-full min-h-60">
+          <div className="p-5 flex items-center justify-center">
             <p>Records are empty!</p>
           </div>
         )}
