@@ -126,12 +126,6 @@ function RouteComponent() {
         ),
       },
       {
-        key: "discount",
-        label: "Discount",
-        type: "amount",
-        width: 0,
-      },
-      {
         key: "createdAt",
         label: "Dated",
         sortable: true,
