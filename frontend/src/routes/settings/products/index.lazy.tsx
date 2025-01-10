@@ -44,6 +44,7 @@ function RouteComponent() {
         key: "name",
         label: "Name",
         sortable: true,
+        minWidth: 300,
         renderColumn: (value, { record }) => (
           <div>
             {value as string}
@@ -153,7 +154,7 @@ function RouteComponent() {
           form.handleSubmit();
         }}
       />
-      <div className="py-4 flex gap-4 items-center h-full py-6">
+      <div className="flex gap-4 items-center h-full py-6">
         <div>
           <h2 className="text-2xl">Products</h2>
         </div>
