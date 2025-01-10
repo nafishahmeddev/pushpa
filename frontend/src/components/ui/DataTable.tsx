@@ -101,7 +101,7 @@ export default function DataTable<IRecord>({
   return (
     <div className="flex flex-col gap-5">
       <div className="h-full bg-white border rounded-xl overflow-x-auto overflow-hidden relative">
-        <Table>
+        <Table bordered>
           <TableHead>
             <TableRow header>
               {checkbox && (
