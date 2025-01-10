@@ -129,6 +129,11 @@ export default function DataTable<IRecord>({
                     width: column.width,
                     whiteSpace: column.nowrap ? "nowrap" : "wrap",
                   }}
+                  className={
+                    ["number", "amount"].includes(column.type || "")
+                      ? "text-end"
+                      : "text-start"
+                  }
                 >
                   <div className="inline-flex items-center gap-3">
                     {column.label}
@@ -197,6 +202,11 @@ export default function DataTable<IRecord>({
                       width: column.width,
                       whiteSpace: column.nowrap ? "nowrap" : "wrap",
                     }}
+                    className={
+                      ["number", "amount"].includes(column.type || "")
+                        ? "text-end"
+                        : "text-start"
+                    }
                   >
                     {(column.renderColumn || defaultRenderer)(
                       record[column.key] as ValueTypes,

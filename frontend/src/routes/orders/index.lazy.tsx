@@ -105,7 +105,7 @@ function RouteComponent() {
       {
         key: "userId",
         label: "User",
-        width: 0,
+        nowrap: true,
         renderColumn: (_, { record }) => record.user?.name,
       },
 
@@ -129,11 +129,14 @@ function RouteComponent() {
         key: "discount",
         label: "Discount",
         type: "amount",
+        width: 0,
       },
       {
         key: "createdAt",
         label: "Dated",
         sortable: true,
+        width: 0,
+        nowrap:true,
         type: "datetime",
       },
     ],
