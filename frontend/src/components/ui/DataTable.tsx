@@ -217,13 +217,16 @@ export default function DataTable<IRecord>({
             <p>Records are empty!</p>
           </div>
         )}
-        {loading && (
-          <div className={`${records.length ? "" : "min-h-60"} `}>
-            <div className="p-5 flex items-center justify-center absolute h-[calc(100%_-_35px)] w-full left-0 top-[35px] backdrop-blur-sm bg-white/90 transition-all">
-              <Spinner />
-            </div>
+
+        <div
+          className={`${records.length ? "" : "min-h-60"} ${loading ? "visible" : "collapse"}`}
+        >
+          <div
+            className={`p-5 flex items-center justify-center absolute h-[calc(100%_-_35px)] w-full left-0 top-[35px] transition-all backdrop-blur-sm bg-white/30 ${loading ? "opacity-100" : "opacity-0"}`}
+          >
+            <Spinner />
           </div>
-        )}
+        </div>
       </div>
 
       <div className="flex items-center gap-4 flex-nowrap text-nowrap">
