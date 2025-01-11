@@ -12,6 +12,7 @@ const createWindow = () => {
   const mainWindow = new BrowserWindow({
     width: 1080,
     height: 720,
+    icon: path.join(__dirname, "images/logo.png"),
     // fullscreen: true,
     webPreferences: {
       preload: path.join(__dirname, 'preload.js'),
