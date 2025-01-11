@@ -13,4 +13,5 @@ export default defineConfig({
             "@app": path.resolve(__dirname, "./../frontend/src"),
         },
     },
+    publicDir: "./../frontend/public"
 });
