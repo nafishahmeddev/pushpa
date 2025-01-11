@@ -2,9 +2,9 @@ import { Suspense, useEffect } from "react";
 import AuthApi from "@app/services/auth";
 import { RouterProvider } from "@tanstack/react-router";
 import { Toaster } from "react-hot-toast";
-import router from "./router";
+import router from "./lib/router";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { ReactQueryDevtools, TanStackRouterDevtools } from "./devtools";
+import { ReactQueryDevtools, TanStackRouterDevtools } from "@app/lib/devtools";
 import PendingComponent from "./components/PendingComponent";
 const client = new QueryClient();
 function App() {
