@@ -12,9 +12,7 @@ const OrdersRouter = Router();
 OrdersRouter.post("/paginate", async (req: IRequest, res: IResponse) => {
     const page: number = Number(req.query.page || 1);
     const limit: number = Number(req.query.limit || 20);
-    const filter: {
-        createdAt: [from: string, to: string]
-    } = req.body.filter;
+    const filter = req.body.filter;
     const order = req.body.order || ["createdAt", "DESC"];
 
     //build filter
@@ -26,6 +24,16 @@ OrdersRouter.post("/paginate", async (req: IRequest, res: IResponse) => {
         where.createdAt = {
             [Op.between]: filter.createdAt
         }
+    }
+
+    if (filter.status) {
+        where.status = filter.status;
+    }
+
+    if (filter.orderNo) {
+        where.orderNo = filter.orderNo;
+        delete where.status;
+        delete where.createdAt;
     }
 
     const paginated = await Order.findAndCountAll({

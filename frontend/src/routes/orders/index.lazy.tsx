@@ -8,6 +8,8 @@ import { useForm } from "@tanstack/react-form";
 import Button from "@app/components/ui/form/button";
 import DataTable, { Column, SortType } from "@app/components/ui/DataTable";
 import { PaginationResponse } from "@app/types/pagination";
+import moment from "moment";
+import Select from "@app/components/ui/form/select";
 
 export const Route = createLazyFileRoute("/orders/")({
   component: RouteComponent,
@@ -44,6 +46,8 @@ const OrderStatusLabel = ({ order }: { order: IOrder }) => {
 type FormType = {
   filter: {
     createdAt: [from: string, to: string];
+    orderNo: string;
+    status?: OrderStatus;
   };
   query: { page: number; limit: number };
   order: [field: keyof IOrder, sort: SortType];
@@ -130,7 +134,7 @@ function RouteComponent() {
         label: "Dated",
         sortable: true,
         width: 0,
-        nowrap:true,
+        nowrap: true,
         type: "datetime",
       },
     ],
@@ -147,6 +151,8 @@ function RouteComponent() {
     defaultValues: {
       filter: {
         createdAt: ["", ""],
+        orderNo: "",
+        status: undefined,
       },
       query: { page: 1, limit: 20 },
       order: ["createdAt", "DESC"],
@@ -154,7 +160,17 @@ function RouteComponent() {
     onSubmit: async ({ value, formApi }) => {
       return OrdersApi.paginate(
         { page: value.query.page, limit: value.query.limit },
-        value.filter,
+        {
+          ...value.filter,
+          createdAt: [
+            value.filter.createdAt[0]
+              ? moment(value.filter.createdAt[0]).startOf("day").toString()
+              : "",
+            value.filter.createdAt[1]
+              ? moment(value.filter.createdAt[1]).endOf("day").toString()
+              : "",
+          ],
+        },
         value.order,
       ).then((res) => {
         formApi.setFieldValue("query.page", res.page);
@@ -200,6 +216,46 @@ function RouteComponent() {
             className="h-9 flex gap-3"
           >
             <form.Field
+              name="filter.orderNo"
+              children={({ state, handleBlur, handleChange, name, form }) => (
+                <Input
+                  placeholder="Order No"
+                  type="text"
+                  value={state.value}
+                  onChange={(e) => {
+                    form.setFieldValue("filter.createdAt", ["", ""]);
+                    handleChange(e.target.value);
+                  }}
+                  onBlur={handleBlur}
+                  name={name}
+                  error={state.meta.errors.join(" ")}
+                  touched={state.meta.isTouched}
+                />
+              )}
+            />
+
+            <form.Field
+              name="filter.status"
+              children={({ state, handleBlur, handleChange, name }) => (
+                <Select
+                  value={state.value}
+                  onChange={(e) =>
+                    handleChange(e.target.value as OrderStatus | undefined)
+                  }
+                  onBlur={handleBlur}
+                  name={name}
+                  error={state.meta.errors.join(" ")}
+                  touched={state.meta.isTouched}
+                >
+                  <option value="">Status</option>
+                  {Object.entries(OrderStatus).map(([key, value]) => (
+                    <option value={value}>{key}</option>
+                  ))}
+                </Select>
+              )}
+            />
+
+            <form.Field
               name="filter.createdAt[0]"
               children={({ state, handleBlur, handleChange, name }) => (
                 <Input
@@ -230,6 +286,7 @@ function RouteComponent() {
                 />
               )}
             />
+
             <Button className="bg-lime-500 text-white" type="submit">
               Search
             </Button>

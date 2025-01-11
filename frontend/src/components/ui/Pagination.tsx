@@ -1,4 +1,5 @@
 import { Icon } from "@iconify/react";
+import React from "react";
 type PaginationProps = {
   page: number;
   pages: number;
@@ -45,7 +46,7 @@ export default function Pagination({ page, pages, onChange }: PaginationProps) {
 
       <div className="flex items-center h-full gap-0.5">
         {range.map((seq) => (
-          <>
+          <React.Fragment key={seq}>
             {seq === "..." ? (
               <span className="text-3xl text-center flex px-1">
                 <Icon icon="mynaui:dots" />
@@ -63,7 +64,7 @@ export default function Pagination({ page, pages, onChange }: PaginationProps) {
                 {seq}
               </button>
             )}
-          </>
+          </React.Fragment>
         ))}
       </div>
       <button
