@@ -8,6 +8,7 @@ import Button from "@app/components/ui/form/button";
 import DataTable, { Column, SortType } from "@app/components/ui/DataTable";
 import { PaginationResponse } from "@app/types/pagination";
 import { IInvoice } from "@app/types/invoice";
+import moment from "moment";
 
 export const Route = createLazyFileRoute("/invoices/")({
   component: RouteComponent,
@@ -15,6 +16,7 @@ export const Route = createLazyFileRoute("/invoices/")({
 
 type FormType = {
   filter: {
+    receiptNo: string;
     createdAt: [from: string, to: string];
   };
   query: { page: number; limit: number };
@@ -91,6 +93,7 @@ function RouteComponent() {
   const form = useForm<FormType>({
     defaultValues: {
       filter: {
+        receiptNo: "",
         createdAt: ["", ""],
       },
       query: { page: 1, limit: 20 },
@@ -99,7 +102,17 @@ function RouteComponent() {
     onSubmit: async ({ value, formApi }) => {
       return InvoiceApi.paginate(
         { page: value.query.page, limit: value.query.limit },
-        value.filter,
+        {
+          ...value.filter,
+          createdAt: [
+            value.filter.createdAt[0]
+              ? moment(value.filter.createdAt[0]).startOf("day").toString()
+              : "",
+            value.filter.createdAt[1]
+              ? moment(value.filter.createdAt[1]).endOf("day").toString()
+              : "",
+          ],
+        },
         value.order,
       ).then((res) => {
         formApi.setFieldValue("query.page", res.page);
@@ -144,6 +157,24 @@ function RouteComponent() {
             onReset={form.reset}
             className="h-9 flex gap-3"
           >
+            <form.Field
+              name="filter.receiptNo"
+              children={({ state, handleBlur, handleChange, name, form }) => (
+                <Input
+                  placeholder="Receipt No"
+                  type="text"
+                  value={state.value}
+                  onChange={(e) => {
+                    form.setFieldValue("filter.createdAt", ["", ""]);
+                    handleChange(e.target.value);
+                  }}
+                  onBlur={handleBlur}
+                  name={name}
+                  error={state.meta.errors.join(" ")}
+                  touched={state.meta.isTouched}
+                />
+              )}
+            />
             <form.Field
               name="filter.createdAt[0]"
               children={({ state, handleBlur, handleChange, name }) => (

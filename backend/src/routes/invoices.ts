@@ -10,6 +10,7 @@ InvoicesRouter.post("/paginate", async (req: IRequest, res: IResponse) => {
     const page: number = Number(req.query.page || 1);
     const limit: number = Number(req.query.limit || 20);
     const filter: {
+        receiptNo: string,
         createdAt: [from: string, to: string]
     } = req.body.filter;
     const order = req.body.order || ["createdAt", "DESC"];
@@ -23,6 +24,11 @@ InvoicesRouter.post("/paginate", async (req: IRequest, res: IResponse) => {
         where.createdAt = {
             [Op.between]: filter.createdAt
         }
+    }
+
+    if (filter.receiptNo) {
+        where.receiptNo = filter.receiptNo;
+        delete where.createdAt;
     }
 
     const paginated = await Invoice.findAndCountAll({
