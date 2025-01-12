@@ -344,7 +344,7 @@ export default function RouteComponent() {
           </table>
           {items.length == 0 && placedItems.length == 0 && (
             <div className="p-6 flex items-center justify-center h-[calc(100%-50px)] flex-col gap-3">
-              <img src="/undraw_notify_rnwe.svg" width={120} />
+              <img src="pos-placeholder.svg" width={120} />
               <p className="text-sm">Order is empty please add some item.</p>
             </div>
           )}
