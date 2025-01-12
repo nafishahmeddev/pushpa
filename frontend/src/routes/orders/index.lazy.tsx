@@ -279,7 +279,9 @@ function RouteComponent() {
                 >
                   <option value="">Status</option>
                   {Object.entries(OrderStatus).map(([key, value]) => (
-                    <option value={value}>{key}</option>
+                    <option value={value} key={key}>
+                      {key}
+                    </option>
                   ))}
                 </Select>
               )}
