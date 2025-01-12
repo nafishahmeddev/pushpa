@@ -341,7 +341,7 @@ OrdersRouter.post("/:orderId/cancel", async (req: IRequest, res: IResponse) => {
         })
     }
 
-    console.log(where, req.auth?.designation);
+    console.log(where, req.auth?.designation, [UserDesignation.Admin, UserDesignation.Biller].includes(req.auth?.designation!));
 
     let order = await Order.findOne({
         where: {
