@@ -57,12 +57,14 @@ function RouteComponent() {
                 >
                   <Icon icon="ph:receipt-bold" height={20} width={20} />
                 </button>
-                <button
-                  className={`hover:opacity-50 flex items-center justify-center`}
-                  onClick={() => handleOnDetails(invoice.id as string, true)}
-                >
-                  <Icon icon="mingcute:print-line" height={20} width={20} />
-                </button>
+                {invoice.status != InvoiceStatus.Cancelled && (
+                  <button
+                    className={`hover:opacity-50 flex items-center justify-center`}
+                    onClick={() => handleOnDetails(invoice.id as string, true)}
+                  >
+                    <Icon icon="mingcute:print-line" height={20} width={20} />
+                  </button>
+                )}
               </React.Fragment>
             )}
           </div>
