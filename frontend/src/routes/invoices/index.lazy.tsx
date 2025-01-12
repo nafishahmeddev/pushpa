@@ -67,7 +67,7 @@ function RouteComponent() {
 
       {
         key: "status",
-        label: "Receipt No",
+        label: "Status",
         renderColumn: (_, { record }) => (
           <InvoiceStatusLabel invoice={record} />
         ),
