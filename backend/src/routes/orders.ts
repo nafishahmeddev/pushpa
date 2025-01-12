@@ -335,13 +335,11 @@ OrdersRouter.post("/:orderId/cancel", async (req: IRequest, res: IResponse) => {
             [Op.notIn]: [OrderStatus.Paid, OrderStatus.Completed]
         }
     }];
-    if ([UserDesignation.Admin, UserDesignation.Biller].includes(req.auth?.designation!)) {
+    if ([UserDesignation.Admin, UserDesignation.Owner].includes(req.auth?.designation!)) {
         where.push({
             status: OrderStatus.Completed,
         })
     }
-
-    console.log(where, req.auth?.designation, [UserDesignation.Admin, UserDesignation.Biller].includes(req.auth?.designation!));
 
     let order = await Order.findOne({
         where: {
