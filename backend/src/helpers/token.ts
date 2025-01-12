@@ -16,7 +16,7 @@ export type RefreshTokenPayload = JwtPayload & {
 export default class TokenHelper {
     static generateAccessToken(user: User) {
         const secret: string = process.env.JWT_SECRET_ACCESS_TOKEN || "";
-        const payload: AccessTokenPayload = { userId: user.id, permissions: user.permissions, restaurantId: user.restaurantId };
+        const payload: AccessTokenPayload = { userId: user.id, permissions: user.permissions, designation: user.designation, restaurantId: user.restaurantId };
         const token = jwt.sign(payload, secret, { expiresIn: "12h" });
         return token;
     }

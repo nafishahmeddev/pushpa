@@ -1,5 +1,6 @@
 
 import { Invoice, Order, OrderItem, Product } from "@app/db/models";
+import { InvoiceStatus } from "@app/db/models/invoice/invoice";
 import { IRequest, IResponse } from "@app/interfaces/vendors/express";
 import { Router } from "express";
 import moment from "moment";
@@ -56,7 +57,8 @@ DashboardRouter.post("/stats", async (req: IRequest, res: IResponse) => {
             createdAt: {
                 [Op.between]: [start.toDate(), end.toDate()]
             },
-            restaurantId: restaurantId
+            restaurantId: restaurantId,
+            status: InvoiceStatus.Paid
         }
     });
 

@@ -1,6 +1,11 @@
+export enum InvoiceStatus {
+    Paid = "Paid",
+    Cancelled = "Cancelled"
+}
 export type IInvoice = {
     id: string,
-    receiptNo:number,
+    receiptNo: number,
+    status: InvoiceStatus,
     amount: number,
     subTotal: number,
     tax: number,

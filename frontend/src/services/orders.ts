@@ -4,7 +4,7 @@ import { IInvoice } from "@app/types/invoice";
 import { ICartItem } from "@app/types/cart";
 import { SortType } from "@app/components/ui/DataTable";
 export default class OrdersApi {
-    static paginate = ({ page, limit }: { page: number, limit: number }, filter: { [key: string]: unknown }, order: [ key: keyof IOrder, order: SortType ]) => ApiRequest.post(`/orders/paginate?page=${page}&limit=${limit}`, { filter, order },).then(res => res.data.result as {
+    static paginate = ({ page, limit }: { page: number, limit: number }, filter: { [key: string]: unknown }, order: [key: keyof IOrder, order: SortType]) => ApiRequest.post(`/orders/paginate?page=${page}&limit=${limit}`, { filter, order },).then(res => res.data.result as {
         pages: number,
         page: number,
         count: number,
@@ -17,7 +17,10 @@ export default class OrdersApi {
     static deleteOrder = (orderId: string) => ApiRequest.delete(`/orders/${orderId}`).then(res => res.data.message as string);
     static createKot = (orderId: string) => ApiRequest.post(`/orders/${orderId}/kot-create`).then(res => res.data.result as IKot);
     static cancelOrder = (orderId: string,) => ApiRequest.post(`/orders/${orderId}/cancel`).then(res => res.data.result as IInvoice);
-    static completeOrder = (orderId: string,) => ApiRequest.post(`/orders/${orderId}/complete`).then(res => res.data.result as IInvoice);
+    static completeOrder = (orderId: string,) => ApiRequest.post(`/orders/${orderId}/complete`).then(res => res.data.result as {
+        invoice: IInvoice,
+        kot?: IKot
+    });
 
     static modifyItem = (orderId: string, cartItem: ICartItem) => ApiRequest.post(`/orders/${orderId}/items`, { item: cartItem }).then(res => res.data.result as IOrder);
     static deleteItem = (orderId: string, productId: string) => ApiRequest.delete(`/orders/${orderId}/items`, { data: { productId } }).then(res => res.data.result as IOrder);

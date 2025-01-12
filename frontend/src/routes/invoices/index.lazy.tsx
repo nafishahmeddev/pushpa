@@ -7,12 +7,29 @@ import { useForm } from "@tanstack/react-form";
 import Button from "@app/components/ui/form/button";
 import DataTable, { Column, SortType } from "@app/components/ui/DataTable";
 import { PaginationResponse } from "@app/types/pagination";
-import { IInvoice } from "@app/types/invoice";
+import { IInvoice, InvoiceStatus } from "@app/types/invoice";
 import moment from "moment";
 
 export const Route = createLazyFileRoute("/invoices/")({
   component: RouteComponent,
 });
+
+const InvoiceStatusLabel = ({ invoice }: { invoice: IInvoice }) => {
+  const classNames = ["border px-1 py-0 text-sm rounded-lg"];
+  switch (invoice.status) {
+    case InvoiceStatus.Cancelled: {
+      classNames.push("border-gray-600/50 text-gray-600  bg-gray-50");
+      break;
+    }
+
+    case InvoiceStatus.Paid: {
+      classNames.push("border-green-600/50 text-green-600  bg-green-50");
+      break;
+    }
+  }
+
+  return <label className={classNames.join(" ")}>{invoice.status}</label>;
+};
 
 type FormType = {
   filter: {
@@ -46,6 +63,14 @@ function RouteComponent() {
       {
         key: "receiptNo",
         label: "Receipt No",
+      },
+
+      {
+        key: "status",
+        label: "Receipt No",
+        renderColumn: (_, { record }) => (
+          <InvoiceStatusLabel invoice={record} />
+        ),
       },
       {
         key: "createdAt",

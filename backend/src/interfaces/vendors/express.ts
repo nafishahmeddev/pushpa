@@ -1,3 +1,4 @@
+import { UserDesignation } from "@app/db/models/user/user";
 import { NextFunction, Request, Response } from "express";
 
 export type Language = "en" | "bn";
@@ -8,7 +9,8 @@ export interface IRequest extends Request {
     auth?: {
         userId: string,
         permissions: Array<string>,
-        restaurantId: string
+        restaurantId: string,
+        designation: UserDesignation,
     }
 }
 

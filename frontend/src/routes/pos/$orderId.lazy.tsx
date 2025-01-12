@@ -8,7 +8,6 @@ import ScrollView from "@app/components/ui/ScrollView";
 import { beep } from "@app/lib/notify";
 import { Icon } from "@iconify/react";
 import Button from "@app/components/ui/form/button";
-import { IInvoice } from "@app/types/invoice";
 import toast from "react-hot-toast";
 import { ICartItem } from "@app/types/cart";
 import {
@@ -136,7 +135,7 @@ export default function RouteComponent() {
   const onPlaceOrder = () => {
     setLoading(true);
     const promise = OrdersApi.completeOrder(orderId as string)
-      .then((invoice: IInvoice) => {
+      .then(({ invoice }) => {
         const w = window.open(
           import.meta.env.VITE_BASE_URL +
             `/invoices/${invoice.id}/receipt?authorization=${localStorage.getItem("accessToken")}`,
@@ -264,7 +263,10 @@ export default function RouteComponent() {
                   <tr
                     className={`border-b border-dashed bg-lime-600 text-white`}
                   >
-                    <td className="px-2 py-1 text-start font-medium" colSpan={3}>
+                    <td
+                      className="px-2 py-1 text-start font-medium"
+                      colSpan={3}
+                    >
                       Token No: {kot.tokenNo}
                     </td>
                     <td className="text-white text-right px-2 w-0">

@@ -10,6 +10,9 @@ import DataTable, { Column, SortType } from "@app/components/ui/DataTable";
 import { PaginationResponse } from "@app/types/pagination";
 import moment from "moment";
 import Select from "@app/components/ui/form/select";
+import toast from "react-hot-toast";
+import { AuthStateLoggedIn, useAuthStore } from "@app/store/auth";
+import { UserDesignation } from "@app/types/user";
 
 export const Route = createLazyFileRoute("/orders/")({
   component: RouteComponent,
@@ -54,6 +57,7 @@ type FormType = {
 };
 
 function RouteComponent() {
+  const [auth] = useAuthStore<AuthStateLoggedIn>();
   const columns = useMemo<Array<Column<IOrder>>>(
     () => [
       {
@@ -62,26 +66,42 @@ function RouteComponent() {
         width: 0,
         renderColumn: (_, { record: order }) => (
           <div className="inline-flex flex-nowrap gap-2 text-gray-600">
-            {order.invoiceId && (
-              <button
-                className={`hover:opacity-50`}
-                onClick={() => handleOnDetails(order.invoiceId as string)}
-              >
-                <Icon icon="ph:receipt" height={20} width={20} />
-              </button>
-            )}
+            {order.invoiceId &&
+              [OrderStatus.Completed, OrderStatus.Paid].includes(
+                order.status,
+              ) && (
+                <button
+                  className={`hover:opacity-50 bg-gray-200 rounded-lg h-6 w-6 flex items-center justify-center gap-1 text-sm`}
+                  onClick={() => handleOnDetails(order.invoiceId as string)}
+                  title="Show Invoice"
+                >
+                  <Icon icon="ph:receipt" height={16} width={16} />
+                </button>
+              )}
 
             {[OrderStatus.Draft, OrderStatus.Ongoing].includes(
               order.status,
             ) && (
               <Link
-                className={`hover:opacity-50`}
+                className={`hover:opacity-50 bg-gray-200 rounded-lg h-6 w-6 flex items-center justify-center gap-1 text-sm`}
                 to={"/pos/" + order.id}
                 title="Go to billing"
               >
                 <Icon icon="hugeicons:payment-02" height={20} width={20} />
               </Link>
             )}
+
+            {[OrderStatus.Completed].includes(order.status) &&
+              [UserDesignation.Admin, UserDesignation.Owner].includes(
+                auth.user.designation,
+              ) && (
+                <button
+                  className={`hover:opacity-50 bg-red-600/20 text-red-600 text-nowrap text-sm flex gap-1 rounded-lg px-2 py-0.5 cursor-pointer h-6`}
+                  onClick={() => handleOnCancel(order.id as string)}
+                >
+                  <span>Cancel</span>
+                </button>
+              )}
           </div>
         ),
       },
@@ -193,6 +213,16 @@ function RouteComponent() {
         w.print();
       }, 1000);
     }
+  };
+
+  const handleOnCancel = (orderId: string) => {
+    if (!confirm("Are you sure want to cancel the order?")) return;
+    const promise = OrdersApi.cancelOrder(orderId).then(form.handleSubmit);
+    toast.promise(promise, {
+      loading: "Cancelling order.",
+      success: "Successfully cancelled order.",
+      error: (err) => err.message,
+    });
   };
 
   useEffect(() => {

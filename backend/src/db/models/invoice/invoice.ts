@@ -14,12 +14,17 @@ import { Restaurant } from "../restaurant/restaurant";
 import { Sequence } from "../sequence";
 import { Table } from "../restaurant/table";
 
+export enum InvoiceStatus {
+  Paid = "Paid",
+  Cancelled = "Cancelled"
+}
 class Invoice extends Model<
   InferAttributes<Invoice, { omit: "restaurant" | "table" }>,
   InferCreationAttributes<Invoice, { omit: "restaurant" | "table" }>
 > {
   declare id: CreationOptional<string>;
   declare receiptNo: CreationOptional<number>;
+  declare status: CreationOptional<InvoiceStatus> | null;
   //discount
   declare discount: CreationOptional<number>;
 
@@ -36,10 +41,6 @@ class Invoice extends Model<
   declare restaurant?: NonAttribute<Restaurant>;
   declare table?: NonAttribute<Table>;
 
-  declare static associations: {
-    restaurant: Association<Invoice, Restaurant>
-    table: Association<Invoice, Table>
-  };
 }
 
 Invoice.init(
@@ -50,6 +51,11 @@ Invoice.init(
       autoIncrement: false,
       allowNull: false,
       defaultValue: UUIDV4,
+    },
+    status: {
+      type: DataTypes.ENUM,
+      values: Object.values(InvoiceStatus),
+      defaultValue: InvoiceStatus.Paid
     },
     receiptNo: DataTypes.BIGINT,
     subTotal: DataTypes.DOUBLE,

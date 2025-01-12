@@ -8,7 +8,8 @@ export default function AuthMiddleware(req: IRequest, res: IResponse, next: INex
         req.auth = {
             userId: validated.userId,
             permissions: validated.permissions,
-            restaurantId: validated.restaurantId
+            restaurantId: validated.restaurantId,
+            designation: validated.designation,
         }
         next();
     } else {

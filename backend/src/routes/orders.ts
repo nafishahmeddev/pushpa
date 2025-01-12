@@ -1,8 +1,10 @@
 
 import { sequelize } from "@app/db/conn";
 import { Product, Order, OrderItem, Invoice, InvoiceItem, Kot, Table, Restaurant, User } from "@app/db/models";
+import { InvoiceStatus } from "@app/db/models/invoice/invoice";
 import { OrderType, OrderStatus } from "@app/db/models/order/order";
 import { OrderItemStatus } from "@app/db/models/order/order-item";
+import { UserDesignation } from "@app/db/models/user/user";
 import { IRequest, IResponse } from "@app/interfaces/vendors/express";
 import { ICartItem } from "@app/types/cart";
 import { Router } from "express";
@@ -326,34 +328,53 @@ OrdersRouter.post("/:orderId/kot-create", async (req: IRequest, res: IResponse) 
 
 OrdersRouter.post("/:orderId/cancel", async (req: IRequest, res: IResponse) => {
     const orderId = req.params.orderId;
-    const transaction = await sequelize.transaction();
-    try {
-        let order = await Order.findOne({
-            where: {
-                id: orderId,
-                status: {
-                    [Op.notIn]: ["Paid", "Completed"]
-                }
-            },
-            include: [
-                {
-                    model: OrderItem,
-                    as: "items",
-                    where: {
-                        kotId: { [Op.not]: null }
-                    },
-                    required: true
-                }
-            ],
-            transaction
-        },);
-        if (!order) {
-            res.status(404).json({
-                message: "Order not found"
-            })
-            return;
+    const where: WhereOptions<InferAttributes<Order, {
+        omit: "restaurant" | "table";
+    }>> | undefined = [{
+        status: {
+            [Op.notIn]: ["Paid", "Completed"]
         }
+    }];
+    if ([UserDesignation.Admin, UserDesignation.Biller].includes(req.auth?.designation!)) {
+        where.push({
+            status: OrderStatus.Completed,
+        })
+    }
 
+    let order = await Order.findOne({
+        where: {
+            id: orderId,
+            [Op.or]: where
+        },
+        include: [
+            {
+                model: OrderItem,
+                as: "items",
+            }
+        ],
+    },);
+
+    if (!order) {
+        res.status(404).json({
+            message: "Order not found"
+        })
+        return;
+    }
+
+    const transaction = await sequelize.transaction();
+
+    try {
+
+        if (order?.invoiceId) {
+            await Invoice.update({
+                status: InvoiceStatus.Cancelled
+            }, {
+                where: {
+                    id: order.invoiceId
+                },
+                transaction
+            })
+        }
         await OrderItem.update({ status: OrderItemStatus.Cancelled }, { where: { orderId: order.id }, transaction });
         await Order.update({ status: OrderStatus.Cancelled }, { where: { id: order.id }, transaction });
 
@@ -444,6 +465,25 @@ OrdersRouter.post("/:orderId/complete", async (req: IRequest, res: IResponse) =>
         await OrderItem.update({ status: OrderItemStatus.Delivered }, { where: { orderId: order.id }, transaction });
         await order.update({ status: OrderStatus.Completed, invoiceId: invoice.id }, { transaction: transaction });
 
+        const hasItems = (order.items || []).filter(e => !e.kotId).length > 0;
+        let kot;
+        if (hasItems) {
+            kot = await Kot.create({
+                orderId,
+                restaurantId: order.restaurantId
+            }, {
+                transaction
+            });
+
+            await OrderItem.update({ kotId: kot.id, status: OrderItemStatus.Preparing }, {
+                where: {
+                    orderId: orderId,
+                    kotId: null
+                },
+                transaction
+            });
+        }
+
 
         const createdInvoice = await Invoice.findOne({
             where: { id: invoice.id },
@@ -456,7 +496,10 @@ OrdersRouter.post("/:orderId/complete", async (req: IRequest, res: IResponse) =>
 
         transaction.commit();
         res.json({
-            result: createdInvoice,
+            result: {
+                invoice: createdInvoice,
+                kot: kot
+            },
             message: "Successful"
         })
     } catch (error) {
@@ -482,6 +525,13 @@ OrdersRouter.post("/:orderId/items", async (req: IRequest, res: IResponse) => {
     if (!order) {
         res.status(404).json({
             message: "Order not found"
+        })
+        return;
+    }
+
+    if ([OrderStatus.Completed, OrderStatus.Paid, OrderStatus.Cancelled].includes(order.status)) {
+        res.status(400).json({
+            message: "Cannot modify items after completion."
         })
         return;
     }
@@ -542,17 +592,31 @@ OrdersRouter.post("/:orderId/items", async (req: IRequest, res: IResponse) => {
 OrdersRouter.delete("/:orderId/items", async (req: IRequest, res: IResponse) => {
     const orderId = req.params.orderId;
     const productId = req.body.productId;
+
     let orderItem = await OrderItem.findOne({
         where: {
             productId: productId,
             orderId: orderId,
             kotId: null
         },
+        include: {
+            model: Order,
+            as: "order"
+        }
     });
 
-    if (!orderItem) {
+
+
+    if (!orderItem || !orderItem.order) {
         res.status(404).json({
             message: "Order item not found"
+        })
+        return;
+    }
+
+    if ([OrderStatus.Completed, OrderStatus.Paid, OrderStatus.Cancelled].includes(orderItem.order.status!)) {
+        res.status(400).json({
+            message: "Cannot modify items after settled."
         })
         return;
     }
@@ -602,9 +666,16 @@ OrdersRouter.patch("/:orderId/items/cancel", async (req: IRequest, res: IRespons
         ]
     });
 
-    if (!orderItem) {
+    if (!orderItem || !orderItem.order) {
         res.status(404).json({
             message: "Order item not found"
+        })
+        return;
+    }
+
+    if ([OrderStatus.Completed, OrderStatus.Paid, OrderStatus.Cancelled].includes(orderItem.order.status!)) {
+        res.status(400).json({
+            message: "Cannot modify items after settled."
         })
         return;
     }
@@ -634,7 +705,6 @@ OrdersRouter.patch("/:orderId/items/cancel", async (req: IRequest, res: IRespons
 
     }
 });
-
 
 OrdersRouter.get("/:orderId/kots/:kotId/print", async (req: IRequest, res: IResponse) => {
     const orderId = req.params.orderId;
