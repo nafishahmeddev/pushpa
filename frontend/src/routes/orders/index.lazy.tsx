@@ -71,11 +71,11 @@ function RouteComponent() {
                 order.status,
               ) && (
                 <button
-                  className={`hover:opacity-50 bg-gray-200 rounded-lg h-6 w-6 flex items-center justify-center gap-1 text-sm`}
+                  className={`hover:opacity-50 flex items-center justify-center`}
                   onClick={() => handleOnDetails(order.invoiceId as string)}
                   title="Show Invoice"
                 >
-                  <Icon icon="ph:receipt" height={16} width={16} />
+                  <Icon icon="ph:receipt-bold" height={20} width={20} />
                 </button>
               )}
 
@@ -83,11 +83,11 @@ function RouteComponent() {
               order.status,
             ) && (
               <Link
-                className={`hover:opacity-50 bg-gray-200 rounded-lg h-6 w-6 flex items-center justify-center gap-1 text-sm`}
+                className={`hover:opacity-50 flex items-center justify-center`}
                 to={"/pos/" + order.id}
                 title="Go to billing"
               >
-                <Icon icon="hugeicons:payment-02" height={16} width={16} />
+                <Icon icon="hugeicons:payment-02" height={20} width={20} />
               </Link>
             )}
 
@@ -96,12 +96,21 @@ function RouteComponent() {
                 auth.user.designation,
               ) && (
                 <button
-                  className={`hover:opacity-50 bg-red-600/20 text-red-600 text-nowrap text-sm flex gap-1 rounded-lg px-2 py-0.5 cursor-pointer h-6`}
+                  className={`hover:opacity-50 flex items-center justify-center text-red-600`}
                   onClick={() => handleOnCancel(order.id as string)}
                 >
-                  <span>Cancel</span>
+                  <Icon icon="tabler:cancel" height={20} width={20} />
                 </button>
               )}
+
+            {[OrderStatus.Draft].includes(order.status) && (
+              <button
+                className={`hover:opacity-50 flex items-center justify-center text-red-600`}
+                onClick={() => handleOnDelete(order.id as string)}
+              >
+                <Icon icon="mi:delete" height={20} width={20} />
+              </button>
+            )}
           </div>
         ),
       },
@@ -221,6 +230,16 @@ function RouteComponent() {
     toast.promise(promise, {
       loading: "Cancelling order.",
       success: "Successfully cancelled order.",
+      error: (err) => err.message,
+    });
+  };
+
+  const handleOnDelete = (orderId: string) => {
+    if (!confirm("Are you sure want to delete the order?")) return;
+    const promise = OrdersApi.deleteOrder(orderId).then(form.handleSubmit);
+    toast.promise(promise, {
+      loading: "Deleting order.",
+      success: "Successfully deleted order.",
       error: (err) => err.message,
     });
   };

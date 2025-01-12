@@ -50,12 +50,20 @@ function RouteComponent() {
         renderColumn: (_, { record: invoice }) => (
           <div className="inline-flex flex-nowrap gap-2 text-gray-600">
             {invoice.id && (
-              <button
-                className={`hover:opacity-50 bg-gray-200 rounded-lg h-6 w-6 flex items-center justify-center gap-1 text-sm`}
-                onClick={() => handleOnDetails(invoice.id as string)}
-              >
-                <Icon icon="ph:receipt" height={16} width={16} />
-              </button>
+              <React.Fragment>
+                <button
+                  className={`hover:opacity-50 flex items-center justify-center`}
+                  onClick={() => handleOnDetails(invoice.id as string)}
+                >
+                  <Icon icon="ph:receipt-bold" height={20} width={20} />
+                </button>
+                <button
+                  className={`hover:opacity-50 flex items-center justify-center`}
+                  onClick={() => handleOnDetails(invoice.id as string, true)}
+                >
+                  <Icon icon="mingcute:print-line" height={20} width={20} />
+                </button>
+              </React.Fragment>
             )}
           </div>
         ),
@@ -64,7 +72,6 @@ function RouteComponent() {
         key: "receiptNo",
         label: "Receipt No",
       },
-
       {
         key: "status",
         label: "Status",
