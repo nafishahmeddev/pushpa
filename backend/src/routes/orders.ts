@@ -332,7 +332,7 @@ OrdersRouter.post("/:orderId/cancel", async (req: IRequest, res: IResponse) => {
         omit: "restaurant" | "table";
     }>> | undefined = [{
         status: {
-            [Op.notIn]: ["Paid", "Completed"]
+            [Op.notIn]: [OrderStatus.Paid, OrderStatus.Completed]
         }
     }];
     if ([UserDesignation.Admin, UserDesignation.Biller].includes(req.auth?.designation!)) {
@@ -340,6 +340,8 @@ OrdersRouter.post("/:orderId/cancel", async (req: IRequest, res: IResponse) => {
             status: OrderStatus.Completed,
         })
     }
+
+    console.log(where);
 
     let order = await Order.findOne({
         where: {
