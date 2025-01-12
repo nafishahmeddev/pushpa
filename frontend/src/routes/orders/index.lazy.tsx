@@ -87,7 +87,7 @@ function RouteComponent() {
                 to={"/pos/" + order.id}
                 title="Go to billing"
               >
-                <Icon icon="hugeicons:payment-02" height={20} width={20} />
+                <Icon icon="hugeicons:payment-02" height={16} width={16} />
               </Link>
             )}
 

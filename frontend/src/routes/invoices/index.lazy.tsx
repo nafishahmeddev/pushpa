@@ -51,10 +51,10 @@ function RouteComponent() {
           <div className="inline-flex flex-nowrap gap-2 text-gray-600">
             {invoice.id && (
               <button
-                className={`hover:opacity-50`}
+                className={`hover:opacity-50 bg-gray-200 rounded-lg h-6 w-6 flex items-center justify-center gap-1 text-sm`}
                 onClick={() => handleOnDetails(invoice.id as string)}
               >
-                <Icon icon="ph:receipt" height={20} width={20} />
+                <Icon icon="ph:receipt" height={16} width={16} />
               </button>
             )}
           </div>
