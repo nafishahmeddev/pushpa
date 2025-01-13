@@ -8,7 +8,7 @@ import Button from "@app/components/ui/form/button";
 import DataTable, { Column, SortType } from "@app/components/ui/DataTable";
 import { PaginationResponse } from "@app/types/pagination";
 import { IInvoice, InvoiceStatus } from "@app/types/invoice";
-import moment from "moment";
+import dayjs from "dayjs";
 
 export const Route = createLazyFileRoute("/invoices/")({
   component: RouteComponent,
@@ -140,10 +140,10 @@ function RouteComponent() {
           ...value.filter,
           createdAt: [
             value.filter.createdAt[0]
-              ? moment(value.filter.createdAt[0]).startOf("day").toString()
+              ? dayjs(value.filter.createdAt[0]).startOf("day").toString()
               : "",
             value.filter.createdAt[1]
-              ? moment(value.filter.createdAt[1]).endOf("day").toString()
+              ? dayjs(value.filter.createdAt[1]).endOf("day").toString()
               : "",
           ],
         },

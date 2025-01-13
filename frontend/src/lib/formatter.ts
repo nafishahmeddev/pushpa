@@ -1,5 +1,5 @@
 import AuthStore, { AuthStateLoggedIn } from "@app/store/auth";
-import moment from "moment";
+import dayjs from "dayjs";
 
 
 export default class Formatter {
@@ -27,15 +27,15 @@ export default class Formatter {
     }
 
     static datetime(datetime: string | Date): string {
-        return datetime ? moment(datetime).format("DD/MM/YYYY hh:mm:ss A") : "";
+        return datetime ? dayjs(datetime).format("DD/MM/YYYY hh:mm:ss A") : "";
     }
 
     static time(datetime: string | Date): string {
-        return datetime ? moment(datetime).format("hh:mm:ss A") : "";
+        return datetime ? dayjs(datetime).format("hh:mm:ss A") : "";
     }
 
     static date(datetime: string | Date): string {
-        return datetime ? moment(datetime).format("DD/MM/YYYY") : "";
+        return datetime ? dayjs(datetime).format("DD/MM/YYYY") : "";
     }
 
     static phone(number: string): string {

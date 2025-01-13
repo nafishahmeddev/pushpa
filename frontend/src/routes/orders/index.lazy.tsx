@@ -8,11 +8,11 @@ import { useForm } from "@tanstack/react-form";
 import Button from "@app/components/ui/form/button";
 import DataTable, { Column, SortType } from "@app/components/ui/DataTable";
 import { PaginationResponse } from "@app/types/pagination";
-import moment from "moment";
 import Select from "@app/components/ui/form/select";
 import toast from "react-hot-toast";
 import { AuthStateLoggedIn, useAuthStore } from "@app/store/auth";
 import { UserDesignation } from "@app/types/user";
+import dayjs from "dayjs";
 
 export const Route = createLazyFileRoute("/orders/")({
   component: RouteComponent,
@@ -193,10 +193,10 @@ function RouteComponent() {
           ...value.filter,
           createdAt: [
             value.filter.createdAt[0]
-              ? moment(value.filter.createdAt[0]).startOf("day").toString()
+              ? dayjs(value.filter.createdAt[0]).startOf("day").toString()
               : "",
             value.filter.createdAt[1]
-              ? moment(value.filter.createdAt[1]).endOf("day").toString()
+              ? dayjs(value.filter.createdAt[1]).endOf("day").toString()
               : "",
           ],
         },
