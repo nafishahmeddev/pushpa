@@ -69,7 +69,7 @@ export default function AdminDashboard() {
         className="open:visible group h-full w-full collapse  transition-all flex z-40 top-0 left-0 bg-black/30 backdrop-blur-sm items-center justify-center"
       >
         <form
-          className="p-6 min-w-[300px] bg-white rounded-xl flex flex-col gap-5 group-open:opacity-100 group-open:scale-100 scale-50 opacity-0 transition-all"
+          className="p-6 min-w-[350px] bg-white rounded-xl flex flex-col gap-5 group-open:opacity-100 group-open:scale-100 scale-50 opacity-0 transition-all"
           onSubmit={(e) => {
             e.preventDefault();
             e.stopPropagation();
@@ -87,7 +87,7 @@ export default function AdminDashboard() {
             setModal({ open: false });
           }}
         >
-          <h3>Select date range</h3>
+          <h3 className="text-lg">Select date range</h3>
           {modal.open && (
             <>
               <Input
@@ -108,13 +108,13 @@ export default function AdminDashboard() {
           )}
           <div className="flex gap-4 justify-end mt-5">
             <Button
-              className="bg-gray-200 flex-1"
+              className="bg-gray-200"
               type="button"
               onClick={() => setModal({ open: false })}
             >
               Cancel
             </Button>
-            <Button className="bg-lime-500 text-white flex-1" type="submit">
+            <Button className="bg-lime-500 text-white" type="submit">
               Filter Date
             </Button>
           </div>
