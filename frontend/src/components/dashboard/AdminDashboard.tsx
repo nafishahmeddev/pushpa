@@ -120,32 +120,32 @@ export default function AdminDashboard() {
           </div>
         </form>
       </dialog>
-      <div className="flex items-stretch gap-4">
-        <div className="bg-white inline-flex w-min rounded-xl border overflow-hidden p-0.5 h-10">
-          {Object.values(TimeFrame).map((value) => (
-            <button
-              key={value}
-              value={value}
-              onClick={() => handleOnChange(value)}
-              className={`px-4 py-1.5 rounded-lg text-sm text-nowrap flex flex-nowrap items-center gap-2 ${timeFrame == value ? "bg-lime-300/40 text-lime-900" : "text-gray-600"}`}
-            >
-              {value == TimeFrame.Custom ? (
-                <>
-                  <Icon icon="akar-icons:calendar" height={16} width={16} />
-                  {timeFrame == TimeFrame.Custom && (
-                    <span>
-                      {dayjs(from).format("MMM D,  YYYY")} -{" "}
-                      {dayjs(to).format("MMM D,  YYYY")}
-                    </span>
-                  )}
-                </>
-              ) : (
-                value
-              )}
-            </button>
-          ))}
-        </div>
+
+      <div className="bg-white inline-flex w-min rounded-xl border overflow-hidden p-0.5 h-10">
+        {Object.values(TimeFrame).map((value) => (
+          <button
+            key={value}
+            value={value}
+            onClick={() => handleOnChange(value)}
+            className={`px-4 py-1.5 rounded-lg text-sm text-nowrap flex flex-nowrap items-center gap-2 ${timeFrame == value ? "bg-lime-300/40 text-lime-900" : "text-gray-600"}`}
+          >
+            {value == TimeFrame.Custom ? (
+              <>
+                <Icon icon="akar-icons:calendar" height={16} width={16} />
+                {timeFrame == TimeFrame.Custom && (
+                  <span>
+                    {dayjs(from).format("MMM D,  YYYY")} -{" "}
+                    {dayjs(to).format("MMM D,  YYYY")}
+                  </span>
+                )}
+              </>
+            ) : (
+              value
+            )}
+          </button>
+        ))}
       </div>
+
       {isLoading && (
         <div>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
