@@ -7,7 +7,7 @@ export default function BillerDashboard() {
   const navigate = useNavigate({ from: "/" });
   const timeFrame = useSearch({
     from: "/",
-    select: (s) => (s as { duration: TimeFrame }).duration || TimeFrame.Daily,
+    select: (s) => (s as { duration: TimeFrame }).duration || TimeFrame.Day,
   });
   const {
     data: result,
