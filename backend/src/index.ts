@@ -8,7 +8,6 @@ import moment from "moment";
 import { sequelize } from "@app/db/conn";
 
 import cors from "cors";
-import compression from 'compression';
 import MainMiddleware from "@app/middleware/main";
 import LocaleMiddleware from "@app/middleware/locale";
 import AuthMiddleware from '@app/middleware/auth';
@@ -30,7 +29,6 @@ import { uploadPath } from "./helpers/dirs";
 const app: Application = express();
 const port = process.env.PORT || 3000;
 
-app.use(compression());
 app.use(cors({ origin: "*" }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -62,10 +60,6 @@ async function main() {
   app.use("/api/v1/auth", AuthRouter);
 
   app.use("/public/uploads", express.static(uploadPath()))
-
-  //frontend route
-  app.use(express.static(path.resolve(process.env.FRONTEND_PATH || "")))
-  app.use("*", express.static(path.resolve(path.join(process.env.FRONTEND_PATH || "", "index.html"))))
 
   //start the server
   consola.info("[HTTP]", "Starting http server")
