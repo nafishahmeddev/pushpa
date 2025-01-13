@@ -7,6 +7,7 @@ import { OrderItemStatus } from "@app/db/models/order/order-item";
 import { UserDesignation } from "@app/db/models/user/user";
 import { IRequest, IResponse } from "@app/interfaces/vendors/express";
 import { ICartItem } from "@app/types/cart";
+import consola from "consola";
 import { Router } from "express";
 import { InferAttributes, Op, WhereOptions } from "sequelize";
 
@@ -318,7 +319,7 @@ OrdersRouter.post("/:orderId/kot-create", async (req: IRequest, res: IResponse) 
             message: "Successful"
         })
     } catch (error) {
-        console.log(error);
+        consola.error(error);
         transaction.rollback();
         res.status(400).json({
             message: "Something went wrong..."
@@ -383,7 +384,7 @@ OrdersRouter.post("/:orderId/cancel", async (req: IRequest, res: IResponse) => {
             message: "Successful"
         })
     } catch (error) {
-        console.log(error);
+        consola.error(error);
         transaction.rollback();
         res.status(400).json({
             message: "Something went wrong..."
@@ -503,7 +504,7 @@ OrdersRouter.post("/:orderId/complete", async (req: IRequest, res: IResponse) =>
             message: "Successful"
         })
     } catch (error) {
-        console.log(error);
+        consola.error(error);
         transaction.rollback();
         res.status(400).json({
             message: "Something went wrong..."
@@ -580,7 +581,7 @@ OrdersRouter.post("/:orderId/items", async (req: IRequest, res: IResponse) => {
             message: "Successful"
         });
     } catch (err) {
-        console.log(err);
+        consola.error(err);
         await transaction.rollback();
         res.status(500).json({
             message: "Something went wrong"

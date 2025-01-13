@@ -9,10 +9,12 @@ export default class AccountApi {
                 restaurant: IRestaurant
             }
             console.log(response);
-            AuthStore.update({ user: {
-                ...AuthStore.getState<AuthStateLoggedIn>().user,
-                ...response,
-            } })
+            AuthStore.update({
+                user: {
+                    ...AuthStore.getState<AuthStateLoggedIn>().user,
+                    ...response,
+                }
+            })
             return response;
         })
     }
