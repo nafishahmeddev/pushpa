@@ -3,12 +3,31 @@ import DashboardApi from "@app/services/dashboard";
 import { TimeFrame } from "@app/types/enums";
 import { useQuery } from "@tanstack/react-query";
 import { useNavigate, useSearch } from "@tanstack/react-router";
+import { useState } from "react";
+import Input from "../ui/form/input";
+import Button from "../ui/form/button";
+import dayjs from "dayjs";
+import { Icon } from "@iconify/react/dist/iconify.js";
 
 export default function AdminDashboard() {
   const navigate = useNavigate({ from: "/" });
   const timeFrame = useSearch({
     from: "/",
-    select: (s) => (s as { duration: TimeFrame }).duration || TimeFrame.Daily,
+    select: (s) => (s as { duration: TimeFrame }).duration || TimeFrame.Day,
+  });
+
+  const from: string | undefined = useSearch({
+    from: "/",
+    select: (s) => (s as { from: string | undefined }).from,
+  });
+
+  const to: string | undefined = useSearch({
+    from: "/",
+    select: (s) => (s as { to: string | undefined }).to,
+  });
+
+  const [modal, setModal] = useState({
+    open: false,
   });
 
   const {
@@ -26,30 +45,104 @@ export default function AdminDashboard() {
       count: number;
     }>;
   }>({
-    queryKey: ["dashboard", { timeFrame }],
-    queryFn: () => DashboardApi.stats({ timeFrame }),
+    queryKey: ["dashboard", { timeFrame, from, to }],
+    queryFn: () => DashboardApi.stats({ timeFrame, from, to }),
   });
+
+  const handleOnChange = (timeFrame: TimeFrame) => {
+    if (timeFrame == TimeFrame.Custom) {
+      setModal({ open: true });
+    } else {
+      navigate({
+        to: "/",
+        search: {
+          duration: timeFrame,
+        },
+      });
+    }
+  };
 
   return (
     <div className="grid grid-rows-[auto_1fr] gap-6 p-4 h-full">
-      <div className="bg-white inline-flex w-min rounded-xl border overflow-hidden p-0.5 h-10">
-        {Object.values(TimeFrame).map((value) => (
-          <button
-            key={value}
-            value={value}
-            onClick={() =>
-              navigate({
-                to: "/",
-                search: {
-                  duration: value,
-                },
-              })
-            }
-            className={`px-4 py-1.5 rounded-lg text-sm ${timeFrame == value ? "bg-lime-300/40 text-lime-900" : "text-gray-600"}`}
-          >
-            {value}
-          </button>
-        ))}
+      <dialog
+        open={modal.open}
+        className="open:visible group h-full w-full collapse  transition-all flex z-40 top-0 left-0 bg-black/30 backdrop-blur-sm items-center justify-center"
+      >
+        <form
+          className="p-6 min-w-[300px] bg-white rounded-xl flex flex-col gap-5 group-open:opacity-100 group-open:scale-100 scale-50 opacity-0 transition-all"
+          onSubmit={(e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            const fd = new FormData(e.target as HTMLFormElement);
+            const from = fd.get("from");
+            const to = fd.get("to");
+            navigate({
+              to: "/",
+              search: {
+                duration: TimeFrame.Custom,
+                from: from,
+                to: to,
+              },
+            });
+            setModal({ open: false });
+          }}
+        >
+          <h3>Select date range</h3>
+          {modal.open && (
+            <>
+              <Input
+                type="date"
+                name="from"
+                label="Date From"
+                required
+                defaultValue={from}
+              />
+              <Input
+                type="date"
+                name="to"
+                label="Date To"
+                required
+                defaultValue={to}
+              />
+            </>
+          )}
+          <div className="flex gap-4 justify-end mt-5">
+            <Button
+              className="bg-gray-200 flex-1"
+              type="button"
+              onClick={() => setModal({ open: false })}
+            >
+              Cancel
+            </Button>
+            <Button className="bg-lime-500 text-white flex-1" type="submit">
+              Filter Date
+            </Button>
+          </div>
+        </form>
+      </dialog>
+      <div className="flex items-stretch gap-4">
+        <div className="bg-white inline-flex w-min rounded-xl border overflow-hidden p-0.5 h-10">
+          {Object.values(TimeFrame).map((value) => (
+            <button
+              key={value}
+              value={value}
+              onClick={() => handleOnChange(value)}
+              className={`px-4 py-1.5 rounded-lg text-sm text-nowrap ${timeFrame == value ? "bg-lime-300/40 text-lime-900" : "text-gray-600"}`}
+            >
+              {value}
+            </button>
+          ))}
+        </div>
+        <div>
+          {timeFrame == TimeFrame.Custom && (
+            <div className="px-4 flex items-center rounded-xl text-sm text-nowrap bg-white border  h-full gap-2 text-gray-600">
+              {dayjs(from).format("MMM D,  YYYY")} -{" "}
+              {dayjs(to).format("MMM D,  YYYY")}
+
+              <button onClick={()=>setModal({open:true})} className="text-lime-900"><Icon icon="mage:edit" height={16} width={16}/></button>
+            </div>
+          )}
+        </div>
       </div>
       {isLoading && (
         <div>

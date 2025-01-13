@@ -1,6 +1,7 @@
 export enum TimeFrame {
-  Daily = "Daily",
-  Weekly = "Weekly",
-  Monthly = "Monthly",
-  Yearly = "Yearly"
+  Day = "Day",
+  Week = "Week",
+  Month = "Month",
+  Year = "Year",
+  Custom = "Custom",
 }

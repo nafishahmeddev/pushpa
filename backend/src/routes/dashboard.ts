@@ -9,31 +9,36 @@ import { Op, Sequelize } from "sequelize";
 const DashboardRouter = Router();
 
 enum TimeFrame {
-    Daily = "Daily",
-    Weekly = "Weekly",
-    Monthly = "Monthly",
-    Yearly = "Yearly"
+    Day = "Day",
+    Week = "Week",
+    Month = "Month",
+    Year = "Year",
+    Custom = "Custom"
 }
 
 DashboardRouter.post("/stats", async (req: IRequest, res: IResponse) => {
     const restaurantId: string = req.auth?.restaurantId as string;
-    const timeFrame: TimeFrame = req.body.timeFrame || TimeFrame.Daily;
+    const timeFrame: TimeFrame = req.body.timeFrame || TimeFrame.Day;
 
     let start = moment().startOf("D");
     let end = moment().endOf("D");
 
-    if (timeFrame == TimeFrame.Daily) {
+    if (timeFrame == TimeFrame.Day) {
         start = moment().startOf("D");
         end = moment().endOf("D");
-    } else if (timeFrame == TimeFrame.Weekly) {
+    } else if (timeFrame == TimeFrame.Week) {
         start = moment().startOf("week");
         end = moment().endOf("week");
-    } else if (timeFrame == TimeFrame.Monthly) {
+    } else if (timeFrame == TimeFrame.Month) {
         start = moment().startOf("month");
         end = moment().endOf("month");
-    } else if (timeFrame == TimeFrame.Yearly) {
+    } else if (timeFrame == TimeFrame.Year) {
         start = moment().startOf("year");
         end = moment().endOf("year");
+    }
+    else if (timeFrame == TimeFrame.Custom) {
+        start = moment(req.body.from).startOf("day");
+        end = moment(req.body.to).endOf("day");
     }
 
     const result: {
@@ -94,6 +99,8 @@ DashboardRouter.post("/stats", async (req: IRequest, res: IResponse) => {
         subQuery: false, // Ensures Sequelize doesn’t wrap in unnecessary subqueries
         limit: 5
     });
+
+
 
 
     result.tax = invoices.reduce((t, c) => t + c.tax, 0);
