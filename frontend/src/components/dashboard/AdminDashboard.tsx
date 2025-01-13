@@ -106,7 +106,7 @@ export default function AdminDashboard() {
               />
             </>
           )}
-          <div className="flex gap-4 justify-end mt-5">
+          <div className="flex gap-2 justify-end mt-5">
             <Button
               className="bg-gray-200"
               type="button"
