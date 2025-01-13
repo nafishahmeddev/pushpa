@@ -127,21 +127,23 @@ export default function AdminDashboard() {
               key={value}
               value={value}
               onClick={() => handleOnChange(value)}
-              className={`px-4 py-1.5 rounded-lg text-sm text-nowrap ${timeFrame == value ? "bg-lime-300/40 text-lime-900" : "text-gray-600"}`}
+              className={`px-4 py-1.5 rounded-lg text-sm text-nowrap flex flex-nowrap items-center gap-2 ${timeFrame == value ? "bg-lime-300/40 text-lime-900" : "text-gray-600"}`}
             >
-              {value}
+              {value == TimeFrame.Custom ? (
+                <>
+                  <Icon icon="akar-icons:calendar" height={16} width={16} />
+                  {timeFrame == TimeFrame.Custom && (
+                    <span>
+                      {dayjs(from).format("MMM D,  YYYY")} -{" "}
+                      {dayjs(to).format("MMM D,  YYYY")}
+                    </span>
+                  )}
+                </>
+              ) : (
+                value
+              )}
             </button>
           ))}
-        </div>
-        <div>
-          {timeFrame == TimeFrame.Custom && (
-            <div className="px-4 flex items-center rounded-xl text-sm text-nowrap bg-white border  h-full gap-2 text-gray-600">
-              {dayjs(from).format("MMM D,  YYYY")} -{" "}
-              {dayjs(to).format("MMM D,  YYYY")}
-
-              <button onClick={()=>setModal({open:true})} className="text-lime-900"><Icon icon="mage:edit" height={16} width={16}/></button>
-            </div>
-          )}
         </div>
       </div>
       {isLoading && (
