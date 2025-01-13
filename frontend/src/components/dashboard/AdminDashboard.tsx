@@ -114,7 +114,7 @@ export default function AdminDashboard() {
             >
               Cancel
             </Button>
-            <Button className="bg-lime-500 text-white" type="submit">
+            <Button className="bg-lime-600 text-white" type="submit">
               Filter Date
             </Button>
           </div>
