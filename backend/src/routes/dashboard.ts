@@ -68,7 +68,6 @@ function fillMissingDates(
 
     // Create a map of existing data for quick lookup
     const dataMap = new Map(data.map(item => [item.label, item.value]));
-    console.log(dataMap, fullDates);
 
     // Fill in missing dates with value 0
     const filledData = fullDates.map(date => ({
