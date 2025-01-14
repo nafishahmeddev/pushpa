@@ -1,6 +1,7 @@
 
 import { Invoice, Order, OrderItem, Product } from "@app/db/models";
 import { InvoiceStatus } from "@app/db/models/invoice/invoice";
+import { OrderStatus } from "@app/db/models/order/order";
 import { IRequest, IResponse } from "@app/interfaces/vendors/express";
 import { Router } from "express";
 import moment from "moment";
@@ -48,6 +49,8 @@ DashboardRouter.post("/stats", async (req: IRequest, res: IResponse) => {
         averageOrder: number,
         orders: number,
         topSellingItems: Array<{ name: string, count: number }>,
+        salesChart: Array<{ label: string, value: number }>,
+        orderChart: Array<{ label: string, value: number }>,
     } = {
         tax: 0,
         netSales: 0,
@@ -55,6 +58,8 @@ DashboardRouter.post("/stats", async (req: IRequest, res: IResponse) => {
         averageOrder: 0,
         orders: 0,
         topSellingItems: [],
+        salesChart: [],
+        orderChart: []
     }
 
     const invoices = await Invoice.findAll({
@@ -97,10 +102,58 @@ DashboardRouter.post("/stats", async (req: IRequest, res: IResponse) => {
         group: ['productId', 'product.name'], // Include product name in the group for aggregation
         order: [[Sequelize.literal('total_quantity'), 'DESC']],
         subQuery: false, // Ensures Sequelize doesn’t wrap in unnecessary subqueries
-        limit: 5
+        limit: 5,
     });
 
+    let groupFunc = Sequelize.fn('DATE_FORMAT', Sequelize.col('createdAt'), "%Y-%m-%d %H:00:00");  // Default to Hourly
 
+    if (timeFrame == TimeFrame.Day) {
+        groupFunc = Sequelize.fn('DATE_FORMAT', Sequelize.col('createdAt'), "%Y-%m-%d %H:00:00");  // Group by day
+    } else if (timeFrame == TimeFrame.Week) {
+        groupFunc = Sequelize.fn('DATE_FORMAT', Sequelize.col('createdAt'), "%Y-%m-%d 00:00:01");  // Group by week (week number)
+    } else if (timeFrame == TimeFrame.Month) {
+        groupFunc = Sequelize.fn('DATE_FORMAT', Sequelize.col('createdAt'), "%Y-%m-01 00:00:01");  // Group by month (first day of the month)
+    } else if (timeFrame == TimeFrame.Year) {
+        groupFunc = Sequelize.fn('DATE_FORMAT', Sequelize.col('createdAt'), "%Y-01-01 00:00:01");  // Group by year (first day of the year)
+    } else {
+        groupFunc = Sequelize.fn('DATE_FORMAT', Sequelize.col('createdAt'), "%Y-%m-%d 00:00:01");
+    }
+
+    result.salesChart = (await Invoice.findAll({
+        attributes: [
+            [groupFunc, 'label'], // Use Sequelize.fn for better compatibility
+            [Sequelize.fn('SUM', Sequelize.col('amount')), 'value'],
+        ],
+        group: ['label'],
+        order: [['label', "ASC"]],
+        where: {
+            createdAt: {
+                [Op.between]: [start.toDate(), end.toDate()]
+            },
+            restaurantId: restaurantId,
+            status: [InvoiceStatus.Paid]
+        },
+    })).map((e) => {
+        return e.toJSON() as unknown as { label: string; value: number };
+    })
+
+    result.orderChart = (await Order.findAll({
+        attributes: [
+            [groupFunc, 'label'], // Use Sequelize.fn for better compatibility
+            [Sequelize.fn('COUNT', Sequelize.col('*')), 'value'],
+        ],
+        group: ['label'],
+        order: [['label', "ASC"]],
+        where: {
+            createdAt: {
+                [Op.between]: [start.toDate(), end.toDate()]
+            },
+            restaurantId: restaurantId,
+            status: [OrderStatus.Paid, OrderStatus.Completed]
+        },
+    })).map((e) => {
+        return e.toJSON() as unknown as { label: string; value: number };
+    })
 
 
     result.tax = invoices.reduce((t, c) => t + c.tax, 0);

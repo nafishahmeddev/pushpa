@@ -8,7 +8,23 @@ import Input from "../ui/form/input";
 import Button from "../ui/form/button";
 import dayjs from "dayjs";
 import { Icon } from "@iconify/react/dist/iconify.js";
+import SalesChart from "./charts/SalesChart";
+import utc from "dayjs/plugin/utc";
+dayjs.extend(utc);
 
+const format = (timeFrame: TimeFrame, date: string) => {
+  if (TimeFrame.Day == timeFrame) {
+    return dayjs.utc(date).local().format("HH A");
+  } else if (TimeFrame.Week == timeFrame) {
+    return dayjs(date).format("DD MMM");
+  } else if (TimeFrame.Month == timeFrame) {
+    return dayjs(date).format("DD");
+  } else if (TimeFrame.Year == timeFrame) {
+    return dayjs(date).format("MM");
+  } else {
+    return dayjs(date).format("DD MMM YY");
+  }
+};
 export default function AdminDashboard() {
   const navigate = useNavigate({ from: "/" });
   const timeFrame = useSearch({
@@ -44,6 +60,8 @@ export default function AdminDashboard() {
       name: string;
       count: number;
     }>;
+    salesChart: Array<{ label: string; value: number }>;
+    orderChart: Array<{ label: string; value: number }>;
   }>({
     queryKey: ["dashboard", { timeFrame, from, to }],
     queryFn: () => DashboardApi.stats({ timeFrame, from, to }),
@@ -220,6 +238,32 @@ export default function AdminDashboard() {
               <span className="text-4xl  text-gray-700">
                 {Formatter.money(result.netSales)}
               </span>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-5 mt-5">
+            <div className="border bg-white rounded-2xl  flex flex-col gap-2 w-full row-span-2 py-6 pb-0  dash-card">
+              <p className="px-5 font-bold">Sales</p>
+              <div className="pb-3 px-6">
+                <SalesChart
+                  data={result.salesChart.map((e) => ({
+                    name: format(timeFrame, e.label),
+                    value: e.value,
+                  }))}
+                />
+              </div>
+            </div>
+
+            <div className="border bg-white rounded-2xl  flex flex-col gap-2 w-full row-span-2 py-6 pb-0  dash-card">
+              <p className="px-5 font-bold">Orders</p>
+              <div className="pb-3 px-6">
+                <SalesChart
+                  data={result.orderChart.map((e) => ({
+                    name: format(timeFrame, e.label),
+                    value: e.value,
+                  }))}
+                />
+              </div>
             </div>
           </div>
         </div>

@@ -10,6 +10,8 @@ export default class DashboardApi {
         topSellingItems: Array<{
             name: string,
             count: number
-        }>
+        }>,
+        salesChart: Array<{ label: string, value: number }>,
+        orderChart: Array<{ label: string, value: number }>,
     });
 }
