@@ -189,6 +189,7 @@ OrdersRouter.post("/back-entry", async (req: IRequest, res: IResponse) => {
         let order = await Order.create({
             type,
             tableId,
+            userId: req.auth?.userId,
             discount,
             createdAt,
             restaurantId: req.auth?.restaurantId
