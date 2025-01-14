@@ -150,17 +150,34 @@ ProductsRouter.put("/:productId", UploadMiddleware().single("image"), async (req
 
 ProductsRouter.delete("/:productId", async (req: IRequest, res: IResponse) => {
     const productId = req.params.productId;
-    const category = await Product.destroy({
+    const product = await Product.findOne({
         where: {
             id: productId
         }
-    });
-    if (!category) {
+    })
+
+
+    if (!product) {
         res.status(404).json({
-            message: "Category not found..."
+            message: "Product not found..."
         });
         return;
     }
+
+    await Product.destroy({
+        where: {
+            id: product.id
+        }
+    });
+
+    if (product.image) {
+        try {
+            fs.rmSync(uploadPath(product.image))
+        } catch {
+
+        }
+    }
+
     res.json({
         message: "Successful"
     })
