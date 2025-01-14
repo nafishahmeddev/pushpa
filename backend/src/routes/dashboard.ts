@@ -4,7 +4,7 @@ import { InvoiceStatus } from "@app/db/models/invoice/invoice";
 import { OrderStatus } from "@app/db/models/order/order";
 import { IRequest, IResponse } from "@app/interfaces/vendors/express";
 import { Router } from "express";
-import moment from "moment";
+import moment, { Moment, unitOfTime } from "moment";
 import { Op, Sequelize } from "sequelize";
 
 const DashboardRouter = Router();
@@ -16,9 +16,67 @@ enum TimeFrame {
     Year = "Year",
     Custom = "Custom"
 }
+function enumerateDates(
+    timeFrame: TimeFrame,
+    start: string,
+    end: string
+): string[] {
+    let diff: string;
+    let format: string;
 
-const filDates = (timeframe, data: Array<{label: string, value: number}>)=>{
+    // Determine diff and format based on TimeFrame
+    if ([TimeFrame.Day].includes(timeFrame)) {
+        diff = 'hour';
+        format = 'YYYY-MM-DD HH:00:00';
+    } else if ([TimeFrame.Week].includes(timeFrame)) {
+        diff = 'day';
+        format = 'YYYY-MM-DD 00:00:00';
+    } else if ([TimeFrame.Month].includes(timeFrame)) {
+        diff = 'day';
+        format = 'YYYY-MM-DD 00:00:00';
+    } else if ([TimeFrame.Year].includes(timeFrame)) {
+        diff = 'month';
+        format = 'YYYY-MM-01 00:00:00';
+    } else if ([TimeFrame.Custom].includes(timeFrame)) {
+        diff = 'day';
+        format = 'YYYY-MM-DD 00:00:00';
+    } else {
+        throw new Error("Invalid TimeFrame");
+    }
 
+    const startDate = moment(start);
+    const endDate = moment(end);
+    const result: string[] = [];
+
+    // Enumerate dates
+    let current = startDate.clone();
+    while (current.isSameOrBefore(endDate)) {
+        result.push(current.format(format));
+        current.add(1, diff as moment.unitOfTime.DurationConstructor);
+    }
+
+    return result;
+}
+function fillMissingDates(
+    data: Array<{ label: string; value: number }>,
+    timeFrame: TimeFrame,
+    start: string,
+    end: string
+): Array<{ label: string; value: number }> {
+    // Generate the full range of dates
+    const fullDates = enumerateDates(timeFrame, start, end);
+
+    // Create a map of existing data for quick lookup
+    const dataMap = new Map(data.map(item => [item.label, item.value]));
+    console.log(dataMap, fullDates);
+
+    // Fill in missing dates with value 0
+    const filledData = fullDates.map(date => ({
+        label: date,
+        value: dataMap.get(date) || 0
+    }));
+
+    return filledData;
 }
 
 DashboardRouter.post("/stats", async (req: IRequest, res: IResponse) => {
@@ -30,20 +88,20 @@ DashboardRouter.post("/stats", async (req: IRequest, res: IResponse) => {
 
     if (timeFrame == TimeFrame.Day) {
         start = moment().startOf("D");
-        end = moment().endOf("D");
+        end = moment.min(moment().endOf("D"), moment());
     } else if (timeFrame == TimeFrame.Week) {
         start = moment().startOf("week");
-        end = moment().endOf("week");
+        end = moment.min(moment().endOf("week"), moment());
     } else if (timeFrame == TimeFrame.Month) {
         start = moment().startOf("month");
-        end = moment().endOf("month");
+        end = moment.min(moment().endOf("month"), moment());
     } else if (timeFrame == TimeFrame.Year) {
         start = moment().startOf("year");
-        end = moment().endOf("year");
+        end = moment.min(moment().endOf("year"), moment());
     }
     else if (timeFrame == TimeFrame.Custom) {
         start = moment(req.body.from).startOf("day");
-        end = moment(req.body.to).endOf("day");
+        end = moment.min(moment(req.body.to).endOf("day"), moment());
     }
 
     const result: {
@@ -111,7 +169,7 @@ DashboardRouter.post("/stats", async (req: IRequest, res: IResponse) => {
 
     let groupFunc = Sequelize.fn('DATE_FORMAT', Sequelize.col('createdAt'), "%Y-%m-%d %H:00:00");
     if (timeFrame == TimeFrame.Day) {
-        groupFunc = Sequelize.fn('DATE_FORMAT', Sequelize.col('createdAt'), "%Y-%m-%d %H:%i:00");
+        groupFunc = Sequelize.fn('DATE_FORMAT', Sequelize.col('createdAt'), "%Y-%m-%d %H:00:00");
     } else if (timeFrame == TimeFrame.Week) {
         groupFunc = Sequelize.fn('DATE_FORMAT', Sequelize.col('createdAt'), "%Y-%m-%d 00:00:00");
     } else if (timeFrame == TimeFrame.Month) {
@@ -140,6 +198,8 @@ DashboardRouter.post("/stats", async (req: IRequest, res: IResponse) => {
         return e.toJSON() as unknown as { label: string; value: number };
     })
 
+    result.salesChart = fillMissingDates(result.salesChart,timeFrame,start.toString(), end.toString())
+
     result.orderChart = (await Order.findAll({
         attributes: [
             [groupFunc, 'label'], // Use Sequelize.fn for better compatibility
@@ -157,6 +217,8 @@ DashboardRouter.post("/stats", async (req: IRequest, res: IResponse) => {
     })).map((e) => {
         return e.toJSON() as unknown as { label: string; value: number };
     })
+
+    result.orderChart = fillMissingDates(result.orderChart,timeFrame,start.toString(), end.toString())
 
 
     result.tax = invoices.reduce((t, c) => t + c.tax, 0);
