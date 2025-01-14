@@ -76,7 +76,8 @@ export default function ProductFormDialog({
     };
     try {
       const compressedFile = await imageCompression(file, options);
-      setSelectedImage(compressedFile);
+      const uploadableFile = new File([compressedFile], file.name, {type: compressedFile.type});
+      setSelectedImage(uploadableFile);
     } catch (error) {
       console.log(error);
     }
