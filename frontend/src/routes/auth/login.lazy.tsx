@@ -30,11 +30,11 @@ function RouteComponent() {
     }
   }, [auth]);
   return (
-    <div className="flex bg-gray-50 h-screen">
-      <div className="flex-1 collapse lg:visible flex items-center justify-center p-9 ">
+    <div className="flex bg-gray-50 h-dvh w-dvw">
+      <div className="flex-1 hidden lg:flex items-center justify-center p-9 h-full">
         <img src="/login-scene.webp" className="max-w-full" />
       </div>
-      <div className="flex-1 bg-white p-6 lg:max-w-[500px] flex items-center justify-center">
+      <div className="flex-1 bg-white p-6 lg:max-w-[500px] flex items-center justify-center h-full">
         <form
           onSubmit={(e) => {
             e.preventDefault();
