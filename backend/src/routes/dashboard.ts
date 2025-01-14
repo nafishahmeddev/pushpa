@@ -48,7 +48,10 @@ DashboardRouter.post("/stats", async (req: IRequest, res: IResponse) => {
         start = dayjs.tz(req.body.from, timezone).startOf("day")
         end = dayjs.tz(req.body.to, timezone).endOf("day")
     }
-    
+
+    start  = start.utc(true);
+    end  = end.utc(true);
+
     const column = Sequelize.fn(
         'CONVERT_TZ',
         Sequelize.col('createdAt'),
