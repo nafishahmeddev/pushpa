@@ -349,14 +349,17 @@ function RouteComponent() {
             <Button className="bg-gray-300" type="reset">
               Reset
             </Button>
-
-            <Button
-              className="bg-gray-300"
-              type="button"
-              onClick={() => setFormDialog({ open: true })}
-            >
-              Back Entry
-            </Button>
+            {[UserDesignation.Admin, UserDesignation.Owner].includes(
+              auth.user.designation,
+            ) && (
+              <Button
+                className="bg-gray-300"
+                type="button"
+                onClick={() => setFormDialog({ open: true })}
+              >
+                Back Entry
+              </Button>
+            )}
           </form>
         </div>
 
