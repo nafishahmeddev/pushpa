@@ -13,6 +13,7 @@ import { createFileRoute } from '@tanstack/react-router'
 // Import Routes
 
 import { Route as rootRoute } from './routes/__root'
+import { Route as ProfileImport } from './routes/profile'
 
 // Create Virtual Routes
 
@@ -48,6 +49,12 @@ const PosLazyRoute = PosLazyImport.update({
   path: '/pos',
   getParentRoute: () => rootRoute,
 } as any).lazy(() => import('./routes/pos.lazy').then((d) => d.Route))
+
+const ProfileRoute = ProfileImport.update({
+  id: '/profile',
+  path: '/profile',
+  getParentRoute: () => rootRoute,
+} as any)
 
 const IndexLazyRoute = IndexLazyImport.update({
   id: '/',
@@ -145,6 +152,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexLazyImport
+      parentRoute: typeof rootRoute
+    }
+    '/profile': {
+      id: '/profile'
+      path: '/profile'
+      fullPath: '/profile'
+      preLoaderRoute: typeof ProfileImport
       parentRoute: typeof rootRoute
     }
     '/pos': {
@@ -278,6 +292,7 @@ const SettingsLazyRouteWithChildren = SettingsLazyRoute._addFileChildren(
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexLazyRoute
+  '/profile': typeof ProfileRoute
   '/pos': typeof PosLazyRouteWithChildren
   '/settings': typeof SettingsLazyRouteWithChildren
   '/auth/login': typeof AuthLoginLazyRoute
@@ -295,6 +310,7 @@ export interface FileRoutesByFullPath {
 
 export interface FileRoutesByTo {
   '/': typeof IndexLazyRoute
+  '/profile': typeof ProfileRoute
   '/settings': typeof SettingsLazyRouteWithChildren
   '/auth/login': typeof AuthLoginLazyRoute
   '/pos/$orderId': typeof PosOrderIdLazyRoute
@@ -312,6 +328,7 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRoute
   '/': typeof IndexLazyRoute
+  '/profile': typeof ProfileRoute
   '/pos': typeof PosLazyRouteWithChildren
   '/settings': typeof SettingsLazyRouteWithChildren
   '/auth/login': typeof AuthLoginLazyRoute
@@ -331,6 +348,7 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/profile'
     | '/pos'
     | '/settings'
     | '/auth/login'
@@ -347,6 +365,7 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/profile'
     | '/settings'
     | '/auth/login'
     | '/pos/$orderId'
@@ -362,6 +381,7 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/'
+    | '/profile'
     | '/pos'
     | '/settings'
     | '/auth/login'
@@ -380,6 +400,7 @@ export interface FileRouteTypes {
 
 export interface RootRouteChildren {
   IndexLazyRoute: typeof IndexLazyRoute
+  ProfileRoute: typeof ProfileRoute
   PosLazyRoute: typeof PosLazyRouteWithChildren
   SettingsLazyRoute: typeof SettingsLazyRouteWithChildren
   AuthLoginLazyRoute: typeof AuthLoginLazyRoute
@@ -390,6 +411,7 @@ export interface RootRouteChildren {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexLazyRoute: IndexLazyRoute,
+  ProfileRoute: ProfileRoute,
   PosLazyRoute: PosLazyRouteWithChildren,
   SettingsLazyRoute: SettingsLazyRouteWithChildren,
   AuthLoginLazyRoute: AuthLoginLazyRoute,
@@ -409,6 +431,7 @@ export const routeTree = rootRoute
       "filePath": "__root.tsx",
       "children": [
         "/",
+        "/profile",
         "/pos",
         "/settings",
         "/auth/login",
@@ -419,6 +442,9 @@ export const routeTree = rootRoute
     },
     "/": {
       "filePath": "index.lazy.tsx"
+    },
+    "/profile": {
+      "filePath": "profile.tsx"
     },
     "/pos": {
       "filePath": "pos.lazy.tsx",

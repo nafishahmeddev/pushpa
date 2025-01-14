@@ -1,19 +1,23 @@
 import { Icon } from "@iconify/react";
 import AuthApi from "@app/services/auth";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { AuthStateLoggedIn, useAuthStore } from "@app/store/auth";
-import { useNavigate } from "@tanstack/react-router";
+import { Link, useNavigate } from "@tanstack/react-router";
+import { useClickOutside } from "@app/hooks/useClickOutside";
 
 export default function AccountButton() {
   const [show, setShow] = useState(false);
   const navigate = useNavigate();
   const [auth] = useAuthStore<AuthStateLoggedIn>();
+  const ref = useRef(null);
+  useClickOutside(ref, () => setShow(false));
   return (
     <div className="px-2 h-full aspect-square py-2 relative">
       <div className="bg-gray-200 rounded-full items-center flex p-0.5 gap-2 w-full h-full">
         <button
           className={`h-full aspect-square rounded-full bg-white border flex items-center justify-center `}
           onClick={() => setShow(true)}
+          ref={ref}
         >
           <Icon icon="prime:user" height={24} width={24} />
         </button>
@@ -40,8 +44,15 @@ export default function AccountButton() {
               </div>
             </div>
             <div className="border-t">
+              <Link
+                to="/profile"
+                className=" text-gray-700  hover:opacity-50 px-3 py-2 flex gap-2 items-center"
+              >
+                <Icon icon="iconamoon:profile-circle-light" height={20} width={20} />
+                <span>Profile</span>
+              </Link>
               <button
-                className=" text-red-700  hover:opacity-50 px-3 py-2 flex gap-2 items-center"
+                className=" text-red-700  hover:opacity-50 px-3 py-2 flex gap-2 items-center w-full"
                 onClick={() => {
                   AuthApi.logout().then(() => {
                     navigate({ to: "/" });
@@ -54,11 +65,6 @@ export default function AccountButton() {
             </div>
           </div>
         </div>
-
-        <div
-          className={`fixed top-0 left-0  h-full w-full z-40  ${show ? "visible" : "collapse"}`}
-          onClick={() => setShow(false)}
-        ></div>
       </div>
     </div>
   );
