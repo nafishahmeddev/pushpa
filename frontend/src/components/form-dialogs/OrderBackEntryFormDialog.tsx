@@ -95,7 +95,7 @@ export default function OrderBackEntryFormDialog({
     <Dialog
       open={open}
       onClose={onReset}
-      paperProps={{ className: "max-w-[1000px]" }}
+      paperProps={{ className: "!max-w-[1000px]" }}
     >
       <form
         className="p-6 flex flex-col "
