@@ -11,7 +11,7 @@ import { Icon } from "@iconify/react/dist/iconify.js";
 import SalesChart from "./charts/SalesChart";
 import utc from "dayjs/plugin/utc";
 import advancedFormat from "dayjs/plugin/advancedFormat";
-import minmax from "dayjs/plugin/minmax";
+import minmax from "dayjs/plugin/minMax";
 dayjs.extend(utc);
 dayjs.extend(advancedFormat);
 dayjs.extend(minmax);
