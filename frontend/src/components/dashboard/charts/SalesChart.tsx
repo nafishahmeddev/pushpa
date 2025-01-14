@@ -1,4 +1,3 @@
-import Formatter from "@app/lib/formatter";
 import { ResponsiveContainer, Tooltip, ComposedChart, XAxis, Bar } from "recharts";
 import { TooltipProps } from 'recharts';
 // for recharts v2.1 and above
@@ -20,7 +19,7 @@ const CustomToolTip = ({ active, payload, label }: TooltipProps<ValueType, NameT
         </p>
         {payload.map((item, i) => (
           <p key={i}>
-            Sales: <strong>{Formatter.money(Number(item.value || 0))}</strong>
+            Sales: <strong>{(item.value || 0)}</strong>
           </p>
         ))}
       </div>
