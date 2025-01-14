@@ -4,6 +4,7 @@ import AccountApi from "@app/services/account";
 import { AuthStateLoggedIn, useAuthStore } from "@app/store/auth";
 import { useForm } from "@tanstack/react-form";
 import { createFileRoute } from "@tanstack/react-router";
+import toast from "react-hot-toast";
 
 export const Route = createFileRoute("/profile")({
   component: RouteComponent,
@@ -14,9 +15,13 @@ function RouteComponent() {
   const profileForm = useForm({
     defaultValues: {
       name: auth.user.name,
+      phone: auth.user.phone,
       email: auth.user.email,
     },
-    onSubmit: ({value})=>AccountApi.updateProfile(value)
+    onSubmit: ({ value }) =>
+      AccountApi.updateProfile(value)
+        .then(() => toast.success("Profile updated."))
+        .catch((e) => toast.error(e.message)),
   });
 
   const passwordForm = useForm({
@@ -25,7 +30,10 @@ function RouteComponent() {
       newPassword: "",
       confirmPassword: "",
     },
-    onSubmit: ({value})=>AccountApi.updatePassword(value)
+    onSubmit: ({ value }) =>
+      AccountApi.updatePassword(value)
+        .then(() => toast.success("Password updated."))
+        .catch((e) => toast.error(e.message)),
   });
   return (
     <div className="p-5 max-w-[1000px] m-auto flex flex-col gap-8 py-10">
@@ -75,6 +83,22 @@ function RouteComponent() {
             )}
           />
 
+          <profileForm.Field
+            name="phone"
+            children={({ state, handleBlur, handleChange, name }) => (
+              <Input
+                label="Phone"
+                required
+                value={state.value}
+                onChange={(e) => handleChange(e.target.value)}
+                onBlur={handleBlur}
+                name={name}
+                error={state.meta.errors.join(" ")}
+                touched={state.meta.isTouched}
+              />
+            )}
+          />
+
           <profileForm.Subscribe
             children={({ isSubmitting, canSubmit }) => (
               <div>
@@ -83,7 +107,6 @@ function RouteComponent() {
                   type="submit"
                   disabled={!canSubmit}
                   loading={isSubmitting}
-                
                 >
                   Update Profile
                 </Button>
