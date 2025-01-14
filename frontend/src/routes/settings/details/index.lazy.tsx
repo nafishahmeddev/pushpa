@@ -160,7 +160,7 @@ function RouteComponent() {
       </div>
 
       <div className="items-center justify-center p-10 md:flex hidden">
-        <img src="/scene.png" className="w-full" />
+        <img src="/scene.webp" className="w-full" />
       </div>
     </form>
   );

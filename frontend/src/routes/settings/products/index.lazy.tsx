@@ -35,7 +35,7 @@ function RouteComponent() {
         renderColumn: (value) => (
           <Image
             src={uploadUrl(value as string)}
-            fallback="/placeholder-category.png"
+            fallback="/placeholder-category.webp"
             className="w-16 h-16 min-h-16 min-w-16 max-w-16 max-h-16 rounded-xl border aspect-square  object-cover bg-gray-100"
           />
         ),

@@ -130,7 +130,7 @@ export default function ProductFormDialog({
                           ? uploadUrl(image)
                           : undefined
                     }
-                    fallback="/placeholder-category.png"
+                    fallback="/placeholder-category.webp"
                     className="w-full aspect-square  object-cover bg-gray-100"
                   />
                   <input
