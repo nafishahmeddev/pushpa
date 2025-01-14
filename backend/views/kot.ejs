@@ -48,7 +48,7 @@
         }
     </style>
     <% const formatter=new Intl.NumberFormat("en-IN", { style: "currency" , currency: kot.restaurant.currency || "INR"
-        }); const moment=locals.moment; %>
+        }); const dayjs=locals.dayjs; %>
 </head>
 
 <body>
@@ -62,7 +62,7 @@
             <tr>
                 <td>ORDER NO: #<%= kot.order.orderNo %>
                 </td>
-                <td style="text-align: right;">Date: <%= moment(kot.createdAt).format("DD/MM/YYYY") %>
+                <td style="text-align: right;">Date: <%= dayjs(kot.createdAt).format("DD/MM/YYYY") %>
                 </td>
             </tr>
         </table>

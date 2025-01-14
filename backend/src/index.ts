@@ -3,7 +3,7 @@ dotenv.config();
 import path from 'path';
 import express, { Application } from "express";
 import consola from "consola";
-import moment from "moment";
+import dayjs from "dayjs";
 
 import { sequelize } from "@app/db/conn";
 
@@ -39,7 +39,7 @@ app.set("view engine", "ejs");
 app.set('views', path.resolve('./views/'))
 
 //set express locals
-app.locals.moment = moment;
+app.locals.dayjs = dayjs;
 
 
 async function main() {

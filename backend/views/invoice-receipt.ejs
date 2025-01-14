@@ -55,7 +55,7 @@
         }
     </style>
     <% const formatter=new Intl.NumberFormat("en-IN", { style: "currency" , currency: invoice.restaurant.currency
-        || "INR" }); const moment=locals.moment; %>
+        || "INR" }); const dayjs=locals.dayjs; %>
 </head>
 
 <body>
@@ -73,7 +73,7 @@
             <tr>
                 <td>RECEIPT NO: #<%= invoice.receiptNo %>
                 </td>
-                <td style="text-align: right;">DATE: <%= moment(invoice.createdAt).format("DD/MM/YYYY") %>
+                <td style="text-align: right;">DATE: <%= dayjs(invoice.createdAt).format("DD/MM/YYYY") %>
                 </td>
             </tr>
         </table>

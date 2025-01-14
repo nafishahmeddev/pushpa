@@ -1,7 +1,13 @@
 import { UserDesignation } from "@app/db/models/user/user";
 import { NextFunction, Request, Response } from "express";
+import { IncomingHttpHeaders } from "http";
 
 export type Language = "en" | "bn";
+
+interface Headers extends IncomingHttpHeaders{
+    timezone?: string,
+    "utc-offset"?: string
+}
 
 export interface IRequest extends Request {
     language?: Language,
@@ -11,7 +17,8 @@ export interface IRequest extends Request {
         permissions: Array<string>,
         restaurantId: string,
         designation: UserDesignation,
-    }
+    },
+    headers: Headers
 }
 
 export interface IResponse extends Response {

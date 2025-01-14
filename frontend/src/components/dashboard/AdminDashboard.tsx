@@ -16,7 +16,7 @@ dayjs.extend(advancedFormat);
 
 const format = (timeFrame: TimeFrame, date: string) => {
   if (TimeFrame.Day == timeFrame) {
-    return dayjs.utc(date).local().format("hh A");
+    return dayjs(date).format("hh A");
   } else if (TimeFrame.Week == timeFrame) {
     return dayjs(date).format("Do MMM");
   } else if (TimeFrame.Month == timeFrame) {

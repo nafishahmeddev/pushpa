@@ -14,8 +14,11 @@ import { Restaurant } from "../restaurant/restaurant";
 import { OrderItem } from "./order-item";
 import { Table } from "../restaurant/table";
 import { Sequence } from "../sequence";
-import moment from "moment";
 import { Order } from "./order";
+import dayjs from "dayjs";
+import isBetween from "dayjs/plugin/isBetween";
+dayjs.extend(isBetween);
+
 
 enum KotStatus {
     Pending = "Pending",
@@ -88,7 +91,7 @@ Kot.addHook("beforeCreate", (async (order: Kot) => {
                 transaction
             });
         }
-        if (moment(order.updatedAt).isBetween(moment().startOf("D"), moment().endOf("D"))) {
+        if (dayjs(order.updatedAt).isBetween(dayjs().startOf("D"), dayjs().endOf("D"))) {
             tokenNo = sequence.value + 1;
         } else {
             tokenNo = 1
