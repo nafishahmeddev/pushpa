@@ -246,7 +246,7 @@ export default function AdminDashboard() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-5 mt-5 mb-5">
             <div className="border bg-white rounded-2xl  flex flex-col gap-2 w-full row-span-2 py-6 pb-0  dash-card">
               <p className="px-5 font-bold">Sales</p>
-              <div className="pb-3 px-6 pt-2">
+              <div className="pb-3 px-6 pt-2 h-52">
                 <SalesChart
                   data={result.salesChart.map((e) => ({
                     name: format(timeFrame, e.label),
@@ -258,7 +258,7 @@ export default function AdminDashboard() {
 
             <div className="border bg-white rounded-2xl  flex flex-col gap-2 w-full row-span-2 py-6 pb-0  dash-card">
               <p className="px-5 font-bold">Orders</p>
-              <div className="pb-3 px-6 pt-2">
+              <div className="pb-3 px-6 pt-2  h-52">
                 <SalesChart
                   data={result.orderChart.map((e) => ({
                     name: format(timeFrame, e.label),

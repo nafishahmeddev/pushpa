@@ -31,7 +31,7 @@ export default function SalesChart({
   data: Array<{ name: string; value: number }>;
 }) {
   return (
-    <ResponsiveContainer width="100%" aspect={5} maxHeight={150}>
+    <ResponsiveContainer width="100%" height={"100%"} >
       <ComposedChart data={data}>
         <Bar dataKey="value" fill="#65A30D9f" radius={10}/>
         <Tooltip content={<CustomToolTip/>}/>
