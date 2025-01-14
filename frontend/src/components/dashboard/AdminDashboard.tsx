@@ -10,15 +10,17 @@ import dayjs from "dayjs";
 import { Icon } from "@iconify/react/dist/iconify.js";
 import SalesChart from "./charts/SalesChart";
 import utc from "dayjs/plugin/utc";
+import advancedFormat from "dayjs/plugin/advancedFormat";
 dayjs.extend(utc);
+dayjs.extend(advancedFormat);
 
 const format = (timeFrame: TimeFrame, date: string) => {
   if (TimeFrame.Day == timeFrame) {
     return dayjs.utc(date).local().format("HH A");
   } else if (TimeFrame.Week == timeFrame) {
-    return dayjs(date).format("DD MMM");
+    return dayjs(date).format("Do MMM");
   } else if (TimeFrame.Month == timeFrame) {
-    return dayjs(date).format("DD");
+    return dayjs(date).format("Do");
   } else if (TimeFrame.Year == timeFrame) {
     return dayjs(date).format("MM");
   } else {

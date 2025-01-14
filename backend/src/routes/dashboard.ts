@@ -105,16 +105,16 @@ DashboardRouter.post("/stats", async (req: IRequest, res: IResponse) => {
         limit: 5,
     });
 
-    let groupFunc = Sequelize.fn('DATE_FORMAT', Sequelize.col('createdAt'), "%Y-%m-%d %H:00:00");  // Default to Hourly
+    let groupFunc = Sequelize.fn('DATE_FORMAT', Sequelize.col('createdAt'), "%Y-%m-%d %H:00:00");
 
     if (timeFrame == TimeFrame.Day) {
-        groupFunc = Sequelize.fn('DATE_FORMAT', Sequelize.col('createdAt'), "%Y-%m-%d %H:00:00");  // Group by day
+        groupFunc = Sequelize.fn('DATE_FORMAT', Sequelize.col('createdAt'), "%Y-%m-%d %H:00:00");
     } else if (timeFrame == TimeFrame.Week) {
-        groupFunc = Sequelize.fn('DATE_FORMAT', Sequelize.col('createdAt'), "%Y-%m-%d 00:00:01");  // Group by week (week number)
+        groupFunc = Sequelize.fn('DATE_FORMAT', Sequelize.col('createdAt'), "%Y-%m-%d 00:00:01");
     } else if (timeFrame == TimeFrame.Month) {
-        groupFunc = Sequelize.fn('DATE_FORMAT', Sequelize.col('createdAt'), "%Y-%m-01 00:00:01");  // Group by month (first day of the month)
+        groupFunc = Sequelize.fn('DATE_FORMAT', Sequelize.col('createdAt'), "%Y-%m-%d 00:00:01");
     } else if (timeFrame == TimeFrame.Year) {
-        groupFunc = Sequelize.fn('DATE_FORMAT', Sequelize.col('createdAt'), "%Y-01-01 00:00:01");  // Group by year (first day of the year)
+        groupFunc = Sequelize.fn('DATE_FORMAT', Sequelize.col('createdAt'), "%Y-01-01 00:00:01");
     } else {
         groupFunc = Sequelize.fn('DATE_FORMAT', Sequelize.col('createdAt'), "%Y-%m-%d 00:00:01");
     }
