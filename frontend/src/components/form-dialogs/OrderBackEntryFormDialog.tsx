@@ -89,6 +89,7 @@ export default function OrderBackEntryFormDialog({
       setTables(res);
     });
     form.reset();
+    setItems([]);
   }, [open]);
 
   return (
