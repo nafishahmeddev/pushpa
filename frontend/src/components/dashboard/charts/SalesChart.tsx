@@ -1,4 +1,4 @@
-import { ResponsiveContainer, Tooltip, ComposedChart, XAxis, Area } from "recharts";
+import { ResponsiveContainer, Tooltip, ComposedChart, XAxis, Bar } from "recharts";
 
 export default function SalesChart({
   data = [],
@@ -8,7 +8,7 @@ export default function SalesChart({
   return (
     <ResponsiveContainer width="100%" aspect={5} maxHeight={150}>
       <ComposedChart data={data}>
-        <Area dataKey="value" fill="#65A30D30" strokeWidth={1} stroke="#65A30D30" />
+        <Bar dataKey="value" fill="#65A30D9f" />
         <Tooltip />
         <XAxis dataKey="name" fontFamily="Fira Sans" fontSize={12} />
       </ComposedChart>
