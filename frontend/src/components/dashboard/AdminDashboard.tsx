@@ -6,13 +6,15 @@ import { useNavigate, useSearch } from "@tanstack/react-router";
 import { useState } from "react";
 import Input from "../ui/form/input";
 import Button from "../ui/form/button";
-import dayjs from "dayjs";
+import dayjs, { ManipulateType } from "dayjs";
 import { Icon } from "@iconify/react/dist/iconify.js";
 import SalesChart from "./charts/SalesChart";
 import utc from "dayjs/plugin/utc";
 import advancedFormat from "dayjs/plugin/advancedFormat";
+import minmax from "dayjs/plugin/minmax";
 dayjs.extend(utc);
 dayjs.extend(advancedFormat);
+dayjs.extend(minmax);
 
 const format = (timeFrame: TimeFrame, date: string) => {
   if (TimeFrame.Day == timeFrame) {
@@ -26,6 +28,59 @@ const format = (timeFrame: TimeFrame, date: string) => {
   } else {
     return dayjs(date).format("DD MMM YY");
   }
+};
+
+const enumerate = (
+  timeFrame: TimeFrame,
+  data: Array<{ label: string; value: number }>,
+  range: { start?: string; end?: string } | undefined = undefined,
+) => {
+  const dataMap: Map<string, number> = new Map(
+    data.map((e) => [e.label, e.value]),
+  );
+  let diff: ManipulateType = "day";
+  let start = dayjs(range?.start).startOf("day");
+  let end = dayjs(range?.end).endOf("day");
+  let format = "YYYY-MM-DD 00:00:00";
+  if (TimeFrame.Day == timeFrame) {
+    diff = "hour";
+    start = dayjs().startOf("day");
+    end = dayjs().endOf("hour");
+    format = "YYYY-MM-DD HH:00:00";
+  } else if (TimeFrame.Week == timeFrame) {
+    diff = "day";
+    start = dayjs().startOf("week");
+    end = dayjs().endOf("day");
+    format = "YYYY-MM-DD 00:00:00";
+  } else if (TimeFrame.Month == timeFrame) {
+    diff = "day";
+    start = dayjs().startOf("month");
+    end = dayjs().endOf("day");
+    format = "YYYY-MM-DD 00:00:00";
+  } else if (TimeFrame.Year == timeFrame) {
+    diff = "month";
+    start = dayjs().startOf("year");
+    end = dayjs().endOf("month");
+    format = "YYYY-MM-01 00:00:00";
+  } else {
+    diff = "day";
+    start = dayjs.max(dayjs(range?.start), dayjs(data[0].label)).startOf("day");
+    end = dayjs.min(dayjs(range?.end), dayjs()).endOf("day");
+    format = "YYYY-MM-DD 00:00:00";
+  }
+  let currentDate = dayjs(start);
+  const ranges: typeof data = [];
+  while (currentDate.isBefore(end) || currentDate.isSame(end)) {
+    console.log({ timeFrame });
+
+    const label: string = currentDate.format(format) as string;
+    ranges.push({
+      label: currentDate.format(format),
+      value: Number(dataMap.get(label) || 0),
+    });
+    currentDate = currentDate.add(1, diff);
+  }
+  return ranges;
 };
 export default function AdminDashboard() {
   const navigate = useNavigate({ from: "/" });
@@ -248,7 +303,7 @@ export default function AdminDashboard() {
               <p className="px-5 font-bold">Sales</p>
               <div className="pb-3 px-6 pt-2 h-52">
                 <SalesChart
-                  data={result.salesChart.map((e) => ({
+                  data={enumerate(timeFrame, result.salesChart, {start: from, end: to}).map((e) => ({
                     name: format(timeFrame, e.label),
                     value: e.value,
                   }))}
@@ -260,7 +315,7 @@ export default function AdminDashboard() {
               <p className="px-5 font-bold">Orders</p>
               <div className="pb-3 px-6 pt-2  h-52">
                 <SalesChart
-                  data={result.orderChart.map((e) => ({
+                  data={enumerate(timeFrame, result.orderChart, {start: from, end: to}).map((e) => ({
                     name: format(timeFrame, e.label),
                     value: e.value,
                   }))}
