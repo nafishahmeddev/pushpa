@@ -91,7 +91,7 @@ ProductsRouter.post("/", UploadMiddleware().single("image"), async (req: IReques
         const body = JSON.parse(req.body.values);
         if (req.file) {
             fs.renameSync(req.file.path, uploadPath(req.file.filename));
-            body.image = uploadPath(req.file.filename);
+            body.image = req.file.filename;
         }
         const product = await Product.create({
             ...body
