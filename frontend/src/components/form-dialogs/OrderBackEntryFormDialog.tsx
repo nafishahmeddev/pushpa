@@ -117,6 +117,7 @@ export default function OrderBackEntryFormDialog({
                   required
                   label="Date & Time"
                   type="datetime-local"
+                  max={dayjs().format("YYYY-MM-DD HH:mm:ss")}
                   value={state.value}
                   onChange={(e) => handleChange(e.target.value)}
                   onBlur={handleBlur}
