@@ -17,6 +17,10 @@ enum TimeFrame {
     Custom = "Custom"
 }
 
+const filDates = (timeframe, data: Array<{label: string, value: number}>)=>{
+
+}
+
 DashboardRouter.post("/stats", async (req: IRequest, res: IResponse) => {
     const restaurantId: string = req.auth?.restaurantId as string;
     const timeFrame: TimeFrame = req.body.timeFrame || TimeFrame.Day;
@@ -106,17 +110,16 @@ DashboardRouter.post("/stats", async (req: IRequest, res: IResponse) => {
     });
 
     let groupFunc = Sequelize.fn('DATE_FORMAT', Sequelize.col('createdAt'), "%Y-%m-%d %H:00:00");
-
     if (timeFrame == TimeFrame.Day) {
-        groupFunc = Sequelize.fn('DATE_FORMAT', Sequelize.col('createdAt'), "%Y-%m-%d %H:00:00");
+        groupFunc = Sequelize.fn('DATE_FORMAT', Sequelize.col('createdAt'), "%Y-%m-%d %H:%i:00");
     } else if (timeFrame == TimeFrame.Week) {
-        groupFunc = Sequelize.fn('DATE_FORMAT', Sequelize.col('createdAt'), "%Y-%m-%d 00:00:01");
+        groupFunc = Sequelize.fn('DATE_FORMAT', Sequelize.col('createdAt'), "%Y-%m-%d 00:00:00");
     } else if (timeFrame == TimeFrame.Month) {
-        groupFunc = Sequelize.fn('DATE_FORMAT', Sequelize.col('createdAt'), "%Y-%m-%d 00:00:01");
+        groupFunc = Sequelize.fn('DATE_FORMAT', Sequelize.col('createdAt'), "%Y-%m-%d 00:00:00");
     } else if (timeFrame == TimeFrame.Year) {
-        groupFunc = Sequelize.fn('DATE_FORMAT', Sequelize.col('createdAt'), "%Y-01-01 00:00:01");
+        groupFunc = Sequelize.fn('DATE_FORMAT', Sequelize.col('createdAt'), "%Y-01-01 00:00:00");
     } else {
-        groupFunc = Sequelize.fn('DATE_FORMAT', Sequelize.col('createdAt'), "%Y-%m-%d 00:00:01");
+        groupFunc = Sequelize.fn('DATE_FORMAT', Sequelize.col('createdAt'), "%Y-%m-%d 00:00:00");
     }
 
     result.salesChart = (await Invoice.findAll({
