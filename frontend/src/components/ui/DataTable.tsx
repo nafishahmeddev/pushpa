@@ -229,7 +229,7 @@ export default function DataTable<IRecord>({
         )}
 
         <div
-          className={`${records.length ? "" : "min-h-60"} ${loading ? "visible" : "collapse"}`}
+          className={`${(records.length || !loading) ? "" : "min-h-60"} ${loading ? "visible" : "collapse"}`}
         >
           <div
             className={`p-5 flex items-center justify-center absolute h-[calc(100%_-_35px)] w-full left-0 top-[35px] transition-all backdrop-blur-sm bg-white/30 ${loading ? "opacity-100" : "opacity-0"}`}
