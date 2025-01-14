@@ -13,6 +13,7 @@ import toast from "react-hot-toast";
 import { AuthStateLoggedIn, useAuthStore } from "@app/store/auth";
 import { UserDesignation } from "@app/types/user";
 import dayjs from "dayjs";
+import OrderBackEntryFormDialog from "@app/components/form-dialogs/OrderBackEntryFormDialog";
 
 export const Route = createLazyFileRoute("/orders/")({
   component: RouteComponent,
@@ -208,6 +209,10 @@ function RouteComponent() {
     },
   });
 
+  const [orderFormDialog, setFormDialog] = useState<{ open: boolean }>({
+    open: false,
+  });
+
   const handleOnDetails = (invoiceId: string, print: boolean = false) => {
     const w = window.open(
       import.meta.env.VITE_BASE_URL +
@@ -344,8 +349,25 @@ function RouteComponent() {
             <Button className="bg-gray-300" type="reset">
               Reset
             </Button>
+
+            <Button
+              className="bg-gray-300"
+              type="button"
+              onClick={() => setFormDialog({ open: true })}
+            >
+              Back Entry
+            </Button>
           </form>
         </div>
+
+        <OrderBackEntryFormDialog
+          {...orderFormDialog}
+          onSave={() => {
+            form.handleSubmit();
+            setFormDialog({ open: false });
+          }}
+          onReset={() => setFormDialog({ open: false })}
+        />
 
         <DataTable
           serial

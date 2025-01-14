@@ -8,6 +8,7 @@ import { UserDesignation } from "@app/db/models/user/user";
 import { IRequest, IResponse } from "@app/interfaces/vendors/express";
 import { ICartItem } from "@app/types/cart";
 import consola from "consola";
+import dayjs from "dayjs";
 import { Router } from "express";
 import { InferAttributes, Op, WhereOptions } from "sequelize";
 
@@ -172,6 +173,117 @@ OrdersRouter.post("/", async (req: IRequest, res: IResponse) => {
             message: "Something went wrong"
         });
 
+    }
+});
+
+OrdersRouter.post("/back-entry", async (req: IRequest, res: IResponse) => {
+    const timezone = req.headers.timezone || "UTC";
+    const type: OrderType = req.body.type;
+    const tableId: string | undefined = req.body.tableId;
+    const discount: number = req.body.discount;
+    const createdAt: Date = dayjs.tz(req.body.createdAt, timezone).toDate();
+    const items: Array<ICartItem> = req.body.items;
+
+    const transaction = await sequelize.transaction();
+    try {
+        let order = await Order.create({
+            type,
+            tableId,
+            discount,
+            createdAt,
+            restaurantId: req.auth?.restaurantId
+        }, {
+            transaction
+        },);
+
+        const kot = await Kot.create({
+            orderId: order.id,
+            restaurantId: order.restaurantId,
+            createdAt
+        }, {
+            transaction
+        });
+        await OrderItem.bulkCreate(items.map(item => ({
+            ...item,
+            orderId: order.id,
+            kotId: kot.id,
+            createdAt,
+            status: OrderItemStatus.Delivered
+        })), {
+            transaction,
+        });
+
+        const invoice = await Invoice.create({
+            restaurantId: order.restaurantId,
+            subTotal: 0,
+            discount: 0,
+            amount: 0,
+            tax: 0,
+            createdAt
+        }, {
+            transaction
+        });
+
+        const orderItems = await OrderItem.findAll({
+            where: {
+                orderId: order.id,
+            },
+            include: [{
+                model: Product,
+                as: "product"
+            }],
+            transaction
+        })
+        await Promise.all((orderItems).map(async (item) => {
+            const price = item?.product?.price ?? 0;
+            const tax = item?.product?.tax ?? 0;
+            const basePrice = price / (1 + (tax / 100));
+            const amount = price * item.quantity;
+            const invoiceItem = new InvoiceItem({
+                invoiceId: invoice.id,
+                quantity: item.quantity,
+                name: item.product?.name ?? "",
+                price: price,
+                amount: amount,
+                tax: (basePrice * (tax / 100)) * item.quantity
+            });
+
+            invoice.subTotal += invoiceItem.amount - invoiceItem.tax;
+            invoice.tax += invoiceItem.tax;
+            await invoiceItem.save({ transaction: transaction });
+            return invoiceItem;
+        }));
+        invoice.discount = order.discount;
+        invoice.amount = (invoice.subTotal + invoice.tax) - invoice.discount;
+
+        await invoice.save({ transaction: transaction });
+
+        await order.update({ status: OrderStatus.Completed, invoiceId: invoice.id }, { transaction: transaction });
+
+        const createdInvoice = await Invoice.findOne({
+            where: { id: invoice.id },
+            include: [{
+                model: InvoiceItem,
+                as: "items",
+            }],
+            transaction
+        })
+
+        transaction.commit();
+        res.json({
+            result: {
+                order: order,
+                invoice: createdInvoice,
+                kot: kot
+            },
+            message: "Successful"
+        })
+    } catch (error) {
+        consola.error(error);
+        transaction.rollback();
+        res.status(400).json({
+            message: "Something went wrong..."
+        })
     }
 });
 

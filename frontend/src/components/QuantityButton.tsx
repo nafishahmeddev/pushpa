@@ -55,6 +55,7 @@ export default function QuantityButton({
         <button
           className={`rounded-lg h-5 aspect-square flex items-center justify-center hover:opacity-50 text-white ${quantity == 1 ? "bg-red-500" : "bg-lime-600"}`}
           onClick={handleOnRemove}
+          type="button"
         >
           <Icon
             icon={
@@ -71,6 +72,7 @@ export default function QuantityButton({
         <button
           className="rounded-lg h-5 aspect-square flex items-center justify-center hover:opacity-50 text-white bg-lime-600"
           onClick={handleOnAdd}
+          type="button"
         >
           <Icon icon="ic:baseline-add" />
         </button>

@@ -13,6 +13,12 @@ export default class OrdersApi {
     static pendingList = () => ApiRequest.get("/orders/pending-list").then(res => res.data.result as Array<IOrder>);
     static getOrder = (orderId: string) => ApiRequest.get(`/orders/${orderId}`).then(res => res.data.result as IOrder);
     static createOrder = (data: Partial<IOrder>) => ApiRequest.post(`/orders/`, data).then(res => res.data.result as IOrder);
+    static backEntryOrder = (data: {
+        tableId?: string;
+        type: string;
+        createdAt: string;
+        items: Array<ICartItem>;
+    }) => ApiRequest.post(`/orders/back-entry`, data).then(res => res.data.result as IOrder);
     static updateOrder = (orderId: string, data: Partial<IOrder>) => ApiRequest.put(`/orders/${orderId}`, data).then(res => res.data.result as IOrder);
     static deleteOrder = (orderId: string) => ApiRequest.delete(`/orders/${orderId}`).then(res => res.data.message as string);
     static createKot = (orderId: string) => ApiRequest.post(`/orders/${orderId}/kot-create`).then(res => res.data.result as IKot);
