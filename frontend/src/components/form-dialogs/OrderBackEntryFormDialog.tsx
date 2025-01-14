@@ -16,6 +16,7 @@ import Formatter from "@app/lib/formatter";
 import QuantityButton from "../QuantityButton";
 import ScrollView from "../ui/ScrollView";
 import CartUtil from "@app/lib/cart-util";
+import dayjs from "dayjs";
 
 type ValueType = {
   tableId?: string;
@@ -108,7 +109,7 @@ export default function OrderBackEntryFormDialog({
       >
         <h3 className="text-xl">Create Order</h3>
         <fieldset className="flex flex-col gap-4">
-          <div className="grid grid-cols-4 gap-4 mt-4">
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 mt-4">
             <form.Field
               name="createdAt"
               children={({ state, handleBlur, handleChange, name }) => (
@@ -184,7 +185,6 @@ export default function OrderBackEntryFormDialog({
               name="discount"
               children={({ state, handleBlur, handleChange, name }) => (
                 <Input
-                  required
                   label="Discount"
                   type="number"
                   value={state.value ? state.value :""}
@@ -199,7 +199,7 @@ export default function OrderBackEntryFormDialog({
             />
           </div>
 
-          <div className="h-[500px] grid grid-cols-[auto_1fr] gap-4">
+          <div className="h-[500px] grid grid-rows-2 md:grid-rows-1 md:grid-cols-[auto_1fr] gap-4">
             <div className="h-full overflow-auto bg-gray-50 rounded-xl border">
               <MenuList
                 onItemPress={(item) =>
@@ -299,7 +299,7 @@ export default function OrderBackEntryFormDialog({
           </div>
 
           <form.Subscribe
-            children={({ isSubmitting, canSubmit }) => (
+            children={({ isSubmitting, canSubmit, values }) => (
               <div className="flex gap-2 justify-end">
                 <Button
                   className=" bg-gray-300"
@@ -311,7 +311,7 @@ export default function OrderBackEntryFormDialog({
                 <Button
                   className=" bg-lime-600 text-white"
                   type="submit"
-                  disabled={!canSubmit}
+                  disabled={!canSubmit || cartUtil.total < values.discount || dayjs().isBefore(dayjs(values.createdAt))}
                   loading={isSubmitting}
                 >
                   Create
