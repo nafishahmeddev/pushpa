@@ -22,7 +22,7 @@ const format = (timeFrame: TimeFrame, date: string) => {
   } else if (TimeFrame.Month == timeFrame) {
     return dayjs(date).format("Do");
   } else if (TimeFrame.Year == timeFrame) {
-    return dayjs(date).format("MM");
+    return dayjs(date).format("MMM");
   } else {
     return dayjs(date).format("DD MMM YY");
   }
