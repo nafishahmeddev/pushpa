@@ -1,7 +1,7 @@
-import Dialog from "@app/components/ui/Dialog";
-import Button from "@app/components/ui/form/button";
-import Input from "@app/components/ui/form/input";
-import Select from "@app/components/ui/form/select";
+import Dialog from "@app/components/baseui/Dialog";
+import Button from "@app/components/baseui/Button";
+import Input from "@app/components/baseui/Input";
+import Select from "@app/components/baseui/Select";
 import LocationsApi from "@app/services/locations";
 import TablesApi from "@app/services/tables";
 import { ILocation } from "@app/types/location";

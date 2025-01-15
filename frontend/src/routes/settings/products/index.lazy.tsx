@@ -3,13 +3,13 @@ import { useEffect, useMemo, useState } from "react";
 import { Icon } from "@iconify/react";
 import ProductsApi from "@app/services/products";
 import ProductFormDialog from "../../../components/form-dialogs/ProductFormDialog";
-import Input from "@app/components/ui/form/input";
+import Input from "@app/components/baseui/Input";
 import { createLazyFileRoute } from "@tanstack/react-router";
 import { useForm } from "@tanstack/react-form";
-import Button from "@app/components/ui/form/button";
+import Button from "@app/components/baseui/Button";
 import Image from "rc-image";
 import { uploadUrl } from "@app/lib/upload";
-import DataTable, { Column } from "@app/components/ui/DataTable";
+import DataTable, { Column } from "@app/components/baseui/DataTable";
 import { PaginationResponse } from "@app/types/pagination";
 
 type FormType = {

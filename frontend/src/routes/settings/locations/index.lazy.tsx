@@ -4,15 +4,15 @@ import Table, {
   TableCell,
   TableHead,
   TableRow,
-} from "@app/components/ui/table/Table";
-import Pagination from "@app/components/ui/Pagination";
-import Input from "@app/components/ui/form/input";
+} from "@app/components/baseui/Table";
+import Pagination from "@app/components/baseui/Pagination";
+import Input from "@app/components/baseui/Input";
 import { ILocation } from "@app/types/location";
 import LocationsApi from "@app/services/locations";
 import LocationFormDialog from "../../../components/form-dialogs/LocationFormDialog";
 import { createLazyFileRoute } from "@tanstack/react-router";
 import { useForm } from "@tanstack/react-form";
-import Button from "@app/components/ui/form/button";
+import Button from "@app/components/baseui/Button";
 
 type FormType = {
   filter: {

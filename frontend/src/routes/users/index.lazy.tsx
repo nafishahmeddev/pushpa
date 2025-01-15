@@ -5,10 +5,10 @@ import { IUser } from "@app/types/user";
 import UsersApi from "@app/services/users";
 import { createLazyFileRoute } from "@tanstack/react-router";
 import { useForm } from "@tanstack/react-form";
-import Button from "@app/components/ui/form/button";
-import DataTable, { Column } from "@app/components/ui/DataTable";
+import Button from "@app/components/baseui/Button";
+import DataTable, { Column } from "@app/components/baseui/DataTable";
 import { PaginationResponse } from "@app/types/pagination";
-import Input from "@app/components/ui/form/input";
+import Input from "@app/components/baseui/Input";
 
 export const Route = createLazyFileRoute("/users/")({
   component: RouteComponent,

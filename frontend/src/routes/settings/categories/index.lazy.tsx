@@ -8,9 +8,9 @@ import Table, {
   TableCell,
   TableHead,
   TableRow,
-} from "@app/components/ui/table/Table";
+} from "@app/components/baseui/Table";
 import { createLazyFileRoute } from "@tanstack/react-router";
-import Button from "@app/components/ui/form/button";
+import Button from "@app/components/baseui/Button";
 export const Route = createLazyFileRoute("/settings/categories/")({
   component: RouteComponent,
 });

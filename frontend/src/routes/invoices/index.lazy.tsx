@@ -1,11 +1,11 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { Icon } from "@iconify/react";
 import InvoiceApi from "@app/services/invoices";
-import Input from "@app/components/ui/form/input";
+import Input from "@app/components/baseui/Input";
 import { createLazyFileRoute } from "@tanstack/react-router";
 import { useForm } from "@tanstack/react-form";
-import Button from "@app/components/ui/form/button";
-import DataTable, { Column, SortType } from "@app/components/ui/DataTable";
+import Button from "@app/components/baseui/Button";
+import DataTable, { Column, SortType } from "@app/components/baseui/DataTable";
 import { PaginationResponse } from "@app/types/pagination";
 import { IInvoice, InvoiceStatus } from "@app/types/invoice";
 import dayjs from "dayjs";

@@ -1,6 +1,6 @@
-import Dialog from "@app/components/ui/Dialog";
-import Button from "@app/components/ui/form/button";
-import Input from "@app/components/ui/form/input";
+import Dialog from "@app/components/baseui/Dialog";
+import Button from "@app/components/baseui/Button";
+import Input from "@app/components/baseui/Input";
 import CategoriesApi from "@app/services/categories";
 import { ICategory } from "@app/types/product";
 import { useForm } from "@tanstack/react-form";

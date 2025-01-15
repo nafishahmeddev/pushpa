@@ -1,6 +1,6 @@
-import Dialog from "@app/components/ui/Dialog";
-import Button from "@app/components/ui/form/button";
-import Select from "@app/components/ui/form/select";
+import Dialog from "@app/components/baseui/Dialog";
+import Button from "@app/components/baseui/Button";
+import Select from "@app/components/baseui/Select";
 import OrdersApi from "@app/services/orders";
 import TablesApi from "@app/services/tables";
 import { IOrder } from "@app/types/orders";

@@ -1,6 +1,6 @@
-import Dialog from "@app/components/ui/Dialog";
-import Button from "@app/components/ui/form/button";
-import Select from "@app/components/ui/form/select";
+import Dialog from "@app/components/baseui/Dialog";
+import Button from "@app/components/baseui/Button";
+import Select from "@app/components/baseui/Select";
 import OrdersApi from "@app/services/orders";
 import TablesApi from "@app/services/tables";
 import { ICartItem } from "@app/types/cart";
@@ -9,12 +9,12 @@ import { ITable } from "@app/types/table";
 import { useForm } from "@tanstack/react-form";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
-import Input from "../ui/form/input";
+import Input from "../baseui/Input";
 import MenuList from "../menu/MenuList";
 import { cloneDeep } from "lodash";
 import Formatter from "@app/lib/formatter";
 import QuantityButton from "../QuantityButton";
-import ScrollView from "../ui/ScrollView";
+import ScrollView from "../baseui/ScrollView";
 import CartUtil from "@app/lib/cart-util";
 import dayjs from "dayjs";
 

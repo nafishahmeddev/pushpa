@@ -1,4 +1,4 @@
-import Spinner from "./ui/Spinner";
+import Spinner from "./baseui/Spinner";
 
 export default function PendingComponent() {
   return (

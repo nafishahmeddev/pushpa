@@ -5,11 +5,11 @@ import Table, {
   TableCell,
   TableHead,
   TableRow,
-} from "./table/Table";
+} from "./Table";
 import Pagination from "./Pagination";
 import Formatter from "@app/lib/formatter";
 import Spinner from "./Spinner";
-import Select from "./form/select";
+import Select from "./Select";
 
 type ValueTypes = never;
 export type ColumnType =

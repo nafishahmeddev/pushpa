@@ -6,13 +6,13 @@ import Table, {
   TableCell,
   TableHead,
   TableRow,
-} from "@app/components/ui/table/Table";
-import Pagination from "@app/components/ui/Pagination";
-import Input from "@app/components/ui/form/input";
+} from "@app/components/baseui/Table";
+import Pagination from "@app/components/baseui/Pagination";
+import Input from "@app/components/baseui/Input";
 import TableFormDialog from "../../../components/form-dialogs/TableFormDialog";
 import { createLazyFileRoute } from "@tanstack/react-router";
 import { useForm } from "@tanstack/react-form";
-import Button from "@app/components/ui/form/button";
+import Button from "@app/components/baseui/Button";
 
 type FormType = {
   filter: {

@@ -1,8 +1,8 @@
-import Dialog from "@app/components/ui/Dialog";
-import Button from "@app/components/ui/form/button";
-import Input from "@app/components/ui/form/input";
-import Select from "@app/components/ui/form/select";
-import Textarea from "@app/components/ui/form/textarea";
+import Dialog from "@app/components/baseui/Dialog";
+import Button from "@app/components/baseui/Button";
+import Input from "@app/components/baseui/Input";
+import Select from "@app/components/baseui/Select";
+import Textarea from "@app/components/baseui/Textarea";
 import CategoriesApi from "@app/services/categories";
 import ProductsApi from "@app/services/products";
 import { ICategory, IProduct } from "@app/types/product";

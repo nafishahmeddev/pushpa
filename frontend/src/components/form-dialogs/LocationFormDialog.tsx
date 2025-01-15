@@ -1,6 +1,6 @@
-import Dialog from "@app/components/ui/Dialog";
-import Button from "@app/components/ui/form/button";
-import Input from "@app/components/ui/form/input";
+import Dialog from "@app/components/baseui/Dialog";
+import Button from "@app/components/baseui/Button";
+import Input from "@app/components/baseui/Input";
 import LocationsApi from "@app/services/locations";
 import { ILocation } from "@app/types/location";
 import { useForm } from "@tanstack/react-form";

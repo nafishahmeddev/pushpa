@@ -1,7 +1,7 @@
-import Button from "@app/components/ui/form/button";
-import Input from "@app/components/ui/form/input";
-import Select from "@app/components/ui/form/select";
-import Textarea from "@app/components/ui/form/textarea";
+import Button from "@app/components/baseui/Button";
+import Input from "@app/components/baseui/Input";
+import Select from "@app/components/baseui/Select";
+import Textarea from "@app/components/baseui/Textarea";
 import AccountApi from "@app/services/account";
 import { AuthStateLoggedIn, useAuthStore } from "@app/store/auth";
 import { IRestaurant } from "@app/types/restaurant";

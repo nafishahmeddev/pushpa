@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { ICategory, IProduct } from "../../types/product";
-import ScrollView from "../ui/ScrollView";
+import ScrollView from "../baseui/ScrollView";
 import { Icon } from "@iconify/react";
-import Spinner from "../ui/Spinner";
+import Spinner from "../baseui/Spinner";
 import Formatter from "@app/lib/formatter";
 import { useQuery } from "@tanstack/react-query";
 import MenuApi from "@app/services/menu";

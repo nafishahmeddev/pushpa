@@ -1,5 +1,5 @@
-import Button from "@app/components/ui/form/button";
-import Input from "@app/components/ui/form/input";
+import Button from "@app/components/baseui/Button";
+import Input from "@app/components/baseui/Input";
 import AuthApi from "@app/services/auth";
 import { AuthState, useAuthStore } from "@app/store/auth";
 import { createLazyFileRoute, useNavigate } from "@tanstack/react-router";

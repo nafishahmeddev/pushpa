@@ -7,7 +7,7 @@ export default function NavButton() {
       className="flex md:hidden h-full items-center ps-4 text-center text-2xl hover:opacity-60"
       onClick={MainNavStore.open}
     >
-      <Icon icon="basil:menu-outline" />
+      <Icon icon="simple-line-icons:menu" height={20} width={20} />
     </button>
   );
 }

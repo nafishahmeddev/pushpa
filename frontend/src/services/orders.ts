@@ -2,7 +2,7 @@ import { ApiRequest } from "@app/lib/axios"
 import { IKot, IOrder } from "@app/types/orders";
 import { IInvoice } from "@app/types/invoice";
 import { ICartItem } from "@app/types/cart";
-import { SortType } from "@app/components/ui/DataTable";
+import { SortType } from "@app/components/baseui/DataTable";
 export default class OrdersApi {
     static paginate = ({ page, limit }: { page: number, limit: number }, filter: { [key: string]: unknown }, order: [key: keyof IOrder, order: SortType]) => ApiRequest.post(`/orders/paginate?page=${page}&limit=${limit}`, { filter, order },).then(res => res.data.result as {
         pages: number,

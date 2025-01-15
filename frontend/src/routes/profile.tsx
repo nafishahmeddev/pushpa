@@ -1,5 +1,5 @@
-import Button from "@app/components/ui/form/button";
-import Input from "@app/components/ui/form/input";
+import Button from "@app/components/baseui/Button";
+import Input from "@app/components/baseui/Input";
 import AccountApi from "@app/services/account";
 import { AuthStateLoggedIn, useAuthStore } from "@app/store/auth";
 import { useForm } from "@tanstack/react-form";

@@ -1,7 +1,7 @@
-import Dialog from "@app/components/ui/Dialog";
-import Button from "@app/components/ui/form/button";
-import Input from "@app/components/ui/form/input";
-import Select from "@app/components/ui/form/select";
+import Dialog from "@app/components/baseui/Dialog";
+import Button from "@app/components/baseui/Button";
+import Input from "@app/components/baseui/Input";
+import Select from "@app/components/baseui/Select";
 import UsersApi from "@app/services/users";
 import { IUser, UserDesignation } from "@app/types/user";
 import { useForm } from "@tanstack/react-form";

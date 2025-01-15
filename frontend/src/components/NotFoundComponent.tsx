@@ -1,4 +1,4 @@
-import Button from "@app/components/ui/form/button";
+import Button from "@app/components/baseui/Button";
 import { useNavigate } from "@tanstack/react-router";
 export default function NotFoundComponent() {
   const navigate = useNavigate();

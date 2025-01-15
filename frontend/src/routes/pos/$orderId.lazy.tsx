@@ -4,10 +4,10 @@ import React, { useState } from "react";
 import OrdersApi from "@app/services/orders";
 import CartUtil from "@app/lib/cart-util";
 import MenuList from "@app/components/menu/MenuList";
-import ScrollView from "@app/components/ui/ScrollView";
+import ScrollView from "@app/components/baseui/ScrollView";
 import { beep } from "@app/lib/notify";
 import { Icon } from "@iconify/react";
-import Button from "@app/components/ui/form/button";
+import Button from "@app/components/baseui/Button";
 import toast from "react-hot-toast";
 import { ICartItem } from "@app/types/cart";
 import {

@@ -1,6 +1,6 @@
-import Dialog from "@app/components/ui/Dialog";
-import Button from "@app/components/ui/form/button";
-import Input from "@app/components/ui/form/input";
+import Dialog from "@app/components/baseui/Dialog";
+import Button from "@app/components/baseui/Button";
+import Input from "@app/components/baseui/Input";
 import CartUtil from "@app/lib/cart-util";
 import OrdersApi from "@app/services/orders";
 import { IOrder } from "@app/types/orders";
