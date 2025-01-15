@@ -14,6 +14,7 @@ import { AuthStateLoggedIn, useAuthStore } from "@app/store/auth";
 import { UserDesignation } from "@app/types/user";
 import dayjs from "dayjs";
 import OrderBackEntryFormDialog from "@app/components/form-dialogs/OrderBackEntryFormDialog";
+import { AxiosError } from "axios";
 
 export const Route = createLazyFileRoute("/orders/")({
   component: RouteComponent,
@@ -235,7 +236,7 @@ function RouteComponent() {
     toast.promise(promise, {
       loading: "Cancelling order.",
       success: "Successfully cancelled order.",
-      error: (err) => err.message,
+      error: (err: AxiosError) => err.message,
     });
   };
 
@@ -245,7 +246,7 @@ function RouteComponent() {
     toast.promise(promise, {
       loading: "Deleting order.",
       success: "Successfully deleted order.",
-      error: (err) => err.message,
+      error: (err: AxiosError) => err.message,
     });
   };
 
@@ -266,7 +267,7 @@ function RouteComponent() {
               e.stopPropagation();
               form.handleSubmit();
             }}
-            onReset={form.reset}
+            onReset={()=>form.reset()}
             className="h-9 flex gap-3"
           >
             <form.Field

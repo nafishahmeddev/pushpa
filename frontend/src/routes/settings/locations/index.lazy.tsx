@@ -88,7 +88,7 @@ export default function RouteComponent() {
             e.stopPropagation();
             form.handleSubmit();
           }}
-          onReset={form.reset}
+          onReset={()=>form.reset()}
           className="h-9"
         >
           <fieldset

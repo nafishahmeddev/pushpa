@@ -23,6 +23,7 @@ import QuantityButton from "@app/components/QuantityButton";
 import { useQuery } from "@tanstack/react-query";
 import PendingComponent from "@app/components/PendingComponent";
 import DiscountFormDialog from "@app/components/form-dialogs/DiscountFormDialog";
+import { AxiosError } from "axios";
 export const Route = createLazyFileRoute("/pos/$orderId")({
   component: RouteComponent,
 });
@@ -115,7 +116,7 @@ export default function RouteComponent() {
     toast.promise(promise, {
       loading: "please wait..",
       success: "Order cancelled",
-      error: (err) => err.message,
+      error: (err: AxiosError) => err.message,
     });
     return promise;
   };
@@ -127,7 +128,7 @@ export default function RouteComponent() {
     toast.promise(promise, {
       loading: "please wait..",
       success: "Order cancelled",
-      error: (err) => err.message,
+      error: (err: AxiosError) => err.message,
     });
     return promise;
   };

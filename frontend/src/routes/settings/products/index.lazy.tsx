@@ -165,7 +165,7 @@ function RouteComponent() {
             e.stopPropagation();
             form.handleSubmit();
           }}
-          onReset={form.reset}
+          onReset={()=>form.reset()}
           className="h-9 flex gap-3"
         >
           <form.Field
