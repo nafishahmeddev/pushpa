@@ -30,7 +30,7 @@ function RouteComponent() {
     }
   }, [auth]);
   return (
-    <div className="flex bg-gray-50 h-dvh w-dvw">
+    <div className="flex bg-gray-50 h-full w-full">
       <div className="flex-1 hidden lg:flex items-center justify-center p-9 h-full">
         <img src="/login-scene.webp" className="max-w-full" />
       </div>
