@@ -71,8 +71,6 @@ const enumerate = (
   let currentDate = dayjs(start);
   const ranges: typeof data = [];
   while (currentDate.isBefore(end) || currentDate.isSame(end)) {
-    console.log({ timeFrame });
-
     const label: string = currentDate.format(format) as string;
     ranges.push({
       label: currentDate.format(format),
