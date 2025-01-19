@@ -3,14 +3,13 @@ import { ICategory } from "@app/types/product";
 import { useEffect, useState } from "react";
 import CategoryFormDialog from "../../../components/form-dialogs/CategoryFormDialog";
 import { Icon } from "@iconify/react";
-import Table, {
-  TableBody,
-  TableCell,
-  TableHead,
-  TableRow,
-} from "@app/components/baseui/Table";
 import { createLazyFileRoute } from "@tanstack/react-router";
 import Button from "@app/components/baseui/Button";
+import PopMenu, {
+  PopMenuContent,
+  PopMenuItem,
+  PopMenuTrigger,
+} from "@app/components/baseui/PopMenu";
 export const Route = createLazyFileRoute("/settings/categories/")({
   component: RouteComponent,
 });
@@ -43,52 +42,54 @@ function RouteComponent() {
         }}
       />
 
-      <div className="py-4 flex gap-4 items-center">
+      <div className="py-4 flex flex-col gap-1">
         <h2 className="text-2xl">Categories</h2>
+        <p className="text-gray-500">Here you can manage all the categories.</p>
+      </div>
+      <div className="gap-4 grid  grid-cols-1 md:grid-cols-3 lg:grid-cols-5">
+        {categories.map((category, index: number) => (
+          <div
+            key={`category-${category.id}-${index}`}
+            className="flex bg-white border p-3 rounded-2xl gap-3 items-center"
+          >
+            <p className="flex-1">{category.name}</p>
+            <div className="flex flex-nowrap gap-2 text-gray-600 ">
+              <PopMenu>
+                <PopMenuTrigger>
+                  <button className="hover:opacity-70 border p-1 rounded-full">
+                    <Icon icon="mingcute:more-2-line" height={20} width={20} />
+                  </button>
+                </PopMenuTrigger>
+                <PopMenuContent>
+                  <PopMenuItem
+                    onClick={() =>
+                      setCategoryForm({ category: category, open: true })
+                    }
+                  >
+                    <Icon icon="mynaui:edit" height={20} width={20} />
+                    <span>Edit Category</span>
+                  </PopMenuItem>
+
+                  <PopMenuItem
+                    onClick={() => handleOnDelete(category)}
+                    className="text-red-600"
+                  >
+                    <Icon icon="proicons:delete" height={20} width={20} />
+                    <span>Delete Category</span>
+                  </PopMenuItem>
+                </PopMenuContent>
+              </PopMenu>
+            </div>
+          </div>
+        ))}
+      </div>
+      <div>
         <Button
-          className="bg-gray-200"
+          className="bg-lime-600 text-white"
           onClick={() => setCategoryForm({ open: true, category: undefined })}
         >
-          + New
+          + Create Category
         </Button>
-      </div>
-      <div className="bg-white border rounded-xl  overflow-x-auto overflow-hidden">
-        <Table bordered>
-          <TableHead>
-            <TableRow className="sticky top-0 left-0 bg-gray-100">
-              <TableCell>#</TableCell>
-              <TableCell>Name</TableCell>
-              <TableCell></TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {categories.map((category, index: number) => (
-              <TableRow key={`category-${category.id}`}>
-                <TableCell className="w-0">{index + 1}</TableCell>
-                <TableCell>{category.name}</TableCell>
-                <TableCell className="w-0">
-                  <div className="flex flex-nowrap gap-2 text-gray-600">
-                    <button
-                      onClick={() =>
-                        setCategoryForm({ category: category, open: true })
-                      }
-                      className="hover:opacity-70"
-                    >
-                      <Icon icon="mynaui:edit" height={20} width={20} />
-                    </button>
-
-                    <button
-                      onClick={() => handleOnDelete(category)}
-                      className="hover:opacity-70 text-red-700"
-                    >
-                      <Icon icon="proicons:delete" height={20} width={20} />
-                    </button>
-                  </div>
-                </TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
       </div>
     </div>
   );

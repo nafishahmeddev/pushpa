@@ -1,4 +1,5 @@
 /** @type {import('tailwindcss').Config} */
+import defaultTheme from 'tailwindcss/defaultTheme';
 export default {
   darkMode: ["class"],
   content: [
@@ -8,9 +9,9 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        'sans': ['Fira Sans', 'sans-serif'],
-        // 'serif': ['serif'],
-        'mono': ['Fira Mono', 'mono'],
+        'sans': ['Funnel Sans', ...defaultTheme.fontFamily.sans],
+        'serif': [...defaultTheme.fontFamily.serif],
+        'mono': [...defaultTheme.fontFamily.mono],
       }
     }
   }
