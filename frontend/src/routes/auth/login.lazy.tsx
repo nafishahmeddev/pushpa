@@ -85,7 +85,7 @@ function RouteComponent() {
               children={([canSubmit, isSubmitting]) => (
                 <Button
                   type="submit"
-                  className="bg-lime-600 text-white mt-4"
+                  className="bg-indigo-600 text-white mt-4"
                   disabled={!canSubmit || isSubmitting}
                   loading={isSubmitting}
                 >

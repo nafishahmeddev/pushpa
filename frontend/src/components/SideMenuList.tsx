@@ -14,7 +14,10 @@ export function SideMenuList({ items }: SideMenuListProps) {
       <ul className="py-2 flex flex-col gap-1">
         {items.map((item, index) => (
           <li key={`item-${index}`} className="px-2">
-            <Link to={item.route} className={`flex py-2 px-3 items-center justify-start gap-2 cursor-pointer transition-all hover:bg-lime-600/15 text-lime-950 rounded-full [&.active]:text-lime-700 [&.active]:bg-lime-600/10`}>
+            <Link
+              to={item.route}
+              className={`flex py-2 px-3 items-center justify-start gap-2 cursor-pointer transition-all hover:bg-indigo-600/15 text-indigo-950 rounded-full [&.active]:text-indigo-700 [&.active]:bg-indigo-600/10`}
+            >
               <Icon icon={item.icon} height={20} width={20} />
               <span>{item.label}</span>
             </Link>

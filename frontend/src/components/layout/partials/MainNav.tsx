@@ -21,7 +21,7 @@ export function MainNav({ items }: MainNavProps) {
             <Link
               to={item.route}
               className={`h-full flex py-2 px-2 items-center justify-start gap-2 cursor-pointer transition-all  border-y-2 border-transparent 
-                  [&.active]:text-lime-700 md:[&.active]:border-b-lime-700 text-lime-950
+                  [&.active]:text-indigo-700 md:[&.active]:border-b-indigo-700 text-gray-800
                 }`}
             >
               <Icon icon={item.icon} height={20} width={20} />

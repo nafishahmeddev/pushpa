@@ -69,7 +69,7 @@ export function RootComponent() {
                 to={"/pos/" + order.id}
                 className={`rounded-xl py-2 flex  items-center justify-start flex-nowrap text-nowrap px-3 gap-2  hover:opacity-50  border transition-all cursor-pointer
               text-sm overflow-hidden
-                [&.active]:bg-lime-600/10 [&.active]:border-lime-900/10 text-lime-800  bg-white`}
+                [&.active]:bg-indigo-600/10 [&.active]:border-indigo-900/10 text-indigo-800  bg-white`}
               >
                 {order.type == OrderType.Takeaway ? (
                   <>

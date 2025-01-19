@@ -262,7 +262,7 @@ export default function RouteComponent() {
               {getKots().map((kot: IKot) => (
                 <React.Fragment key={`item-${kot.id}`}>
                   <tr
-                    className={`border-b border-dashed bg-lime-600 text-white`}
+                    className={`border-b border-dashed bg-indigo-600 text-white`}
                   >
                     <td
                       className="px-2 py-1 text-start font-medium"
@@ -369,7 +369,7 @@ export default function RouteComponent() {
                 <td className="px-2 py-2 text-end font-mono font-bold text-nowrap">
                   {Formatter.money(order.discount)}
                   <button
-                    className="align-middle ml-2 text-lime-700 hover:opacity-50"
+                    className="align-middle ml-2 text-indigo-700 hover:opacity-50"
                     onClick={() =>
                       setFormDiscountDialog({
                         open: true,
@@ -428,7 +428,7 @@ export default function RouteComponent() {
             Send to kitchen
           </Button>
           <Button
-            className="bg-lime-500 border border-transparent text-white disabled:opacity-50 text-sm !px-2.5 h-full"
+            className="bg-indigo-500 border border-transparent text-white disabled:opacity-50 text-sm !px-2.5 h-full"
             onClick={onPlaceOrder}
             disabled={
               [...placedItems, ...items].length == 0 ||

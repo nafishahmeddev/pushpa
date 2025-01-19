@@ -53,7 +53,7 @@ export default function QuantityButton({
         className={`grid grid-cols-[20px_30px_20px] gap-[4px] justify-center items-center ${loading ? "animate-pulse" : ""}`}
       >
         <button
-          className={`rounded-lg h-5 aspect-square flex items-center justify-center hover:opacity-50 text-white ${quantity == 1 ? "bg-red-500" : "bg-lime-600"}`}
+          className={`rounded-full h-5 aspect-square flex items-center justify-center hover:opacity-50 text-white ${quantity == 1 ? "bg-red-500" : "bg-green-600"}`}
           onClick={handleOnRemove}
           type="button"
         >
@@ -70,7 +70,7 @@ export default function QuantityButton({
           onBlur={(e) => handleOnUpdate(Number(e.target.value))}
         />
         <button
-          className="rounded-lg h-5 aspect-square flex items-center justify-center hover:opacity-50 text-white bg-lime-600"
+          className="rounded-full h-5 aspect-square flex items-center justify-center hover:opacity-50 text-white bg-green-600"
           onClick={handleOnAdd}
           type="button"
         >

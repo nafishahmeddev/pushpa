@@ -78,7 +78,7 @@ export default function DiscountFormDialog({
             children={({ state, handleBlur, handleChange, name }) => (
               <Input
                 type="number"
-                label={`Discount(${((state.value/(cart?.total??0))*100).toFixed(2)}%)`}
+                label={`Discount(${((state.value / (cart?.total ?? 0)) * 100).toFixed(2)}%)`}
                 required
                 value={state.value}
                 onChange={(e) => handleChange(Number(e.target.value))}
@@ -92,12 +92,14 @@ export default function DiscountFormDialog({
 
           <div className="flex gap-2 flex-wrap">
             <form.Subscribe
-              selector={({ values }) => (values.discount/(cart?.total??0))*100}
+              selector={({ values }) =>
+                (values.discount / (cart?.total ?? 0)) * 100
+              }
               children={(disc) => (
                 <div className="w-full">
                   <input
                     type="range"
-                    className="w-full accent-lime-600"
+                    className="w-full accent-indigo-600"
                     step={1}
                     min={0}
                     max={100}
@@ -110,7 +112,6 @@ export default function DiscountFormDialog({
                       );
                     }}
                   />
-                  
                 </div>
               )}
             />
@@ -124,7 +125,7 @@ export default function DiscountFormDialog({
                 Cancel
               </Button>
               <Button
-                className=" bg-lime-600 text-white"
+                className=" bg-indigo-600 text-white"
                 type="submit"
                 disabled={!canSubmit}
                 loading={isSubmitting}

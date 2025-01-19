@@ -146,7 +146,7 @@ function RouteComponent() {
               children={({ isSubmitting, canSubmit }) => (
                 <div className="flex justify-end mt-3">
                   <Button
-                    className="bg-lime-600 text-white"
+                    className="bg-indigo-600 text-white"
                     disabled={!canSubmit}
                     loading={isSubmitting}
                   >
@@ -159,8 +159,11 @@ function RouteComponent() {
         </div>
       </div>
 
-      <div className="items-center justify-center p-10 md:flex hidden">
-        <img src="/scene.webp" className="w-full" />
+      <div className="items-center justify-center p-10 md:flex hidden h-full">
+        <img
+          src="/scene.webp"
+          className="max-w-full max-h-[600px] object-contain"
+        />
       </div>
     </form>
   );

@@ -250,7 +250,7 @@ function RouteComponent() {
                 />
               )}
             />
-            <Button className="bg-lime-500 text-white" type="submit">
+            <Button className="bg-indigo-500 text-white" type="submit">
               Search
             </Button>
             <Button className="bg-gray-300" type="reset">

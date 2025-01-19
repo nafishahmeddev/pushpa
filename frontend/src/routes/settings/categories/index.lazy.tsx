@@ -85,7 +85,7 @@ function RouteComponent() {
       </div>
       <div>
         <Button
-          className="bg-lime-600 text-white"
+          className="bg-indigo-600 text-white"
           onClick={() => setCategoryForm({ open: true, category: undefined })}
         >
           + Create Category

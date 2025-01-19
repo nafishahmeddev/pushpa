@@ -23,23 +23,25 @@ export default function BillerDashboard() {
   return (
     <div className="grid grid-rows-[auto_1fr] gap-6 p-4 h-full">
       <div className="bg-white inline-flex w-min rounded-xl border overflow-hidden p-0.5 h-10">
-        {Object.values(TimeFrame).filter(e=>e!=TimeFrame.Custom).map((value) => (
-          <button
-            key={value}
-            value={value}
-            onClick={() =>
-              navigate({
-                to: "/",
-                search: {
-                  duration: value,
-                },
-              })
-            }
-            className={`px-4 py-1.5 rounded-lg text-sm ${timeFrame == value ? "bg-lime-300/40 text-lime-900" : "text-gray-600"}`}
-          >
-            {value}
-          </button>
-        ))}
+        {Object.values(TimeFrame)
+          .filter((e) => e != TimeFrame.Custom)
+          .map((value) => (
+            <button
+              key={value}
+              value={value}
+              onClick={() =>
+                navigate({
+                  to: "/",
+                  search: {
+                    duration: value,
+                  },
+                })
+              }
+              className={`px-4 py-1.5 rounded-lg text-sm ${timeFrame == value ? "bg-indigo-300/40 text-indigo-900" : "text-gray-600"}`}
+            >
+              {value}
+            </button>
+          ))}
       </div>
       {isLoading && (
         <div>

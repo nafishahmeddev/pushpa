@@ -77,7 +77,7 @@ const LoggedOutSection = () => {
     <div className="h-dvh w-dvw flex items-center justify-center">
       <p>
         Session expired please{" "}
-        <Link to="/auth/login" className=" underline text-lime-600">
+        <Link to="/auth/login" className=" underline text-indigo-600">
           click here
         </Link>{" "}
         to login
@@ -108,7 +108,7 @@ export default function MainLayout() {
       <div className="border-b h-full bg-white">
         <div className="flex gap-4 h-full w-full items-center">
           <NavButton />
-          <div className="logo italic flex h-full font-bold text-xl text-lime-800 px-2 md:px-4 py-3 items-center font-mono flex-1">
+          <div className="logo italic flex h-full font-bold text-xl text-indigo-800 px-2 md:px-4 py-3 items-center font-mono flex-1">
             {auth.user.restaurant?.name}
           </div>
           <MainNav items={getMenu(auth.user)} />

@@ -76,7 +76,9 @@ export default function ProductFormDialog({
     };
     try {
       const compressedFile = await imageCompression(file, options);
-      const uploadableFile = new File([compressedFile], file.name, {type: compressedFile.type});
+      const uploadableFile = new File([compressedFile], file.name, {
+        type: compressedFile.type,
+      });
       setSelectedImage(uploadableFile);
     } catch (error) {
       console.log(error);
@@ -260,7 +262,7 @@ export default function ProductFormDialog({
                 Cancel
               </Button>
               <Button
-                className=" bg-lime-600 text-white"
+                className=" bg-indigo-600 text-white"
                 type="submit"
                 disabled={!canSubmit}
                 loading={isSubmitting}

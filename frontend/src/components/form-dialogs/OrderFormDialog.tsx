@@ -137,7 +137,7 @@ export default function OrderFormDialog({
                   Cancel
                 </Button>
                 <Button
-                  className=" bg-lime-600 text-white"
+                  className=" bg-indigo-600 text-white"
                   type="submit"
                   disabled={!canSubmit}
                   loading={isSubmitting}

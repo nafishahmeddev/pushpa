@@ -103,7 +103,7 @@ export default function DataTable<IRecord>({
                 <TableCell className="w-0">
                   <input
                     type="checkbox"
-                    className="accent-lime-500 h-4 w-4 cursor-pointer"
+                    className="accent-indigo-500 h-4 w-4 cursor-pointer"
                     checked={!!selectionState?.length}
                     onChange={
                       selectionStateChange &&
@@ -168,7 +168,7 @@ export default function DataTable<IRecord>({
                   <TableCell className="w-0">
                     <input
                       type="checkbox"
-                      className="accent-lime-500 h-4 w-4 cursor-pointer"
+                      className="accent-indigo-500 h-4 w-4 cursor-pointer"
                       checked={!!selectionState?.includes(getId(record))}
                       onChange={
                         selectionStateChange &&

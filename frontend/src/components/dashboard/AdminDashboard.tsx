@@ -187,7 +187,7 @@ export default function AdminDashboard() {
             >
               Cancel
             </Button>
-            <Button className="bg-lime-600 text-white" type="submit">
+            <Button className="bg-indigo-600 text-white" type="submit">
               Filter Date
             </Button>
           </div>
@@ -200,7 +200,7 @@ export default function AdminDashboard() {
             key={value}
             value={value}
             onClick={() => handleOnChange(value)}
-            className={`px-4 py-1.5 rounded-lg text-sm text-nowrap flex flex-nowrap items-center gap-2 ${timeFrame == value ? "bg-lime-300/40 text-lime-900" : "text-gray-600"}`}
+            className={`px-4 py-1.5 rounded-lg text-sm text-nowrap flex flex-nowrap items-center gap-2 ${timeFrame == value ? "bg-indigo-300/40 text-indigo-900" : "text-gray-600"}`}
           >
             {value == TimeFrame.Custom ? (
               <>
@@ -301,7 +301,10 @@ export default function AdminDashboard() {
               <p className="px-5 font-bold">Sales</p>
               <div className="pb-3 px-6 pt-2 h-52">
                 <SalesChart
-                  data={enumerate(timeFrame, result.salesChart, {start: from, end: to}).map((e) => ({
+                  data={enumerate(timeFrame, result.salesChart, {
+                    start: from,
+                    end: to,
+                  }).map((e) => ({
                     name: format(timeFrame, e.label),
                     value: e.value,
                   }))}
@@ -313,7 +316,10 @@ export default function AdminDashboard() {
               <p className="px-5 font-bold">Orders</p>
               <div className="pb-3 px-6 pt-2  h-52">
                 <SalesChart
-                  data={enumerate(timeFrame, result.orderChart, {start: from, end: to}).map((e) => ({
+                  data={enumerate(timeFrame, result.orderChart, {
+                    start: from,
+                    end: to,
+                  }).map((e) => ({
                     name: format(timeFrame, e.label),
                     value: e.value,
                   }))}

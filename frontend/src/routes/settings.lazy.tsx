@@ -58,7 +58,6 @@ export default function RouteComponent() {
       block: "center",
       inline: "center",
     });
-    
   }, [pathname]);
   return (
     <div className="h-full grid grid-cols-[1fr] grid-rows-[auto_1fr] md:grid-cols-[auto_1fr] md:grid-rows-[1fr]">
@@ -79,7 +78,7 @@ export default function RouteComponent() {
               >
                 <Link
                   to={item.route}
-                  className={`flex py-2 px-3 items-center justify-start gap-2 cursor-pointer hover:opacity-60 text-lime-950 md:rounded-full border-y-2 border-y-transparent [&.active]:border-b-lime-600  md:[&.active]:border-b-transparent  [&.active]:text-lime-700  md:[&.active]:bg-lime-600/10`}
+                  className={`flex py-2 px-3 items-center justify-start gap-2 cursor-pointer hover:opacity-60 text-indigo-950 md:rounded-full border-y-2 border-y-transparent [&.active]:border-b-indigo-600  md:[&.active]:border-b-transparent  [&.active]:text-indigo-700  md:[&.active]:bg-indigo-600/10`}
                 >
                   <Icon icon={item.icon} height={20} width={20} />
                   <span>{item.label}</span>

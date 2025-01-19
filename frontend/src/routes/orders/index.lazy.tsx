@@ -168,7 +168,7 @@ function RouteComponent() {
           <>
             {kots?.map((e) => (
               <button
-                className="inline-flex mx-0.5 bg-lime-600 rounded-xl px-1 p-0.5 items-center justify-center text-white text-xs"
+                className="inline-flex mx-0.5 bg-indigo-600 rounded-xl px-1 p-0.5 items-center justify-center text-white text-xs"
                 key={e.id}
               >
                 {e.tokenNo}
@@ -368,7 +368,7 @@ function RouteComponent() {
               )}
             />
 
-            <Button className="bg-lime-500 text-white" type="submit">
+            <Button className="bg-indigo-500 text-white" type="submit">
               Search
             </Button>
             <Button className="bg-gray-300" type="reset">

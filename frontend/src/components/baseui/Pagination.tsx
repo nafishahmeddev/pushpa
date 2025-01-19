@@ -55,7 +55,7 @@ export default function Pagination({ page, pages, onChange }: PaginationProps) {
               <button
                 key={`pagination-${seq}`}
                 className={` px-2 aspect-square  h-full  flex items-center justify-center rounded-xl border 
-                      ${seq == page ? "bg-lime-600/10 text-lime-800 " : "bg-white"}`}
+                      ${seq == page ? "bg-indigo-600/10 text-indigo-800 " : "bg-white"}`}
                 onClick={() =>
                   page != seq && onChange && onChange({ page: seq as number })
                 }
