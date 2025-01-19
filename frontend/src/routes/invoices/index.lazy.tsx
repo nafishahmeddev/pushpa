@@ -83,29 +83,32 @@ function RouteComponent() {
       },
       {
         key: "createdAt",
-        label: "Dated",
+        label: "Date",
         sortable: true,
         nowrap: true,
-        type: "datetime",
+        type: "date",
+      },
+      {
+        key: "createdAt",
+        label: "Time",
+        nowrap: true,
+        type: "time",
       },
       {
         key: "subTotal",
         label: "Subtotal",
         type: "amount",
-        width: 0,
       },
       {
         key: "tax",
         label: "Tax",
         type: "amount",
-        width: 0,
       },
 
       {
         key: "discount",
         label: "Discount",
         type: "amount",
-        width: 0,
       },
 
       {
@@ -188,7 +191,7 @@ function RouteComponent() {
               e.stopPropagation();
               form.handleSubmit();
             }}
-            onReset={()=>form.reset()}
+            onReset={() => form.reset()}
             className="h-9 flex gap-3"
           >
             <form.Field

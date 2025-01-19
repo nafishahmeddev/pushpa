@@ -139,14 +139,14 @@ function RouteComponent() {
       },
       {
         key: "userId",
-        label: "User",
+        label: "Created By",
         nowrap: true,
         renderColumn: (_, { record }) => record.user?.name,
       },
 
       {
         key: "kotList",
-        label: "Kot",
+        label: "Tokens",
         renderColumn: (kots: Array<IKot>) => (
           <>
             {kots?.map((e) => (
@@ -162,11 +162,18 @@ function RouteComponent() {
       },
       {
         key: "createdAt",
-        label: "Dated",
+        label: "Date",
         sortable: true,
         width: 0,
         nowrap: true,
-        type: "datetime",
+        type: "date",
+      },
+      {
+        key: "createdAt",
+        label: "Time",
+        width: 0,
+        nowrap: true,
+        type: "time",
       },
     ],
     [],
@@ -267,7 +274,7 @@ function RouteComponent() {
               e.stopPropagation();
               form.handleSubmit();
             }}
-            onReset={()=>form.reset()}
+            onReset={() => form.reset()}
             className="h-9 flex gap-3"
           >
             <form.Field
