@@ -142,7 +142,7 @@ export default function AdminDashboard() {
         className="open:visible group h-full w-full collapse  transition-all flex z-40 top-0 left-0 bg-black/30 backdrop-blur-sm items-center justify-center"
       >
         <form
-          className="p-6 min-w-[350px] bg-white rounded-xl flex flex-col gap-5 group-open:opacity-100 group-open:scale-100 scale-50 opacity-0 transition-all"
+          className="p-6 min-w-[350px] bg-white rounded-lg flex flex-col gap-5 group-open:opacity-100 group-open:scale-100 scale-50 opacity-0 transition-all"
           onSubmit={(e) => {
             e.preventDefault();
             e.stopPropagation();
@@ -194,7 +194,7 @@ export default function AdminDashboard() {
         </form>
       </dialog>
 
-      <div className="bg-white inline-flex w-min rounded-xl border overflow-hidden p-0.5 h-10">
+      <div className="bg-white inline-flex w-min rounded-lg border overflow-hidden p-0.5 h-10">
         {Object.values(TimeFrame).map((value) => (
           <button
             key={value}
@@ -222,12 +222,12 @@ export default function AdminDashboard() {
       {isLoading && (
         <div>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-            <div className="border bg-white rounded-2xl h-60 flex flex-col gap-2 w-full row-span-2 py-6 dash-card shimmer" />
-            <div className="border bg-white rounded-2xl h-28 p-5 flex flex-col gap-2 w-full dash-card shimmer" />
-            <div className="border bg-white rounded-2xl h-28 p-5 flex flex-col gap-2 w-full dash-card shimmer" />
-            <div className="border bg-white rounded-2xl h-28 p-5 flex flex-col gap-2 w-full dash-card shimmer" />
-            <div className="border bg-white rounded-2xl h-28 p-5 flex flex-col gap-2 w-full dash-card shimmer" />
-            <div className="border bg-white rounded-2xl h-28 p-5 flex flex-col gap-2 w-full dash-card shimmer" />
+            <div className="border bg-white rounded-lg h-60 flex flex-col gap-2 w-full row-span-2 py-6 dash-card shimmer" />
+            <div className="border bg-white rounded-lg h-28 p-5 flex flex-col gap-2 w-full dash-card shimmer" />
+            <div className="border bg-white rounded-lg h-28 p-5 flex flex-col gap-2 w-full dash-card shimmer" />
+            <div className="border bg-white rounded-lg h-28 p-5 flex flex-col gap-2 w-full dash-card shimmer" />
+            <div className="border bg-white rounded-lg h-28 p-5 flex flex-col gap-2 w-full dash-card shimmer" />
+            <div className="border bg-white rounded-lg h-28 p-5 flex flex-col gap-2 w-full dash-card shimmer" />
           </div>
         </div>
       )}
@@ -237,7 +237,7 @@ export default function AdminDashboard() {
       {!isLoading && !error && result && (
         <div>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-            <div className="border bg-white rounded-2xl h-60 flex flex-col gap-2 w-full row-span-2 py-6  dash-card">
+            <div className="border bg-white rounded-lg h-60 flex flex-col gap-2 w-full row-span-2 py-6  dash-card">
               <p className="px-5 font-bold">Top Selling Items</p>
               <div className="px-5 flex-1 ">
                 <table className="w-full">
@@ -264,31 +264,31 @@ export default function AdminDashboard() {
               </div>
             </div>
 
-            <div className="border bg-white rounded-2xl h-28 p-5 flex flex-col gap-2 w-full dash-card">
+            <div className="border bg-white rounded-lg h-28 p-5 flex flex-col gap-2 w-full dash-card">
               <p className="font-bold">Orders</p>
               <span className="text-4xl  text-gray-700">{result.orders}</span>
             </div>
 
-            <div className="border bg-white rounded-2xl h-28 p-5 flex flex-col gap-2 w-full dash-card">
+            <div className="border bg-white rounded-lg h-28 p-5 flex flex-col gap-2 w-full dash-card">
               <p className="font-bold">Avg. Order Value</p>
               <span className="text-4xl  text-gray-700">
                 {Formatter.money(result.averageOrder)}
               </span>
             </div>
 
-            <div className="border bg-white rounded-2xl h-28 p-5 flex flex-col gap-2 w-full dash-card">
+            <div className="border bg-white rounded-lg h-28 p-5 flex flex-col gap-2 w-full dash-card">
               <p className="font-bold">Revenue</p>
               <span className="text-4xl  text-gray-700">
                 {Formatter.money(result.revenue)}
               </span>
             </div>
-            <div className="border bg-white rounded-2xl h-28 p-5 flex flex-col gap-2 w-full dash-card">
+            <div className="border bg-white rounded-lg h-28 p-5 flex flex-col gap-2 w-full dash-card">
               <p className="font-bold">Tax</p>
               <span className="text-4xl  text-gray-700">
                 {Formatter.money(result.tax)}
               </span>
             </div>
-            <div className="border bg-white rounded-2xl h-28 p-5 flex flex-col gap-2 w-full dash-card">
+            <div className="border bg-white rounded-lg h-28 p-5 flex flex-col gap-2 w-full dash-card">
               <p className="font-bold">Net Sales</p>
               <span className="text-4xl  text-gray-700">
                 {Formatter.money(result.netSales)}
@@ -297,7 +297,7 @@ export default function AdminDashboard() {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-5 mt-5 mb-5">
-            <div className="border bg-white rounded-2xl  flex flex-col gap-2 w-full row-span-2 py-6 pb-0  dash-card">
+            <div className="border bg-white rounded-lg  flex flex-col gap-2 w-full row-span-2 py-6 pb-0  dash-card">
               <p className="px-5 font-bold">Sales</p>
               <div className="pb-3 px-6 pt-2 h-52">
                 <SalesChart
@@ -312,7 +312,7 @@ export default function AdminDashboard() {
               </div>
             </div>
 
-            <div className="border bg-white rounded-2xl  flex flex-col gap-2 w-full row-span-2 py-6 pb-0  dash-card">
+            <div className="border bg-white rounded-lg  flex flex-col gap-2 w-full row-span-2 py-6 pb-0  dash-card">
               <p className="px-5 font-bold">Orders</p>
               <div className="pb-3 px-6 pt-2  h-52">
                 <SalesChart

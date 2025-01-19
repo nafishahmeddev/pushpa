@@ -255,7 +255,7 @@ function DataGrid<IRecord>({
     };
   }, []);
   return (
-    <div className="bg-white rounded-xl overflow-x-auto border">
+    <div className="bg-white rounded-lg overflow-x-auto border">
       <Header ref={headerRef}>
         <Row rowNo={1}>
           {checkboxSelection && (

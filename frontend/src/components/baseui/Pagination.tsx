@@ -36,7 +36,7 @@ export default function Pagination({ page, pages, onChange }: PaginationProps) {
   return (
     <div className="flex items-center gap-2 h-[35px]">
       <button
-        className={`border rounded-xl bg-white  h-full ps-1.5 pe-3 flex items-center justify-center disabled:text-gray-400 gap-2`}
+        className={`border rounded-lg bg-white  h-full ps-1.5 pe-3 flex items-center justify-center disabled:text-gray-400 gap-2`}
         onClick={() => onChange && onChange({ page: page - 1 })}
         disabled={page <= 1}
       >
@@ -54,7 +54,7 @@ export default function Pagination({ page, pages, onChange }: PaginationProps) {
             ) : (
               <button
                 key={`pagination-${seq}`}
-                className={` px-2 aspect-square  h-full  flex items-center justify-center rounded-xl border 
+                className={` px-2 aspect-square  h-full  flex items-center justify-center rounded-lg border 
                       ${seq == page ? "bg-indigo-600/10 text-indigo-800 " : "bg-white"}`}
                 onClick={() =>
                   page != seq && onChange && onChange({ page: seq as number })
@@ -68,7 +68,7 @@ export default function Pagination({ page, pages, onChange }: PaginationProps) {
         ))}
       </div>
       <button
-        className={`border rounded-xl bg-white  h-full  pe-1.5 ps-3  flex items-center justify-center disabled:text-gray-400 gap-2`}
+        className={`border rounded-lg bg-white  h-full  pe-1.5 ps-3  flex items-center justify-center disabled:text-gray-400 gap-2`}
         onClick={() => onChange && onChange({ page: page + 1 })}
         disabled={page >= pages}
       >

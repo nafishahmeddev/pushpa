@@ -130,7 +130,7 @@ export default function RouteComponent() {
           </fieldset>
         </form>
       </div>
-      <div className="bg-white border rounded-xl  overflow-x-auto overflow-hidden">
+      <div className="bg-white border rounded-lg  overflow-x-auto overflow-hidden">
         <Table bordered>
           <TableHead>
             <TableRow

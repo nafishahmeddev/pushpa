@@ -22,7 +22,7 @@ export default function BillerDashboard() {
 
   return (
     <div className="grid grid-rows-[auto_1fr] gap-6 p-4 h-full">
-      <div className="bg-white inline-flex w-min rounded-xl border overflow-hidden p-0.5 h-10">
+      <div className="bg-white inline-flex w-min rounded-lg border overflow-hidden p-0.5 h-10">
         {Object.values(TimeFrame)
           .filter((e) => e != TimeFrame.Custom)
           .map((value) => (
@@ -46,7 +46,7 @@ export default function BillerDashboard() {
       {isLoading && (
         <div>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-            <div className="border bg-white rounded-2xl h-28 p-5 flex flex-col gap-2 w-full dash-card shimmer" />
+            <div className="border bg-white rounded-lg h-28 p-5 flex flex-col gap-2 w-full dash-card shimmer" />
           </div>
         </div>
       )}
@@ -56,7 +56,7 @@ export default function BillerDashboard() {
       {!isLoading && !error && result && (
         <div>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-            <div className="border bg-white rounded-2xl h-28 p-5 flex flex-col gap-2 w-full dash-card">
+            <div className="border bg-white rounded-lg h-28 p-5 flex flex-col gap-2 w-full dash-card">
               <p className="font-bold">Orders</p>
               <span className="text-4xl  text-gray-700">{result.orders}</span>
             </div>

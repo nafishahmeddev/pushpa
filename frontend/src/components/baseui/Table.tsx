@@ -65,7 +65,7 @@ export function TableCell({ ...props }: React.ComponentProps<"td" | "th">) {
             ...classNames,
             props.className,
             "font-medium",
-            "text-gray-600 [&:nth-child(1)]:rounded-tl-xl [&:nth-last-child(1)]:rounded-tr-xl",
+            "text-gray-600 [&:nth-child(1)]:rounded-tl-lg [&:nth-last-child(1)]:rounded-tr-lg",
           ].join(" ")}
         />
       ) : (

@@ -30,7 +30,7 @@ export default function AccountButton() {
           } absolute right-2 min-w-52 z-50 transition-all`}
         >
           <div
-            className={`border rounded-xl py-4 flex flex-col gap-3 bg-white mt-3`}
+            className={`border rounded-lg py-4 flex flex-col gap-3 bg-white mt-3`}
           >
             <div className="px-3 flex items-center gap-2">
               <div
@@ -48,7 +48,11 @@ export default function AccountButton() {
                 to="/profile"
                 className=" text-gray-700  hover:opacity-50 px-3 py-2 flex gap-2 items-center"
               >
-                <Icon icon="iconamoon:profile-circle-light" height={20} width={20} />
+                <Icon
+                  icon="iconamoon:profile-circle-light"
+                  height={20}
+                  width={20}
+                />
                 <span>Profile</span>
               </Link>
               <button

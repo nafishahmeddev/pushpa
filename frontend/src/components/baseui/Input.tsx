@@ -26,7 +26,7 @@ export default function Input({
       <div className="flex relative">
         <input
           {...props}
-          className={`bg-gray-50 rounded-xl py-2 px-3 focus:outline-2 border h-10 min-w-0 w-full flex-1 ${
+          className={`bg-gray-50 rounded-lg py-2 px-3 focus:outline-2 border h-10 min-w-0 w-full flex-1 ${
             touched && error ? "outline-red-700 border-red-700" : ""
           } ${props.className}`}
           type={

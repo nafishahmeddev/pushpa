@@ -233,7 +233,7 @@ export default function RouteComponent() {
       />
       <div className="h-full overflow-auto">
         <MenuList
-          className="border rounded-xl"
+          className="border rounded-lg"
           onItemPress={(item) =>
             onModify(
               {
@@ -248,7 +248,7 @@ export default function RouteComponent() {
         />
       </div>
       <div className="h-full overflow-auto grid grid-rows-[1fr_auto_auto] w-full ">
-        <ScrollView className="h-full w-full overflow-auto rounded-t-xl border border-b-0 bg-white">
+        <ScrollView className="h-full w-full overflow-auto rounded-t-lg border border-b-0 bg-white">
           <table className="w-full ">
             <thead>
               <tr className="bg-gray-100 sticky top-0">
@@ -350,7 +350,7 @@ export default function RouteComponent() {
             </div>
           )}
         </ScrollView>
-        <div className="h-full bg-white flex rounded-b-2xl border">
+        <div className="h-full bg-white flex rounded-b-lg border">
           <table>
             <tfoot>
               <tr>

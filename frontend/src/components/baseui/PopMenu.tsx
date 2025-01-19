@@ -117,10 +117,10 @@ export const PopMenuContent: FC<PopMenuContentProps> = ({ children }) => {
   return (
     <div
       ref={ref}
-      className={`${open ? "visible opacity-100" : "collapse opacity-0"} bg-white border rounded-xl whitespace-nowrap absolute z-10 transition-all overflow-hidden`}
+      className={`${open ? "visible opacity-100" : "collapse opacity-0"} bg-white border rounded-lg whitespace-nowrap absolute z-10 transition-all overflow-hidden`}
       style={{ ...pos }}
     >
-      <ul className="py-2" ref={listRef}>
+      <ul className="py-1" ref={listRef}>
         {children}
       </ul>
     </div>
@@ -139,7 +139,7 @@ export const PopMenuItem: FC<PopMenuItemProps & React.ComponentProps<"a">> = ({
       <a
         {...props}
         className={[
-          "px-4 flex py-2.5 min-w-36 hover:opacity-20 cursor-pointer gap-2.5 items-center text-sm",
+          "px-3 flex py-2 min-w-36 hover:opacity-80 cursor-pointer gap-2.5 items-center text-sm",
           props.className,
         ].join(" ")}
       />

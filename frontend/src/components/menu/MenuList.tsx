@@ -65,7 +65,7 @@ export default function MenuList({ onItemPress, ...props }: MenuListProps) {
           />
         </div>
       </div>
-      <ScrollView className="h-full overflow-auto bg-white relative rounded-2xl border-t">
+      <ScrollView className="h-full overflow-auto bg-white relative rounded-lg border-t">
         {isLoading ? (
           <div className="w-full flex items-center justify-center p-5">
             <Spinner />
@@ -75,14 +75,14 @@ export default function MenuList({ onItemPress, ...props }: MenuListProps) {
             {filtered.map((category) => (
               <div key={category.name}>
                 <div className="sticky top-0 py-2 px-2">
-                  <div className="py-1 px-4 bg-white/90 text-gray-700 backdrop-blur-sm border flex rounded-xl text-center items-center justify-center font-semibold">
+                  <div className="py-1 px-4 bg-white/90 text-gray-700 backdrop-blur-sm border flex rounded-lg text-center items-center justify-center font-semibold">
                     {category.name}
                   </div>
                 </div>
                 {category.products?.map((product) => (
                   <div
                     key={`item-${product.id}`}
-                    className={`border-b border-gray-100 cursor-pointer hover:bg-indigo-600/10 flex justify-between rounded-xl mx-2
+                    className={`border-b border-gray-100 cursor-pointer hover:bg-indigo-600/10 flex justify-between rounded-lg mx-2
                       ${itemPressLoading ? "animate-pulse" : ""}`}
                     onClick={() =>
                       !itemPressLoading && handleOnItemPress(product)
