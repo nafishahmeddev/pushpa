@@ -55,7 +55,7 @@ function RouteComponent() {
         renderColumn: (_, { record: invoice }) => (
           <PopMenu>
             <PopMenuTrigger>
-              <button className="hover:opacity-70 border p-0.5 rounded-full">
+              <button className="hover:opacity-70 border p-0.5 rounded-md">
                 <Icon icon="mingcute:more-2-line" height={18} width={18} />
               </button>
             </PopMenuTrigger>
