@@ -27,6 +27,8 @@ export function TableRow({
   }
   if (header) {
     classNames.push("bg-gray-100");
+  } else {
+    classNames.push(" [&:nth-last-child(1)]:border-b-0");
   }
   return (
     <TableRowContext.Provider value={{ header: header }}>
@@ -59,9 +61,12 @@ export function TableCell({ ...props }: React.ComponentProps<"td" | "th">) {
       {tableRowTheme.header ? (
         <th
           {...props}
-          className={[...classNames, props.className, "font-medium", "text-gray-600"].join(
-            " ",
-          )}
+          className={[
+            ...classNames,
+            props.className,
+            "font-medium",
+            "text-gray-600 [&:nth-child(1)]:rounded-tl-xl [&:nth-last-child(1)]:rounded-tr-xl",
+          ].join(" ")}
         />
       ) : (
         <td {...props} className={[...classNames, props.className].join(" ")} />

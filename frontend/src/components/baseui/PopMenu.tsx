@@ -139,7 +139,7 @@ export const PopMenuItem: FC<PopMenuItemProps & React.ComponentProps<"a">> = ({
       <a
         {...props}
         className={[
-          "px-4 flex py-2.5 min-w-36 hover:opacity-20 cursor-pointer gap-2.5 items-center ",
+          "px-4 flex py-2.5 min-w-36 hover:opacity-20 cursor-pointer gap-2.5 items-center text-sm",
           props.className,
         ].join(" ")}
       />

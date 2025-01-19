@@ -1,11 +1,6 @@
 import React from "react";
 import { Icon } from "@iconify/react";
-import Table, {
-  TableBody,
-  TableCell,
-  TableHead,
-  TableRow,
-} from "./Table";
+import Table, { TableBody, TableCell, TableHead, TableRow } from "./Table";
 import Pagination from "./Pagination";
 import Formatter from "@app/lib/formatter";
 import Spinner from "./Spinner";
@@ -99,8 +94,8 @@ export default function DataTable<IRecord>({
 }: DataTableProps<IRecord>) {
   const offset = (paginationState.page - 1) * paginationState.limit;
   return (
-    <div className="flex flex-col gap-5">
-      <div className="h-full bg-white border rounded-xl overflow-x-auto overflow-hidden relative">
+    <>
+      <div className="bg-white border relative rounded-xl">
         <Table bordered>
           <TableHead>
             <TableRow header>
@@ -229,7 +224,7 @@ export default function DataTable<IRecord>({
         )}
 
         <div
-          className={`${(records.length || !loading) ? "" : "min-h-60"} ${loading ? "visible" : "collapse"}`}
+          className={`${records.length || !loading ? "" : "min-h-60"} ${loading ? "visible" : "collapse"}`}
         >
           <div
             className={`p-5 flex items-center justify-center absolute h-[calc(100%_-_35px)] w-full left-0 top-[35px] transition-all backdrop-blur-sm bg-white/30 ${loading ? "opacity-100" : "opacity-0"}`}
@@ -272,6 +267,6 @@ export default function DataTable<IRecord>({
           />
         </div>
       </div>
-    </div>
+    </>
   );
 }

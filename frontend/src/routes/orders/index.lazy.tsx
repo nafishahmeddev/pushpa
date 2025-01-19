@@ -3,7 +3,7 @@ import { Icon } from "@iconify/react";
 import OrdersApi from "@app/services/orders";
 import Input from "@app/components/baseui/Input";
 import { IKot, IOrder, OrderStatus } from "@app/types/orders";
-import { createLazyFileRoute, Link } from "@tanstack/react-router";
+import { createLazyFileRoute } from "@tanstack/react-router";
 import { useForm } from "@tanstack/react-form";
 import Button from "@app/components/baseui/Button";
 import DataTable, { Column, SortType } from "@app/components/baseui/DataTable";
@@ -15,6 +15,11 @@ import { UserDesignation } from "@app/types/user";
 import dayjs from "dayjs";
 import OrderBackEntryFormDialog from "@app/components/form-dialogs/OrderBackEntryFormDialog";
 import { AxiosError } from "axios";
+import PopMenu, {
+  PopMenuTrigger,
+  PopMenuContent,
+  PopMenuItem,
+} from "@app/components/baseui/PopMenu";
 
 export const Route = createLazyFileRoute("/orders/")({
   component: RouteComponent,
@@ -60,6 +65,7 @@ type FormType = {
 
 function RouteComponent() {
   const [auth] = useAuthStore<AuthStateLoggedIn>();
+  const navigate = Route.useNavigate();
   const columns = useMemo<Array<Column<IOrder>>>(
     () => [
       {
@@ -67,53 +73,64 @@ function RouteComponent() {
         label: "",
         width: 0,
         renderColumn: (_, { record: order }) => (
-          <div className="inline-flex flex-nowrap gap-2 text-gray-600">
-            {order.invoiceId &&
-              [OrderStatus.Completed, OrderStatus.Paid].includes(
+          <PopMenu>
+            <PopMenuTrigger>
+              <button className="hover:opacity-70 border p-0.5 rounded-full">
+                <Icon icon="mingcute:more-2-line" height={18} width={18} />
+              </button>
+            </PopMenuTrigger>
+            <PopMenuContent>
+              {order.invoiceId &&
+                [OrderStatus.Completed, OrderStatus.Paid].includes(
+                  order.status,
+                ) && (
+                  <PopMenuItem
+                    className={`hover:opacity-50 flex items-center justify-center`}
+                    onClick={() => handleOnDetails(order.invoiceId as string)}
+                    title="Show Invoice"
+                  >
+                    <Icon icon="ph:receipt-bold" height={20} width={20} />
+                    <span>Show Invoice</span>
+                  </PopMenuItem>
+                )}
+
+              {[OrderStatus.Draft, OrderStatus.Ongoing].includes(
                 order.status,
               ) && (
-                <button
+                <PopMenuItem
                   className={`hover:opacity-50 flex items-center justify-center`}
-                  onClick={() => handleOnDetails(order.invoiceId as string)}
-                  title="Show Invoice"
+                  onClick={() => navigate({ to: "/pos/" + order.id })}
+                  title="Go to billing"
                 >
-                  <Icon icon="ph:receipt-bold" height={20} width={20} />
-                </button>
+                  <Icon icon="hugeicons:payment-02" height={20} width={20} />
+                  <span>Go to billing</span>
+                </PopMenuItem>
               )}
 
-            {[OrderStatus.Draft, OrderStatus.Ongoing].includes(
-              order.status,
-            ) && (
-              <Link
-                className={`hover:opacity-50 flex items-center justify-center`}
-                to={"/pos/" + order.id}
-                title="Go to billing"
-              >
-                <Icon icon="hugeicons:payment-02" height={20} width={20} />
-              </Link>
-            )}
+              {[OrderStatus.Completed].includes(order.status) &&
+                [UserDesignation.Admin, UserDesignation.Owner].includes(
+                  auth.user.designation,
+                ) && (
+                  <PopMenuItem
+                    className={`hover:opacity-50 flex items-center justify-center text-red-600`}
+                    onClick={() => handleOnCancel(order.id as string)}
+                  >
+                    <Icon icon="tabler:cancel" height={20} width={20} />
+                    <span>Cancel Order</span>
+                  </PopMenuItem>
+                )}
 
-            {[OrderStatus.Completed].includes(order.status) &&
-              [UserDesignation.Admin, UserDesignation.Owner].includes(
-                auth.user.designation,
-              ) && (
-                <button
+              {[OrderStatus.Draft].includes(order.status) && (
+                <PopMenuItem
                   className={`hover:opacity-50 flex items-center justify-center text-red-600`}
-                  onClick={() => handleOnCancel(order.id as string)}
+                  onClick={() => handleOnDelete(order.id as string)}
                 >
-                  <Icon icon="tabler:cancel" height={20} width={20} />
-                </button>
+                  <Icon icon="mi:delete" height={20} width={20} />
+                  <span>Delete Order</span>
+                </PopMenuItem>
               )}
-
-            {[OrderStatus.Draft].includes(order.status) && (
-              <button
-                className={`hover:opacity-50 flex items-center justify-center text-red-600`}
-                onClick={() => handleOnDelete(order.id as string)}
-              >
-                <Icon icon="mi:delete" height={20} width={20} />
-              </button>
-            )}
-          </div>
+            </PopMenuContent>
+          </PopMenu>
         ),
       },
       {
@@ -365,7 +382,7 @@ function RouteComponent() {
                 type="button"
                 onClick={() => setFormDialog({ open: true })}
               >
-                Back Entry
+                Create New Order
               </Button>
             )}
           </form>

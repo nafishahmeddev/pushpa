@@ -9,6 +9,11 @@ import DataTable, { Column, SortType } from "@app/components/baseui/DataTable";
 import { PaginationResponse } from "@app/types/pagination";
 import { IInvoice, InvoiceStatus } from "@app/types/invoice";
 import dayjs from "dayjs";
+import PopMenu, {
+  PopMenuContent,
+  PopMenuItem,
+  PopMenuTrigger,
+} from "@app/components/baseui/PopMenu";
 
 export const Route = createLazyFileRoute("/invoices/")({
   component: RouteComponent,
@@ -48,26 +53,29 @@ function RouteComponent() {
         label: "",
         width: 0,
         renderColumn: (_, { record: invoice }) => (
-          <div className="inline-flex flex-nowrap gap-2 text-gray-600">
-            {invoice.id && (
-              <React.Fragment>
-                <button
-                  className={`hover:opacity-50 flex items-center justify-center`}
-                  onClick={() => handleOnDetails(invoice.id as string)}
+          <PopMenu>
+            <PopMenuTrigger>
+              <button className="hover:opacity-70 border p-0.5 rounded-full">
+                <Icon icon="mingcute:more-2-line" height={18} width={18} />
+              </button>
+            </PopMenuTrigger>
+            <PopMenuContent>
+              <PopMenuItem
+                onClick={() => handleOnDetails(invoice.id as string, false)}
+              >
+                <Icon icon="ph:receipt-bold" height={20} width={20} />{" "}
+                <span>View Receipt</span>
+              </PopMenuItem>
+              {invoice.status != InvoiceStatus.Cancelled && (
+                <PopMenuItem
+                  onClick={() => handleOnDetails(invoice.id as string, true)}
                 >
-                  <Icon icon="ph:receipt-bold" height={20} width={20} />
-                </button>
-                {invoice.status != InvoiceStatus.Cancelled && (
-                  <button
-                    className={`hover:opacity-50 flex items-center justify-center`}
-                    onClick={() => handleOnDetails(invoice.id as string, true)}
-                  >
-                    <Icon icon="mingcute:print-line" height={20} width={20} />
-                  </button>
-                )}
-              </React.Fragment>
-            )}
-          </div>
+                  <Icon icon="mingcute:print-line" height={20} width={20} />{" "}
+                  <span>View Receipt</span>
+                </PopMenuItem>
+              )}
+            </PopMenuContent>
+          </PopMenu>
         ),
       },
       {
@@ -115,7 +123,6 @@ function RouteComponent() {
         key: "amount",
         label: "Amount",
         type: "amount",
-        width: 0,
       },
     ],
     [],

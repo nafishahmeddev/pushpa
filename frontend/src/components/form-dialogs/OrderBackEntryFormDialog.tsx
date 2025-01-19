@@ -188,7 +188,7 @@ export default function OrderBackEntryFormDialog({
                 <Input
                   label="Discount"
                   type="number"
-                  value={state.value ? state.value :""}
+                  value={state.value ? state.value : ""}
                   onChange={(e) => handleChange(Number(e.target.value))}
                   onBlur={handleBlur}
                   name={name}
@@ -259,7 +259,7 @@ export default function OrderBackEntryFormDialog({
               </ScrollView>
               <form.Subscribe
                 selector={(e) => e.values}
-                children={({discount}) => (
+                children={({ discount }) => (
                   <div className="h-full bg-white flex rounded-b-2xl border">
                     <table>
                       <tfoot>
@@ -312,10 +312,14 @@ export default function OrderBackEntryFormDialog({
                 <Button
                   className=" bg-lime-600 text-white"
                   type="submit"
-                  disabled={!canSubmit || cartUtil.total < values.discount || dayjs().isBefore(dayjs(values.createdAt))}
+                  disabled={
+                    !canSubmit ||
+                    cartUtil.total < values.discount ||
+                    dayjs().isBefore(dayjs(values.createdAt))
+                  }
                   loading={isSubmitting}
                 >
-                  Create
+                  Create & Generate Invoice
                 </Button>
               </div>
             )}
