@@ -16,7 +16,7 @@ export function SideMenuList({ items }: SideMenuListProps) {
           <li key={`item-${index}`} className="px-2">
             <Link
               to={item.route}
-              className={`flex py-2 px-3 items-center justify-start gap-2 cursor-pointer transition-all hover:bg-indigo-600/15 text-indigo-950 rounded-full [&.active]:text-indigo-700 [&.active]:bg-indigo-600/10`}
+              className={`flex py-2 px-3 items-center justify-start gap-2 cursor-pointer transition-all hover:bg-indigo-600/15 text-gray-800 rounded-lg [&.active]:text-indigo-700 [&.active]:bg-indigo-600/10`}
             >
               <Icon icon={item.icon} height={20} width={20} />
               <span>{item.label}</span>
