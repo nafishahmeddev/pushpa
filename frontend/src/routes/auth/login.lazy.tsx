@@ -32,7 +32,10 @@ function RouteComponent() {
   return (
     <div className="flex bg-gray-50 h-full w-full">
       <div className="flex-1 hidden lg:flex items-center justify-center p-9 h-full">
-        <img src="/login-scene.webp" className="max-w-full" />
+        <img
+          src="/login-scene.webp"
+          className="max-w-full max-h-full object-contain"
+        />
       </div>
       <div className="flex-1 bg-white p-6 lg:max-w-[500px] flex items-center justify-center h-full">
         <form
