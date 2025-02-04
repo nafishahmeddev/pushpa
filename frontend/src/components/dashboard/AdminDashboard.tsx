@@ -237,9 +237,9 @@ export default function AdminDashboard() {
       {!isLoading && !error && result && (
         <div>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-            <div className="border bg-white rounded-lg h-60 flex flex-col gap-2 w-full row-span-2 py-6  dash-card">
+            <div className="border bg-white rounded-lg h-60 flex flex-col gap-2 w-full row-span-2 py-6 pb-0  dash-card">
               <p className="px-5 font-bold">Top Selling Items</p>
-              <div className="px-5 flex-1 ">
+              <div className="px-5 flex-1 overflow-auto pb-6">
                 <table className="w-full">
                   <tbody>
                     {result.topSellingItems.length ? (
