@@ -37,7 +37,7 @@ function RouteComponent() {
   });
   return (
     <div className="p-5 max-w-[1000px] m-auto flex flex-col gap-8 py-10">
-      <div className="md:p-8 p-6 bg-white border rounded-lg">
+      <div className="md:p-8 p-6 bg-white border rounded-xl">
         <h3 className="text-xl">Profile Information</h3>
         <p className="mt-2 text-gray-500 text-sm">
           Update your account's profile information and email address.{" "}
@@ -116,7 +116,7 @@ function RouteComponent() {
         </form>
       </div>
 
-      <div className="md:p-8 p-6 bg-white border rounded-lg">
+      <div className="md:p-8 p-6 bg-white border rounded-xl">
         <h3 className="text-xl">Update Password</h3>
         <p className="mt-2 text-gray-500 text-sm">
           Ensure your account is using a long, random password to stay secure.

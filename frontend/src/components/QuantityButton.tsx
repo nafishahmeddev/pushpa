@@ -64,7 +64,7 @@ export default function QuantityButton({
           />
         </button>
         <input
-          className="text-center  font-mono flex-1 bg-transparent min-w-8 max-w-8 appearance-none rounded-lg"
+          className="text-center  font-mono flex-1 bg-transparent min-w-8 max-w-8 appearance-none rounded-xl"
           value={qtd}
           onChange={(e) => setQtd(Number(e.target.value))}
           onBlur={(e) => handleOnUpdate(Number(e.target.value))}

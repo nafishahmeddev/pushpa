@@ -117,7 +117,7 @@ export const PopMenuContent: FC<PopMenuContentProps> = ({ children }) => {
   return (
     <div
       ref={ref}
-      className={`${open ? "visible opacity-100" : "collapse opacity-0"} bg-white border rounded-lg whitespace-nowrap absolute z-10 transition-all overflow-hidden`}
+      className={`${open ? "visible opacity-100" : "collapse opacity-0"} bg-white border rounded-xl whitespace-nowrap absolute z-10 transition-all overflow-hidden`}
       style={{ ...pos }}
     >
       <ul className="py-1" ref={listRef}>

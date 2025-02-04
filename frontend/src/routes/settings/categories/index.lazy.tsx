@@ -50,7 +50,7 @@ function RouteComponent() {
         {categories.map((category, index: number) => (
           <div
             key={`category-${category.id}-${index}`}
-            className="flex bg-white border p-3 rounded-lg gap-3 items-center"
+            className="flex bg-white border p-3 rounded-xl gap-3 items-center"
           >
             <p className="flex-1">{category.name}</p>
             <div className="flex flex-nowrap gap-2 text-gray-600 ">

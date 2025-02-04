@@ -233,7 +233,7 @@ export default function RouteComponent() {
       />
       <div className="h-full overflow-auto">
         <MenuList
-          className="border rounded-lg"
+          className="border rounded-xl"
           onItemPress={(item) =>
             onModify(
               {
@@ -306,7 +306,7 @@ export default function RouteComponent() {
                             {item.status != OrderItemStatus.Cancelled && (
                               <Button
                                 title="Cancel"
-                                className={`bg-red-600 !rounded-lg h-5 aspect-square flex items-center justify-center hover:opacity-50  text-white !px-0`}
+                                className={`bg-red-600 !rounded-xl h-5 aspect-square flex items-center justify-center hover:opacity-50  text-white !px-0`}
                                 onClick={() => onCancelItem(item)}
                                 ask
                               >

@@ -67,7 +67,7 @@ export function RootComponent() {
             <div key={`order-item-${order.id}`} className="relative">
               <Link
                 to={"/pos/" + order.id}
-                className={`rounded-lg py-2 flex  items-center justify-start flex-nowrap text-nowrap px-3 gap-2  hover:opacity-50  border transition-all cursor-pointer
+                className={`rounded-xl py-2 flex  items-center justify-start flex-nowrap text-nowrap px-3 gap-2  hover:opacity-50  border transition-all cursor-pointer
               text-sm overflow-hidden
                 [&.active]:bg-indigo-600/10 [&.active]:border-indigo-900/10 text-indigo-800  bg-white`}
               >
@@ -95,7 +95,7 @@ export function RootComponent() {
           ))}
           <button
             onClick={() => setNewOrderModal({ open: true })}
-            className={`rounded-lg py-2 flex  items-center justify-start flex-nowrap text-nowrap px-3 gap-2  hover:opacity-50  border transition-all cursor-pointer
+            className={`rounded-xl py-2 flex  items-center justify-start flex-nowrap text-nowrap px-3 gap-2  hover:opacity-50  border transition-all cursor-pointer
               text-sm bg-white`}
           >
             <Icon icon="gala:add" /> New Order

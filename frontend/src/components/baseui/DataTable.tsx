@@ -95,7 +95,7 @@ export default function DataTable<IRecord>({
   const offset = (paginationState.page - 1) * paginationState.limit;
   return (
     <>
-      <div className="bg-white border relative rounded-lg">
+      <div className="bg-white border relative rounded-xl">
         <Table bordered>
           <TableHead>
             <TableRow header>
@@ -242,7 +242,7 @@ export default function DataTable<IRecord>({
         <div className="hidden md:flex gap-2 items-center  flex-nowrap">
           Per page:
           <Select
-            className="h-[35px] border rounded-lg px-2 bg-white min-w-[65px]"
+            className="h-[35px] border rounded-xl px-2 bg-white min-w-[65px]"
             value={paginationState.limit}
             onChange={(e) =>
               paginationStateChange({

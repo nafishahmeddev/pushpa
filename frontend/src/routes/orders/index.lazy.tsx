@@ -26,7 +26,7 @@ export const Route = createLazyFileRoute("/orders/")({
 });
 
 const OrderStatusLabel = ({ order }: { order: IOrder }) => {
-  const classNames = ["border px-1 py-0 text-sm rounded-lg"];
+  const classNames = ["border px-1 py-0 text-sm rounded-xl"];
   switch (order.status) {
     case OrderStatus.Ongoing: {
       classNames.push("border-orange-600/50 text-orange-600 bg-orange-50");
@@ -168,7 +168,7 @@ function RouteComponent() {
           <>
             {kots?.map((e) => (
               <button
-                className="inline-flex mx-0.5 bg-indigo-600 rounded-lg px-1 p-0.5 items-center justify-center text-white text-xs"
+                className="inline-flex mx-0.5 bg-indigo-600 rounded-xl px-1 p-0.5 items-center justify-center text-white text-xs"
                 key={e.id}
               >
                 {e.tokenNo}

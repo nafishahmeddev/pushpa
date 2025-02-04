@@ -30,7 +30,7 @@ export default function AccountButton() {
           } absolute right-2 min-w-52 z-50 transition-all`}
         >
           <div
-            className={`border rounded-lg py-4 flex flex-col gap-3 bg-white mt-3`}
+            className={`border rounded-xl py-4 flex flex-col gap-3 bg-white mt-3`}
           >
             <div className="px-3 flex items-center gap-2">
               <div

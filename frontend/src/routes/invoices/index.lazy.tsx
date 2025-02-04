@@ -20,7 +20,7 @@ export const Route = createLazyFileRoute("/invoices/")({
 });
 
 const InvoiceStatusLabel = ({ invoice }: { invoice: IInvoice }) => {
-  const classNames = ["border px-1 py-0 text-sm rounded-lg"];
+  const classNames = ["border px-1 py-0 text-sm rounded-xl"];
   switch (invoice.status) {
     case InvoiceStatus.Cancelled: {
       classNames.push("border-gray-600/50 text-gray-600  bg-gray-50");

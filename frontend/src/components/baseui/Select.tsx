@@ -32,7 +32,7 @@ export default function Select({
       <div className="flex relative">
         <select
           {...props}
-          className={`bg-gray-50 rounded-lg px-3 focus:outline-2 border h-10 min-w-0 w-full appearance-none ${touched && error ? "outline-red-700 border-red-700" : ""} ${props.className}`}
+          className={`bg-gray-50 rounded-xl px-3 focus:outline-2 border h-10 min-w-0 w-full appearance-none ${touched && error ? "outline-red-700 border-red-700" : ""} ${props.className}`}
         />
         <label className="absolute right-0 h-full flex items-center pe-1.5 pointer-events-none cursor-pointer text-gray-400">
           <Icon icon="formkit:down" height={18} width={18} />

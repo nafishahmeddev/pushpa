@@ -19,7 +19,7 @@ export default function Button({
   return (
     <button
       {...props}
-      className={`flex text-nowrap gap-2 h-10 px-5 hover:opacity-80 disabled:opacity-60 disabled:hover:opacity-60 rounded-lg overflow-hidden relative items-center justify-center ${props.className ?? ""}`}
+      className={`flex text-nowrap gap-2 h-10 px-5 hover:opacity-80 disabled:opacity-60 disabled:hover:opacity-60 rounded-xl overflow-hidden relative items-center justify-center ${props.className ?? ""}`}
     >
       {loading && (
         <span className="bg-inherit absolute top-0 left-0 h-full w-full flex items-center justify-center">

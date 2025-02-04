@@ -22,7 +22,7 @@ export default function Textarea({
       <div className="flex relative">
         <textarea
           {...props}
-          className={`bg-gray-50 rounded-lg py-2 px-3 focus:outline-2 border min-w-0 w-full flex-1 ${touched && error ? "outline-red-700 border-red-700" : ""} ${props.className}`}
+          className={`bg-gray-50 rounded-xl py-2 px-3 focus:outline-2 border min-w-0 w-full flex-1 ${touched && error ? "outline-red-700 border-red-700" : ""} ${props.className}`}
           children={props.value}
         />
       </div>

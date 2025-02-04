@@ -201,7 +201,7 @@ export default function OrderBackEntryFormDialog({
           </div>
 
           <div className="h-[500px] grid grid-rows-2 md:grid-rows-1 md:grid-cols-[auto_1fr] gap-4">
-            <div className="h-full overflow-auto bg-gray-50 rounded-lg border">
+            <div className="h-full overflow-auto bg-gray-50 rounded-xl border">
               <MenuList
                 onItemPress={(item) =>
                   onModify(

@@ -122,7 +122,7 @@ export default function ProductFormDialog({
               <div className="relative w-28 inline-flex">
                 <label
                   htmlFor="image"
-                  className="w-full aspect-square object-cover rounded-lg border overflow-hidden cursor-pointer"
+                  className="w-full aspect-square object-cover rounded-xl border overflow-hidden cursor-pointer"
                 >
                   <Image
                     src={

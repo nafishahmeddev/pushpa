@@ -78,7 +78,7 @@ export default function RouteComponent() {
               >
                 <Link
                   to={item.route}
-                  className={`flex py-1.5 px-3 items-center justify-start gap-3 cursor-pointer hover:opacity-60 text-gray-800 md:rounded-lg border-y-2 border-y-transparent [&.active]:border-b-indigo-600  md:[&.active]:border-b-transparent  [&.active]:text-indigo-700  md:[&.active]:bg-indigo-600/10`}
+                  className={`flex py-1.5 px-3 items-center justify-start gap-3 cursor-pointer hover:opacity-60 text-gray-800 md:rounded-xl border-y-2 border-y-transparent [&.active]:border-b-indigo-600  md:[&.active]:border-b-transparent  [&.active]:text-indigo-700  md:[&.active]:bg-indigo-600/10`}
                 >
                   <Icon icon={item.icon} height={20} width={20} />
                   <span>{item.label}</span>

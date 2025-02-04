@@ -21,7 +21,7 @@ const CustomToolTip = ({
     return null;
   }
   return (
-    <div className="bg-white border rounded-lg p-2 text-sm">
+    <div className="bg-white border rounded-xl p-2 text-sm">
       <p>
         <strong>{label}</strong>
       </p>
